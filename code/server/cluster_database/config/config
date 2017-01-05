@@ -1,0 +1,27 @@
+root = "./"
+thread = 8
+logger = nil
+logpath = "."
+harbor = 0 
+bootstrap = "snlua bootstrap"
+
+luaservice = root.."service/?.lua;"..root.."sgoly/protocol/?.lua;"..root.."sgoly/cluster_database/?.lua;"..root.."sgoly/cluster_database/service/?.lua;"..root.."sgoly/lualib/?.lua;"
+
+lualoader = root .. "lualib/loader.lua"
+
+-- preload = 
+
+snax = root.."sgoly/protocol/?.lua;"..root.."sgoly/cluster_database/?.lua;"..root.."sgoly/cluster_database/service/?.lua;"
+
+lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"..root.."sgoly/util/?.lua;"..root.."sgoly/lualib/?.lua;"..root.."sgoly/lualib/?/?.lua;"
+
+cpath = root.."cservice/?.so"
+
+cluster = root .. "sgoly/clustername/clustername.lua"
+
+debug_port = 8001
+
+log_dirname = "sgoly/log"
+log_basename = "cluster_database_log"
+
+start = "database_main"
