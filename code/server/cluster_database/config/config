@@ -19,7 +19,7 @@ cpath = root.."cservice/?.so"
 
 cluster = root .. "../clustername/clustername.lua"
 
-debug_port = 8001
+-- debug_port = 8001
 
 log_dirname = "../log"
 log_basename = "cluster_database_log"

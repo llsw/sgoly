@@ -31,8 +31,8 @@ skynet.start(function ()
 	end
 
 
-	local debug_port = skynet.getenv "debug_port"
-	skynet.newservice("debug_console",debug_port)
+	-- local debug_port = skynet.getenv "debug_port"
+	-- skynet.newservice("debug_console",debug_port)
 
 
 	local redispool = skynet.uniqueservice("redispool")
