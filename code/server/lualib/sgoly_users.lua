@@ -6,10 +6,17 @@ require "sgoly_query"
 require "sgoly_printf"
 local sgoly_users = {}
 
-local function sql_valid(str)
+--[[
+函数说明：
+		函数作用：检查字符串是否包含注入语句
+		传入：字符串str
+		返回：false or true
+
+--]]
+function sql_valid(str)
 	printI("sql_valid str =%s", str)
-	local injectMap = {'or ',' or ', 'and ', ' and ', ' like ', ' where ', ' select ', 
-	' delect ', ' update ',' drop ' }
+	local injectMap = {'or ',' or ', 'and ', ' and ', ' like ', ' where ', 
+	' select ', ' delect ', ' update ',' drop ' }
 	local cnt = 0
 	for k, v in pairs(injectMap) do
 		local x = string.find(str, v)
@@ -17,11 +24,23 @@ local function sql_valid(str)
 			cnt = cnt + 1
 		end
 	end
-	if(1 <= cnt) then 
+	if(0 == cnt) then 
 		return false
 	else
 		return true
 	end
+end
+
+function users_exist(users_nickname)
+	printI("users_exist users_nickname =%s", users_nickname)
+	local sql = string.format("select * from sgoly.users where "
+ 			.."users_nickname = '%s' ;", users_nickname)
+ 	local tmptable = mysql_query(sql)
+ 	if(1 == #tmptable) then
+ 		return true
+ 	else
+ 		return false
+ 	end
 end
 
 
@@ -54,25 +73,30 @@ end
 
 --[[
 函数说明：
-		函数作用：参数检查
+		函数作用：登录和注册函数的参数检查
 		传入：users_nickname, users_pwd
 		返回：如果参数无问题返回true和空字符串，否则返回false和错误信息
 
 --]]
-local function parameters_valid(users_nickname, users_pwd)
+function parameters_valid(users_nickname, users_pwd)
 	printI("parameters_valid users_nickname =%s, users_pwd =%s", users_nickname, 
  		users_pwd)
 	if((nil == users_nickname) or (nil == users_pwd)) then
 		return false, '无昵称或密码参数错误'
-	elseif(("" == users_nickname) or ("" == users_pwd)) then
+	end
+	if(("" == users_nickname) or ("" == users_pwd)) then
 		return false, '昵称或密码为空'
-	elseif(36 <= utf8len(users_nickname)) then
+	end
+	if(36 <= utf8len(users_nickname)) then
 		return false, '昵称长度超过35个字符'
-	elseif(17 <= utf8len(users_pwd)) then
+	end
+	if(17 <= utf8len(users_pwd)) then
 		return false, '密码长度超过16个字符'
-	elseif(true == sql_valid(users_nickname)) then
+	end
+	if(true == sql_valid(users_nickname)) then
 		return false, '昵称存在sql注入关键词'
-	elseif(true == sql_valid(users_pwd)) then
+	end
+	if(true == sql_valid(users_pwd)) then
 		return false, '密码存在sql注入关键词'
 	else
 		return true, ''
@@ -83,7 +107,7 @@ end
 函数说明：
 		函数作用：用户登录
 		传入：users_nickname, users_pwd
-		返回：如果登录成功返回true和空字符串两个参数，否则返回false和错误信息
+		返回：如果登录成功返回true和'登录成功'字符串两个参数，否则返回false和错误信息
 --]]
 function sgoly_users.login(users_nickname, users_pwd)
 	printI("sgoly_users.login users_nickname =%s, users_pwd =%s", users_nickname, 
@@ -95,7 +119,7 @@ function sgoly_users.login(users_nickname, users_pwd)
  		local tmptable = mysql_query(sql)
  		if(1 == #tmptable) then
  			if(users_pwd == tmptable[1].users_pwd) then
- 				return true, ''
+ 				return true, '登录成功'
  			else
  				return false, '密码不正确'
  			end
@@ -111,24 +135,21 @@ function sgoly_users.login(users_nickname, users_pwd)
 函数说明：
 		函数作用：用户注册
 		传入：users_nickname, users_pwd
-		返回：如果注册成功返回true和空字符串两个参数，否则返回false和错误信息
+		返回：如果注册成功返回true和'注册成功'字符串两个参数，否则返回false和错误信息
 --]]
  function sgoly_users.register(users_nickname, users_pwd)
- 	printI("sgoly_users.register users_nickname =%s, users_pwd =%s", users_nickname, 
- 		users_pwd)
+ 	printI("sgoly_users.register users_nickname =%s, users_pwd =%s", 
+ 		users_nickname, users_pwd)
  	local rv, msg = parameters_valid(users_nickname, users_pwd)
  	if(true == rv) then
- 		local sql = string.format("select * from sgoly.users where "
- 			.."users_nickname = '%s' ;", users_nickname)
- 		local tmptable = mysql_query(sql)
- 		if(1 == #tmptable) then
+ 		if(true == users_exist(users_nickname)) then
  			return false, '昵称已被使用'
  		else
  			sql = string.format("insert into sgoly.users values('%', '%s')",
  				users_nickname, users_pwd)
  			local status = mysql_query(sql)
  			if((0 == status.warning_count) and (1 <= status.affected_rows)) then
-				return true, ''
+				return true, '注册成功'
 			else
 				return false, '未知错误'
 			end
@@ -140,15 +161,202 @@ function sgoly_users.login(users_nickname, users_pwd)
 
 --[[
 函数说明：
+		函数作用：更改昵称参数检查
+		传入：old_nickname, new_nickname
+		返回：如果参数无问题返回true和空字符串两个参数，否则返回false和错误信息
+--]]
+function change_nickname_valid(old_nickname, new_nickname)
+	printI("sgoly_users.change_nickname old_nickname =%s, "
+ 		.."new_nickname =%s", old_nickname, new_nickname)
+ 	if((nil == old_nickname) or (nil == new_nickname)) then
+ 		return false, '无新或旧昵称参数'
+ 	end
+ 	if(('' == old_nickname) or ('' == new_nickname)) then
+ 		return false, '新或旧昵称参数为空'
+ 	end
+ 	if(36 <= string.utf8len(old_nickname)) then
+ 		return false, '旧昵称长度大于35'
+ 	end
+ 	if(36 <= string.utf8len(new_nickname)) then
+ 		return false, '新昵称长度大于35'
+ 	end
+ 	 if(true == sql_valid(old_nickname)) then
+ 		return false, '旧昵称存在sql注入关键词'
+ 	end
+ 	if(true == sql_valid(new_nickname)) then
+ 		return false, '新昵称存在sql注入关键词'
+ 	end
+ 	if(false == users_exist(old_nickname)) then
+ 		return false, '不存在该用户'
+ 	else
+ 		return true, ''
+ 	end
+end
+
+--[[
+函数说明：
 		函数作用：更改昵称
-		传入：users_nickname
+		传入：old_nickname, new_nickname
+		返回：如果成功返回true和空字符串两个参数，否则返回false和错误信息
+--]]
+ function sgoly_users.change_nickname(old_nickname, new_nickname)
+ 	printI("sgoly_users.change_nickname old_nickname =%s, "
+ 		.."new_nickname =%s", old_nickname, new_nickname)
+ 	local cnv, msg = change_nickname_valid(old_nickname, new_nickname)
+ 	if(false == cnv) then
+ 		return false, msg
+ 	else
+ 		local sql = string.format("update sgoly.users set users_nickname = '%s' "
+ 				.."where users_nickname = '%s' ;", new_nickname, old_nickname)
+ 		local status = mysql_query(sql)
+		if((0 == status.warning_count) and (1 <= status.affected_rows)) then
+			return true, '更改昵称成功'
+		else
+			return false, '未知错误'
+		end
+ 	end
+ end
+
+--[[
+函数说明：
+		函数作用：更改用户密码参数检查
+		传入：nickname, old_pwd, new_pwd
+		返回：如果成功返回true和空字符串两个参数，否则返回false和错误信息
+--]]
+function change_pwd_valid(nickname, old_pwd, new_pwd)
+	printI("change_pwd_valid nickname =%s, old_pwd =%s, new_pwd =%s", 
+		nickname, old_pwd, new_pwd)
+	if(nil == nickname) then
+ 		return false, '无昵称参数'
+ 	elseif(nil == old_pwd) then
+ 		return false, '无旧密码参数'
+ 	elseif(nil == new_pwd) then
+ 		return false, '无新密码参数'
+ 	elseif('' == nickname) then
+ 		return false, '昵称为空'
+ 	elseif('' == old_pwd) then
+ 		return false, '旧密码为空'
+ 	elseif('' == new_pwd) then
+ 		return false, '新密码为空'
+ 	elseif(36 <= string.utf8len(nickname)) then
+ 		return false, '昵称长度大于35'
+ 	 elseif(17 <= string.utf8len(old_pwd)) then
+ 		return false, '旧密码长度大于16'
+ 	elseif(17 <= string.utf8len(new_pwd)) then
+ 		return false, '新密码长度大于16'
+ 	elseif(true == sql_valid(nickname)) then
+ 		return false, '昵称存在sql注入关键词'
+ 	elseif(true == sql_valid(old_pwd)) then
+ 		return false, '旧密码存在sql注入关键词'
+ 	elseif(true == sql_valid(new_pwd)) then
+ 		return false, '新密码存在sql注入关键词'
+ 	elseif(false == users_exist(nickname)) then
+ 		return false, '不存在该用户'
+ 	else
+ 		local sql = string.format("select users_pwd from sgoly.users where "
+ 			.."users_nickname = '%s' ;", nickname)
+ 		local tmptable = mysql_query(sql)
+ 		if(1 == #tmptable) then
+ 			if(old_pwd == tmptable[1].users_pwd) then
+ 				return true, ''
+ 			else
+ 				return false, '旧密码不正确'
+ 			end
+ 		else
+ 			return false, '未知错误'
+ 		end
+ 	end
+end
+
+
+
+--[[
+函数说明：
+		函数作用：更改密码
+		传入：nickname, old_pwd, new_pwd
 		返回：如果注册成功返回true和空字符串两个参数，否则返回false和错误信息
 --]]
- function sgoly_users.change_nickname(old_users_nickname, new_users_nickname)
- 	printI("sgoly_users.change_nickname old_users_nickname =%s, "
- 		.."new_users_nickname =%s", old_users_nickname, new_users_nickname)
- 	if((nil ~= ))
-
+ function sgoly_users.change_pwd(nickname, old_pwd, new_pwd)
+ 	printI("sgoly_users.change_pwd nickname =%s, old_pwd =%s, new_pwd =%s", 
+ 		nickname, old_pwd, new_pwd)
+ 	local cpv, msg = change_pwd_valid(nickname, old_pwd, new_pwd)
+ 	if(false == cpv) then
+ 		return false, msg
+ 	else
+ 		sql = string.format("update sgoly.users set users_pwd = '%s' "
+ 				.."where users_nickname = '%s' ;", new_pwd, nickname)
+ 		local status = mysql_query(sql)
+		if((0 == status.warning_count) and (1 <= status.affected_rows)) then
+			return true, '更改密码成功'
+		else
+			return false, '未知错误'
+		end
+ 	end
  end
+
+--[[
+函数说明：
+		函数作用：删除用户参数检查
+		传入：nickname, pwd
+		返回：如果成功返回true和空字符串两个参数，否则返回false和错误信息
+--]]
+function delete_user_valid(nickname, pwd)
+	printI("delete_user_valid nickname =%s, pwd =%s", nickname, pwd)
+	if(nil == nickname) then
+ 		return false, '无昵称参数'
+ 	elseif(nil == pwd) then
+ 		return false, '无密码参数'
+ 	elseif('' == nickname) then
+ 		return false, '昵称为空'
+ 	elseif('' == pwd) then
+ 		return false, '密码为空'
+ 	elseif(36 <= string.utf8len(nickname)) then
+ 		return false, '昵称长度大于35'
+ 	 elseif(17 <= string.utf8len(pwd)) then
+ 		return false, '密码长度大于16'
+ 	elseif(true == sql_valid(nickname)) then
+ 		return false, '昵称存在sql注入关键词'
+ 	elseif(true == sql_valid(pwd)) then
+ 		return false, '密码存在sql注入关键词'
+ 	elseif(false == users_exist(nickname)) then
+ 		return false, '不存在该用户'
+ 	else
+ 		local sql = string.format("select users_pwd from sgoly.users where "
+ 			.."users_nickname = '%s' ;", nickname)
+ 		local tmptable = mysql_query(sql)
+ 		if(1 == #tmptable) then
+ 			if(pwd == tmptable[1].users_pwd) then
+ 				return true, ''
+ 			else
+ 				return false, '密码不正确'
+ 			end
+ 		else
+ 			return false, '未知错误'
+ 		end
+ 	end
+end
+
+--[[
+函数说明：
+		函数作用：删除用户
+		传入：nickname, pwd
+		返回：如果成功返回true和空字符串两个参数，否则返回false和错误信息
+--]]
+function sgoly_users.delete_user(nickname, pwd)
+	printI("delete_user_valid nickname =%s, pwd =%s", nickname, pwd)
+	local duv, msg = delete_user_valid(nickname, pwd)
+	if(false == duv) then
+		return false, msg
+	else
+		local sql = string.format("delete from sgoly.users where "
+			.."users_nickname = '%s' ;", nickname)
+		local status = mysql_query(sql)
+		if((0 == status.warning_count) and (1 <= status.affected_rows)) then
+			return true, '删除用户成功'
+		else
+			return false, '未知错误'
+		end
+	end
+end
 
  return sgoly_users
