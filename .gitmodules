@@ -1,0 +1,3 @@
+[submodule "code/server/skynet"]
+    path = code/server/skynet
+    url = https://github.com/llsw/skynet.git
