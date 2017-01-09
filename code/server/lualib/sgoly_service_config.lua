@@ -34,4 +34,9 @@ service_config["database_redis_6379_config"] = {
 	auth = "jM+x3GFfjj2fQm4x9mWUtGZejd+2S1jfgm8FIo58apU=",
 }
 
+service_config["gateway_server"] = {
+	host = "192.168.83.138:7000"	
+      
+}
+
 return service_config
