@@ -13,7 +13,7 @@
 ##### Build defaults #####
 LUA_VERSION =       5.3
 TARGET =            cjson.so
-PREFIX =            usr/local
+PREFIX =            ../../luaclib
 #CFLAGS =            -g -Wall -pedantic -fno-inline
 CFLAGS =            -O3 -Wall -pedantic -DNDEBUG
 CJSON_CFLAGS =      -fpic
@@ -81,6 +81,8 @@ ASCIIDOC =          asciidoc
 BUILD_CFLAGS =      -I$(LUA_INCLUDE_DIR) $(CJSON_CFLAGS)
 OBJS =              lua_cjson.o strbuf.o $(FPCONV_OBJS)
 
+DESTDIR = .
+
 .PHONY: all clean install install-extra doc
 
 .SUFFIXES: .html .txt
@@ -99,6 +101,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(LDFLAGS) $(CJSON_LDFLAGS) -o $@ $(OBJS)
 
 install: $(TARGET)
+
 	mkdir -p $(DESTDIR)/$(LUA_CMODULE_DIR)
 	cp $(TARGET) $(DESTDIR)/$(LUA_CMODULE_DIR)
 	chmod $(EXECPERM) $(DESTDIR)/$(LUA_CMODULE_DIR)/$(TARGET)
