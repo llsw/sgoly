@@ -18,6 +18,10 @@ function printE(str, ...)
 	LOG_ERROR(str, ...)
 end
 
+function printD(str, ...)
+	skynet.error("[ERROR]", string.format(str, ...))
+	LOG_DEBUG(str, ...)
+end
 
 function LOG_DEBUG(fmt, ...)
 	local msg = string.format(fmt, ...)
