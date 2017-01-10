@@ -11,6 +11,7 @@ require "sgoly_query"
 require "sgoly_printf"
 local utf8 = require "sgoly_utf8"
 local sql_valid = require "sgoly_sql_valid"
+local dtv = require "sgoly_dateformat_valid"
 
 local sgoly_record = {}
 local users = require "sgoly_users"
@@ -53,6 +54,13 @@ function add_valid(nickname, win_money, cost_money, win_times, times,
 	end		
 end
 
+--[[
+函数说明：
+		函数作用：add a new record for users
+		传入参数：nickname, win_money, cost_money, win_times, times, single_max, 
+				continuous_max
+		返回参数：true and "" or false and errormsg  
+--]]
 function sgoly_record.add(nickname, win_money, cost_money, win_times, times, 
 							single_max, continuous_max)
 	printD("sgoly_record.add... %s, %d, %d, %d, %d, %d, %d", nickname, 
@@ -62,6 +70,60 @@ function sgoly_record.add(nickname, win_money, cost_money, win_times, times,
 	if(false == res) then
 		return false, msg
 	else
-		
+		local dt = os.date("%Y-%m-%d")
+		local sql = string.format("select record_date from sgoly.record where "
+				.."record_date = '%s' ", dt)
+		local tmp = mysql_query(sql)
+		if(1 <= #tmp) then
+			return false, "记录已存在"
+		else
+			sql = string.format("select users_id from sgoly.users where" 
+				.."users_nickname = '%s' ", nickname)
+			tmp = mysql_query(sql)
+			record_uid = tmp[1].users_id
+			sql = string.format("insert into sgoly.record(null, '%d', '%d', "
+				.."'%d', '%d', '%d', '%d', '%s' );", record_uid, win_money, 
+				cost_money, win_times, times, single_max, continuous_max, dt)
+			tmp = mysql_query(sql)
+			if((0 == tmp.warning_count) and (1 <= tmp.affected_rows)) then
+				return true, "插入记录成功"
+			else
+				return false, '未知错误'
+			end
+		end
 	end
+end
+
+--[[
+函数说明：
+		函数作用：
+		传入参数：nickname, dt
+		返回参数：true and "" or false and errormsg
+--]]
+function del_valid(nickname, dt)
+	if(nil == nickname) then
+		return false, "nil nickname"
+	elseif(nil == dt) then
+		return false, "nil dt"
+	elseif(false == sql_valid.valid(nickname)) then
+		return false, "sql valid nickname"
+	elseif(false == sql_valid.valid(dt)) then
+		return false, "sql valid dt"
+	elseif(false == users.users_exist(nickname)) then
+		return false, "不存在该用户: "..nickname
+	elseif(false == dtv.valid(dt)) then
+		return false, "日期格式非法"
+	else
+		return true, "参数检查通过"
+	end
+end
+
+--[[
+函数说明：
+		函数作用：
+		传入参数：nickname, dt
+		返回参数：true and "" or false and errormsg
+--]]
+function sgoly_record.del(nickname, dt)
+	
 end
