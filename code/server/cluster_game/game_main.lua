@@ -14,11 +14,11 @@ require "sgoly_printf"
 require "sgoly_query"
 
 skynet.start(function ()
-	cluster.open("cluster_database")
-	skynet.register("database_main")
+	cluster.open("cluster_game")
+	skynet.register("game_main")
 	
-	skynet.error("Cluster_database start")
-	printI("Cluster_database start")
+	skynet.error("Cluster_game start")
+	printI("Cluster_game start")
 
 	local log = skynet.uniqueservice("sgoly_log")
 	skynet.call(log, "lua", "start")
@@ -35,15 +35,7 @@ skynet.start(function ()
 	--skynet.newservice("debug_console",debug_port)
 
 
-	local redispool = skynet.uniqueservice("redispool")
-  	skynet.call(redispool, "lua", "start")
-
-  	local mysqlpool = skynet.uniqueservice("mysqlpool")
-  	skynet.call(mysqlpool, "lua", "start")
-
- 	local res = mysql_query("select * from test")
- 	for k, row in pairs(res) do
- 		printI("row.id:%d row.test:%s", row.id, row.test)
- 	end
-	
+	--local  watchdog= skynet.uniqueservice("watchdog")
+	--skynet.call(watchdog, "lua", "start")
+	--local maingame = skynet.uniqueservice("maingame")
 end)

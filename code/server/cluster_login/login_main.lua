@@ -35,15 +35,6 @@ skynet.start(function ()
 	--skynet.newservice("debug_console",debug_port)
 
 
-	local redispool = skynet.uniqueservice("redispool")
-  	skynet.call(redispool, "lua", "start")
 
-  	local mysqlpool = skynet.uniqueservice("mysqlpool")
-  	skynet.call(mysqlpool, "lua", "start")
-
- 	local res = mysql_query("select * from test")
- 	for k, row in pairs(res) do
- 		printI("row.id:%d row.test:%s", row.id, row.test)
- 	end
 	
 end)
