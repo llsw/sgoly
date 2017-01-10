@@ -1,38 +1,27 @@
 --[[
-@by:王光汉
---]]
+ * @Version:     1.0
+ * @Author:      GitHubNull
+ * @Email:       641570479@qq.com
+ * @github:      GitHubNull
+ * @Description: This is about...
+ * @DateTime:    2017-01-10 11:57:36
+ --]]
 
 require "sgoly_query"
 require "sgoly_printf"
+local utf8 = require "sgoly_utf8"
+local sql_valid = require "sgoly_sql_valid"
 local sgoly_users = {}
 
 --[[
 函数说明：
-		函数作用：检查字符串是否包含注入语句
-		传入：字符串str
-		返回：false or true
+		函数作用：检查给定的昵称的用户是否存在
+		传入：用户的昵称字符串users_nickname
+		返回：true or false
 
 --]]
-function sql_valid(str)
-	printI("sql_valid str =%s", str)
-	local injectMap = {'or ',' or ', 'and ', ' and ', ' like ', ' where ', 
-	' select ', ' delect ', ' update ',' drop ' }
-	local cnt = 0
-	for k, v in pairs(injectMap) do
-		local x = string.find(str, v)
-		if(nil ~= x) then
-			cnt = cnt + 1
-		end
-	end
-	if(0 == cnt) then 
-		return false
-	else
-		return true
-	end
-end
-
-function users_exist(users_nickname)
-	printI("users_exist users_nickname =%s", users_nickname)
+function sgoly_users.users_exist(users_nickname)
+	printI("sgoly_users.users_exist users_nickname =%s", users_nickname)
 	local sql = string.format("select * from sgoly.users where "
  			.."users_nickname = '%s' ;", users_nickname)
  	local tmptable = mysql_query(sql)
@@ -41,34 +30,6 @@ function users_exist(users_nickname)
  	else
  		return false
  	end
-end
-
-
---[[
-函数说明：
-		函数作用：字符utf8字符长度计算
-		传入：字符串input
-		返回：字符串长度cnt
-
---]]
-function string.utf8len(input)
-	printI("string.utf8len input =%s",input)
-    local left = string.len(input)
-    local cnt  = 0
-    local arr  = {0, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc}
-    while left ~= 0 do
-        local tmp = string.byte(input, -left)
-        local i   = #arr
-        while arr[i] do
-            if tmp >= arr[i] then
-                left = left - i
-                break
-            end
-            i = i - 1
-        end
-        cnt = cnt + 1
-    end
-    return cnt
 end
 
 --[[
@@ -87,16 +48,16 @@ function parameters_valid(users_nickname, users_pwd)
 	if(("" == users_nickname) or ("" == users_pwd)) then
 		return false, '昵称或密码为空'
 	end
-	if(36 <= utf8len(users_nickname)) then
+	if(36 <= utf8.strlen(users_nickname)) then
 		return false, '昵称长度超过35个字符'
 	end
-	if(17 <= utf8len(users_pwd)) then
+	if(17 <= utf8.strlen(users_pwd)) then
 		return false, '密码长度超过16个字符'
 	end
-	if(true == sql_valid(users_nickname)) then
+	if(true == sql_valid.valid(users_nickname)) then
 		return false, '昵称存在sql注入关键词'
 	end
-	if(true == sql_valid(users_pwd)) then
+	if(true == sql_valid.valid(users_pwd)) then
 		return false, '密码存在sql注入关键词'
 	else
 		return true, ''
@@ -142,10 +103,10 @@ function sgoly_users.login(users_nickname, users_pwd)
  		users_nickname, users_pwd)
  	local rv, msg = parameters_valid(users_nickname, users_pwd)
  	if(true == rv) then
- 		if(true == users_exist(users_nickname)) then
+ 		if(true == sgoly_users.users_exist(users_nickname)) then
  			return false, '昵称已被使用'
  		else
- 			sql = string.format("insert into sgoly.users values('%', '%s')",
+ 			sql = string.format("insert into sgoly.users values(null, '%s', '%s')",
  				users_nickname, users_pwd)
  			local status = mysql_query(sql)
  			if((0 == status.warning_count) and (1 <= status.affected_rows)) then
@@ -174,20 +135,20 @@ function change_nickname_valid(old_nickname, new_nickname)
  	if(('' == old_nickname) or ('' == new_nickname)) then
  		return false, '新或旧昵称参数为空'
  	end
- 	if(36 <= string.utf8len(old_nickname)) then
+ 	if(36 <= utf8.strlen(old_nickname)) then
  		return false, '旧昵称长度大于35'
  	end
- 	if(36 <= string.utf8len(new_nickname)) then
+ 	if(36 <= utf8.strlen(new_nickname)) then
  		return false, '新昵称长度大于35'
  	end
- 	 if(true == sql_valid(old_nickname)) then
+ 	 if(true == sql_valid.valid(old_nickname)) then
  		return false, '旧昵称存在sql注入关键词'
  	end
- 	if(true == sql_valid(new_nickname)) then
+ 	if(true == sql_valid.valid(new_nickname)) then
  		return false, '新昵称存在sql注入关键词'
  	end
- 	if(false == users_exist(old_nickname)) then
- 		return false, '不存在该用户'
+ 	if(false == sgoly_users.users_exist(old_nickname)) then
+ 		return false, '不存在该用户: '..nickname
  	else
  		return true, ''
  	end
@@ -238,20 +199,20 @@ function change_pwd_valid(nickname, old_pwd, new_pwd)
  		return false, '旧密码为空'
  	elseif('' == new_pwd) then
  		return false, '新密码为空'
- 	elseif(36 <= string.utf8len(nickname)) then
+ 	elseif(36 <= utf8.strlen(nickname)) then
  		return false, '昵称长度大于35'
- 	 elseif(17 <= string.utf8len(old_pwd)) then
+ 	 elseif(17 <= utf8.strlen(old_pwd)) then
  		return false, '旧密码长度大于16'
- 	elseif(17 <= string.utf8len(new_pwd)) then
+ 	elseif(17 <= utf8.strlen(new_pwd)) then
  		return false, '新密码长度大于16'
- 	elseif(true == sql_valid(nickname)) then
+ 	elseif(true == sql_valid.valid(nickname)) then
  		return false, '昵称存在sql注入关键词'
- 	elseif(true == sql_valid(old_pwd)) then
+ 	elseif(true == sql_valid.valid(old_pwd)) then
  		return false, '旧密码存在sql注入关键词'
- 	elseif(true == sql_valid(new_pwd)) then
+ 	elseif(true == sql_valid.valid(new_pwd)) then
  		return false, '新密码存在sql注入关键词'
- 	elseif(false == users_exist(nickname)) then
- 		return false, '不存在该用户'
+ 	elseif(false == sgoly_users.users_exist(nickname)) then
+ 		return false, '不存在该用户: '..nickname
  	else
  		local sql = string.format("select users_pwd from sgoly.users where "
  			.."users_nickname = '%s' ;", nickname)
@@ -310,16 +271,16 @@ function delete_user_valid(nickname, pwd)
  		return false, '昵称为空'
  	elseif('' == pwd) then
  		return false, '密码为空'
- 	elseif(36 <= string.utf8len(nickname)) then
+ 	elseif(36 <= utf8.strlen(nickname)) then
  		return false, '昵称长度大于35'
- 	 elseif(17 <= string.utf8len(pwd)) then
+ 	 elseif(17 <= utf8.strlen(pwd)) then
  		return false, '密码长度大于16'
- 	elseif(true == sql_valid(nickname)) then
+ 	elseif(true == sql_valid.valid(nickname)) then
  		return false, '昵称存在sql注入关键词'
- 	elseif(true == sql_valid(pwd)) then
+ 	elseif(true == sql_valid.valid(pwd)) then
  		return false, '密码存在sql注入关键词'
- 	elseif(false == users_exist(nickname)) then
- 		return false, '不存在该用户'
+ 	elseif(false == sgoly_users.users_exist(nickname)) then
+ 		return false, '不存在该用户: '..nickname
  	else
  		local sql = string.format("select users_pwd from sgoly.users where "
  			.."users_nickname = '%s' ;", nickname)
