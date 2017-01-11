@@ -22,22 +22,28 @@ function handler(fd, addr)
 			password=crypt.aesdecode(str1,who,"")
 			local mes = cjson.decode(password)
 			skynet.error(mes)
-			skynet.error(mes.userid,mes.password)
-			-- socket.write(fd,mes.ID.." "..mes.CDate.."\n")
-			local bool,msg=sgoly_users.register(mes.userid, mes.password)
-		--	skynet.error("json is",mes)
-			--str = "server receive a msg: " .. str
-			--[[if str=="1" then
-				local stc ="输入用户名"
-				socket.write(fd,stc.."\n")]]
+			skynet.error(mes.ID,mes.NAME,mes.PASSWD)
+			if mes.ID=="2" then 
+				--mes.passwd=crypt.aesencode(mes.passwd,who,"")
+				--mes.passwd = crypt.base64encode(mes.passwd)
+			   local bool,msg=sgoly_users.register(mes.NAME, mes.PASSWD)
+			   skynet.error(bool,msg)
 			--local proxy = cluster.proxy("cluster_game",".maingame")
 			--skynet.call(proxy,"lua","calc",10,10,5)
-			-- local rep = cjson.encode(mes)
-			-- local repaes = crypt.aesencode(rep,who,"")
-			-- local challenge = crypt.base64encode(repaes)
-			local a=tostring(bool)
-			socket.write(fd,a..msg.."\n")
-
+			   local rep={ID=bool,MESSAGE=msg}
+			   local str=cjson.encode(rep)
+			   local rep1=crypt.aesencode(str,who,"")
+			   local str2 = crypt.base64encode(rep1)
+			   socket.write(fd,str2.."\n")
+		    elseif mes.ID=="1" then
+		    	local bool,msg=sgoly_users.login(mes.NAME, mes.PASSWD)
+		    	skynet.error(bool,msg)
+		        local rep={ID=bool,MESSAGE=msg}
+			    local str=cjson.encode(rep)
+			    local rep1=crypt.aesencode(str,who,"")
+			    local str2 = crypt.base64encode(rep1)
+			    socket.write(fd,str2.."\n")		    	--local bool,msg=sgoly_users.register(mes.NAME, mes.passwd)
+		    end
 
 		else
 			socket.close(fd)
