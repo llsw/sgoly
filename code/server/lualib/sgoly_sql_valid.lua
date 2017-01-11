@@ -7,6 +7,7 @@
  * @DateTime:    2017-01-10 11:58:09
  --]]
 
+require "sgoly_printf"
 local sgoly_sql_valid = {}
 
 --[[
@@ -17,7 +18,7 @@ local sgoly_sql_valid = {}
 
 --]]
 function sgoly_sql_valid.valid(str)
-	printI("sql_valid str =%s", str)
+	printD("sgoly_sql_valid.valid(%s)", str)
 	local injectMap = {'or ',' or ', 'and ', ' and ', ' like ', ' where ', 
 	' select ', ' delect ', ' update ',' drop ' }
 	local cnt = 0

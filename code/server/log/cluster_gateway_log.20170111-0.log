@@ -14,3 +14,122 @@
 [INFO] 2017-01-11 09:56:19 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =1234.0, users_pwd =123456
 [INFO] 2017-01-11 09:58:11 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =1234, users_pwd =123456
 [INFO] 2017-01-11 09:58:11 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =1234, users_pwd =123456
+[INFO] 2017-01-11 13:45:47 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =1234, users_pwd =123456
+[INFO] 2017-01-11 13:45:47 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =1234, users_pwd =123456
+[INFO] 2017-01-11 13:45:47 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =1234
+[INFO] 2017-01-11 13:45:47 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =123456
+[INFO] 2017-01-11 13:45:47 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =1234
+[INFO] 2017-01-11 13:45:47 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =123456
+[INFO] 2017-01-11 13:45:47 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =1234
+[INFO] 2017-01-11 13:47:02 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =1234, users_pwd =123456
+[INFO] 2017-01-11 13:47:02 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =1234, users_pwd =123456
+[INFO] 2017-01-11 13:47:02 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =1234
+[INFO] 2017-01-11 13:47:02 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =123456
+[INFO] 2017-01-11 13:47:02 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =1234
+[INFO] 2017-01-11 13:47:02 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =123456
+[INFO] 2017-01-11 13:47:02 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =1234
+[INFO] 2017-01-11 13:47:51 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =1234, users_pwd =123456
+[INFO] 2017-01-11 13:47:51 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =1234, users_pwd =123456
+[INFO] 2017-01-11 13:47:51 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =1234
+[INFO] 2017-01-11 13:47:51 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =123456
+[INFO] 2017-01-11 13:47:51 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =1234
+[INFO] 2017-01-11 13:47:51 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =123456
+[INFO] 2017-01-11 13:47:51 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =1234
+[INFO] 2017-01-11 14:03:06 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =1234, users_pwd =123456
+[INFO] 2017-01-11 14:03:06 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =1234, users_pwd =123456
+[INFO] 2017-01-11 14:03:06 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =1234
+[INFO] 2017-01-11 14:03:06 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =123456
+[INFO] 2017-01-11 14:03:06 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =1234
+[INFO] 2017-01-11 14:03:06 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =123456
+[INFO] 2017-01-11 14:03:06 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =1234
+[INFO] 2017-01-11 15:43:08 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =1234, users_pwd =123456
+[INFO] 2017-01-11 15:43:08 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =1234, users_pwd =123456
+[INFO] 2017-01-11 15:43:08 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =1234
+[INFO] 2017-01-11 15:43:08 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =123456
+[INFO] 2017-01-11 15:43:08 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =1234
+[INFO] 2017-01-11 15:43:08 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =123456
+[INFO] 2017-01-11 15:43:08 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =1234
+[INFO] 2017-01-11 15:55:46 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =trvy_112, users_pwd =laohuji
+[INFO] 2017-01-11 15:55:46 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =trvy_112, users_pwd =laohuji
+[INFO] 2017-01-11 15:55:46 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =trvy_112
+[INFO] 2017-01-11 15:55:46 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =laohuji
+[INFO] 2017-01-11 15:55:46 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =trvy_112
+[INFO] 2017-01-11 15:55:46 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =laohuji
+[INFO] 2017-01-11 15:55:46 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =trvy_112
+[INFO] 2017-01-11 15:57:04 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =trbbc112, users_pwd =laohuji
+[INFO] 2017-01-11 15:57:04 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =trbbc112, users_pwd =laohuji
+[INFO] 2017-01-11 15:57:04 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =trbbc112
+[INFO] 2017-01-11 15:57:04 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =laohuji
+[INFO] 2017-01-11 15:57:04 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =trbbc112
+[INFO] 2017-01-11 15:57:04 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =laohuji
+[INFO] 2017-01-11 15:57:04 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =trbbc112
+[INFO] 2017-01-11 16:02:14 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =trt__112, users_pwd =laohuji
+[INFO] 2017-01-11 16:02:14 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =trt__112, users_pwd =laohuji
+[INFO] 2017-01-11 16:02:14 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =trt__112
+[INFO] 2017-01-11 16:02:14 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =laohuji
+[INFO] 2017-01-11 16:02:14 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =trt__112
+[INFO] 2017-01-11 16:02:14 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =laohuji
+[INFO] 2017-01-11 16:02:14 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =trt__112
+[INFO] 2017-01-11 16:02:55 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =tr\Pq112, users_pwd =laohuji
+[INFO] 2017-01-11 16:02:55 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =tr\Pq112, users_pwd =laohuji
+[INFO] 2017-01-11 16:02:55 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =tr\Pq112
+[INFO] 2017-01-11 16:02:55 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =laohuji
+[INFO] 2017-01-11 16:02:55 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =tr\Pq112
+[INFO] 2017-01-11 16:02:55 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =laohuji
+[INFO] 2017-01-11 16:02:55 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =tr\Pq112
+[INFO] 2017-01-11 16:04:20 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =trm\c113, users_pwd =laohuji
+[INFO] 2017-01-11 16:04:20 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =trm\c113, users_pwd =laohuji
+[INFO] 2017-01-11 16:04:20 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =trm\c113
+[INFO] 2017-01-11 16:04:20 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =laohuji
+[INFO] 2017-01-11 16:04:20 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =trm\c113
+[INFO] 2017-01-11 16:04:20 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =laohuji
+[INFO] 2017-01-11 16:04:20 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =trm\c113
+[INFO] 2017-01-11 16:05:57 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =trNhg112, users_pwd =laohuji
+[INFO] 2017-01-11 16:05:57 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =trNhg112, users_pwd =laohuji
+[INFO] 2017-01-11 16:05:57 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =trNhg112
+[INFO] 2017-01-11 16:05:57 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =laohuji
+[INFO] 2017-01-11 16:05:57 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =trNhg112
+[INFO] 2017-01-11 16:05:57 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =laohuji
+[INFO] 2017-01-11 16:05:57 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =trNhg112
+[INFO] 2017-01-11 16:09:29 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =trhoN113, users_pwd =laohuji
+[INFO] 2017-01-11 16:09:29 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =trhoN113, users_pwd =laohuji
+[INFO] 2017-01-11 16:09:29 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =trhoN113
+[INFO] 2017-01-11 16:09:29 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =laohuji
+[INFO] 2017-01-11 16:09:29 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =trhoN113
+[INFO] 2017-01-11 16:09:29 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =laohuji
+[INFO] 2017-01-11 16:09:29 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =trhoN113
+[INFO] 2017-01-11 16:09:57 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =trFkR114, users_pwd =laohuji
+[INFO] 2017-01-11 16:09:57 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =trFkR114, users_pwd =laohuji
+[INFO] 2017-01-11 16:09:57 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =trFkR114
+[INFO] 2017-01-11 16:09:57 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =laohuji
+[INFO] 2017-01-11 16:09:57 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =trFkR114
+[INFO] 2017-01-11 16:09:57 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =laohuji
+[INFO] 2017-01-11 16:09:57 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =trFkR114
+[INFO] 2017-01-11 16:10:17 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =trQIv115, users_pwd =laohuji
+[INFO] 2017-01-11 16:10:17 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =trQIv115, users_pwd =laohuji
+[INFO] 2017-01-11 16:10:17 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =trQIv115
+[INFO] 2017-01-11 16:10:17 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =laohuji
+[INFO] 2017-01-11 16:10:17 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =trQIv115
+[INFO] 2017-01-11 16:10:17 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =laohuji
+[INFO] 2017-01-11 16:10:17 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =trQIv115
+[INFO] 2017-01-11 16:10:45 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =trjEo116, users_pwd =laohuji
+[INFO] 2017-01-11 16:10:45 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =trjEo116, users_pwd =laohuji
+[INFO] 2017-01-11 16:10:45 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =trjEo116
+[INFO] 2017-01-11 16:10:45 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =laohuji
+[INFO] 2017-01-11 16:10:45 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =trjEo116
+[INFO] 2017-01-11 16:10:45 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =laohuji
+[INFO] 2017-01-11 16:10:45 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =trjEo116
+[INFO] 2017-01-11 16:11:01 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =trIMP117, users_pwd =laohuji
+[INFO] 2017-01-11 16:11:01 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =trIMP117, users_pwd =laohuji
+[INFO] 2017-01-11 16:11:01 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =trIMP117
+[INFO] 2017-01-11 16:11:01 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =laohuji
+[INFO] 2017-01-11 16:11:01 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =trIMP117
+[INFO] 2017-01-11 16:11:01 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =laohuji
+[INFO] 2017-01-11 16:11:01 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =trIMP117
+[INFO] 2017-01-11 16:12:16 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.register users_nickname =trbUD118, users_pwd =laohuji
+[INFO] 2017-01-11 16:12:16 [server] [./../lualib/sgoly_printf.lua:13] parameters_valid users_nickname =trbUD118, users_pwd =laohuji
+[INFO] 2017-01-11 16:12:16 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =trbUD118
+[INFO] 2017-01-11 16:12:16 [server] [./../lualib/sgoly_printf.lua:13] string.utf8len input =laohuji
+[INFO] 2017-01-11 16:12:16 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =trbUD118
+[INFO] 2017-01-11 16:12:16 [server] [./../lualib/sgoly_printf.lua:13] sql_valid str =laohuji
+[INFO] 2017-01-11 16:12:16 [server] [./../lualib/sgoly_printf.lua:13] sgoly_users.users_exist users_nickname =trbUD118

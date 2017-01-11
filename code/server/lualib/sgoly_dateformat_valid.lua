@@ -8,6 +8,7 @@
  * @DateTime:    2017-01-10 17:03:52
  --]]
 
+require "sgoly_printf"
 local mydate_valid = {}
 
 --[[
@@ -17,6 +18,7 @@ local mydate_valid = {}
 		返回参数：true和提示检查通过的字符串，或者false和检查不通过的提示字符串
 --]]
 function mydate_valid.valid(dt)
+	printD("mydate_valid.valid(%s)", dt)
 	local year = tonumber(string.sub(dt, 1, 4))
 	local momth = tonumber(string.sub(dt, 6, 7))
 	local day = tonumber(string.sub(dt, 9, 10))
