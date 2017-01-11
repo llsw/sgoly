@@ -53,15 +53,16 @@ function handler(fd, addr)
 		    elseif mes.ID=="3" then
 		    	id=tourist()
 		    	id=tostring(id)
-		    	local name,password=randomuserid()
+		    	local name,password=randomuserid(id)
 		    	local bool,msg=sgoly_users.register(name,password)
 			    while  msg=="昵称已被使用" do
-			      local name,password=randomuserid()
+			       local name,password=randomuserid()
 		    	   bool,msg=sgoly_users.register(name,password)
 			       skynet.error(bool,msg)
 			    end
 			    if msg=="注册成功" then 
 			    	skynet.error("注册成功")
+			    	skynet.error(msg.NAME,msg.PASSWD)
 			--local proxy = cluster.proxy("cluster_game",".maingame")
 			--skynet.call(proxy,"lua","calc",10,10,5)
 			       local rep={ID=true,NAME=name,PASSWD=password}
@@ -99,7 +100,7 @@ function tourist()
 	until(ty)
 	return id 
 end
-function randomuserid()
+function randomuserid(id)
 	local a=string.char(math.random(65,122))
 	local b=string.char(math.random(65,122))
 	local c=string.char(math.random(65,122))

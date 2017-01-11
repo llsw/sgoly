@@ -38,6 +38,8 @@ skynet.start(function()
 
     -- socket.write(id, "hello2,\n")
     -- local lua_value = {ID="2",NAME="1234",PASSWD="123456"}
+    for i=1,30 do
+      
     local lua_value = {ID="3"}
     local json_text = json.encode(lua_value)
     local password 
@@ -45,4 +47,5 @@ skynet.start(function()
     password =crypt.aesencode(json_text,who,"")
     local str1 = crypt.base64encode(password)
     socket.write(id,str1.."\n")
+    end
 end)
