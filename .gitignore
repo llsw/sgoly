@@ -1,1 +1,2 @@
-code/server/log/*.*
+code/server/log/*.log
+*.test
