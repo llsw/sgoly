@@ -99,4 +99,5 @@ end
 
 skynet.start(function()
 	test_main(nickname, pwd, times, new_nickname, new_pwd)
+	skynet.exit()
 end)
