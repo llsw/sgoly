@@ -20,7 +20,7 @@ function printE(str, ...)
 end
 
 function printD(str, ...)
-	if(service_config["log_config"].debug)
+	if(service_config["log_config"].debug) then
 		skynet.error("[ERROR]", string.format(str, ...))
 		LOG_DEBUG(str, ...)
 	end
