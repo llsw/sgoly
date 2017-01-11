@@ -1,16 +1,20 @@
 require "sgoly_query"
+local sgoly_tool = {}
 
-local soly_tool = {}
-
-function sgoly_tool.getUuid()
-
-	local res = redis_query({"get", "uuid"})
-	res = tonumber(res)
-	return res
+local function saveUuid(uuid)
+	redis_query({"set","uuid",tostring(uuid)})
 end
 
-function sgoly_tool.updateUuid(uuid)
-	redis_query({"set","uuid",tostring(uuid)})
+local function getUuid()
+
+	local uuid = redis_query({"get", "uuid"})
+	return uuid
+end
+
+
+
+function sgoly_tool.getUuid()
+	return lock(getUuid)
 end
 
 return sgoly_tool
