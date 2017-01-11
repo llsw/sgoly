@@ -18,7 +18,7 @@ local sgoly_utf8 = {}
 
 --]]
 function string.utf8len(input)
-	printD("string.utf8len(%S)",input)
+	printD("string.utf8len(%s)",input)
     local left = string.len(input)
     local cnt  = 0
     local arr  = {0, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc}
