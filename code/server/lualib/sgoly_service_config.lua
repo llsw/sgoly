@@ -27,8 +27,12 @@ service_config["database_redis_6379_config"] = {
 }
 
 service_config["gateway_server"] = {
-	host = "192.168.100.77:7000"	
+	host = "0.0.0.0:7000"	
       
+}
+
+service_config["log_config"] = {
+	debug = true
 }
 
 return service_config

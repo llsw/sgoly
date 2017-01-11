@@ -1,4 +1,5 @@
 local skynet = require "skynet"
+local service_config = require "sgoly_service_config"
 
 
 --[[
@@ -19,8 +20,10 @@ function printE(str, ...)
 end
 
 function printD(str, ...)
-	skynet.error("[ERROR]", string.format(str, ...))
-	LOG_DEBUG(str, ...)
+	if(service_config["log_config"].debug) then
+		skynet.error("[ERROR]", string.format(str, ...))
+		LOG_DEBUG(str, ...)
+	end
 end
 
 function LOG_DEBUG(fmt, ...)
