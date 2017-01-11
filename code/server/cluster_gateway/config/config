@@ -13,7 +13,8 @@ lualoader = root .. "lualib/loader.lua"
 
 snax = root.."../protocol/?.lua;"..root.."../cluster_gateway/?.lua;"..root.."../cluster_gateway/service/?.lua;"
 
-lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"..root.."../util/?.lua;"..root.."../lualib/?.lua;"..root.."../lualib/?/?.lua;".."/usr/l ocal/lib/lua/5.3/?.so;"
+lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"..root.."../util/?.lua;"..root.."../lualib/?.lua;"..root.."../lualib/?/?.lua;"
+
 
 cpath = root.."cservice/?.so;"
 
