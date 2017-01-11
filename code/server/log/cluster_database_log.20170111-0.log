@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [INFO] 2017-01-11 09:16:07 [redispool] [./../lualib/sgoly_printf.lua:13] Redis DBPool useful is 15
 [INFO] 2017-01-11 09:16:07 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[1]
 [INFO] 2017-01-11 09:16:07 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[2]
@@ -446,3 +447,40 @@
 [INFO] 2017-01-11 09:18:20 [mysqlpool] [./../lualib/sgoly_printf.lua:13] MySQL getDB success
 [INFO] 2017-01-11 09:18:20 [mysqlpool] [./../lualib/sgoly_printf.lua:13] execute sql[delete from sgoly.users where users_nickname = 'new_nickname_3' ;]
 [INFO] 2017-01-11 09:18:20 [test_sgoly_users] [./../lualib/sgoly_printf.lua:13] users_delete ... res: 删除用户成功
+=======
+[INFO] 2017-01-11 09:46:20 [redispool] [./../lualib/sgoly_printf.lua:13] Redis DBPool useful is 15
+[INFO] 2017-01-11 09:46:20 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[1]
+[INFO] 2017-01-11 09:46:20 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[2]
+[INFO] 2017-01-11 09:46:20 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[3]
+[INFO] 2017-01-11 09:46:21 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[4]
+[INFO] 2017-01-11 09:46:21 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[5]
+[INFO] 2017-01-11 09:46:21 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[6]
+[INFO] 2017-01-11 09:46:21 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[7]
+[INFO] 2017-01-11 09:46:21 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[8]
+[INFO] 2017-01-11 09:46:21 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[9]
+[INFO] 2017-01-11 09:46:21 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[10]
+[INFO] 2017-01-11 09:46:21 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[11]
+[INFO] 2017-01-11 09:46:21 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[12]
+[INFO] 2017-01-11 09:46:21 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[13]
+[INFO] 2017-01-11 09:46:21 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[14]
+[INFO] 2017-01-11 09:46:21 [redispool] [./../lualib/sgoly_printf.lua:13] Activity Redis DBC[0]
+[INFO] 2017-01-11 09:46:23 [mysqlpool] [./../lualib/sgoly_printf.lua:13] MySQL DBPool useful is 15
+[INFO] 2017-01-11 09:46:23 [mysqlpool] [./../lualib/sgoly_printf.lua:13] MySQL getDB success
+[INFO] 2017-01-11 09:46:23 [mysqlpool] [./../lualib/sgoly_printf.lua:13] execute sql[select * from test]
+[INFO] 2017-01-11 09:46:23 [database_main] [./../lualib/sgoly_printf.lua:13] row.id:1 row.test:ok
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[1]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[2]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[3]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[4]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[5]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[6]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[7]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[8]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[9]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[10]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[11]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[12]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[13]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[14]
+[INFO] 2017-01-11 09:46:24 [mysqlpool] [./../lualib/sgoly_printf.lua:13] Activity MySQL DBC[15]
+>>>>>>> c848b6e0c730f6f97a752778e6661441ed081fc0

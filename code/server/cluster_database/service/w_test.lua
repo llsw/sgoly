@@ -9,6 +9,9 @@ skynet.start(function()
 	local json_text = cjson.encode(lua_value)
 
 	printI(json_text)
+	local x = cjson.decode(json_text)
+
+	printI(cjson.encode(x))
 	skynet.exit()
 	
 end)

@@ -587,9 +587,9 @@ function CMD.calc(end_point,beilv,k)
 	local result = main(end_point,beilv,k)
 	return result
 end
---main(10,10,5)
---main(10,10,10)
---main(10,10,20)
+main(10,10,5)
+main(10,10,10)
+main(10,10,20)
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(CMD[cmd], cmd .. "not found")
