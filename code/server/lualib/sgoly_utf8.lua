@@ -7,6 +7,7 @@
  * @DateTime:    2017-01-10 11:57:11
  --]]
 
+require "sgoly_printf"
 local sgoly_utf8 = {}
 
 --[[
@@ -17,7 +18,7 @@ local sgoly_utf8 = {}
 
 --]]
 function string.utf8len(input)
-	printI("string.utf8len input =%s",input)
+	printD("string.utf8len(%S)",input)
     local left = string.len(input)
     local cnt  = 0
     local arr  = {0, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc}

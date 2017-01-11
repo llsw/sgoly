@@ -19,6 +19,8 @@ require "sgoly_printf"
  		返回参数：应获得金额的数字
  --]]
  function rank_award.get(tableName, rank)
+ 	printD("rank_award.get(%s, %s)", tableName, rank)
+ 	printI("rank_award.get(%s, %s)", tableName, rank)
  	if((nil == tableName) or ("" == tableName)) then
  		return false, "空表名错误"
  	elseif((1 > rank) or (5 < rank)) then
