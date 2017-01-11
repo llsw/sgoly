@@ -1,16 +1,25 @@
 require "sgoly_query"
+local skynet_queue = require "skynet.queue"
+local lock = skynet_queue()
 
-local soly_tool = {}
+local sgoly_tool = {}
 
-function sgoly_tool.getUuid()
-
-	local res = redis_query({"get", "uuid"})
-	res = tonumber(res)
-	return res
+local function updateUuid(uuid)
+	redis_query({"set","uuid",tostring(uuid)})
 end
 
-function sgoly_tool.updateUuid(uuid)
-	redis_query({"set","uuid",tostring(uuid)})
+local function getUuid()
+
+	local uuid = redis_query({"get", "uuid"})
+	uuid = tonumber(res)
+	updateUuid(uuid + 1)
+	return uuid
+end
+
+
+
+function sgoly_tool.getUuid()
+	return lock(getUuid)
 end
 
 return sgoly_tool
