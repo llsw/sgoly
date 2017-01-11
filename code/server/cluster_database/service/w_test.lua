@@ -13,6 +13,9 @@ skynet.start(function()
 	skynet.error(k, v)
 	end
 	printI(json_text)
+	local x = cjson.decode(json_text)
+
+	printI(cjson.encode(x))
 	skynet.exit()
 	
 end)

@@ -48,11 +48,11 @@ function parameters_valid(users_nickname, users_pwd)
 	if(("" == users_nickname) or ("" == users_pwd)) then
 		return false, '昵称或密码为空'
 	end
-	if(36 <= utf8.strlen(users_nickname)) then
+	if(35 < utf8.strlen(users_nickname)) then
 		return false, '昵称长度超过35个字符'
 	end
-	if(17 <= utf8.strlen(users_pwd)) then
-		return false, '密码长度超过16个字符'
+	if(32 < utf8.strlen(users_pwd)) then
+		return false, '密码长度超过32个字符'
 	end
 	if(true == sql_valid.valid(users_nickname)) then
 		return false, '昵称存在sql注入关键词'
@@ -135,10 +135,10 @@ function change_nickname_valid(old_nickname, new_nickname)
  	if(('' == old_nickname) or ('' == new_nickname)) then
  		return false, '新或旧昵称参数为空'
  	end
- 	if(36 <= utf8.strlen(old_nickname)) then
+ 	if(35 < utf8.strlen(old_nickname)) then
  		return false, '旧昵称长度大于35'
  	end
- 	if(36 <= utf8.strlen(new_nickname)) then
+ 	if(35 < utf8.strlen(new_nickname)) then
  		return false, '新昵称长度大于35'
  	end
  	 if(true == sql_valid.valid(old_nickname)) then
@@ -199,12 +199,12 @@ function change_pwd_valid(nickname, old_pwd, new_pwd)
  		return false, '旧密码为空'
  	elseif('' == new_pwd) then
  		return false, '新密码为空'
- 	elseif(36 <= utf8.strlen(nickname)) then
+ 	elseif(35 < utf8.strlen(nickname)) then
  		return false, '昵称长度大于35'
- 	 elseif(17 <= utf8.strlen(old_pwd)) then
- 		return false, '旧密码长度大于16'
- 	elseif(17 <= utf8.strlen(new_pwd)) then
- 		return false, '新密码长度大于16'
+ 	 elseif(32 < utf8.strlen(old_pwd)) then
+ 		return false, '旧密码长度大于32'
+ 	elseif(32 < utf8.strlen(new_pwd)) then
+ 		return false, '新密码长度大于32'
  	elseif(true == sql_valid.valid(nickname)) then
  		return false, '昵称存在sql注入关键词'
  	elseif(true == sql_valid.valid(old_pwd)) then
@@ -271,10 +271,10 @@ function delete_user_valid(nickname, pwd)
  		return false, '昵称为空'
  	elseif('' == pwd) then
  		return false, '密码为空'
- 	elseif(36 <= utf8.strlen(nickname)) then
+ 	elseif(35 < utf8.strlen(nickname)) then
  		return false, '昵称长度大于35'
- 	 elseif(17 <= utf8.strlen(pwd)) then
- 		return false, '密码长度大于16'
+ 	 elseif(32 < utf8.strlen(pwd)) then
+ 		return false, '密码长度大于32'
  	elseif(true == sql_valid.valid(nickname)) then
  		return false, '昵称存在sql注入关键词'
  	elseif(true == sql_valid.valid(pwd)) then
