@@ -15,6 +15,23 @@ local sgoly_users = {}
 
 --[[
 函数说明：
+		函数作用：获取用户id
+		传入参数：nickname
+		返回参数：用户id或nil
+--]]
+function sgoly_users.get_newid(nickname)
+	local sql = string.format("select users_id from sgoly.users where "
+		.."users_nickname = '%s' ;", nickname)
+ 		local tmptable = mysql_query(sql)
+ 		if(1 == #tmptable) then
+ 			return tmptable[1].users_id
+ 		else
+ 			return nil
+ 		end
+end
+
+--[[
+函数说明：
 		函数作用：检查给定的昵称的用户是否存在
 		传入：用户的昵称字符串users_nickname
 		返回：true or false
