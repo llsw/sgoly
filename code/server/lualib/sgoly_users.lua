@@ -15,13 +15,31 @@ local sgoly_users = {}
 
 --[[
 函数说明：
+		函数作用：获取用户id
+		传入参数：nickname
+		返回参数：用户id或nil
+--]]
+function sgoly_users.get_uid(nickname)
+	printD("sgoly_users.get_uid( '%s' )", nickname)
+	local sql = string.format("select users_id from sgoly.users where "
+		.."users_nickname = '%s' ;", nickname)
+ 		local tmptable = mysql_query(sql)
+ 		if(1 == #tmptable) then
+ 			return tmptable[1].users_id
+ 		else
+ 			return nil
+ 		end
+end
+
+--[[
+函数说明：
 		函数作用：检查给定的昵称的用户是否存在
 		传入：用户的昵称字符串users_nickname
 		返回：true or false
 
 --]]
 function sgoly_users.users_exist(users_nickname)
-	printI("sgoly_users.users_exist users_nickname =%s", users_nickname)
+	printD("sgoly_users.users_exist(%s)", users_nickname)
 	local sql = string.format("select * from sgoly.users where "
  			.."users_nickname = '%s' ;", users_nickname)
  	local tmptable = mysql_query(sql)
@@ -40,8 +58,7 @@ end
 
 --]]
 function parameters_valid(users_nickname, users_pwd)
-	printI("parameters_valid users_nickname =%s, users_pwd =%s", users_nickname, 
- 		users_pwd)
+	printD("parameters_valid(%s, %s)", users_nickname, users_pwd)
 	if((nil == users_nickname) or (nil == users_pwd)) then
 		return false, '无昵称或密码参数错误'
 	end
@@ -71,8 +88,8 @@ end
 		返回：如果登录成功返回true和'登录成功'字符串两个参数，否则返回false和错误信息
 --]]
 function sgoly_users.login(users_nickname, users_pwd)
-	printI("sgoly_users.login users_nickname =%s, users_pwd =%s", users_nickname, 
- 		users_pwd)
+	printD("sgoly_users.login(%s, %s)", users_nickname, users_pwd)
+	printI("sgoly_users.login(%s, users_pwd)", users_nickname)
  	local lv, msg = parameters_valid(users_nickname, users_pwd)
  	if(true == lv) then
  		local sql = string.format("select users_pwd from sgoly.users where "
@@ -99,8 +116,8 @@ function sgoly_users.login(users_nickname, users_pwd)
 		返回：如果注册成功返回true和'注册成功'字符串两个参数，否则返回false和错误信息
 --]]
  function sgoly_users.register(users_nickname, users_pwd)
- 	printI("sgoly_users.register users_nickname =%s, users_pwd =%s", 
- 		users_nickname, users_pwd)
+ 	printD("sgoly_users.register(%s, %s)",users_nickname, users_pwd)
+ 	printI("sgoly_users.register(%s, users_pwd)", users_nickname)
  	local rv, msg = parameters_valid(users_nickname, users_pwd)
  	if(true == rv) then
  		if(true == sgoly_users.users_exist(users_nickname)) then
@@ -127,7 +144,7 @@ function sgoly_users.login(users_nickname, users_pwd)
 		返回：如果参数无问题返回true和空字符串两个参数，否则返回false和错误信息
 --]]
 function change_nickname_valid(old_nickname, new_nickname)
-	printI("sgoly_users.change_nickname old_nickname =%s, "
+	printD("sgoly_users.change_nickname old_nickname =%s, "
  		.."new_nickname =%s", old_nickname, new_nickname)
  	if((nil == old_nickname) or (nil == new_nickname)) then
  		return false, '无新或旧昵称参数'
@@ -161,8 +178,8 @@ end
 		返回：如果成功返回true和空字符串两个参数，否则返回false和错误信息
 --]]
  function sgoly_users.change_nickname(old_nickname, new_nickname)
- 	printI("sgoly_users.change_nickname old_nickname =%s, "
- 		.."new_nickname =%s", old_nickname, new_nickname)
+ 	printD("sgoly_users.change_nickname(%s, %s)", old_nickname, new_nickname)
+ 	printI("sgoly_users.change_nickname(%s, new_nickname)", old_nickname)
  	local cnv, msg = change_nickname_valid(old_nickname, new_nickname)
  	if(false == cnv) then
  		return false, msg
@@ -185,7 +202,7 @@ end
 		返回：如果成功返回true和空字符串两个参数，否则返回false和错误信息
 --]]
 function change_pwd_valid(nickname, old_pwd, new_pwd)
-	printI("change_pwd_valid nickname =%s, old_pwd =%s, new_pwd =%s", 
+	printD("change_pwd_valid nickname =%s, old_pwd =%s, new_pwd =%s", 
 		nickname, old_pwd, new_pwd)
 	if(nil == nickname) then
  		return false, '无昵称参数'
@@ -238,8 +255,8 @@ end
 		返回：如果注册成功返回true和空字符串两个参数，否则返回false和错误信息
 --]]
  function sgoly_users.change_pwd(nickname, old_pwd, new_pwd)
- 	printI("sgoly_users.change_pwd nickname =%s, old_pwd =%s, new_pwd =%s", 
- 		nickname, old_pwd, new_pwd)
+ 	printD("sgoly_users.change_pwd(%s, %s, %s)", nickname, old_pwd, new_pwd)
+ 	printI("sgoly_users.change_pwd(%s, %s, %s)", nickname, old_pwd, new_pwd)
  	local cpv, msg = change_pwd_valid(nickname, old_pwd, new_pwd)
  	if(false == cpv) then
  		return false, msg
@@ -262,7 +279,7 @@ end
 		返回：如果成功返回true和空字符串两个参数，否则返回false和错误信息
 --]]
 function delete_user_valid(nickname, pwd)
-	printI("delete_user_valid nickname =%s, pwd =%s", nickname, pwd)
+	printD("delete_user_valid nickname =%s, pwd =%s", nickname, pwd)
 	if(nil == nickname) then
  		return false, '无昵称参数'
  	elseif(nil == pwd) then
@@ -304,7 +321,8 @@ end
 		返回：如果成功返回true和空字符串两个参数，否则返回false和错误信息
 --]]
 function sgoly_users.delete_user(nickname, pwd)
-	printI("delete_user_valid nickname =%s, pwd =%s", nickname, pwd)
+	printD("sgoly_users.delete_user(%s, %s)", nickname, pwd)
+	printI("sgoly_users.delete_user(%s, pwd)", nickname)
 	local duv, msg = delete_user_valid(nickname, pwd)
 	if(false == duv) then
 		return false, msg

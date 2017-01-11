@@ -40,7 +40,7 @@ end
 		返回参数：通过则返回true和空字符串，否则返回false和错误信息
 --]]
 function add_valid(nickname, win_money, cost_money, win_times, times, 
-							single_max, continuous_max, record_date)
+							single_max, continuous_max)
 	if(nil == nickname) then
 		return false, "nil nickname"
 	elseif(nil == win_money) then
@@ -71,8 +71,6 @@ function add_valid(nickname, win_money, cost_money, win_times, times,
 		return false, "sql valid continuous_max"
 	elseif(false == users.users_exist(nickname)) then
 		return false, "不存在该用户: "..nickname
-	elseif(false == dtv.valid(record_date)) then
-		return false, "日期格式非法"
 	else
 		return true ""
 	end			
@@ -87,8 +85,10 @@ end
 --]]
 function sgoly_record.add(nickname, win_money, cost_money, win_times, times, 
 							single_max, continuous_max)
-	printD("sgoly_record.add... %s, %d, %d, %d, %d, %d, %d", nickname, 
-			win_money, cost_money, win_times, times, single_max, continuous_max)
+	printD("sgoly_record.add(%s, %d, %d, %d, %d, %d, %d)", nickname, win_money, 
+			cost_money, win_times, times, single_max, continuous_max)
+	printI("sgoly_record.add(%s, %d, %d, %d, %d, %d, %d)", nickname, win_money, 
+			cost_money, win_times, times, single_max, continuous_max)
 	local res, msg = add_valid(nickname, win_money, cost_money, win_times, times
 								, single_max, continuous_max)
 	if(false == res) then
@@ -149,6 +149,8 @@ end
 		返回参数：true and "" or false and errormsg
 --]]
 function sgoly_record.del(nickname, dt)
+	printD("sgoly_record.del(%s, %s)", nickname, dt)
+	printI("sgoly_record.del(%s, %s)", nickname, dt)
 	local res, msg= del_valid(nickname, dt)
 	if(false == res) then
 		return false, msg
@@ -196,6 +198,8 @@ end
 		返回参数：nil or 获取用户战绩数据table
 --]]
 function sgoly_record.get(nickname, dt)
+	printD("sgoly_record.get(%s, %s)", nickname, dt)
+	printI("sgoly_record.get(%s, %s)", nickname, dt)
 	local res, msg = get_valid(nickname, dt)
 	if(false == res) then
 		return false, msg
@@ -262,8 +266,10 @@ end
 --]]
 function sgoly_record.update(nickname, win_money, cost_money, win_times, times, 
 							single_max, continuous_max, dt)
-	printD("sgoly_record.update... %s, %d, %d, %d, %d, %d, %d", nickname, 
-			win_money, cost_money, win_times, times, single_max, continuous_max)
+	printD("sgoly_record.update(%s, %d, %d, %d, %d, %d, %d, %s)", nickname, 
+			win_money, cost_money, win_times, times, single_max, continuous_max, dt)
+	printI("sgoly_record.update(%s, %d, %d, %d, %d, %d, %d, %s)", nickname, 
+			win_money, cost_money, win_times, times, single_max, continuous_max, dt)
 	local res, msg = update_valid(nickname, win_money, cost_money, win_times, 
 		times, single_max, continuous_max, dt)
 	if(false == res) then

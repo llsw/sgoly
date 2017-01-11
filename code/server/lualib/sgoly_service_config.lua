@@ -31,4 +31,10 @@ service_config["gateway_server"] = {
       
 }
 
+service_config["log_config"] = {
+	info = true,
+	debug = true,
+	error = true
+}
+
 return service_config
