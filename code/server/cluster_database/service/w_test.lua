@@ -4,6 +4,7 @@ package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
 local md5 = require "md5"
 local tool = require "sgoly_tool"
+require "sgoly_query"
 
 skynet.start(function()
 	printI(package.cpath)
@@ -15,12 +16,10 @@ skynet.start(function()
 
 	printI(cjson.encode(x))
 
-	local id = tool.getUuid()
-	skynet.error(id)
-	id = id + 1
-	tool.saveUuid(id)
-	id = tool.getUuid()
-	skynet.error(id)
+	redis_query({"hset", "user:1234", "test", 5000000})
+	skynet.error(redis_query({"hget", "user:1234", "test"}))
+
+	
 	skynet.exit()
 	
 end)
