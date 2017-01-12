@@ -123,7 +123,7 @@ function sgoly_users.login(users_nickname, users_pwd)
  		if(true == sgoly_users.users_exist(users_nickname)) then
  			return false, '昵称已被使用'
  		else
- 			sql = string.format("insert into sgoly.users values(null, '%s', '%s')",
+ 			sql = string.format("insert into sgoly.users value(null, '%s', '%s')",
  				users_nickname, users_pwd)
  			local status = mysql_query(sql)
  			if((0 == status.warning_count) and (1 <= status.affected_rows)) then

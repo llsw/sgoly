@@ -88,7 +88,7 @@ function sgoly_record.add(nickname, win_money, cost_money, win_times, times,
 				.."users_nickname = '%s' ", nickname)
 			tmp = mysql_query(sql)
 			record_uid = tmp[1].users_id
-			sql = string.format("insert into sgoly.record(null, '%d', '%d', "
+			sql = string.format("insert into sgoly.record value(null, '%d', '%d', "
 				.."'%d', '%d', '%d', '%d', '%s' );", record_uid, win_money, 
 				cost_money, win_times, times, single_max, continuous_max, dt)
 			tmp = mysql_query(sql)
@@ -309,7 +309,7 @@ function sgoly_record.record_init(nickname, win_money)
 		return false, msg
 	else
 		local dt = os.date("%Y-%m-%d")
-		local sql = string.format("insert into sgoly.record(null, %d, %d,  %d, "
+		local sql = string.format("insert into sgoly.record value(null, %d, %d,  %d, "
 			.."%d, %d, %d, %d, %s) ;", msg, win_money, 0, 0, 0, 0, 0, dt)
 		local status = mysql_query(sql)
 		if((0 == status.warning_count) and (1 <= status.affected_rows)) then

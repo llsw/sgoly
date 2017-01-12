@@ -51,7 +51,7 @@ function set_valid(nickname, dt)
 				.."users_nickname = '%s' ;" nickname)
 			local tmptable = mysql_query(sql)
  		if(1 == #tmptable) then
- 			return tmptable[1].users_id, ""
+ 			return true, tmptable[1].users_id
  		else
  			return false, "不存在该用户"
  		end
@@ -71,7 +71,12 @@ end
  	if(false == res) then
  		return false, msg
  	else
- 		local sql = string.format("insert into sgoly.signin_record(null, %s, %d, "
- 			.."%s);")
+ 		if(true == exist_signin_record(nickname, dt)) then
+ 			return true, "已签到成功"
+ 		else
+ 			local dt = os.date("%Y-%m-%d")
+ 			local sql = string.format("insert into sgoly.signin_record value(null, %d, %d, "
+ 			.."%s);", msg, 1, )
+ 		end
  	end
  end
