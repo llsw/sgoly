@@ -1,2 +1,2 @@
-code/server/log/*.*
-code/server/cluster_database/service/w_test.lua
+code/server/log/*.log
+*.test
