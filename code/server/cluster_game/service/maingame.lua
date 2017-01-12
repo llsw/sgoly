@@ -1,4 +1,5 @@
 require "skynet.manager"
+local socket=require "socket"
 local skynet=require "skynet"
 local CMD = {}
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
@@ -8,6 +9,8 @@ function picture_order(picturetype)                       --图片序列函数
 	local num = tonumber(string.sub(picturetype,2,2))
 	if num == 5  then
 		print("图片顺序为",letter:rep(num))
+		local sequence = letter:rep(num)
+		return sequence
 	elseif num ==4 then
 		local a = math.random(1,2)
 		local b
@@ -16,8 +19,12 @@ function picture_order(picturetype)                       --图片序列函数
 			until (letter~=b)
 		if a==1 then
 			print("图片顺序为",letter:rep(num) .. b)
+			local sequence = letter:rep(num) .. b
+			return sequence
 		else 
 			print("图片顺序为",b .. letter:rep(num))
+			local sequence = b .. letter:rep(num)
+		    return sequence
 		end
 	elseif num ==3 then
 		local a = math.random(1,3)
@@ -28,10 +35,16 @@ function picture_order(picturetype)                       --图片序列函数
 		until (letter~=b and letter~=c)
 		if a==1 then
 			print("图片顺序为",letter:rep(num) .. b..c)
+			local sequence = letter:rep(num).. b..c
+		    return sequence
 		elseif a==2 then
 			print("图片顺序为",b .. letter:rep(num)..c)
+			local sequence = b..letter:rep(num)..c
+		    return sequence
 		elseif a==3 then
 			print("图片顺序为",b ..c.. letter:rep(num))
+			local sequence = b..c..letter:rep(num)
+		    return sequence
 		end
 	else
 		local a,b,c,d,e
@@ -41,11 +54,20 @@ function picture_order(picturetype)                       --图片序列函数
 		 c = string.char(math.random(65,70))
 		 d = string.char(math.random(65,70))
 		 e = string.char(math.random(65,70))
-		until(a~=b~=c and b~=c~=d and c~=d~=e)
+		until((a~=b and b~=c) and (b~=c and c~=d) and (c~=d and d~=e))
 			print("图片顺序为",a..b..c..d..e)
+			local sequence = a..b..c..d..e
+		    return sequence
 	end
 end
---print(math.ceil(1.1))
+
+function send_result(fd,grade,sequence)
+	local result={grade=grade,sequence=sequence}
+    local result1=cjson.encode(result)
+    local result1_1=crypt.aesencode(result1,who,"")
+    local result1_2 = crypt.base64encode(result1_1)
+    socket.write(fd,result1_2.."\n")
+end
 
 --记录中奖类型
 
@@ -584,12 +606,11 @@ end
 end
 
 function CMD.calc(end_point,beilv,k)
-	local result = main(end_point,beilv,k)
-	return result
+	 main(end_point,beilv,k)
 end
-main(10,10,5)
-main(10,10,10)
-main(10,10,20)
+-- main(10,10,5)
+-- main(10,10,10)
+-- main(10,10,20)
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(CMD[cmd], cmd .. "not found")

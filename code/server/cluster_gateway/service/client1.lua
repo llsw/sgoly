@@ -3,19 +3,25 @@ local socket    = require "socket"
 local crypt     = require "crypt"
 local name = ... or ""
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
-local json = require "cjson"
+local cjson = require "cjson"
 
 function _read(id)
     while true do
         local str   = socket.readline(id)
         if str then
             skynet.error(id, "server says: ", str)
+            local str1 = crypt.base64decode(str)
+            local password
+            local who="123456"
+            password=crypt.aesdecode(str1,who,"")
+            local mes =cjson.decode(password)
+            skynet.error("client echo",mes.ID)
             -- socket.close(id)
             -- skynet.exit()
         else
-            -- socket.close(id)
-            -- skynet.error("disconn ected")
-            -- skynet.exit()
+            socket.close(id)
+            skynet.error("disconnected")
+            skynet.exit()
         end
     end
 end
@@ -33,17 +39,11 @@ skynet.start(function()
 
     --启动读协程
     skynet.fork(_read, id)
-
-    -- socket.write(id, "1\n")
-
-    -- socket.write(id, "hello2,\n")
-    -- local lua_value = {ID="2",NAME="1234",PASSWD="123456"}
-
-    -- 
+ 
     -- for i=1, 3 do
-    -- local lua_value = {ID="3"}
-    local lua_value = {ID="2",NAME="tasdxc1",PASSWD="laohuji"}
-    local json_text = json.encode(lua_value)
+    local lua_value = {ID="4"}
+    -- local lua_value = {ID="1",NAME="登录成",PASSWD="laohuji"}
+    local json_text = cjson.encode(lua_value)
     local password 
     local who="123456"
     password =crypt.aesencode(json_text,who,"")
