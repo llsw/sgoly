@@ -6,7 +6,9 @@ local sgoly_users=require "sgoly_users"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
 require "skynet.manager"
+local md5 = require "md5"
 local add=require "sgoly_service_config"
+local record=require "sgoly_record"
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
 i=111
 co = coroutine.create(function ()
@@ -31,10 +33,15 @@ function handler(fd, addr)
 			skynet.error(mes)
 			skynet.error(mes.ID,mes.NAME,mes.PASSWD)
 			if mes.ID=="2" then 
-				--mes.passwd=crypt.aesencode(mes.passwd,who,"")
+			skynet.error("2",mes.PASSWD)            --register
 				--mes.passwd = crypt.base64encode(mes.passwd)
-			   local bool,msg=sgoly_users.register(mes.NAME, mes.PASSWD)
+				mes.PASSWD=md5.sumhexa(mes.PASSWD)
+			   local bool,msg=sgoly_users.register(mes.NAME,mes.PASSWD)
 			   skynet.error(bool,msg)
+			   if bool then
+				 local bo,message=record.record_init(mes.NAME,500000)
+				 skynet.error("asdasd=",bo,message)
+				end
 			--local proxy = cluster.proxy("cluster_game",".maingame")
 			--skynet.call(proxy,"lua","calc",10,10,5)
 			   local rep={ID=bool,MESSAGE=msg}
@@ -42,7 +49,9 @@ function handler(fd, addr)
 			   local rep1=crypt.aesencode(str,who,"")
 			   local str2 = crypt.base64encode(rep1)
 			   socket.write(fd,str2.."\n")
-		    elseif mes.ID=="1" then
+		    elseif mes.ID=="1" then                --login
+				--mes.passwd = crypt.base64encode(mes.passwd)
+				mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		    	local bool,msg=sgoly_users.login(mes.NAME, mes.PASSWD)
 		    	skynet.error(bool,msg)
 		        local rep={ID=bool,MESSAGE=msg}
@@ -50,10 +59,12 @@ function handler(fd, addr)
 			    local rep1=crypt.aesencode(str,who,"")
 			    local str2 = crypt.base64encode(rep1)
 			    socket.write(fd,str2.."\n")		    	--local bool,msg=sgoly_users.register(mes.NAME, mes.passwd)
-		    elseif mes.ID=="3" then
+		    elseif mes.ID=="3" then               --tourist login
 		    	id=tourist()
 		    	id=tostring(id)
 		    	local name,password=randomuserid(id)
+				--mes.passwd = crypt.base64encode(mes.passwd)
+				password=md5.sumhexa(password)
 		    	local bool,msg=sgoly_users.register(name,password)
 			    while  msg=="昵称已被使用" do
 			       local name,password=randomuserid()
@@ -62,7 +73,7 @@ function handler(fd, addr)
 			    end
 			    if msg=="注册成功" then 
 			    	skynet.error("注册成功")
-			    	skynet.error(msg.NAME,msg.PASSWD)
+			    	skynet.error(name,msg.PASSWD)
 			--local proxy = cluster.proxy("cluster_game",".maingame")
 			--skynet.call(proxy,"lua","calc",10,10,5)
 			       local rep={ID=true,NAME=name,PASSWD=password}
