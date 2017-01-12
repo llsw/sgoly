@@ -55,7 +55,7 @@ function add_valid(nickname, win_money, cost_money, win_times, times,
 	elseif(false == users.users_exist(nickname)) then
 		return false, "不存在该用户: "..nickname
 	else
-		return true ""
+		return true, ""
 	end			
 end
 
@@ -236,7 +236,7 @@ function update_valid(nickname, win_money, cost_money, win_times, times,
 	elseif(false == dtv.valid(dt)) then
 		return false, "日期格式非法"
 	else
-		return true ""
+		return true, ""
 	end		
 end
 
@@ -310,7 +310,7 @@ function sgoly_record.record_init(nickname, win_money)
 	else
 		local dt = os.date("%Y-%m-%d")
 		local sql = string.format("insert into sgoly.record(null, %d, %d,  %d, "
-			.."%d, %d, %d, %d, %s) ;", uid, win_money, 0, 0, 0, 0, 0, dt)
+			.."%d, %d, %d, %d, %s) ;", msg, win_money, 0, 0, 0, 0, 0, dt)
 		local status = mysql_query(sql)
 		if((0 == status.warning_count) and (1 <= status.affected_rows)) then
 			return true, "初始化用户金币等信息成功"
