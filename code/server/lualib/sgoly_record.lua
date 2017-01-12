@@ -55,7 +55,7 @@ function add_valid(nickname, win_money, cost_money, win_times, times,
 	elseif(false == users.users_exist(nickname)) then
 		return false, "不存在该用户: "..nickname
 	else
-		return true,""
+		return true ""
 	end			
 end
 
@@ -236,7 +236,7 @@ function update_valid(nickname, win_money, cost_money, win_times, times,
 	elseif(false == dtv.valid(dt)) then
 		return false, "日期格式非法"
 	else
-		return true ,""
+		return true ""
 	end		
 end
 
