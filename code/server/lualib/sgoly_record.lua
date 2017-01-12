@@ -202,11 +202,29 @@ end
 		返回参数：true和money数值或者false和msg(错误信息)
 --]]
 function sgoly_record.get_money(nickname, dt)
-	local tmptable = sgoly_record.get(nickname, dt)
-	if(nil == tmptable) then
-		return false, "无数据"
+	local testdt = os.date("%Y-%m-%d")
+	if(testdt == dt) then
+		local uid = users.get_uid(nickname)
+		if(nil == uid) then
+			return false, "不存在该用户"
+		else
+			local sql = string.format("select win_money from sgoly.record where "
+			.."record_date =  (select record_date from sgoly.record order by "
+			.."record_date desc limit 1) and record_uid = '%d'; ",uid)
+			local tmptable = mysql_query(sql)
+			if(nil == tmptable) then
+				return false, "无数据"
+			else
+				return true, tmptable[1].win_money
+			end
+		end
 	else
-		return true, tmptable[1].win_money
+		local tmptable = sgoly_record.get(nickname, dt)
+		if(nil == tmptable) then
+			return false, "无数据"
+		else
+			return true, tmptable[1].win_money
+		end
 	end
 end
 

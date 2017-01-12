@@ -36,8 +36,8 @@ end
 		传入参数：nickname(昵称), dt(日期)
 		返回参数：false和msg(错误信息)或true和uid(昵称对应的用户的id)
 --]]
-function set_valid(nickname, dt)
-	printD("set_valid(%s, %s)", nickname, dt)
+function signin_valid(nickname, dt)
+	printD("signin_valid(%s, %s)", nickname, dt)
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif((nil == dt) or ("" == dt)) then
@@ -64,10 +64,10 @@ end
  		传入参数：nickname(昵称)和dt(日期)
  		返回参数：true和空字符串或者false和错误信息提示
  --]]
- function signin_record.set(nickname, dt)
+ function signin_record.signin(nickname, dt)
  	printD("signin_record.set(%s, %s)", nickname, dt)
  	printI("signin_record(%s, %s)", nickname, dt)
- 	local res, msg = set_valid(nickname, dt)
+ 	local res, msg = signin_valid(nickname, dt)
  	if(false == res) then
  		return false, msg
  	else
@@ -77,6 +77,14 @@ end
  			local dt = os.date("%Y-%m-%d")
  			local sql = string.format("insert into sgoly.signin_record value(null, %d, %d, "
  			.."%s);", msg, 1, )
+ 			local status = mysql_query(sql)
+ 			if((0 == status.warning_count) and (1 <= status.affected_rows)) then
+				return true, '已签到成功'
+			else
+				return false, status.err
+			end
  		end
  	end
  end
+
+ return signin_record
