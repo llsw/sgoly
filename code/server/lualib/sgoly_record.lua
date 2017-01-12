@@ -18,23 +18,6 @@ local users = require "sgoly_users"
 
 --[[
 函数说明：
-		函数作用：获取用户id
-		传入参数：nickname
-		返回参数：用户id或nil
---]]
-function get_users_id(nickname)
-	local sql = string.format("select users_id from sgoly.users where "
-		.."users_nickname = '%s' ;", nickname)
- 		local tmptable = mysql_query(sql)
- 		if(1 == #tmptable) then
- 			return tmptable[1].users_id
- 		else
- 			return nil
- 		end
-end
-
---[[
-函数说明：
 		函数作用：add函数参数检查
 		传入参数：add的所有参数
 		返回参数：通过则返回true和空字符串，否则返回false和错误信息
@@ -155,7 +138,7 @@ function sgoly_record.del(nickname, dt)
 	if(false == res) then
 		return false, msg
 	else
-		local tmpuid = get_users_id(nickname)
+		local tmpuid = users.get_uid(nickname)
 		local sql = string.format("delete * from sgoly.record where "
 				.."record_uid = '%s' and record_date = '%s' ;", tmpuid, dt)
 		local status = mysql_query(sql)
@@ -204,7 +187,7 @@ function sgoly_record.get(nickname, dt)
 	if(false == res) then
 		return false, msg
 	else
-		local uid = get_users_id(nickname)
+		local uid = users.get_uid(nickname)
 		local sql = string.format("select * from sgoly.record where record_uid "
 			.."= '%s' record_date = '%s' ;", uid, dt)
 		local tmptable = mysql_query(sql)
@@ -275,7 +258,7 @@ function sgoly_record.update(nickname, win_money, cost_money, win_times, times,
 	if(false == res) then
 		return false, msg
 	else
-		local uid = get_users_id(nickname)
+		local uid = users.get_uid(nickname)
 		local sql = string.format("update sgoly.record set win_money = '%s', "
 			.."cost_money = '%s',  win_times = '%s',  times = '%s', single_max ="
 			.." '%s', continuous_max = '%s' where  record_uid = '%s' and "
@@ -284,6 +267,53 @@ function sgoly_record.update(nickname, win_money, cost_money, win_times, times,
 		local status = mysql_query(sql)
 		if((0 == status.warning_count) and (1 <= status.affected_rows)) then
 			return true, "更新战绩数据成功"
+		else
+			return false, "未知错误"
+		end
+	end
+end
+
+--[[
+函数说明：
+		函数作用：初始化战绩数据表函数参数
+		传入参数：nickname(昵称), money(金币)
+		返回参数：true和空字符串或false和错误信息
+--]]
+function record_init_valid(nickname, win_money)
+	printD("record_init_valid(%s, %s)", nickname, win_money)
+	if((nil == nickname) or ("" == nickname)) then
+		return false, "昵称空值错误"
+	elseif(nil == win_money) then
+		return false, "金币空值错误"
+	else
+		local uid = users.get_uid(nickname)
+		if(nil == uid) then
+			return false, "不存在该用户"
+		else
+			return true, uid
+		end
+	end
+end
+
+--[[
+函数说明：
+		函数作用：初始化战绩数据表
+		传入参数：nickname(昵称), money(金币)
+		返回参数：true和空字符串或false和错误信息
+--]]
+function sgoly_record.record_init(nickname, win_money)
+	printD("sgoly_record.record_init(%s, %s)", nickname, win_money)
+	printI("sgoly_record.record_init(%s, %s)", nickname, win_money)
+	local res, msg = record_init_valid(nickname, win_money)
+	if(false == res) then
+		return false, msg
+	else
+		local dt = os.date("%Y-%m-%d")
+		local sql = string.format("insert into sgoly.record(null, %d, %d,  %d, "
+			.."%d, %d, %d, %d, %s) ;", uid, win_money, 0, 0, 0, 0, 0, dt)
+		local status = mysql_query(sql)
+		if((0 == status.warning_count) and (1 <= status.affected_rows)) then
+			return true, "初始化用户金币等信息成功"
 		else
 			return false, "未知错误"
 		end
