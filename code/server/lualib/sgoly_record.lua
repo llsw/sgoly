@@ -340,10 +340,10 @@ end
 --]]
 function sgoly_record.opt_update(nickname, win_money, cost_money, win_times, times, 
 							single_max, continuous_max, dt)
-	printD("sgoly_record.opt_update(%s, %d, %d, %d, %d, %d, %d, %s)", nickname, 
-		win_money, cost_money, win_times, times, single_max, continuous_max, dt)
-	printI("sgoly_record.opt_update(%s, %d, %d, %d, %d, %d, %d, %s)", nickname, 
-		win_money, cost_money, win_times, times, single_max, continuous_max, dt)
+	-- printD("sgoly_record.opt_update(%s, %d, %d, %d, %d, %d, %d, %s)", nickname, 
+	-- 	win_money, cost_money, win_times, times, single_max, continuous_max, dt)
+	-- printI("sgoly_record.opt_update(%s, %d, %d, %d, %d, %d, %d, %s)", nickname, 
+	-- 	win_money, cost_money, win_times, times, single_max, continuous_max, dt)
 	local res, msg = opt_update_valid(nickname, dt)
 	if(false == res) then
 		return false, msg
