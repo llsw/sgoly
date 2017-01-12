@@ -197,6 +197,21 @@ end
 
 --[[
 函数说明：
+		函数作用：获取money数值
+		传入参数：nickname（用户昵称）, dt（日期 格式：2017-01-11）
+		返回参数：true和money数值或者false和msg(错误信息)
+--]]
+function sgoly_record.get_money(nickname, dt)
+	local tmptable = sgoly_record.get(nickname, dt)
+	if(nil == tmptable) then
+		return false, "无数据"
+	else
+		return true, tmptable[1].win_money
+	end
+end
+
+--[[
+函数说明：
 		函数作用：update函数参数检查
 		传入参数：update的所有参数
 		返回参数：通过则返回true和空字符串，否则返回false和错误信息

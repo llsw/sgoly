@@ -106,7 +106,10 @@ function test_main(nickname, pwd, times, new_nickname, new_pwd)
 	users_delete(new_nickname, new_pwd, times)
 end
 
+
+
 skynet.start(function()
 	test_main(nickname, pwd, times, new_nickname, new_pwd)
+	--users.login("tmp_nickname", "tmp_pwd")
 	skynet.exit()
 end)
