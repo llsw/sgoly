@@ -312,6 +312,9 @@ function sgoly_record.record_init(nickname, win_money)
 		local sql = string.format("insert into sgoly.record value(null, %d, %d,  %d, "
 			.."%d, %d, %d, %d, %s) ;", msg, win_money, 0, 0, 0, 0, 0, dt)
 		local status = mysql_query(sql)
+		for k, v in pairs(status) do
+			print(k, v)
+		end
 		if((0 == status.warning_count) and (1 <= status.affected_rows)) then
 			return true, "初始化用户金币等信息成功"
 		else

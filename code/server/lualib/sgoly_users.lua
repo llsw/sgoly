@@ -23,12 +23,12 @@ function sgoly_users.get_uid(nickname)
 	printD("sgoly_users.get_uid( '%s' )", nickname)
 	local sql = string.format("select users_id from sgoly.users where "
 		.."users_nickname = '%s' ;", nickname)
- 		local tmptable = mysql_query(sql)
- 		if(1 == #tmptable) then
- 			return tmptable[1].users_id
- 		else
- 			return nil
- 		end
+ 	local tmptable = mysql_query(sql)
+ 	if(1 == #tmptable) then
+ 		return tmptable[1].users_id
+ 	else
+ 		return nil
+ 	end
 end
 
 --[[
