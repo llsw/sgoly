@@ -1,3 +1,12 @@
+
+--[[
+ * @brief: sgoly_tool.lua
+
+ * @author:	  kun si
+ * @date:	2017-01-12
+--]]
+
+
 require "sgoly_query"
 local sgoly_tool = {}
 local sgoly_record = require "sgoly_record"
