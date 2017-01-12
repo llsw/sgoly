@@ -308,6 +308,118 @@ end
 
 --[[
 函数说明：
+		函数作用：检查opt_update的基本的必须的参数
+		传入参数：nickname(昵称), dt(日期)
+		返回参数：false和msg错误信息 或者true和uid(用户id)
+--]]
+function opt_update_valid(nickname, dt)
+	printD("opt_update_valid(%s, %s)", nickname, dt)
+	if((nil == nickname) or ("" == nickname)) then
+		return false, "昵称空值错误"
+	elseif((nil == dt) or ("" == dt)) then
+		return false, "日期空值错误"
+	else
+		local uid = users.get_uid
+		if(nil == uid) then
+			return false, "不存在该用户"
+		else
+			return true, uid
+		end
+	end
+end
+
+--[[
+函数说明：
+		函数作用：可变的更新record表的相关数据
+		传入参数：nickname, win_money, cost_money, win_times, times, 
+							single_max, continuous_max, dt
+				 必须参数nickname, dt和至少一个其他的参数例如win_money,不需要更新的
+				 也需要写nil
+				 形如:nickname, win_money, nil, nil, nil,nil, nil, dt
+		返回参数：
+--]]
+function sgoly_record.opt_update(nickname, win_money, cost_money, win_times, times, 
+							single_max, continuous_max, dt)
+	printD("sgoly_record.opt_update(%s, %d, %d, %d, %d, %d, %d, %s)", nickname, 
+		win_money, cost_money, win_times, times, single_max, continuous_max, dt)
+	printI("sgoly_record.opt_update(%s, %d, %d, %d, %d, %d, %d, %s)", nickname, 
+		win_money, cost_money, win_times, times, single_max, continuous_max, dt)
+	local res, msg = opt_update_valid(nickname, dt)
+	if(false == res) then
+		return false, msg
+	else
+		local uid = msg
+		if(nil ~= win_money) then
+			local string.format("update sgoly.record set win_money = '%s' where"
+				.." record_uid = '%d' and record_date = '%s'; ", win_money, uid, 
+				dt)
+			local status = mysql_query(sql)
+			if((0 == status.warning_count) and (1 <= status.affected_rows)) then
+				return true, "更新金币成功"
+			else
+				return false, status.err
+			end
+		end
+		if(nil ~= cost_money) then
+			local string.format("update sgoly.record set cost_money = '%s' where"
+				.." record_uid = '%d' and record_date = '%s'; ", cost_money, uid, 
+				dt)
+			local status = mysql_query(sql)
+			if((0 == status.warning_count) and (1 <= status.affected_rows)) then
+				return true, "更新消费金币成功"
+			else
+				return false, status.err
+			end
+		end
+		if(nil ~= win_times) then
+			local string.format("update sgoly.record set win_times = '%s' where"
+				.." record_uid = '%d' and record_date = '%s'; ", win_times, uid, 
+				dt)
+			local status = mysql_query(sql)
+			if((0 == status.warning_count) and (1 <= status.affected_rows)) then
+				return true, "更新获奖次数成功"
+			else
+				return false, status.err
+			end
+		end
+		if(nil ~= times) then
+			local string.format("update sgoly.record set times = '%s' where"
+				.." record_uid = '%d' and record_date = '%s'; ", times, uid, 
+				dt)
+			local status = mysql_query(sql)
+			if((0 == status.warning_count) and (1 <= status.affected_rows)) then
+				return true, "更新参加游戏次数成功"
+			else
+				return false, status.err
+			end
+		end
+		if(nil ~= single_max) then
+			local string.format("update sgoly.record set single_max = '%s' where"
+				.." record_uid = '%d' and record_date = '%s'; ", single_max, uid, 
+				dt)
+			local status = mysql_query(sql)
+			if((0 == status.warning_count) and (1 <= status.affected_rows)) then
+				return true, "更新单次获奖最高数值成功"
+			else
+				return false, status.err
+			end
+		end
+		if(nil ~= continuous_max) then
+			local string.format("update sgoly.record set continuous_max = '%s' where"
+				.." record_uid = '%d' and record_date = '%s'; ", continuous_max, 
+				uid, dt)
+			local status = mysql_query(sql)
+			if((0 == status.warning_count) and (1 <= status.affected_rows)) then
+				return true, "更新连续获奖次数数值成功"
+			else
+				return false, status.err
+			end
+		end
+	end
+end
+
+--[[
+函数说明：
 		函数作用：初始化战绩数据表函数参数
 		传入参数：nickname(昵称), money(金币)
 		返回参数：true和空字符串或false和错误信息
