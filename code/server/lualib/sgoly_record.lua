@@ -319,7 +319,7 @@ function opt_update_valid(nickname, dt)
 	elseif((nil == dt) or ("" == dt)) then
 		return false, "日期空值错误"
 	else
-		local uid = users.get_uid
+		local uid = users.get_uid(nickname)
 		if(nil == uid) then
 			return false, "不存在该用户"
 		else
