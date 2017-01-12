@@ -95,7 +95,7 @@ function sgoly_record.add(nickname, win_money, cost_money, win_times, times,
 			if((0 == tmp.warning_count) and (1 <= tmp.affected_rows)) then
 				return true, "插入记录成功"
 			else
-				return false, '未知错误'
+				return false, status.err
 			end
 		end
 	end
@@ -145,7 +145,7 @@ function sgoly_record.del(nickname, dt)
 		if((0 == status.warning_count) and (1 <= status.affected_rows)) then
 			return true, "删除战绩成功"
 		else
-			return false, "未知错误"
+			return false, status.err
 		end
 	end
 end
@@ -268,7 +268,7 @@ function sgoly_record.update(nickname, win_money, cost_money, win_times, times,
 		if((0 == status.warning_count) and (1 <= status.affected_rows)) then
 			return true, "更新战绩数据成功"
 		else
-			return false, "未知错误"
+			return false, status.err
 		end
 	end
 end
@@ -310,15 +310,12 @@ function sgoly_record.record_init(nickname, win_money)
 	else
 		local dt = os.date("%Y-%m-%d")
 		local sql = string.format("insert into sgoly.record value(null, %d, %d,  %d, "
-			.."%d, %d, %d, %d, %s) ;", msg, win_money, 0, 0, 0, 0, 0, dt)
+			.."%d, %d, %d, %d, '%s') ;", msg, win_money, 0, 0, 0, 0, 0, dt)
 		local status = mysql_query(sql)
-		for k, v in pairs(status) do
-			print(k, v)
-		end
 		if((0 == status.warning_count) and (1 <= status.affected_rows)) then
 			return true, "初始化用户金币等信息成功"
 		else
-			return false, "未知错误"
+			return false, status.err
 		end
 	end
 end

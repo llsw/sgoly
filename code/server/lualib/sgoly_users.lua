@@ -129,7 +129,7 @@ function sgoly_users.login(users_nickname, users_pwd)
  			if((0 == status.warning_count) and (1 <= status.affected_rows)) then
 				return true, '注册成功'
 			else
-				return false, '未知错误'
+				return false, status.err
 			end
  		end
  	else
@@ -190,7 +190,7 @@ end
 		if((0 == status.warning_count) and (1 <= status.affected_rows)) then
 			return true, '更改昵称成功'
 		else
-			return false, '未知错误'
+			return false, status.err
 		end
  	end
  end
