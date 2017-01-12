@@ -350,7 +350,7 @@ function sgoly_record.opt_update(nickname, win_money, cost_money, win_times, tim
 	else
 		local uid = msg
 		if(nil ~= win_money) then
-			local string.format("update sgoly.record set win_money = '%s' where"
+			local sql = string.format("update sgoly.record set win_money = '%s' where"
 				.." record_uid = '%d' and record_date = '%s'; ", win_money, uid, 
 				dt)
 			local status = mysql_query(sql)
@@ -361,7 +361,7 @@ function sgoly_record.opt_update(nickname, win_money, cost_money, win_times, tim
 			end
 		end
 		if(nil ~= cost_money) then
-			local string.format("update sgoly.record set cost_money = '%s' where"
+			local sql = string.format("update sgoly.record set cost_money = '%s' where"
 				.." record_uid = '%d' and record_date = '%s'; ", cost_money, uid, 
 				dt)
 			local status = mysql_query(sql)
@@ -372,7 +372,7 @@ function sgoly_record.opt_update(nickname, win_money, cost_money, win_times, tim
 			end
 		end
 		if(nil ~= win_times) then
-			local string.format("update sgoly.record set win_times = '%s' where"
+			local sql = string.format("update sgoly.record set win_times = '%s' where"
 				.." record_uid = '%d' and record_date = '%s'; ", win_times, uid, 
 				dt)
 			local status = mysql_query(sql)
@@ -383,7 +383,7 @@ function sgoly_record.opt_update(nickname, win_money, cost_money, win_times, tim
 			end
 		end
 		if(nil ~= times) then
-			local string.format("update sgoly.record set times = '%s' where"
+			local sql = string.format("update sgoly.record set times = '%s' where"
 				.." record_uid = '%d' and record_date = '%s'; ", times, uid, 
 				dt)
 			local status = mysql_query(sql)
@@ -394,7 +394,7 @@ function sgoly_record.opt_update(nickname, win_money, cost_money, win_times, tim
 			end
 		end
 		if(nil ~= single_max) then
-			local string.format("update sgoly.record set single_max = '%s' where"
+			local sql = string.format("update sgoly.record set single_max = '%s' where"
 				.." record_uid = '%d' and record_date = '%s'; ", single_max, uid, 
 				dt)
 			local status = mysql_query(sql)
@@ -405,7 +405,7 @@ function sgoly_record.opt_update(nickname, win_money, cost_money, win_times, tim
 			end
 		end
 		if(nil ~= continuous_max) then
-			local string.format("update sgoly.record set continuous_max = '%s' where"
+			local sql = string.format("update sgoly.record set continuous_max = '%s' where"
 				.." record_uid = '%d' and record_date = '%s'; ", continuous_max, 
 				uid, dt)
 			local status = mysql_query(sql)
