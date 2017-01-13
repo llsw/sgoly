@@ -1,6 +1,5 @@
 #Sgoly design info
 ---
-###github
 
 ###获取仓库
 1.步骤1 克隆总仓库: git clone https://github.com/llsw/sgoly.git  
