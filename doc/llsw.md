@@ -1,8 +1,6 @@
 #Sgoly design info
 ---
 ###github
-github帐号:llsw  
-github密码:lkgame123
 
 ###获取仓库
 1.步骤1 克隆总仓库: git clone https://github.com/llsw/sgoly.git  
