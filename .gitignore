@@ -1,4 +1,4 @@
 code/server/log/*.log
 *.test
 *.zip
-llsw.md
+doc/llsw.md
