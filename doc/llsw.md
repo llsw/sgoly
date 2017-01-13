@@ -44,3 +44,18 @@ git pull origin dev
 ./skynet ../cluster_database/config/config
 
 ---------------------------------------------------------
+
+虚拟机用户名:interface
+密码:lkgame123
+sudo密码:lkgame123
+
+共享文件夹:\\192.168.80.211\interface
+用户名:interface
+密码:lkgame123
+
+ssh连接命令: ssh interface@192.168.80.211
+
+数据库帐号:interface
+密码:627795061
+
+redis密码：123456
