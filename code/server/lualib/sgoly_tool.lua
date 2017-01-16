@@ -49,4 +49,51 @@ function sgoly_tool.getMoney(nickname)
 	end
 end
 
+--!
+--! @brief      保存用户总金币到Redis
+--!
+--! @param      nickname  用户名
+--! @param      money     用户总金币
+--!
+--! @return     bool, errorMsg 执行成功与否、错误消息
+--!
+--! @author     kun si
+--! @date       2017-01-16
+--!
+function sgoly_tool.saveMoneyToRedis(nickname, money)
+	if nickname == nil or money == nil then
+		return false, "nickname or money is nil"
+	end
+	
+	local key = "user:" .. nickname
+	redis_query({"hset", key, "money", money})
+	return true, nil
+end
+
+
+--!
+--! @brief      保存游戏结算结果到Redis
+--!
+--! @param      nickname      	用户名
+--! @param      winMoney      	本次游戏赢的总钱
+--! @param      winNum        	中奖次数
+--! @param      serialWinNum  	连续中奖次数
+--! @param      maxWinMoney  	最大中奖金额
+--! @param      costMoney	  	本轮游戏消耗的金钱	
+--!
+--! @return     bool, errorMsg 执行成功与否、错误消息
+--!
+--! @author     kun si
+--! @date       2017-01-16
+--!
+function sgoly_tool.saveStatementsToRedis(nickname, winMoney, winNum, serialWinNum, maxWinMoney, costMoney)
+	if nickname == nil or winMoney == nil or winNum == nil or serialWinNum == nil or maxWinMoney == nil then
+		return false, "There are nil in args."
+	end
+	
+	local key = "statements:" .. nickname
+	redis_query({"hmset", key, {"winMoney", winMoney, "winNum", winNum, "serialWinNum", serialWinNum, "maxWinMoney", maxWinMoney}})
+	return true, nil
+end
+
 return sgoly_tool
