@@ -9,7 +9,7 @@ local service_config = {}
 service_config["database_mysql_config"] = {
 	dbType = "MySQL",	--
 	totalNum = 15, 		-- mysql最大连接数
-	host = "192.168.100.165",	-- mysql数据库IP
+	host = "192.168.100.243",	-- mysql数据库IP
 	port = 3306,		-- mysql数据库端口
 	database = "sgoly",	-- mysql数据库
 	user = "interface",	-- mysql数据库用户名
@@ -20,7 +20,7 @@ service_config["database_mysql_config"] = {
 service_config["database_redis_6379_config"] = {
 	dbType = "Redis",	--
 	totalNum = 15,		--
-	host = "192.168.100.165",	--
+	host = "192.168.100.243",	--
 	port = 6379,		--
 	db = 0,            	--
 	auth = "jM+x3GFfjj2fQm4x9mWUtGZejd+2S1jfgm8FIo58apU=",
