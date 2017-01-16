@@ -80,7 +80,7 @@ end
 	historynum=0     --历史抽奖次数
 --rec
 --主循环判断
-function main(end_point,beilv,k)                         --end_point底分    beilv 倍率   k 次数
+function main(fd,end_point,beilv,k)                         --end_point底分    beilv 倍率   k 次数
 	historynum=historynum+k
 	local j=0  --记录本轮中奖总次数
 	local number1={}    --第几次中奖
@@ -100,7 +100,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"A5")
 			n=n+1
-			picture_order("A5")
+			local sequence=picture_order("A5")
 			print("得分为",end_point*beilv*100)
 			money=money+end_point*beilv*100
 		elseif a>=5 and a<=34 then
@@ -605,8 +605,8 @@ end
 	end
 end
 
-function CMD.calc(end_point,beilv,k)
-	 main(end_point,beilv,k)
+function CMD.calc(fd,end_point,beilv,k)
+	 main(fd,end_point,beilv,k)
 end
 -- main(10,10,5)
 -- main(10,10,10)
