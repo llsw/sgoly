@@ -41,4 +41,12 @@ skynet.start(function ()
 	-- local  hub= skynet.uniqueservice("hub")
 	-- skynet.call(hub, "lua", "open","0.0.0.0",7000)
 	--skynet.exit()
+	local gate = skynet.uniqueservice("gate_example")
+	skynet.name(".gate_example", gate)
+	skynet.call(gate,"lua","open", {
+		port = 8889,
+		maxclient = max_client,
+		nodelay = true,
+	})
+	
 end)

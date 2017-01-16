@@ -6,6 +6,39 @@ local md5 = require "md5"
 local tool = require "sgoly_tool"
 require "sgoly_query"
 
+local netpack = require "netpack"
+local socketdriver = require "socketdriver"
+local MSG = {}
+
+
+	function MSG.open(fd, msg)
+		
+		socketdriver.nodelay(fd)
+		socketdriver.start(fd)
+	end
+
+	function MSG.data(fd, msg, sz)
+		skynet.error(msg, sz)
+		skynet.error(netpack.tostring(msg, sz))
+	end
+
+
+	skynet.register_protocol {
+		name = "socket",
+		id = skynet.PTYPE_SOCKET,	-- PTYPE_SOCKET = 6
+		unpack = function ( msg, sz )
+			skynet.error("test1")
+			return netpack.filter( queue, msg, sz)
+		end,
+		dispatch = function (_, _, q, type, ...)
+			skynet.error("test2")
+			if type then
+				skynet.error("type:", type)
+				MSG[type](...)
+			end
+		end
+	}
+
 skynet.start(function()
 	printI(package.cpath)
 	local lua_value = {true, {foo="bar"}} 
@@ -24,8 +57,15 @@ skynet.start(function()
 	-- 	skynet.error(k,string.match(v,"user:(.+)"))
 	-- end
 	--tool.saveMoneyToRedis("interface", 1000)
-	tool.saveStatementsToRedis("interface", 10000, 10, 3, 5000, 4000)
+	-- tool.saveStatementsToRedis("interface", 10000, 10, 3, 5000, 4000)
 
-	skynet.exit()
+
+	local address = "0.0.0.0"
+	local port = 8889
+	skynet.error(string.format("Listen on %s:%d", address, port))
+	socket = socketdriver.listen(address, port)
+	socketdriver.start(socket)
+
+	--skynet.exit()
 	
 end)
