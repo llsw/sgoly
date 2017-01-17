@@ -32,7 +32,16 @@ local function getUuid()
 	return tonumber(uuid)
 end
 
+function sgoly_tool.multipleToTable(redisResult)
+	local rt = {}
+	local index = 1
+	while index <= #redisResult-1 do
+		rt[redisResult[index]] = redisResult[index+1]
+		index = index + 2
+	end 
 
+	return rt 
+end
 
 function sgoly_tool.getUuid()
 	return getUuid()
