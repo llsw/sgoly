@@ -37,15 +37,15 @@ skynet.start(function ()
 
 	--local  watchdog= skynet.uniqueservice("watchdog")
 	--skynet.call(watchdog, "lua", "start")
-	local  server= skynet.uniqueservice("server")
+	-- local  server= skynet.uniqueservice("server")
 	-- local  hub= skynet.uniqueservice("hub")
 	-- skynet.call(hub, "lua", "open","0.0.0.0",7000)
 	--skynet.exit()
-	local gate = skynet.uniqueservice("gate_example")
-	skynet.name(".gate_example", gate)
-	skynet.call(gate,"lua","open", {
-		port = 8889,
-		maxclient = max_client,
+	local gateway = skynet.uniqueservice("gateway")
+	skynet.name(".gateway", gateway)
+	skynet.call(gateway,"lua","open", {
+		port = 7000,
+		maxclient =1024,
 		nodelay = true,
 	})
 	

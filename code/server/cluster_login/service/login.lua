@@ -1,5 +1,5 @@
 local skynet    = require "skynet"
-local socket    = require "socket"
+
 local crypt 	= require "crypt"
 local sgoly_users=require "sgoly_users"
 local cluster   = require "cluster"
@@ -10,23 +10,11 @@ local md5 = require "md5"
 local record=require "sgoly_record"
 local sgoly_tool=require"sgoly_tool"
 local CMD={}
-
-function handler(fd, addr)
-	socket.start(fd)
-	while true do
-		local str = socket.readline(fd)
-		if str then
-			skynet.error("client"..fd, " says: ", str)
-			local str1 = crypt.base64decode(str)
-			local password
+local loginuser = {}
+function handler(fd, mes)
 			local who="123456"
-			password=crypt.aesdecode(str1,who,"")
-			local mes = cjson.decode(password)
-			skynet.error(mes)
-			skynet.error(mes.ID,mes.NAME,mes.PASSWD)
-
 ----------------------------用户注册-----------------------------------			
-			if mes.ID=="2" then 
+		    if mes.ID=="2" then 
 			   skynet.error("2",mes.PASSWD)            
 			   mes.PASSWD=md5.sumhexa(mes.PASSWD)
 			   local bool,msg=sgoly_users.register(mes.NAME,mes.PASSWD)
@@ -39,20 +27,21 @@ function handler(fd, addr)
 				  		local resuss1=cjson.encode(resuss)
 			   			local resuss1_1=crypt.aesencode(resuss1,who,"")
 			  			local resuss1_2 = crypt.base64encode(resuss1_1)
-			  	  		socket.write(fd,resuss1_2.."\n")
+			  	  		return resuss1_2.."\n"
 			  	  elseif not bo then
 			  	  	    local reinit={ID="2",STATE=bo,MESSAGE=message}
 				  		local reinit1=cjson.encode(reinit)
 			   			local reinit1_1=crypt.aesencode(reinit1,who,"")
 			  			local reinit1_2 = crypt.base64encode(reinit1_1)
-			  	  		socket.write(fd,reinit1_2.."\n")
+			  	  		return reinit1_2.."\n"
 			      end
 			   elseif not bool then 
 			   		local refal={ID="2",STATE=bool,MESSAGE=msg}
 			   		local refal1=cjson.encode(refal)
 			   		local refal1_1=crypt.aesencode(refal1,who,"")
 			   		local refal1_2 = crypt.base64encode(refal1_1)
-			  		socket.write(fd,refal1_2.."\n")
+			   		print("zxcgfdsgrfy")
+			  		return refal1_2.."\n"
 			   end
 ------------------------- --用户登录-------------------------------------
 		    elseif mes.ID=="1" then               
@@ -65,25 +54,25 @@ function handler(fd, addr)
 		            skynet.error("money is",money)
 		            if boo then
 				 	    local reqmoney={ID="1",STATE=boo,MONEY=money}
-					    local str3=cjson.encode(reqmoney)
-					    local rep3=crypt.aesencode(str3,who,"")
-					    local str3_1 = crypt.base64encode(rep3)
-					    socket.write(fd,str3_1.."\n")
-					    local agent= skynet.newservice("agent")
-        				skynet.call(agent, "lua", "main", fd,addr)
+					    local str5=cjson.encode(reqmoney)
+					    local rep5=crypt.aesencode(str5,who,"")
+					    local str5_1 = crypt.base64encode(rep5)
+					    return str5_1.."\n"
+					    -- return(fd,str3_1.."\n")
+				     --    loginuser[fd]=true
 					elseif not boo then
 						local reqmoney={ID="1",STATE=boo,MESSAGE=money}
 					    local str3=cjson.encode(reqmoney)
 					    local rep3=crypt.aesencode(str3,who,"")
 					    local str3_1 = crypt.base64encode(rep3)
-					    socket.write(fd,str3_1.."\n")
+					    return str3_1.."\n"
 					end
 			    elseif	not bool then
 			        local rep4={ID="1",STATE=bool,MESSAGE=msg}
 				    local str4=cjson.encode(rep4)
 				    local rep4_1=crypt.aesencode(str4,who,"")
 				    local str4_1 = crypt.base64encode(rep4_1)
-				    socket.write(fd,str4_1.."\n")	
+				    return str4_1.."\n"	
 				end 	
 
 
@@ -104,39 +93,33 @@ function handler(fd, addr)
 			       skynet.error(name,trpd)           
 				   local bo,message=record.record_init(name,500000)
 				   skynet.error("record_init=",bo,message)--test
-			       if bo then 
+			        if bo then 
 				       local rep={ID="3",STATE=bo,NAME=name,PASSWD=password}
 				       local str=cjson.encode(rep)
 				       local rep1=crypt.aesencode(str,who,"")
 				       local str2 = crypt.base64encode(rep1)
-				       socket.write(fd,str2.."\n")
-			       elseif not bo then
+				       return str2.."\n"
+			        elseif not bo then
 				       	local rep5={ID="3",STATE=bo,MESSAGE=message}
 					    local str5=cjson.encode(rep5)
 					    local rep5_1=crypt.aesencode(str5,who,"")
 					    local str5_1 = crypt.base64encode(rep5_1)
-					    socket.write(fd,str5_1.."\n")
+					    return str5_1.."\n"
 					end
 			    elseif msg=="未知错误" then
 			       local rep={ID="3",STATE=false,MESSAGE=msg}
 			       local str=cjson.encode(rep)
 			       local rep1=crypt.aesencode(str,who,"")
 			       local str2 = crypt.base64encode(rep1)
-			       socket.write(fd,str2.."\n")
-				end	
---------------------------主游戏逻辑-----------------------------				
-			-- elseif mes.ID=="4" then	
-			-- 	skynet.error("this is 4")
-			-- 	local proxy = cluster.proxy("cluster_game",".maingame")
-			-- 	local a=skynet.call(proxy,"lua","calc",fd,10,10,5)
-		 --    end
-			end
-		else
-			socket.close(fd)
-            skynet.error("client"..fd, " ["..addr.."]", "disconnected")
-			return
-		end
-	end
+			       return str2.."\n"
+			    end  
+        	end
+        	 local rep={ID="3",STATE=false,MESSAGE=msg}
+			       local str=cjson.encode(rep)
+			       local rep1=crypt.aesencode(str,who,"")
+			       local str2 = crypt.base64encode(rep1)
+			       return str2.."\n"
+    
 end
 
 function tourist()          --游客登录协程互斥防止获取相同ID
@@ -157,11 +140,9 @@ function randomuserid(id)     --游客登录随机ID
 end
 
 
-function CMD.signin(fd,addr)
-	skynet.fork(handler, fd, addr)
+function CMD.signin(fd,mes)
+	return handler(fd,mes)
 end
-
-
 
 
 skynet.start(function()
@@ -169,7 +150,6 @@ skynet.start(function()
 	    skynet.error("i=",i)
 	 	math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
 		co = coroutine.create(function ()
-			print("co","asdfgg")
 		    		 while true do 
 		    		 	i=i+1
 		    		 	coroutine.yield(i)

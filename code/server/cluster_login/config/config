@@ -5,13 +5,13 @@ logpath = "."
 harbor = 0 
 bootstrap = "snlua bootstrap"
 
-luaservice = root.."service/?.lua;"..root.."../protocol/?.lua;"..root.."../cluster_gateway/?.lua;"..root.."../cluster_gateway/service/?.lua;"..root.."../lualib/?.lua;"
+luaservice = root.."service/?.lua;"..root.."../protocol/?.lua;"..root.."../cluster_login/?.lua;"..root.."../cluster_login/service/?.lua;"..root.."../lualib/?.lua;"
 
 lualoader = root .. "lualib/loader.lua"
 
 -- preload = 
 
-snax = root.."../protocol/?.lua;"..root.."../cluster_gateway/?.lua;"..root.."../cluster_gateway/service/?.lua;"
+snax = root.."../protocol/?.lua;"..root.."../cluster_login/?.lua;"..root.."../cluster_login/service/?.lua;"
 
 lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"..root.."../util/?.lua;"..root.."../lualib/?.lua;"..root.."../lualib/?/?.lua;"
 
@@ -22,6 +22,6 @@ cluster = root .. "../clustername/clustername.lua"
 --debug_port = 8001
 
 log_dirname = "../log"
-log_basename = "cluster_gateway_log"
+log_basename = "cluster_login_log"
 
-start = "gateway_main"
+start = "login_main"

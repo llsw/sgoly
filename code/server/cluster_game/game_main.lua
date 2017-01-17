@@ -33,9 +33,6 @@ skynet.start(function ()
 
 	--local debug_port = skynet.getenv "debug_port"
 	--skynet.newservice("debug_console",debug_port)
-
-	-- local  maingame= skynet.uniqueservice("maingame")
-	--local  watchdog= skynet.uniqueservice("watchdog")
-	--skynet.call(watchdog, "lua", "start")
-	--local maingame = skynet.uniqueservice("maingame")
+    local  agent= skynet.newservice("agent")
+	local  maingame= skynet.newservice("maingame")
 end)

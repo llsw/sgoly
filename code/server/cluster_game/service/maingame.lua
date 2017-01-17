@@ -1,6 +1,10 @@
 require "skynet.manager"
 local socket=require "socket"
 local skynet=require "skynet"
+local crypt 	= require "crypt"
+local cluster   = require "cluster"
+package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
+local cjson = require "cjson"
 local CMD = {}
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
 
@@ -61,31 +65,34 @@ function picture_order(picturetype)                       --图片序列函数
 	end
 end
 
-function send_result(fd,grade,sequence)
-	local result={grade=grade,sequence=sequence}
+function send_result(fd,SERIES,WCOUNT,MAXMONEY,SUNMONEY,FINMONEY,WINLIST)
+	local who = "123456"
+	local result={ID="4",STATE=true,SERIES=SERIES,WCOUNT=WCOUNT,
+	       MAXMONEY=MAXMONEY,SUNMONEY=SUNMONEY,FINMONEY=FINMONEY,WINLIST=WINLIST}
     local result1=cjson.encode(result)
     local result1_1=crypt.aesencode(result1,who,"")
     local result1_2 = crypt.base64encode(result1_1)
     socket.write(fd,result1_2.."\n")
 end
 
---记录中奖类型
+	--记录中奖类型
 
  	gamenum=0          --游戏次数
  	money=0            --赚的金额
 	deposit=0          --押金
 	historyj=0         --历史中奖次数
-	n=1             --number1 的索引
-    x = 1          --1 为普通模式 2为困难模式 3为简单模式	
-	historynum=0     --历史抽奖次数
---rec
+	n=1                --number1 的索引
+    x = 1              --1 为普通模式 2为困难模式 3为简单模式	
+	historynum=0       --历史抽奖次数
+	winmoney={}        --中奖金额
 --主循环判断
-function main(fd,end_point,beilv,k)                         --end_point底分    beilv 倍率   k 次数
+function gamemain(fd,end_point,beilv,k)                         --end_point底分    beilv 倍率   k 次数
 	historynum=historynum+k
-	local j=0  --记录本轮中奖总次数
+	local j=0           --记录本轮中奖总次数
 	local number1={}    --第几次中奖
-	local number2={}	  --第几次中的什么奖
+	local number2={}	--第几次中的什么奖
 	local wintype={A5=0,B5=0,C5=0,D5=0,E5=0,A4=0,B4=0,C4=0,D4=0,E4=0,A3=0,B3=0,C3=0,D3=0,E3=0}
+	local sequence = {}	
 for i=1,k do
 	a=math.random(1,1000000)
 	print("-----------------------------")
@@ -100,7 +107,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"A5")
 			n=n+1
-			local sequence=picture_order("A5")
+			table.insert(sequence,picture_order("A5"))
 			print("得分为",end_point*beilv*100)
 			money=money+end_point*beilv*100
 		elseif a>=5 and a<=34 then
@@ -110,7 +117,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"B5")
 			n=n+1
-			picture_order("B5")
+			table.insert(sequence,picture_order("B5"))
 			print("得分为",end_point*beilv*90) 
 			money=money+end_point*beilv*90
 		elseif a>=35 and a<=254 then
@@ -120,7 +127,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"C5")
 			n=n+1
-			picture_order("C5")
+			table.insert(sequence,picture_order("C5"))
 			print("得分为",end_point*beilv*80) 
 			money=money+end_point*beilv*80
 		elseif a>=255 and a<=704 then
@@ -130,7 +137,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"D5")
 			n=n+1
-			picture_order("D5")
+			table.insert(sequence,picture_order("D5"))
 			print("得分为",end_point*beilv*70) 
 			money=money+end_point*beilv*70
 		elseif a>=705 and a<=7174 then
@@ -140,7 +147,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"E5")
 			n=n+1
-			picture_order("E5")
+			table.insert(sequence,picture_order("E5"))
 			print("得分为",end_point*beilv*60) 
 			money=money+end_point*beilv*100
 		elseif a>=7175 and a<=7254 then
@@ -150,7 +157,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"A4")
 			n=n+1
-			picture_order("A4")
+			table.insert(sequence,picture_order("A4"))
 			print("得分为",end_point*beilv*30) 
 			money=money+end_point*beilv*30
 		elseif a>=7255 and a<=7704 then
@@ -160,7 +167,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"B4")
 			n=n+1
-			picture_order("B4")
+			table.insert(sequence,picture_order("B4"))
 			print("得分为",end_point*beilv*25) 
 			money=money+end_point*beilv*25
 		elseif a>=7705 and a<=9564 then
@@ -170,7 +177,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"C4")
 			n=n+1
-			picture_order("C4")
+			table.insert(sequence,picture_order("C4"))
 			print("得分为",end_point*beilv*20) 
 			money=money+end_point*beilv*20
 		elseif a>=9565 and a<=12664 then
@@ -180,7 +187,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"D4")
 			n=n+1
-			picture_order("D4")
+			table.insert(sequence,picture_order("D4"))
 			print("得分为",end_point*beilv*15) 
 			money=money+end_point*beilv*15
 		elseif a>=12665 and a<=39854 then
@@ -190,7 +197,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"E4")
 			n=n+1
-			picture_order("E4")
+			table.insert(sequence,picture_order("E4"))
 			print("得分为",end_point*beilv*10) 
 			money=money+end_point*beilv*10
 		elseif a>=39855 and a<=41274 then
@@ -200,7 +207,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"A3")
 			n=n+1
-			picture_order("A3")
+			table.insert(sequence,picture_order("A3"))
 			print("得分为",end_point*beilv*5) 
 			money=money+end_point*beilv*5
 		elseif a>=41274 and a<=45224 then
@@ -210,7 +217,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"B3")
 			n=n+1
-			picture_order("B3")
+			table.insert(sequence,picture_order("B3"))
 			print("得分为",end_point*beilv*3) 
 			money=money+end_point*beilv*3
 		elseif a>=45225 and a<=57534 then
@@ -220,7 +227,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"C3")
 			n=n+1
-			picture_order("C3")
+			table.insert(sequence,picture_order("C3"))
 			print("得分为",end_point*beilv*1)
 			money=money+end_point*beilv*1 
 		elseif a>=57535 and a<=76744 then
@@ -230,7 +237,7 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"D3")
 			n=n+1
-			picture_order("D3")
+			table.insert(sequence,picture_order("D3"))
 			print("得分为",end_point*beilv*0.5)
 			money=money+end_point*beilv*0.5 
 		elseif a>=76745 and a<=148224 then
@@ -240,12 +247,12 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"E3")
 			n=n+1
-			picture_order("E3")
+			table.insert(sequence,picture_order("E3"))
 			print("得分为",end_point*beilv*0.3)
 			money=money+end_point*beilv*0.3 
 		else 
 			print(i,"没有中奖")
-			picture_order("N0")
+			table.insert(sequence,picture_order("NO"))
 			print("得分为",end_point*beilv*0) 
 			money=money+end_point*beilv*0
 		end
@@ -261,8 +268,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"A5")
 			n=n+1
-			picture_order("A5")
-			print("得分为",end_point*beilv*100) 
+			table.insert(sequence,picture_order("A5"))
+			print("得分为",end_point*beilv*100)
+			money=money+end_point*beilv*100 
 		elseif a>=31 and a<=80 then
 			print(i,"中奖类型BBBBB----O(∩_∩)O~~-!")
 			j=j+1
@@ -270,8 +278,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"B5")
 			n=n+1
-			picture_order("B5")
-			print("得分为",end_point*beilv*90) 
+			table.insert(sequence,picture_order("B5"))
+			print("得分为",end_point*beilv*90)
+			money=money+end_point*beilv*90 
 		elseif a>=81 and a<=150 then
 			print(i,"中奖类型CCCCC----O(∩_∩)O~~-!")
 			j=j+1
@@ -279,8 +288,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"C5")
 			n=n+1
-			picture_order("C5")
-			print("得分为",end_point*beilv*80) 
+			table.insert(sequence,picture_order("C5"))
+			print("得分为",end_point*beilv*80)
+			money=money+end_point*beilv*80 
 		elseif a>=151 and a<=381 then
 			print(i,"中奖类型DDDDD----O(∩_∩)O~~-!")
 			j=j+1
@@ -288,8 +298,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"D5")
 			n=n+1
-			picture_order("D5")
+			table.insert(sequence,picture_order("D5"))
 			print("得分为",end_point*beilv*70) 
+			money=money+end_point*beilv*70
 		elseif a>=382 and a<=6741 then
 			print(i,"中奖类型EEEEE----O(∩_∩)O~~-!")
 			j=j+1
@@ -297,8 +308,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"E5")
 			n=n+1
-			picture_order("E5")
-			print("得分为",end_point*beilv*60) 
+			table.insert(sequence,picture_order("E5"))
+			print("得分为",end_point*beilv*60)
+			money=money+end_point*beilv*60 
 		elseif a>=6742 and a<=7011 then
 			print(i,"中奖类型AAAA----O(∩_∩)O~~-!")
 			j=j+1
@@ -306,8 +318,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"A4")
 			n=n+1
-			picture_order("A4")
-			print("得分为",end_point*beilv*30) 
+			table.insert(sequence,picture_order("A4"))
+			print("得分为",end_point*beilv*30)
+			money=money+end_point*beilv*30 
 		elseif a>=7012 and a<=7851 then
 			print(i,"中奖类型BBBB----O(∩_∩)O~~-!")
 			j=j+1
@@ -315,8 +328,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"B4")
 			n=n+1
-			picture_order("B4")
-			print("得分为",end_point*beilv*25) 
+			table.insert(sequence,picture_order("B4"))
+			print("得分为",end_point*beilv*25)
+			money=money+end_point*beilv*25 
 		elseif a>=7852 and a<=9451 then
 			print(i,"中奖类型CCCC----O(∩_∩)O~~-!")
 			j=j+1
@@ -324,8 +338,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"C4")
 			n=n+1
-			picture_order("C4")
-			print("得分为",end_point*beilv*20) 
+			table.insert(sequence,picture_order("C4"))
+			print("得分为",end_point*beilv*20)
+			money=money+end_point*beilv*20 
 		elseif a>=9452 and a<=11361 then
 			print(i,"中奖类型DDDD----O(∩_∩)O~~-!")
 			j=j+1
@@ -333,8 +348,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"D4")
 			n=n+1
-			picture_order("D4")
-			print("得分为",end_point*beilv*15) 
+			table.insert(sequence,picture_order("D4"))
+			print("得分为",end_point*beilv*15)
+			money=money+end_point*beilv*15 
 		elseif a>=11362 and a<=39854 then
 			print(i,"中奖类型EEEE----O(∩_∩)O~~-!")
 			j=j+1
@@ -342,8 +358,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"E4")
 			n=n+1
-			picture_order("E4")
+			table.insert(sequence,picture_order("E4"))
 			print("得分为",end_point*beilv*10) 
+			money=money+end_point*beilv*10
 		elseif a>=39855 and a<=34571 then
 			print(i,"中奖类型AAA----O(∩_∩)O~~-!") 
 			j=j+1
@@ -351,8 +368,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"A3")
 			n=n+1
-			picture_order("A3")
-			print("得分为",end_point*beilv*5) 
+			table.insert(sequence,picture_order("A3"))
+			print("得分为",end_point*beilv*5)
+			money=money+end_point*beilv*5 
 		elseif a>=34572 and a<=45224 then
 			print(i,"中奖类型BBB----O(∩_∩)O~~-!") 
 			j=j+1
@@ -360,8 +378,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"B3")
 			n=n+1
-			picture_order("B3")
-			print("得分为",end_point*beilv*3) 
+			table.insert(sequence,picture_order("B3"))
+			print("得分为",end_point*beilv*3)
+			money=money+end_point*beilv*3 
 		elseif a>=45225 and a<=37511 then
 			print(i,"中奖类型CCC----O(∩_∩)O~~-!") 
 			j=j+1
@@ -369,8 +388,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"C3")
 			n=n+1
-			picture_order("C3")
-			print("得分为",end_point*beilv*1) 
+			table.insert(sequence,picture_order("C3"))
+			print("得分为",end_point*beilv*1)
+			money=money+end_point*beilv*1 
 		elseif a>=37512 and a<=45061 then
 			print(i,"中奖类型DDD----O(∩_∩)O~~-!") 
 			j=j+1
@@ -378,8 +398,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"D3")
 			n=n+1
-			picture_order("D3")
-			print("得分为",end_point*beilv*0.5) 
+			table.insert(sequence,picture_order("D3"))
+			print("得分为",end_point*beilv*0.5)
+			money=money+end_point*beilv*0.5 
 		elseif a>=45062 and a<=56151 then
 			print(i,"中奖类型EEE----O(∩_∩)O~~-!") 
 			j=j+1
@@ -387,12 +408,14 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"E3")
 			n=n+1
-			picture_order("E3")
-			print("得分为",end_point*beilv*0.3) 
+			table.insert(sequence,picture_order("E3"))
+			print("得分为",end_point*beilv*0.3)
+			money=money+end_point*beilv*0.3 
 		else 
 			print(i,"没有中奖")
-			picture_order("N0")
-			print("得分为",end_point*beilv*0) 
+			table.insert(sequence,picture_order("NO"))
+			print("得分为",end_point*beilv*0)
+			money=money+end_point*beilv*0 
 		end
 ------------------------简单模式-----------------------------
 	elseif x==3 then 
@@ -404,8 +427,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"A5")
 			n=n+1
-			picture_order("A5")
+			table.insert(sequence,picture_order("A5"))
 			print("得分为",end_point*beilv*300) 
+			money=money+end_point*beilv*300
 		elseif a>=21 and a<=40 then
 			print(i,"中奖类型BBBBB----O(∩_∩)O~~-!")
 			j=j+1
@@ -413,8 +437,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"B5")
 			n=n+1
-			picture_order("B5")
+			table.insert(sequence,picture_order("B5"))
 			print("得分为",end_point*beilv*250) 
+			money=money+end_point*beilv*250
 		elseif a>=41 and a<=70 then
 			print(i,"中奖类型CCCCC----O(∩_∩)O~~-!")
 			j=j+1
@@ -422,8 +447,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"C5")
 			n=n+1
-			picture_order("C5")
-			print("得分为",end_point*beilv*200) 
+			table.insert(sequence,picture_order("C5"))
+			print("得分为",end_point*beilv*200)
+			money=money+end_point*beilv*200 
 		elseif a>=71 and a<=1160 then
 			print(i,"中奖类型DDDDD----O(∩_∩)O~~-!")
 			j=j+1
@@ -431,8 +457,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"D5")
 			n=n+1
-			picture_order("D5")
-			print("得分为",end_point*beilv*150) 
+			table.insert(sequence,picture_order("D5"))
+			print("得分为",end_point*beilv*150)
+			money=money+end_point*beilv*150 
 		elseif a>=1161 and a<=7220 then
 			print(i,"中奖类型EEEEE----O(∩_∩)O~~-!")
 			j=j+1
@@ -440,8 +467,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"E5")
 			n=n+1
-			picture_order("E5")
-			print("得分为",end_point*beilv*100) 
+			table.insert(sequence,picture_order("E5"))
+			print("得分为",end_point*beilv*100)
+			money=money+end_point*beilv*100 
 		elseif a>=7221 and a<=7530 then
 			print(i,"中奖类型AAAA----O(∩_∩)O~~-!")
 			j=j+1
@@ -449,8 +477,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"A4")
 			n=n+1
-			picture_order("A4")
+			table.insert(sequence,picture_order("A4"))
 			print("得分为",end_point*beilv*300) 
+			money=money+end_point*beilv*300
 		elseif a>=7531 and a<=7840 then
 			print(i,"中奖类型BBBB----O(∩_∩)O~~-!")
 			j=j+1
@@ -458,8 +487,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"B4")
 			n=n+1
-			picture_order("B4")
-			print("得分为",end_point*beilv*40) 
+			table.insert(sequence,picture_order("B4"))
+			print("得分为",end_point*beilv*40)
+			money=money+end_point*beilv*40 
 		elseif a>=7841 and a<=8080 then
 			print(i,"中奖类型CCCC----O(∩_∩)O~~-!")
 			j=j+1
@@ -467,8 +497,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"C4")
 			n=n+1
-			picture_order("C4")
-			print("得分为",end_point*beilv*20) 
+			table.insert(sequence,picture_order("C4"))
+			print("得分为",end_point*beilv*20)
+			money=money+end_point*beilv*20 
 		elseif a>=8081 and a<=13630 then
 			print(i,"中奖类型DDDD----O(∩_∩)O~~-!")
 			j=j+1
@@ -476,8 +507,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"D4")
 			n=n+1
-			picture_order("D4")
-			print("得分为",end_point*beilv*10) 
+			table.insert(sequence,picture_order("D4"))
+			print("得分为",end_point*beilv*10)
+			money=money+end_point*beilv*10 
 		elseif a>=13631 and a<=44440 then
 			print(i,"中奖类型EEEE----O(∩_∩)O~~-!")
 			j=j+1
@@ -485,8 +517,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"E4")
 			n=n+1
-			picture_order("E4")
-			print("得分为",end_point*beilv*10) 
+			table.insert(sequence,picture_order("E4"))
+			print("得分为",end_point*beilv*10)
+			money=money+end_point*beilv*10 
 		elseif a>=44441 and a<=48100 then
 			print(i,"中奖类型AAA----O(∩_∩)O~~-!") 
 			j=j+1
@@ -494,8 +527,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"A3")
 			n=n+1
-			picture_order("A3")
-			print("得分为",end_point*beilv*5) 
+			table.insert(sequence,picture_order("A3"))
+			print("得分为",end_point*beilv*5)
+			money=money+end_point*beilv*5 
 		elseif a>=48101 and a<=51540 then
 			print(i,"中奖类型BBB----O(∩_∩)O~~-!") 
 			j=j+1
@@ -503,8 +537,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"B3")
 			n=n+1
-			picture_order("B3")
-			print("得分为",end_point*beilv*3) 
+			table.insert(sequence,picture_order("B3"))
+			print("得分为",end_point*beilv*3)
+			money=money+end_point*beilv*3 
 		elseif a>=51541 and a<=54570 then
 			print(i,"中奖类型CCC----O(∩_∩)O~~-!") 
 			j=j+1
@@ -512,8 +547,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"C3")
 			n=n+1
-			picture_order("C3")
+			table.insert(sequence,picture_order("C3"))
 			print("得分为",end_point*beilv*1) 
+			money=money+end_point*beilv*1
 		elseif a>=54571 and a<=82020 then
 			print(i,"中奖类型DDD----O(∩_∩)O~~-!") 
 			j=j+1
@@ -521,8 +557,9 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"D3")
 			n=n+1
-			picture_order("D3")
-			print("得分为",end_point*beilv*0.5) 
+			table.insert(sequence,picture_order("D3"))
+			print("得分为",end_point*beilv*0.5)
+			money=money+end_point*beilv*0.5 
 		elseif a>=82021 and a<=161210 then
 			print(i,"中奖类型EEE----O(∩_∩)O~~-!") 
 			j=j+1
@@ -530,22 +567,33 @@ for i=1,k do
 			table.insert(number1,i)
 			table.insert(number2,"E3")
 			n=n+1
-			picture_order("E3")
+			table.insert(sequence,picture_order("E3"))
 			print("得分为",end_point*beilv*0.3) 
+			money=money+end_point*beilv*0.3
 		else 
 			print(i,"没有中奖")
-			picture_order("N0")
-			print("得分为",end_point*beilv*0) 
+			table.insert(sequence,picture_order("NO"))
+			print("得分为",end_point*beilv*0)
+			money=money+end_point*beilv*0 
 		end
 	end
 	gamenum=gamenum+1
 	deposit=deposit+end_point*beilv
 	if gamenum%10==0 and money/deposit>=0.9 then
 		x=2
+		print("2 money/depost=",money,deposit,money/deposit)
+		money=0
+		deposit=0
 	elseif gamenum%10==0 and money/deposit<=0.8 then
 		x=3
+		print("3 money/depost=",money,deposit,money/deposit)
+		money=0
+		deposit=0
 	elseif gamenum%10==0 and money/deposit>0.8 and money/deposit<0.9 then
 		x=1
+		print("2 money/depost=",money,deposit,money/deposit)
+		money=0
+		deposit=0
 	end
 end
 	historyj=historyj+j
@@ -603,14 +651,15 @@ end
 			print("最高连续不中奖次数为",max-1,"第",startnum,"-",endnum,"次")
 		end
 	end
+	send_result(fd,max,j,1,1,50000,sequence)
 end
 
 function CMD.calc(fd,end_point,beilv,k)
-	 main(fd,end_point,beilv,k)
+	 gamemain(fd,end_point,beilv,k)
 end
--- main(10,10,5)
--- main(10,10,10)
--- main(10,10,20)
+-- gamemain(1,10,10,5)
+-- gamemain(1,10,10,10)
+-- gamemain(1,10,10,20)
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(CMD[cmd], cmd .. "not found")

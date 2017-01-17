@@ -8,6 +8,7 @@ local cjson = require "cjson"
 function _read(id)
     while true do
         local str   = socket.readline(id)
+        print("read")
         if str then
             skynet.error(id, "server says: ", str)
             local str1 = crypt.base64decode(str)
@@ -15,7 +16,7 @@ function _read(id)
             local who="123456"
             password=crypt.aesdecode(str1,who,"")
             local mes =cjson.decode(password)
-            skynet.error("client echo",mes.ID)
+            skynet.error("client echo",mes.ID,mes.SESSION)
         else
             socket.close(id)
             skynet.error("disconnected")
@@ -39,19 +40,20 @@ skynet.start(function()
     skynet.fork(_read, id)
  
     -- for i=1, 10 do
-    -- local lua_value = {ID="3"}
-    local lua_value = {ID="1",NAME="interface",PASSWD=123456}
+    -- local lua_value = {ID="3",CLUSTER="4"}
+    local lua_value = {ID="1",CLUSTER="4",SERVICE="140",CMD="signin",NAME="interface6",PASSWD=123456}
     local json_text = cjson.encode(lua_value)
     local password 
     local who="123456"
     password =crypt.aesencode(json_text,who,"")
     local str1 = crypt.base64encode(password)
-    socket.write(id,str1.."\n")
+    str1 = string.pack(">s2", str1)
+    socket.write(id,str1)
     -- end
-    skynet.sleep(500)
-     local lua_value1 = {ID="4"}
-    local json_text1 = cjson.encode(lua_value1)
-     password1 =crypt.aesencode(json_text1,who,"")
-    local str11 = crypt.base64encode(password1)
-    socket.write(id,str11.."\n")
+    -- skynet.sleep(100)
+    --  local lua_value1 = {ID="4",BOTTOM=10,TIMES=10,COUNTS=1,MONEY=200,COST=100}
+    -- local json_text1 = cjson.encode(lua_value1)
+    --  password1 =crypt.aesencode(json_text1,who,"")
+    -- local str11 = crypt.base64encode(password1)
+    -- socket.write(id,str11.."\n")
 end)
