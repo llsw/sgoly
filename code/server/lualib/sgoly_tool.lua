@@ -116,6 +116,4 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, winNum, serialWinN
 	return true, nil
 end
 
---
-
 return sgoly_tool
