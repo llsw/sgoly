@@ -20,7 +20,7 @@ function sgoly_tool.intToWord(num)
 	local wordL = string.char(num % 256)
 	return wordH .. wordL	
 end
-
+--
 
 local function saveUuid(uuid)
 	redis_query({"set","uuid", uuid})
