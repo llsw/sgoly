@@ -72,7 +72,7 @@ function send_result(fd,SERIES,WCOUNT,MAXMONEY,SUNMONEY,FINMONEY,WINLIST)
     local result1=cjson.encode(result)
     local result1_1=crypt.aesencode(result1,who,"")
     local result1_2 = crypt.base64encode(result1_1)
-    socket.write(fd,result1_2.."\n")
+    return result1_2
 end
 
 	--记录中奖类型
@@ -651,11 +651,11 @@ end
 			print("最高连续不中奖次数为",max-1,"第",startnum,"-",endnum,"次")
 		end
 	end
-	send_result(fd,max,j,1,1,50000,sequence)
+	return send_result(fd,max,j,1,1,50000,sequence)
 end
 
 function CMD.calc(fd,end_point,beilv,k)
-	 gamemain(fd,end_point,beilv,k)
+	 return gamemain(fd,end_point,beilv,k)
 end
 -- gamemain(1,10,10,5)
 -- gamemain(1,10,10,10)

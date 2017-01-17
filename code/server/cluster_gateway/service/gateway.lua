@@ -37,36 +37,25 @@ function handler.message(fd, msg)
 			skynet.error(mes.SESSION,mes.CLUSTER,mes.SERVICE,mes.CMD,mes.ID,mes.NAME,mes.PASSWD)
 			local cnode=tonumber(mes.CLUSTER)
 			local snode=tonumber(mes.SERVICE)
-	
-			   local req =cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
-			   print(req,"thisi  is req")
-			 	driver.send(fd,req)
-	
-	
+			local req =cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
+			print(req,"thisi  is req")
+			driver.send(fd,req)
+        end
+end
 
-		end
-	
-		
-end
-function msgPack(msg)
-    local len = #msg
-    local wordH = string.char(math.floor(len/256))
-    local wordL = string.char(len%256)
-    return wordH..wordL..msg
-end
+
 function handler.connect(fd, addr)
 	gateserver.openclient(fd)
 	printI("Client fd[%d] connect gateway", fd)
 	session=session+1
-	local rep={SESSION=session}
+	local ses=tostring(session)
+	local rep={SESSION=ses,ID="0"}
 	local json_text = cjson.encode(rep)
     local password 
     local who="123456"
     password =crypt.aesencode(json_text,who,"")
     local str1 = crypt.base64encode(password)
     driver.send(fd,str1.."\n")
-    print("thisi is handler.connect")
-
 end
 
 function handler.disconnect(fd)

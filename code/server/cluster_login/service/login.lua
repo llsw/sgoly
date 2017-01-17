@@ -23,20 +23,20 @@ function handler(fd, mes)
 				  local bo,message=record.record_init(mes.NAME,500000)
 				  skynet.error("asdasd=",bo,message)--test
 				  if bo then
-				  		local resuss={ID="2",STATE=bo}
+				  		local resuss={SESSION=mes.SESSION,ID="2",STATE=bo}
 				  		local resuss1=cjson.encode(resuss)
 			   			local resuss1_1=crypt.aesencode(resuss1,who,"")
 			  			local resuss1_2 = crypt.base64encode(resuss1_1)
 			  	  		return resuss1_2.."\n"
 			  	  elseif not bo then
-			  	  	    local reinit={ID="2",STATE=bo,MESSAGE=message}
+			  	  	    local reinit={SESSION=mes.SESSION,ID="2",STATE=bo,MESSAGE=message}
 				  		local reinit1=cjson.encode(reinit)
 			   			local reinit1_1=crypt.aesencode(reinit1,who,"")
 			  			local reinit1_2 = crypt.base64encode(reinit1_1)
 			  	  		return reinit1_2.."\n"
 			      end
 			   elseif not bool then 
-			   		local refal={ID="2",STATE=bool,MESSAGE=msg}
+			   		local refal={SESSION=mes.SESSION,ID="2",STATE=bool,MESSAGE=msg}
 			   		local refal1=cjson.encode(refal)
 			   		local refal1_1=crypt.aesencode(refal1,who,"")
 			   		local refal1_2 = crypt.base64encode(refal1_1)
@@ -53,7 +53,7 @@ function handler(fd, mes)
 		            local boo,money =sgoly_tool.getMoney(mes.NAME)
 		            skynet.error("money is",money)
 		            if boo then
-				 	    local reqmoney={ID="1",STATE=boo,MONEY=money}
+				 	    local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money}
 					    local str5=cjson.encode(reqmoney)
 					    local rep5=crypt.aesencode(str5,who,"")
 					    local str5_1 = crypt.base64encode(rep5)
@@ -61,14 +61,14 @@ function handler(fd, mes)
 					    -- return(fd,str3_1.."\n")
 				     --    loginuser[fd]=true
 					elseif not boo then
-						local reqmoney={ID="1",STATE=boo,MESSAGE=money}
+						local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MESSAGE=money}
 					    local str3=cjson.encode(reqmoney)
 					    local rep3=crypt.aesencode(str3,who,"")
 					    local str3_1 = crypt.base64encode(rep3)
 					    return str3_1.."\n"
 					end
 			    elseif	not bool then
-			        local rep4={ID="1",STATE=bool,MESSAGE=msg}
+			        local rep4={SESSION=mes.SESSION,ID="1",STATE=bool,MESSAGE=msg}
 				    local str4=cjson.encode(rep4)
 				    local rep4_1=crypt.aesencode(str4,who,"")
 				    local str4_1 = crypt.base64encode(rep4_1)
@@ -94,31 +94,26 @@ function handler(fd, mes)
 				   local bo,message=record.record_init(name,500000)
 				   skynet.error("record_init=",bo,message)--test
 			        if bo then 
-				       local rep={ID="3",STATE=bo,NAME=name,PASSWD=password}
+				       local rep={SESSION=mes.SESSION,ID="3",STATE=bo,NAME=name,PASSWD=password}
 				       local str=cjson.encode(rep)
 				       local rep1=crypt.aesencode(str,who,"")
 				       local str2 = crypt.base64encode(rep1)
 				       return str2.."\n"
 			        elseif not bo then
-				       	local rep5={ID="3",STATE=bo,MESSAGE=message}
+				       	local rep5={SESSION=mes.SESSION,ID="3",STATE=bo,MESSAGE=message}
 					    local str5=cjson.encode(rep5)
 					    local rep5_1=crypt.aesencode(str5,who,"")
 					    local str5_1 = crypt.base64encode(rep5_1)
 					    return str5_1.."\n"
 					end
 			    elseif msg=="未知错误" then
-			       local rep={ID="3",STATE=false,MESSAGE=msg}
+			       local rep={SESSION=mes.SESSION,ID="3",STATE=false,MESSAGE=msg}
 			       local str=cjson.encode(rep)
 			       local rep1=crypt.aesencode(str,who,"")
 			       local str2 = crypt.base64encode(rep1)
 			       return str2.."\n"
 			    end  
         	end
-        	 local rep={ID="3",STATE=false,MESSAGE=msg}
-			       local str=cjson.encode(rep)
-			       local rep1=crypt.aesencode(str,who,"")
-			       local str2 = crypt.base64encode(rep1)
-			       return str2.."\n"
     
 end
 

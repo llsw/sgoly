@@ -16,7 +16,7 @@ function _read(id)
             local who="123456"
             password=crypt.aesdecode(str1,who,"")
             local mes =cjson.decode(password)
-            skynet.error("client echo",mes.ID,mes.SESSION)
+            skynet.error("client echo",mes.SESSION,mes.ID,mes.STATE,mes.MESSAGE)
         else
             socket.close(id)
             skynet.error("disconnected")
@@ -41,7 +41,7 @@ skynet.start(function()
  
     -- for i=1, 10 do
     -- local lua_value = {ID="3",CLUSTER="4"}
-    local lua_value = {ID="1",CLUSTER="4",SERVICE="140",CMD="signin",NAME="interface6",PASSWD=123456}
+    local lua_value = {SESSION="1",ID="1",CLUSTER="4",SERVICE="140",CMD="signin",NAME="interface6",PASSWD=123456}
     local json_text = cjson.encode(lua_value)
     local password 
     local who="123456"
