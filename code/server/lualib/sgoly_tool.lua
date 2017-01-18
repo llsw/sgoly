@@ -9,7 +9,7 @@
 
 require "sgoly_query"
 local sgoly_tool = {}
-local sgoly_record = require "sgoly_record"
+local sgoly_dat_ser = require "sgoly_dat_ser"
 
 function sgoly_tool.wordToInt(str)
 	return str:byte(1) * 256 + str:byte(2)
@@ -57,9 +57,8 @@ function sgoly_tool.getMoney(nickname)
 	if money then
 		return true, tonumber(money)
 	else
-		local today = os.date("%Y-%m-%d")
 		local judge
-		judge, money = sgoly_record.get_money(nickname, today)
+		judge, money = sgoly_dat_ser.get_money(nickname)
 		if judge then
 			redis_query({"hset", db, "money", money})
 			return true, money
