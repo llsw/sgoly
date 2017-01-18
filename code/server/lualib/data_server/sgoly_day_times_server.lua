@@ -25,12 +25,21 @@ function day_times_server.insert(nickname, win_times, times, dt)
  	 dt)
  	printI("day_times_server.insert(%s, %d, %d, %s)", nickname, win_times, times,
  	 dt)
-
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif(nil == win_times) then
+ 		return false, "win_times空值错误"
+ 	elseif(nil == times) then
+ 		return false, "times空值错误"
+ 	elseif((nil == dt) or ("" == dt)) then
+ 		return false, "日期空值错误"
  	else
- 		return day_times_dao.insert(uid, win_times, times, dt)
+ 		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return day_times_dao.insert(uid, win_times, times, dt)
+	 	end
  	end
 end
 
@@ -45,11 +54,19 @@ function day_times_server.update_win_times(nickname, win_times, dt)
  	 dt)
  	printI("day_times_server.update_win_times(%s, %d, %s)", nickname, win_times,
  	 dt)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif(nil == win_times) then
+ 		return false, "win_times空值错误"
+ 	elseif((nil == dt) or ("" == dt)) then
+ 		return false, "日期空值错误"
  	else
- 		return day_times_dao.update_win_times(uid, win_times, dt)
+ 		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return day_times_dao.update_win_times(uid, win_times, dt)
+	 	end
  	end
 end
 
@@ -62,11 +79,19 @@ end
 function day_times_server.update_times(nickname, times, dt)
  	printD("day_times_server.update_times(%s, %d, %s)", nickname, times, dt)
  	printI("day_times_server.update_times(%s, %d, %s)", nickname, times, dt)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif(nil == times) then
+ 		return false, "times空值错误"
+ 	elseif((nil == dt) or ("" == dt)) then
+ 		return false, "日期空值错误"
  	else
- 		return day_times_dao.update_times(uid, times, dt)
+ 		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return day_times_dao.update_times(uid, times, dt)
+	 	end
  	end
 end
 
@@ -79,11 +104,17 @@ end
 function day_times_server.select(nickname, dt)
  	printD("day_times_server.select(%s, %s)", nickname, dt)
  	printI("day_times_server.select(%s, %s)", nickname, dt)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif((nil == dt) or ("" == dt)) then
+ 		return false, "日期空值错误"
  	else
- 		return day_times_dao.select(uid, dt)
+ 		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return day_times_dao.select(uid, dt)
+	 	end
  	end
 end
 
@@ -96,11 +127,17 @@ end
 function day_times_server.select_win_times(nickname, dt)
  	printD("day_times_server.select_win_times(%s, %s)", nickname, dt)
  	printI("day_times_server.select_win_times(%s, %s)", nickname, dt)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif((nil == dt) or ("" == dt)) then
+ 		return false, "日期空值错误"
  	else
- 		return day_times_dao.select_win_times(uid, dt)
+ 		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return day_times_dao.select_win_times(uid, dt)
+	 	end
  	end
 end
 
@@ -113,11 +150,17 @@ end
 function day_times_server.select_times(nickname, dt)
  	printD("day_times_server.select_times(%s, %s)", nickname, dt)
  	printI("day_times_server.select_times(%s, %s)", nickname, dt)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif((nil == dt) or ("" == dt)) then
+ 		return false, "日期空值错误"
  	else
- 		return day_times_dao.select_times(uid, dt)
+ 		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return day_times_dao.select_times(uid, dt)
+	 	end
  	end
 end
 

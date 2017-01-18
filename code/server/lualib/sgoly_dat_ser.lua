@@ -58,14 +58,7 @@ end
 function dat_ser.cha_nic(old_nic, new_nick, pwd)
 	printD("dat_ser.cha_nic(%s, %s, %s)", old_nic, new_nick, pwd)
 	printI("dat_ser.cha_nic(%s, %s, %s)", old_nic, new_nick, pwd)
-	local tag, status = use_ser.select_pwd(old_nic)
-	if(false == tag) then
-		return false, status
-	elseif(status ~= pwd) then
-		return false, "密码错误"
-	else
-		return use_ser.update_nickname(old_nic, new_nick)
-	end
+	return use_ser.update_nickname(old_nic, new_nick, pwd)
 end
 
 --[[
@@ -77,14 +70,7 @@ end
 function dat_ser.cha_pwd(nic, old_pwd, new_pwd)
 	printD("dat_ser.cha_pwd(%s, %s, %s)", nic, old_pwd, new_pwd)
 	printI("dat_ser.cha_pwd(%s, %s, %s)", nic, old_pwd, new_pwd)
-	local tag, status = use_ser.select_pwd(nic)
-	if(false == tag) then
-		return false, status
-	elseif(status ~= pwd) then
-		return false, "密码错误"
-	else
-		return use_ser.update_pwd(nic, new_pwd)
-	end
+	return use_ser.update_pwd(nic, old_pwd, new_pwd)
 end
 
 --[[
@@ -118,14 +104,9 @@ end
 		返回参数：
 --]]
 function dat_ser.del_usr(nickname, pwd)
-	local tag, status = use_ser.select_pwd(nickname)
-	if(false == tag) then
-		return false, status
-	elseif(status ~= pwd) then
-		return false, "密码错误"
-	else
-		return use_ser.delete(nickname)
-	end
+	printD(" dat_ser.del_usr(%s, %s)", nickname, pwd)
+	printI(" dat_ser.del_usr(%s, %s)", nickname, pwd)
+	return use_ser.delete(nickname, pwd)
 end
 
 --[[

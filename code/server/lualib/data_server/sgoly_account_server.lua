@@ -22,12 +22,18 @@
  function account_server.insert(nickname, money)
  	printD("account_server.insert(%s, %d)", nickname, money)
  	printI("account_server.insert(%s, %d)", nickname, money)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif(nil == money) then
+ 		return false, "金币空值错误"
  	else
- 		return account_dao.insert(uid, money)
- 	end
+	 	local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return account_dao.insert(uid, money)
+	 	end
+	end
  end
 
 --[[
@@ -39,11 +45,15 @@
 function account_server.delete(nickname)
 	printD("account_server.delete(%s)", nickname)
  	printI("account_server.delete(%s)", nickname)
-	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
  	else
- 		return account_dao.delete(uid)
+		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return account_dao.delete(uid)
+	 	end
  	end
 end
 
@@ -56,12 +66,18 @@ end
  function account_server.update_money(nickname, money)
 	printD("account_server.update_money(%s, %d)", nickname, money)
  	printI("account_server.update_money(%s, %d)", nickname, money)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif(nil == money) then
+ 		return false, "金币空值错误"
  	else
- 		return account_dao.update_money(uid, money)
- 	end
+	 	local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return account_dao.update_money(uid, money)
+	 	end
+	end
  end
 
   --[[
@@ -73,11 +89,15 @@ end
  function account_server.select_money(nickname)
 	printD("account_server.select_money(%s)", nickname)
  	printI("account_server.select_money(%s)", nickname)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
  	else
- 		return account_dao.select_money(uid)
+	 	local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return account_dao.select_money(uid)
+	 	end
  	end
  end
 
