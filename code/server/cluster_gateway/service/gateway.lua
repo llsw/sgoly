@@ -1,12 +1,4 @@
-
---[[
- * @brief: gateway.lua
-
- * @author:	  kun si
- * @date:	2016-12-22
---]]
 local skynet = require "skynet"
--- local socket = require "socket"
 local driver = require "socketdriver"
 local gateserver = require "sgoly_gateserver"
 local cluster = require"cluster"
@@ -26,21 +18,21 @@ function handler.open(source, conf)
 end
 
 function handler.message(fd, msg)
-		if msg then
-			skynet.error("client"..fd, " says: ", msg)
-			local str1 = crypt.base64decode(msg)
-			local password
-			local who="123456"
-			password=crypt.aesdecode(str1,who,"")
-			local mes = cjson.decode(password)
-			skynet.error(mes)
-			skynet.error(mes.SESSION,mes.CLUSTER,mes.SERVICE,mes.CMD,mes.ID,mes.NAME,mes.PASSWD)
-			local cnode=tonumber(mes.CLUSTER)
-			local snode=tonumber(mes.SERVICE)
-			local req =cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
-			print(req,"thisi  is req")
-			driver.send(fd,req)
-        end
+	if msg then
+		skynet.error("client"..fd, " says: ", msg)
+		local str1 = crypt.base64decode(msg)
+		local password
+		local who="123456"
+		password=crypt.aesdecode(str1,who,"")
+		local mes = cjson.decode(password)
+		skynet.error(mes)
+		skynet.error(mes.SESSION,mes.CLUSTER,mes.SERVICE,mes.CMD,mes.ID,mes.NAME,mes.PASSWD)
+		local cnode=tonumber(mes.CLUSTER)
+		local snode=tonumber(mes.SERVICE)
+		local req =cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
+		print(req,"thisi  is req")
+		driver.send(fd,req)
+    end
 end
 
 
