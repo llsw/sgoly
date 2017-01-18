@@ -166,4 +166,16 @@ function dat_ser.get_money(nickname)
 	return acc_ser.select_money(nickname)
 end
 
+--[[
+函数说明：
+		函数作用：
+		传入参数：
+		返回参数：
+--]]
+function dat_ser.upd_acc(nickname, money)
+	printD("dat_ser.up_acc(%s, %d)", nickname, money)
+	printI("dat_ser.up_acc(%s, %d)", nickname, money)
+	return acc_ser.update_money(nickname, money)
+end
+
 return dat_ser
