@@ -18,13 +18,19 @@ local cluster = require "cluster"
 
 local handler = {}
 
+
 function handler.open(source, conf)
 	printI("Gateway open source[%d]", source)
 end
 
 function handler.message(fd, msg)
-	
-
+	if msg then
+		-- local proxy = cluster.proxy("cluster_database", ".w_test")
+		-- skynet.send(proxy, "lua", "msg", msg)
+		cluster.call("cluster_database", ".w_test", "msg", msg, fd)
+		skynet.error("Redirect msg done")
+		socketdriver.send(fd, "msg" .. "\n")
+	end		
 end
 
 function handler.connect(fd, addr)

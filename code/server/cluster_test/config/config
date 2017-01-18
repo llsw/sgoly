@@ -1,0 +1,28 @@
+root = "./"
+thread = 8
+logger = nil
+logpath = "."
+harbor = 0 
+bootstrap = "snlua bootstrap"
+
+luaservice = root.."service/?.lua;"..root.."../protocol/?.lua;"..root.."../cluster_test/?.lua;"..root.."../cluster_test/service/?.lua;"..root.."../lualib/?.lua;"
+
+lualoader = root .. "lualib/loader.lua"
+
+-- preload = 
+
+snax = root.."../protocol/?.lua;"..root.."../cluster_test/?.lua;"..root.."../cluster_test/service/?.lua;"
+
+lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"..root.."../util/?.lua;"..root.."../lualib/?.lua;"..root.."../lualib/?/?.lua;"
+
+
+cpath = root.."cservice/?.so;"
+
+cluster = root .. "../clustername/clustername.lua"
+
+--debug_port = 8001
+
+log_dirname = "../log"
+log_basename = "cluster_test_log"
+
+start = "test_main"
