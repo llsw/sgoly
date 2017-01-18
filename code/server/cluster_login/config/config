@@ -14,7 +14,8 @@ lualoader = root .. "lualib/loader.lua"
 snax = root.."../protocol/?.lua;"..root.."../cluster_login/?.lua;"..root.."../cluster_login/service/?.lua;"
 
 lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"..root.."../util/?.lua;"..root.."../lualib/?.lua;"..root.."../lualib/?/?.lua;"
-
+..root.."../lualib/models/?.lua;"..root.."../lualib/dao/?.lua;"..root..
+"../lualib/data_server/?.lua;"
 cpath = root.."cservice/?.so"
 
 cluster = root .. "../clustername/clustername.lua"
