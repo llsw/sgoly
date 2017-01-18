@@ -26,4 +26,4 @@ cluster = root .. "../clustername/clustername.lua"
 log_dirname = "../log"
 log_basename = "cluster_database_log"
 
-start = "database_main"
+start = "database_main" -- test
