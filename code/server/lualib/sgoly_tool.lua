@@ -94,25 +94,66 @@ end
 --! @brief      保存游戏结算结果到Redis
 --!
 --! @param      nickname      	用户名
---! @param      winMoney      	本次游戏赢的总钱
---! @param      winNum        	中奖次数
---! @param      serialWinNum  	连续中奖次数
---! @param      maxWinMoney  	最大中奖金额
---! @param      costMoney	  	本轮游戏消耗的金钱	
---!
---! @return     bool, errorMsg 执行成功与否、错误消息
+--! @param      winMoney      	本轮游戏赢的金钱
+--! @param      costMoney	  	本轮游戏消耗的金钱
+--! @param		playNum			本轮游戏抽奖次数
+--! @param      winNum        	本轮游戏中奖次数
+--! @param      serialWinNum  	本轮游戏连续中奖次数
+--! @param      maxWinMoney  	本轮游戏最大中奖金额	
+--!	@param		eighthNoWin 	8次连续不中奖计数值
+--!	@param		recoveryRate 	回收率
+--!	
+--! @return     bool, errorMsg 	执行成功与否、错误消息
 --!
 --! @author     kun si
 --! @date       2017-01-16
 --!
-function sgoly_tool.saveStatementsToRedis(nickname, winMoney, winNum, serialWinNum, maxWinMoney, costMoney)
-	if nickname == nil or winMoney == nil or winNum == nil or serialWinNum == nil or maxWinMoney == nil then
+function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum, winNum, serialWinNum, maxWinMoney, eighthNoWin, recoveryRate)
+	if nickname == nil or winMoney == nil or 
+		costMoney == nil or playNum == nil 
+		or winNum == nil or serialWinNum == nil 
+		or eighthNoWin == nil or recoveryRate == nil then
+
 		return false, "There are nil in args."
 	end
 	
 	local key = "statements:" .. nickname
-	redis_query({"hmset", key, {"winMoney", winMoney, "winNum", winNum, "serialWinNum", serialWinNum, "maxWinMoney", maxWinMoney}})
+	redis_query({"hmset", key, {
+
+			"winMoney", winMoney, 
+			"costMoney", costMoney, 
+			"playNum", playNum, 
+			"winNum", winNum, 
+			"serialWinNum", serialWinNum, 
+			"maxWinMoney", maxWinMoney,
+			"eighthNoWin", eighthNoWin,
+			"recoveryRate", recoveryRate,
+
+		}})
+
 	return true, nil
+end
+
+--!
+--! @brief      获取玩法改变模式的必要参数
+--!
+--! @param      nickname  用户名
+--!
+--! @return     bool,table 执行成功与否、｛8次连续不中奖计数值, 回收率｝
+--!
+--! @author     kun si
+--! @date       2017-01-18
+--!
+function sgoly_tool.getPlayModelFromRedis(nickname)
+	local res = {}
+	local key = "statements:" ..  nickname
+	res = redis_query({"hmget", key, "eighthNoWin", "recoveryRate"})
+	if #res == 0 then
+		res[1]=0
+		res[2]=0
+	end
+
+	return true, res
 end
 
 return sgoly_tool
