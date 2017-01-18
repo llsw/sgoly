@@ -23,7 +23,7 @@
 	printI("users_server.insert(%s)", nickname)
 	local tag, res = users_dao.select(nickname)
 	if(true == tag) then
-		return false, nickname.." 已被使用"
+		return false, "昵称已被使用"
 	else
 		return users_dao.insert(nickname, pwd)
 	end
