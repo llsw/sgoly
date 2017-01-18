@@ -37,9 +37,9 @@ end
 
 --[[
 函数说明：
-		函数作用：
-		传入参数：
-		返回参数：
+		函数作用：删除用户帐号
+		传入参数：id(用户id)
+		返回参数：true 或者 false , 正确或错误提示的字符串
 --]]
 function account_dao.delete(id)
 	printD("account_dao.delete(%d)", id)

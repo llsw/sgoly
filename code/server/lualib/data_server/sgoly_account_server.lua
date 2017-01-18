@@ -3,7 +3,7 @@
  * @Author:      GitHubNull
  * @Email:       641570479@qq.com
  * @github:      GitHubNull
- * @Description: This is about...
+ * @Description: 这是用户账户金币资产的数据管理服务模块
  * @DateTime:    2017-01-17 15:43:45
  --]]
 
@@ -15,9 +15,9 @@
 
  --[[
  函数说明：
- 		函数作用：
- 		传入参数：
- 		返回参数：
+ 		函数作用：插入用户的金币数据
+ 		传入参数：nickname(用户昵称), money(金币数额)
+ 		返回参数：true 或者 false , 正确或错误提示的字符串
  --]]
  function account_server.insert(nickname, money)
  	printD("account_server.insert(%s, %d)", nickname, money)
@@ -32,9 +32,9 @@
 
 --[[
 函数说明：
-		函数作用：
-		传入参数：
-		返回参数：
+		函数作用：删除用户金币账户
+		传入参数：nickname(用户昵称)
+		返回参数：true 或者 false , 正确或错误提示的字符串
 --]]
 function account_server.delete(nickname)
 	printD("account_server.delete(%s)", nickname)
@@ -49,9 +49,9 @@ end
 
  --[[
  函数说明：
- 		函数作用：
- 		传入参数：
- 		返回参数：
+ 		函数作用：更改用户账户金币数额
+ 		传入参数：nickname(用户昵称), money(金币数额)
+ 		返回参数：true 或者 false , 正确或错误提示的字符串
  --]]
  function account_server.update_money(nickname, money)
 	printD("account_server.update_money(%s, %d)", nickname, money)
@@ -66,9 +66,9 @@ end
 
   --[[
  函数说明：
- 		函数作用：
- 		传入参数：
- 		返回参数：
+ 		函数作用：查询用户账户金币数额
+ 		传入参数：nickname(用户昵称)
+ 		返回参数：true 或者 false , 正确或错误提示的字符串
  --]]
  function account_server.select_money(nickname)
 	printD("account_server.select_money(%s)", nickname)

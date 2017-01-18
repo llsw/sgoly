@@ -21,8 +21,10 @@
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function day_max_server.insert(nickname, single_max, conti_max, dt)
-	printD("day_max_server.insert(%s, %d, %d, %s)", nickname, single_max, conti_max, dt)
- 	printI("day_max_server.insert(%s, %d, %d, %s)", nickname, single_max, conti_max, dt)
+	printD("day_max_server.insert(%s, %d, %d, %s)", nickname, single_max, 
+			conti_max, dt)
+ 	printI("day_max_server.insert(%s, %d, %d, %s)", nickname, single_max, 
+ 			conti_max, dt)
  	local tag, uid = users_server.select_uid(nickname)
  	if(false == tag ) then
  		return false, nickname.." 不存在"
@@ -33,14 +35,17 @@
 
  --[[
  函数说明：
- 		函数作用：检查函数 day_max_dao.update_single_max 是否符合						 执行逻辑,若符合调用执行
+ 		函数作用：检查函数 day_max_dao.update_single_max 是否符合执行逻辑,若符合调用
+ 				 执行
  		传入参数：nickname(昵称), single_max(单次最大), 
  				 dt(日期)
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function day_max_server.update_single_max(nickname, single_max, dt)
- 	printD("day_max_server.update_single_max(%s, %d, %s)", nickname, single_max, dt)
- 	printI("day_max_server.update_single_max(%s, %d, %s)", nickname, single_max, dt)
+ 	printD("day_max_server.update_single_max(%s, %d, %s)", nickname, single_max, 
+ 			dt)
+ 	printI("day_max_server.update_single_max(%s, %d, %s)", nickname, single_max, 
+ 			dt)
  	local tag, uid = users_server.select_uid(nickname)
  	if(false == tag ) then
  		return false, nickname.." 不存在"
@@ -51,14 +56,17 @@
 
 --[[
 函数说明：
-		函数作用：检查函数 day_max_dao.update_conti_max 								 是否符合执行逻辑,若符合调用执行
+		函数作用：检查函数 day_max_dao.update_conti_max 是否符合执行逻辑,若符合调用执
+				 行
  		传入参数：nickname(昵称), conti_max(最大连续值), 
  				 dt(日期)
  		返回参数：执行结果的正确与否的布尔值和相关消息
 --]]
 function day_max_server.update_conti_max(nickname, conti_max, dt)
- 	printD("day_max_server.update_conti_max(%s, %d, %s)", nickname, conti_max, dt)
- 	printI("day_max_server.update_conti_max(%s, %d, %s)", nickname, conti_max, dt)
+ 	printD("day_max_server.update_conti_max(%s, %d, %s)", nickname, conti_max, 
+ 			dt)
+ 	printI("day_max_server.update_conti_max(%s, %d, %s)", nickname, conti_max, 
+ 			dt)
  	local tag, uid = users_server.select_uid(nickname)
  	if(false == tag ) then
  		return false, nickname.." 不存在"
@@ -87,7 +95,8 @@ end
 
 --[[
 函数说明：
-		函数作用：检查函数 day_max_dao.select_single_max 								 是否符合执行逻辑,若符合调用执行
+		函数作用：检查函数 day_max_dao.select_single_max 是否符合执行逻辑,若符合调用
+				 执行
  		传入参数：nickname(昵称), 
  				 dt(日期)
  		返回参数：执行结果的正确与否的布尔值和相关消息
@@ -105,7 +114,8 @@ end
 
 --[[
 函数说明：
-		函数作用：检查函数 day_max_dao.select_conti_max 								 是否符合执行逻辑,若符合调用执行
+		函数作用：检查函数 day_max_dao.select_conti_max 是否符合执行逻辑,若符合调用
+				 执行
  		传入参数：nickname(昵称), 
  				 dt(日期)
  		返回参数：执行结果的正确与否的布尔值和相关消息
