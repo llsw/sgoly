@@ -155,6 +155,15 @@ function dat_ser.get_award(award_name, id)
 	end
 end
 
-
+--[[
+函数说明：
+		函数作用：
+		传入参数：
+		返回参数：
+--]]
+function dat_ser.get_money(nickname)
+	printD("dat_ser.get_money(%s)", nickname)
+	return acc_ser.select_money(nickname)
+end
 
 return dat_ser
