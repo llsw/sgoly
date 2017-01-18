@@ -9,8 +9,8 @@ local agent = {}
 
 function agent.main(fd,mes)
 			skynet.error(mes)
-			skynet.error(mes.SESSION,mes.ID,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY)
-		    local req=skynet.call(".maingame","lua","calc",fd,10,10,10)
+			skynet.error(mes.SESSION,mes.ID,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST)
+		    local req=skynet.call(".maingame","lua","calc",fd,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST)
 		    return req
 end
 
