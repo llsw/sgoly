@@ -186,6 +186,8 @@ function sgoly_tool.getPlayModelFromRedis(nickname)
 		res[1]=0
 		res[2]=1
 	end
+	res[1]=tonumber(res[1])
+	res[2]=tonumber(res[2])
 
 	return true, res
 end
