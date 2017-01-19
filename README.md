@@ -1,5 +1,5 @@
 ![coder farmer](https://raw.githubusercontent.com/llsw/sgoly/dev/doc/sk/img/logo.gif "0. 0")
-# sgoly
+# sgoly										![coder farmer](https://raw.githubusercontent.com/llsw/sgoly/dev/doc/sk/img/logo.gif "0. 0")
 ---------------------------------------------------------  
 ##获取仓库  
 1.克隆总仓库:
