@@ -6,6 +6,7 @@ local crypt = require"crypt"
 local code = require"sgoly_cluster_code"
 local sgoly_tool=require"sgoly_tool"
 require "sgoly_printf"
+local sgoly_pack=require "sgoly_pack"
 local code =require "sgoly_cluster_code"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
@@ -21,36 +22,29 @@ function CMD.tongji(fd,session,type,name)
 			            ID="5",
 			            TYPE="today",
 			            STATE=true,
-			            winMoney=res.winMoney,
-			            costMoney=res.costMoney,
-			            playNum=res.playNum,
-			            winNum=res.winNum,
-			            serialWinNum=res.serialWinNum,
-			            maxWinMoney=res.maxWinMoney
+			            winMoney=tonumber(res.winMoney),
+			            costMoney=tonumber(res.costMoney),
+			            playNum=tonumber(res.playNum),
+			            winNum=tonumber(res.winNum),
+			            serialWinNum=tonumber(res.serialWinNum),
+			            maxWinMoney=tonumber(res.maxWinMoney)
 			        }
-			local result1_2 = sendreq(req)
+			skynet.error(req.SESSION,req.winMoney,req.costMoney,req.playNum,req.winNum,req.serialWinNum,req.maxWinMoney)
+			local result1_2 = sgoly_pack.encode(req)
 		    return result1_2
 		elseif not bool then
 			local req1 = {SESSION=session,
 			              ID="5",
 			              TYPE="today",
 			              STATE=false,
-		-- 	              MESSAGE=res
+			              MESSAGE=res
 			          }
-			local result2_2 = sendreq(req1)
+			local result2_2 = sgoly_pack.encode(req1)
 		    return result2_2          
 	    end
 	elseif type=="yesterday" then
 	elseif type=="history"   then
 	end  
-end
-
-function sendreq(req)
-    local who="123456"
-	local result1=cjson.encode(req)
-	local result1_1=crypt.aesencode(result1,who,"")
-	local result1_2 = crypt.base64encode(result1_1)
-	return result1_2
 end
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
@@ -59,5 +53,5 @@ skynet.start(function()
 	end)
 	--skynet.error("this is maingame")
     -- 要注册个服务的名字，以.开头
-    skynet.register(".stats")
+    -- skynet.register(".stats")
 end)

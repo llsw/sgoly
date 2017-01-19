@@ -2,6 +2,7 @@ local skynet = require "skynet"
 local socket = require "socket"
 local cluster= require "cluster"
 require "skynet.manager"
+local sgoly_pack=require "sgoly_pack"
 local crypt     = require "crypt"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
@@ -20,11 +21,8 @@ function agent.main(fd,mes)
 	   local req1=skynet.call(connection[fd].stats,"lua","tongji",fd,mes.SESSION,mes.TYPE,connection[fd].name)
 	   return req1
    else  
-   	local who="123456"
    	local req={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
-	local result1=cjson.encode(req)
-	local result1_1=crypt.aesencode(result1,who,"")
-	local result1_2 = crypt.base64encode(result1_1)
+	local result1_2 = sgoly_pack.encode(req)
 	return result1_2
 end
 end

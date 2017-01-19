@@ -5,8 +5,8 @@ sgoly_pack={}
 function sgoly_pack.encode(req)
 	local who="123456"
 	local json_texten = cjson.encode(req)
-    local pden =crypt.aesencode(json_text,who,"")
-    local stren = crypt.base64encode(password)
+    local pden =crypt.aesencode(json_texten,who,"")
+    local stren = crypt.base64encode(pden)
     return stren
 end
 

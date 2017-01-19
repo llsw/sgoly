@@ -12,17 +12,41 @@ local CMD={}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+function CMD.ranklist()
+	-- 	if type=="today" then
+-- 		local bool=true
+-- 		local res={nickname="abcd",winMoney=1000,costMoney=2000,playNum=10,
+-- 		winNum=1,serialWinNum=1,maxWinMoney=1000}
+-- 		-- local bool,res=sgoly_tool.getStatementsFromRedis(name)
+-- 		if bool then
+-- 			local  req={SESSION=session,
+-- 			            ID="5",
+-- 			            TYPE="today",
+-- 			            STATE=true,
+-- 			            winMoney=res.winMoney,
+-- 			            costMoney=res.costMoney,
+-- 			            playNum=res.playNum,
+-- 			            winNum=res.winNum,
+-- 			            serialWinNum=res.serialWinNum,
+-- 			            maxWinMoney=res.maxWinMoney
+-- 			        }
+-- 			local result1_2 = sendreq(req)
+-- 		    return result1_2
+-- 		elseif not bool then
+-- 			local req1 = {SESSION=session,
+-- 			              ID="5",
+-- 			              TYPE="today",
+-- 			              STATE=false,
+-- 		-- 	              MESSAGE=res
+-- 			          }
+-- 			local result2_2 = sendreq(req1)
+-- 		    return result2_2          
+-- 	    end
+-- 	elseif type=="yesterday" then
+-- 	elseif type=="history"   then
+-- 	end  
+-- end
+end
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(CMD[cmd], cmd .. "not found")
