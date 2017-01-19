@@ -147,8 +147,8 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 		result.costMoney = result.costMoney + costMoney
 		result.playNum = result.playNum + playNum
 		result.winNum = result.winNum + winNum
-		result.serialWinNum = result.serialWinNum + serialWinNum
-		result.maxWinMoney = result.maxWinMoney + maxWinMoney
+		result.serialWinNum = serialWinNum
+		result.maxWinMoney = maxWinMoney
 		result.eighthNoWin = eighthNoWin
 		result.recoveryRate = recoveryRate
 		redis_query({"hmset", key, result})
@@ -159,8 +159,8 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 	result.costMoney = 0 + costMoney
 	result.playNum = 0 + playNum
 	result.winNum = 0 + winNum
-	result.serialWinNum = 0 + serialWinNum
-	result.maxWinMoney = 0 + maxWinMoney
+	result.serialWinNum = serialWinNum
+	result.maxWinMoney = maxWinMoney
 	result.eighthNoWin = eighthNoWin
 	result.recoveryRate = recoveryRate
 	redis_query({"hmset", key, result})
