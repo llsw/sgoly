@@ -53,12 +53,10 @@ end
 
 function CMD.hmset(dbn, key, t)
 	local data = {}
-	-- for k, v in pairs(t) do
-	-- 	table.insert(data, k)
-	-- 	table.insert(data, v)
-	-- end
-	data = t
-
+	for k, v in pairs(t) do
+		table.insert(data, k)
+		table.insert(data, v)
+	end
 	local db = dbc:get()
 	local result = db:hmset(key, table.unpack(data))
 	dbc:free(db)
@@ -177,6 +175,14 @@ function CMD.del(dbn, key)
 	dbc:free(db)
 	
 	return result
+end
+
+function CMD.hincrby(dbn, key, filed, value)
+	
+	local db = dbc:get()
+	local result = db:hmset(key, filed, value)
+	dbc:free(db)
+
 end
 	
 

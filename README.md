@@ -37,4 +37,4 @@ cd code/server/skynet
 ./skynet ../cluster_database/config/config  
 ```
 ##note  
-我虚拟机的IP192.168.100.243  
+我虚拟机的IP192.168.100.243 

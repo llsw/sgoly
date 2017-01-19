@@ -33,6 +33,10 @@ local function getUuid()
 end
 
 function sgoly_tool.multipleToTable(redisResult)
+	if #redisResult <= 0 then
+		printI("redisResult type[%s]", type(redisResult))
+		return false, redisResult
+	end
 	local rt = {}
 	local index = 1
 	while index <= #redisResult-1 do
@@ -40,7 +44,7 @@ function sgoly_tool.multipleToTable(redisResult)
 		index = index + 2
 	end 
 
-	return rt 
+	return true, rt 
 end
 
 function sgoly_tool.getUuid()
@@ -89,7 +93,25 @@ function sgoly_tool.saveMoneyToRedis(nickname, money)
 	return true, nil
 end
 
-
+--!
+--! @brief      Gets the statements from redis.
+--!
+--! @param      nickname  The nickname
+--!
+--! @return     The statements from redis.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-19
+--!
+function sgoly_tool.getStatementsFromRedis(nickname)
+	if nickname == nil then
+		return false, "There are nil in args."
+	end
+	local res = {}
+	local key = "statements:" ..  nickname
+	local res = redis_query({"hgetall", key})
+	return sgoly_tool.multipleToTable(res)
+end
 --!
 --! @brief      保存游戏结算结果到Redis
 --!
@@ -118,18 +140,30 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 	end
 	
 	local key = "statements:" .. nickname
-	redis_query({"hmset", key, {
+	local ok, result = sgoly_tool.getStatementsFromRedis(nickname)
+	if ok then
 
-			"winMoney", winMoney, 
-			"costMoney", costMoney, 
-			"playNum", playNum, 
-			"winNum", winNum, 
-			"serialWinNum", serialWinNum, 
-			"maxWinMoney", maxWinMoney,
-			"eighthNoWin", eighthNoWin,
-			"recoveryRate", recoveryRate,
+		result.winMoney = result.winMoney + winMoney
+		result.costMoney = result.costMoney + costMoney
+		result.playNum = result.playNum + playNum
+		result.winNum = result.winNum + winNum
+		result.serialWinNum = result.serialWinNum + serialWinNum
+		result.maxWinMoney = result.maxWinMoney + maxWinMoney
+		result.eighthNoWin = eighthNoWin
+		result.recoveryRate = recoveryRate
+		redis_query({"hmset", key, result})
+		return true, nil
+	end
 
-		}})
+	result.winMoney = 0 + winMoney
+	result.costMoney = 0 + costMoney
+	result.playNum = 0 + playNum
+	result.winNum = 0 + winNum
+	result.serialWinNum = 0 + serialWinNum
+	result.maxWinMoney = 0 + maxWinMoney
+	result.eighthNoWin = eighthNoWin
+	result.recoveryRate = recoveryRate
+	redis_query({"hmset", key, result})
 
 	return true, nil
 end
