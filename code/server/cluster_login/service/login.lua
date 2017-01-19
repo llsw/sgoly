@@ -22,23 +22,16 @@ function handler(fd, mes)
 			skynet.error("asdasd=",bo,message)--test
 			if bo then
 				local resuss={SESSION=mes.SESSION,ID="2",STATE=bo}
-				local resuss1=cjson.encode(resuss)
-			    local resuss1_1=crypt.aesencode(resuss1,who,"")
-			  	local resuss1_2 = crypt.base64encode(resuss1_1)
+				local resuss1_2=packtable(resuss)
 			  	return resuss1_2.."\n"
 			elseif not bo then
 			  	local reinit={SESSION=mes.SESSION,ID="2",STATE=bo,MESSAGE=message}
-				local reinit1=cjson.encode(reinit)
-			   	local reinit1_1=crypt.aesencode(reinit1,who,"")
-			  	local reinit1_2 = crypt.base64encode(reinit1_1)
+				local reinit1_2=packtable(reinit)
 			  	return reinit1_2.."\n"
 			end
 		elseif not bool then 
 			local refal={SESSION=mes.SESSION,ID="2",STATE=bool,MESSAGE=msg}
-			local refal1=cjson.encode(refal)
-			local refal1_1=crypt.aesencode(refal1,who,"")
-			local refal1_2 = crypt.base64encode(refal1_1)
-			print("zxcgfdsgrfy")
+			local refal1_2=packtable(refal)
 			return refal1_2.."\n"
 		end
 ------------------------- --用户登录-------------------------------------
@@ -52,23 +45,17 @@ function handler(fd, mes)
 		        skynet.error("money is",money)
 		    if boo then
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money}
-			    local str5=cjson.encode(reqmoney)
-			    local rep5=crypt.aesencode(str5,who,"")
-			    local str5_1 = crypt.base64encode(rep5)
+			    local str5_1=packtable(reqmoney)
 			    cluster.call("cluster_game",".agent","start",fd,mes.NAME)
 			    return str5_1.."\n"
 		    elseif not boo then
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MESSAGE=money}
-			    local str3=cjson.encode(reqmoney)
-			    local rep3=crypt.aesencode(str3,who,"")
-			    local str3_1 = crypt.base64encode(rep3)
+			    local str3_1=packtable(reqmoney)
 				return str3_1.."\n"
 			end
 		elseif	not bool then
 			    local rep4={SESSION=mes.SESSION,ID="1",STATE=bool,MESSAGE=msg}
-				local str4=cjson.encode(rep4)
-				local rep4_1=crypt.aesencode(str4,who,"")
-				local str4_1 = crypt.base64encode(rep4_1)
+				local str4_1=packtable(rep4)
 				return str4_1.."\n"	
 		end 	
 
@@ -92,30 +79,22 @@ function handler(fd, mes)
 				skynet.error("record_init=",bo,message)--test
 			if bo then 
 				local rep={SESSION=mes.SESSION,ID="3",STATE=bo,NAME=name,PASSWD=password}
-				local str=cjson.encode(rep)
-				local rep1=crypt.aesencode(str,who,"")
-				local str2 = crypt.base64encode(rep1)
+				local str2=packtable(rep)
 				return str2.."\n"
 			elseif not bo then
 				local rep5={SESSION=mes.SESSION,ID="3",STATE=bo,MESSAGE=message}
-			    local str5=cjson.encode(rep5)
-			    local rep5_1=crypt.aesencode(str5,who,"")
-			    local str5_1 = crypt.base64encode(rep5_1)
+			    local str5_1=packtable(rep5)
 			    return str5_1.."\n"
 		    end
 	    else
 			       local rep={SESSION=mes.SESSION,ID="3",STATE=false,MESSAGE=msg}
-			       local str=cjson.encode(rep)
-			       local rep1=crypt.aesencode(str,who,"")
-			       local str2 = crypt.base64encode(rep1)
+			       local str2=packtable(rep)
 			       return str2.."\n"
 	    end 
 
     end
       local rep6={SESSION=mes.SESSION,ID="3",STATE=bo,MESSAGE="注册登录错误"}
-	  local str6=cjson.encode(rep6)
- 	  local rep6_1=crypt.aesencode(str6,who,"")
-      local str6_1 = crypt.base64encode(rep6_1)
+	  local str6_1=packtable(rep6)
       return str6_1.."\n"
 end
 
@@ -141,7 +120,13 @@ function CMD.signin(fd,mes)
 	return handler(fd,mes)
 end
 
-
+function packtable(req)
+	local who="123456"
+	local result=cjson.encode(req)
+	local result1=crypt.aesencode(result,who,"")
+	local result1_1=crypt.base64encode(result1)
+	return result1_1
+end
 skynet.start(function()
 	i=sgoly_tool.getUuid()
 	skynet.error("i=",i)

@@ -49,7 +49,7 @@ function handler.connect(fd, addr)
     local who="123456"
     password =crypt.aesencode(json_text,who,"")
     local str1 = crypt.base64encode(password)
-    driver.send(fd,str1.."\n")
+    driver.send(fd,str1)
 end
 
 function handler.disconnect(fd)

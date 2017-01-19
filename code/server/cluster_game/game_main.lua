@@ -34,5 +34,6 @@ skynet.start(function ()
 	--local debug_port = skynet.getenv "debug_port"
 	--skynet.newservice("debug_console",debug_port)
     local  agent= skynet.newservice("agent")
-	local  maingame= skynet.newservice("maingame")
+	-- local  maingame= skynet.newservice("maingame")
+	-- local  stats= skynet.newservice("stats")
 end)

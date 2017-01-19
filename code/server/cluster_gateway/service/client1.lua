@@ -38,19 +38,18 @@ skynet.start(function()
 
     --启动读协程
     skynet.fork(_read, id)
- 
-    -- for i=1, 10 do
-    -- local lua_value = {ID="3",CLUSTER="4"}
-    -- local lua_value = {SESSION="1",ID="1",CLUSTER="4",SERVICE="140",CMD="signin",NAME="interface6",PASSWD=123456}
-    -- local json_text = cjson.encode(lua_value)
     local password 
     local who="123456"
-    -- password =crypt.aesencode(json_text,who,"")
-    -- local str1 = crypt.base64encode(password)
-    -- str1 = string.pack(">s2", str1)
-    -- socket.write(id,str1)
+    -- for i=1, 10 do
+    -- local lua_value = {SESSION=“1”，CLUSTER=“4”，SERVICE=“140”，CMD=”signin”，ID=”1”,NAME=”昵称”,PASSWD=”密码”}
+    local lua_value = {SESSION="1",ID="1",CLUSTER="4",SERVICE="140",CMD="signin",NAME="abcd",PASSWD="123456"}
+    local json_text = cjson.encode(lua_value)
+    password =crypt.aesencode(json_text,who,"")
+    local str1 = crypt.base64encode(password)
+    str1 = string.pack(">s2", str1)
+    socket.write(id,str1)
     -- end
-    -- skynet.sleep(100)
+    skynet.sleep(100)
      local lua_value1 = {SESSION="1",CLUSTER="2",SERVICE="120",CMD="main",ID="4",BOTTOM=10,TIMES=10,COUNTS=1,MONEY=200}
     local json_text1 = cjson.encode(lua_value1)
      password1 =crypt.aesencode(json_text1,who,"")
