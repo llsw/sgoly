@@ -57,7 +57,6 @@ function CMD.hmset(dbn, key, t)
 		table.insert(data, k)
 		table.insert(data, v)
 	end
-
 	local db = dbc:get()
 	local result = db:hmset(key, table.unpack(data))
 	dbc:free(db)
@@ -177,10 +176,19 @@ function CMD.del(dbn, key)
 	
 	return result
 end
+
+function CMD.hincrby(dbn, key, filed, value)
+	
+	local db = dbc:get()
+	local result = db:hmset(key, filed, value)
+	dbc:free(db)
+
+end
 	
 
 skynet.start(function()
-	skynet.dispatch("lua", function(session, source, cmd, ...)
+	skynet.dispatch("lua", function(session, source, cmd, redis_cmd, ...)
+		printI("[REDIS_QUERY]-->%s", redis_cmd)
 		local f = assert(CMD[cmd], cmd .. "not found")
 		skynet.retpack(f(...))
 	end)
