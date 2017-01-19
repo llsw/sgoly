@@ -21,17 +21,11 @@
  function account_dao.insert(id, money)
  	printD("account_dao.insert(%d, %d)", id, money)
  	printI("account_dao.insert(%d, %d)", id, money)
- 	if(nil == id) then
- 		return false, "用户id空值错误"
- 	elseif(nil == money) then
- 		return false, "金币空值错误"
- 	else
- 		local status = account.insert(id, money)
-		if((0 == status.warning_count) and (1 == status.affected_rows)) then
-			return true, "插入用户金币资产数据成功"
-		else
-			return false, status.err
-		end
+	local status = account.insert(id, money)
+	if((0 == status.warning_count) and (1 == status.affected_rows)) then
+		return true, "插入用户金币资产数据成功"
+	else
+		return false, status.err
 	end
 end
 
@@ -44,15 +38,11 @@ end
 function account_dao.delete(id)
 	printD("account_dao.delete(%d)", id)
  	printI("account_dao.delete(%d)", id)
- 	if(nil == id) then
- 		return false, "用户id空值错误"
- 	else
- 		local status = account.delete(id)
-		if((0 == status.warning_count) and (1 == status.affected_rows)) then
-			return true, "删除用户金币资产数据成功"
-		else
-			return false, status.err
-		end
+	local status = account.delete(id)
+	if((0 == status.warning_count) and (1 == status.affected_rows)) then
+		return true, "删除用户金币资产数据成功"
+	else
+		return false, status.err
 	end
 end
 
@@ -65,17 +55,11 @@ end
 function account_dao.update_money(id, money)
 	printD("account_dao.update_money(%d, %d)", id, money)
  	printI("account_dao.update_money(%d, %d)", id, money)
- 	if(nil == id) then
- 		return false, "用户id空值错误"
- 	elseif(nil == money) then
- 		return false, "金币空值错误"
- 	else
- 		local status = account.update_money(id, money)
-		if((0 == status.warning_count) and (1 == status.affected_rows)) then
-			return true, "更新用户金币资产数据成功"
-		else
-			return false, status.err
-		end
+	local status = account.update_money(id, money)
+	if((0 == status.warning_count) and (1 == status.affected_rows)) then
+		return true, "更新用户金币资产数据成功"
+	else
+		return false, status.err
 	end
 end
 
@@ -88,15 +72,11 @@ end
 function account_dao.select_money(id)
 	printD("account_dao.update_money(%d)", id)
  	printI("account_dao.update_money(%d)", id)
- 	if(nil == id) then
- 		return false, "用户id空值错误"
- 	else
- 		local status = account.select_money(id)
-		if(1 == #status) then
-			return true, status[1].money
-		else
-			return false, status.err
-		end
+	local status = account.select_money(id)
+	if(1 == #status) then
+		return true, status[1].money
+	else
+		return false, status.err
 	end
 end
 

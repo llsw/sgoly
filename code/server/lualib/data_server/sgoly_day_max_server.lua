@@ -25,11 +25,21 @@
 			conti_max, dt)
  	printI("day_max_server.insert(%s, %d, %d, %s)", nickname, single_max, 
  			conti_max, dt)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif(nil == single_max ) then
+ 		return false, "single_max空值错误"
+ 	elseif(nil == conti_max) then
+ 		return false, "conti_max空值错误"
+ 	elseif((nil == dt) or ("" == dt)) then
+ 		return false, "日期空值错误"
  	else
- 		return day_max_dao.insert(uid, single_max, conti_max, dt)
+ 		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return day_max_dao.insert(uid, single_max, conti_max, dt)
+	 	end
  	end
  end
 
@@ -46,12 +56,20 @@
  			dt)
  	printI("day_max_server.update_single_max(%s, %d, %s)", nickname, single_max, 
  			dt)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif(nil == single_max ) then
+ 		return false, "single_max空值错误"
+ 	elseif((nil == dt) or ("" == dt)) then
+ 		return false, "日期空值错误"
  	else
- 		return day_max_dao.update_single_max(uid, single_max, dt)
- 	end
+	 	local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return day_max_dao.update_single_max(uid, single_max, dt)
+	 	end
+	end
  end
 
 --[[
@@ -67,12 +85,20 @@ function day_max_server.update_conti_max(nickname, conti_max, dt)
  			dt)
  	printI("day_max_server.update_conti_max(%s, %d, %s)", nickname, conti_max, 
  			dt)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif(nil == conti_max) then
+ 		return false, "conti_max空值错误"
+ 	elseif((nil == dt) or ("" == dt)) then
+ 		return false, "日期空值错误"
  	else
- 		return day_max_dao.update_conti_max(uid, conti_max, dt)
- 	end
+ 		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return day_max_dao.update_conti_max(uid, conti_max, dt)
+	 	end
+ 	end	
 end
 
 --[[
@@ -85,11 +111,17 @@ end
 function day_max_server.select(nickname, dt)
  	printD("day_max_server.select(%s, %s)", nickname, dt)
  	printI("day_max_server.select(%s, %s)", nickname, dt)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif((nil == dt) or ("" == dt)) then
+ 		return false, "日期空值错误"
  	else
- 		return day_max_dao.select(uid, dt)
+ 		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return day_max_dao.select(uid, dt)
+	 	end
  	end
 end
 
@@ -104,11 +136,17 @@ end
 function day_max_server.select_single_max(nickname, dt)
  	printD("day_max_server.select_single_max(%s, %s)", nickname, dt)
  	printI("day_max_server.select_single_max(%s, %s)", nickname, dt)
- 	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif((nil == dt) or ("" == dt)) then
+ 		return false, "日期空值错误"
  	else
- 		return day_max_dao.select_single_max(uid, dt)
+ 		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return day_max_dao.select_single_max(uid, dt)
+	 	end
  	end
 end
 
@@ -123,11 +161,17 @@ end
 function day_max_server.select_conti_max(nickname, dt)
  	printD("day_max_server.select_conti_max(%s, %s)", nickname, dt)
  	printI("day_max_server.select_conti_max(%s, %s)", nickname, dt)
-	local tag, uid = users_server.select_uid(nickname)
- 	if(false == tag ) then
- 		return false, nickname.." 不存在"
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	elseif((nil == dt) or ("" == dt)) then
+ 		return false, "日期空值错误"
  	else
- 		return day_max_dao.select_conti_max(uid, dt)
+ 		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return day_max_dao.select_conti_max(uid, dt)
+	 	end
  	end
 end
 

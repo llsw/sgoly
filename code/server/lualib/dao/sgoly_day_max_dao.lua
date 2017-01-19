@@ -21,22 +21,12 @@ local day_max_dao = {}
 function day_max_dao.insert(uid, single_max, conti_max, dt)
 	printD("day_max_dao.insert(%d, %d, %d, %s)", uid, single_max, conti_max, dt)
  	printI("day_max_dao.insert(%d, %d, %d, %s)", uid, single_max, conti_max, dt)
- 	if(nil == uid) then
- 		return false, "用户id空值错误"
- 	elseif(nil == single_max ) then
- 		return false, "single_max空值错误"
- 	elseif(nil == conti_max ) then
- 		return false, "conti_max空值错误"
- 	elseif((nil == dt) or ("" == dt)) then
- 		return false, "日期空值错误"
- 	else
- 		local status = day_max.insert(uid, single_max, conti_max, dt)
- 		if((0 == status.warning_count) and (1 == status.affected_rows)) then
-			return true, "插入用户当日最值数据成功"
-		else
-			return false, status.err
-		end
- 	end
+	local status = day_max.insert(uid, single_max, conti_max, dt)
+	if((0 == status.warning_count) and (1 == status.affected_rows)) then
+		return true, "插入用户当日最值数据成功"
+	else
+		return false, status.err
+	end
 end
 
 --[[
@@ -49,19 +39,11 @@ end
 function day_max_dao.update_single_max(uid, single_max, dt)
  	printD("day_max_dao.update_single_max(%d, %d, %s)", uid, single_max, dt)
  	printI("day_max_dao.update_single_max(%d, %d, %s)", uid, single_max, dt)
- 	if(nil == uid) then
- 		return false, "用户id空值错误"
- 	elseif(nil == single_max ) then
- 		return false, "single_max空值错误"
- 	elseif((nil == dt) or ("" == dt)) then
- 		return false, "日期空值错误"
- 	else
-		local status = day_max.update_single_max(uid, single_max, dt)
- 		if((0 == status.warning_count) and (1 == status.affected_rows)) then
-			return true, "更新用户当日单次最大数据成功"
-		else
-			return false, status.err
-		end
+	local status = day_max.update_single_max(uid, single_max, dt)
+	if((0 == status.warning_count) and (1 == status.affected_rows)) then
+		return true, "更新用户当日单次最大数据成功"
+	else
+		return false, status.err
 	end
 end
 
@@ -75,19 +57,11 @@ end
 function day_max_dao.update_conti_max(uid, conti_max, dt)
  	printD("day_max_dao.update_conti_max(%d, %d, %s)", uid, conti_max, dt)
  	printI("day_max_dao.update_conti_max(%d, %d, %s)", uid, conti_max, dt)
- 	if(nil == uid) then
- 		return false, "用户id空值错误"
- 	elseif(nil == conti_max ) then
- 		return false, "conti_max空值错误"
- 	elseif((nil == dt) or ("" == dt)) then
- 		return false, "日期空值错误"
- 	else
-		local status = day_max.update_conti_max(uid, conti_max, dt)
- 		if((0 == status.warning_count) and (1 == status.affected_rows)) then
-			return true, "更新用户当日连续最大数据成功"
-		else
-			return false, status.err
-		end
+	local status = day_max.update_conti_max(uid, conti_max, dt)
+	if((0 == status.warning_count) and (1 == status.affected_rows)) then
+		return true, "更新用户当日连续最大数据成功"
+	else
+		return false, status.err
 	end
 end
 
@@ -100,18 +74,12 @@ end
 function day_max_dao.select(uid, dt)
  	printD("day_max_dao.select(%d, %s)", uid, dt)
  	printI("day_max_dao.select(%d, %s)", uid, dt)
- 	if(nil == uid) then
- 		return false, "用户id空值错误"
- 	elseif((nil == dt) or ("" == dt)) then
- 		return false, "日期空值错误"
- 	else
- 		local status = day_max.select(uid, dt)
- 		if(1 == #status) then
-			return true, status[1]
-		else
-			return false, status.err
-		end
- 	end
+	local status = day_max.select(uid, dt)
+	if(1 == #status) then
+		return true, status[1]
+	else
+		return false, status.err
+	end
 end
 
 --[[
@@ -124,18 +92,12 @@ end
 function day_max_dao.select_single_max(uid, dt)
  	printD("day_max_dao.select_single_max(%d, %s)", uid, dt)
  	printI("day_max_dao.select_single_max(%d, %s)", uid, dt)
- 	if(nil == uid) then
- 		return false, "用户id空值错误"
- 	elseif((nil == dt) or ("" == dt)) then
- 		return false, "日期空值错误"
- 	else
- 		local status = day_max.select_single_max(uid, dt)
- 		if(1 == #status) then
-			return true, status[1].single_max
-		else
-			return false, status.err
-		end
- 	end
+	local status = day_max.select_single_max(uid, dt)
+	if(1 == #status) then
+		return true, status[1].single_max
+	else
+		return false, status.err
+	end
 end
 
 --[[
@@ -148,18 +110,12 @@ end
 function day_max_dao.select_conti_max(uid, dt)
  	printD("day_max_dao.select_conti_max(%d, %s)", uid, dt)
  	printI("day_max_dao.select_conti_max(%d, %s)", uid, dt)
- 	if(nil == uid) then
- 		return false, "用户id空值错误"
- 	elseif((nil == dt) or ("" == dt)) then
- 		return false, "日期空值错误"
- 	else
- 		local status = day_max.select_conti_max(uid, dt)
- 		if(1 == #status) then
-			return true, status[1].conti_max
-		else
-			return false, status.err
-		end
- 	end
+	local status = day_max.select_conti_max(uid, dt)
+	if(1 == #status) then
+		return true, status[1].conti_max
+	else
+		return false, status.err
+	end
 end
 
 return day_max_dao

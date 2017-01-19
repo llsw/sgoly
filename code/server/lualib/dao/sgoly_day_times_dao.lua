@@ -22,22 +22,12 @@
 function day_times_dao.insert(uid, win_times, times, dt)
  	printD("day_times_dao.insert(%d, %d, %d, %s)", uid, win_times, times, dt)
  	printI("day_times_dao.insert(%d, %d, %d, %s)", uid, win_times, times, dt)
- 	if(nil == uid) then
- 		return false, "uid空值错误"
- 	elseif(nil == win_times) then
- 		return false, "win_times空值错误"
- 	elseif(nil == times) then
- 		return false, "times空值错误"
- 	elseif((nil == dt) or ("" == dt)) then
- 		return false, "日期空值错误"
- 	else
- 		local status = day_times.insert(uid, win_times, times, dt)
- 		if((0 == status.warning_count) and (1 == status.affected_rows)) then
-			return true, "插入用户当日获奖次数数据成功"
-		else
-			return false, status.err
-		end
- 	end
+	local status = day_times.insert(uid, win_times, times, dt)
+	if((0 == status.warning_count) and (1 == status.affected_rows)) then
+		return true, "插入用户当日获奖次数数据成功"
+	else
+		return false, status.err
+	end
 end
 
 --[[
@@ -49,20 +39,12 @@ end
 function day_times_dao.update_win_times(uid, win_times, dt)
  	printD("day_times_dao.update_win_times(%d, %d, %s)", uid, win_times, dt)
  	printI("day_times_dao.update_win_times(%d, %d, %s)", uid, win_times, dt)
-	if(nil == uid) then
- 		return false, "uid空值错误"
- 	elseif(nil == win_times) then
- 		return false, "win_times空值错误"
- 	elseif((nil == dt) or ("" == dt)) then
- 		return false, "日期空值错误"
- 	else
- 		local status = day_times.update_win_times(uid, win_times, dt)
- 		if((0 == status.warning_count) and (1 == status.affected_rows)) then
-			return true, "更改用户当日获奖次数数据成功"
-		else
-			return false, status.err
-		end
- 	end
+	local status = day_times.update_win_times(uid, win_times, dt)
+	if((0 == status.warning_count) and (1 == status.affected_rows)) then
+		return true, "更改用户当日获奖次数数据成功"
+	else
+		return false, status.err
+	end
 end
 
 --[[
@@ -74,20 +56,12 @@ end
 function day_times_dao.update_times(uid, times, dt)
  	printD("day_times_dao.update_times(%d, %d, %s)", uid, times, dt)
  	printI("day_times_dao.update_times(%d, %d, %s)", uid, times, dt)
-	if(nil == uid) then
- 		return false, "uid空值错误"
- 	elseif(nil == times) then
- 		return false, "times空值错误"
- 	elseif((nil == dt) or ("" == dt)) then
- 		return false, "日期空值错误"
- 	else
- 		local status = day_times.update_times(uid, times, dt)
- 		if((0 == status.warning_count) and (1 == status.affected_rows)) then
-			return true, "更改用户当日玩游戏次数数据成功"
-		else
-			return false, status.err
-		end
- 	end
+	local status = day_times.update_times(uid, times, dt)
+	if((0 == status.warning_count) and (1 == status.affected_rows)) then
+		return true, "更改用户当日玩游戏次数数据成功"
+	else
+		return false, status.err
+	end
 end
 
 --[[
@@ -99,18 +73,12 @@ end
 function day_times_dao.select(uid, dt)
  	printD("day_times_dao.select(%d, %s)", uid, dt)
  	printI("day_times_dao.select(%d, %s)", uid, dt)
- 	if(nil == uid) then
- 		return false, "uid空值错误"
- 	elseif((nil == dt) or ("" == dt)) then
- 		return false, "日期空值错误"
- 	else
- 		local status = day_times.select(uid, dt)
- 		if(1 == #status) then
-			return true, status[1]
-		else
-			return false, status.err
-		end
- 	end
+	local status = day_times.select(uid, dt)
+	if(1 == #status) then
+		return true, status[1]
+	else
+		return false, status.err
+	end
 end
 
 --[[
@@ -122,18 +90,12 @@ end
 function day_times_dao.select_win_times(uid, dt)
  	printD("day_times_dao.select_win_times(%d, %s)", uid, dt)
  	printI("day_times_dao.select_win_times(%d, %s)", uid, dt)
-	if(nil == uid) then
- 		return false, "uid空值错误"
- 	elseif((nil == dt) or ("" == dt)) then
- 		return false, "日期空值错误"
- 	else
- 		local status = day_times.select_win_times(uid, dt)
- 		if(1 == #status) then
-			return true, status[1].win_times
-		else
-			return false, status.err
-		end
- 	end
+	local status = day_times.select_win_times(uid, dt)
+	if(1 == #status) then
+		return true, status[1].win_times
+	else
+		return false, status.err
+	end
 end
 
 --[[
@@ -145,18 +107,12 @@ end
 function day_times_dao.select_times(uid, dt)
  	printD("day_times_dao.select_times(%d, %s)", uid, dt)
  	printI("day_times_dao.select_times(%d, %s)", uid, dt)
- 	if(nil == uid) then
- 		return false, "uid空值错误"
- 	elseif((nil == dt) or ("" == dt)) then
- 		return false, "日期空值错误"
- 	else
- 		local status = day_times.select_times(uid, dt)
- 		if(1 == #status) then
-			return true, status[1].times
-		else
-			return false, status.err
-		end
- 	end
+	local status = day_times.select_times(uid, dt)
+	if(1 == #status) then
+		return true, status[1].times
+	else
+		return false, status.err
+	end
 end
 
 return day_times_dao

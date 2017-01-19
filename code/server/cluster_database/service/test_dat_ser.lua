@@ -73,7 +73,7 @@ end
 		返回参数：
 --]]
 function test_dat_ser.usr_init(nickname, money, cnt)
-	printD("test usr_init(%s, %d)", nickname, money)
+	printD("test usr_init(%s, %d, %d)", nickname, money, cnt)
 	local tested_cnt = 0
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
@@ -103,7 +103,7 @@ function test_dat_ser.get_money(nickname, cnt)
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
 		local tag, msg = dat_ser.get_money(tmpname)
-		printD("test up_acc. tag = %s, msg = %s", tag, msg)
+		printD("test get_money. tag = %s, msg = %s", tag, msg)
 		if(true == tag) then
 			tested_cnt = tested_cnt + 1
 		end
@@ -180,7 +180,7 @@ function test_dat_ser.del_usr(nickname, pwd, cnt)
 		local tmpname = nickname.."-"..i
 		local tmppwd = pwd.."-"..i
 		local tag, msg = dat_ser.del_usr(tmpname, tmppwd)
-		printD("test resgister. tag = %s, msg = %s", tag, msg)
+		printD("test del_usr. tag = %s, msg = %s", tag, msg)
 		if(true == tag) then
 			tested_cnt = tested_cnt + 1
 		end
@@ -223,8 +223,8 @@ function test_dat_ser.main(nickname, pwd, money, cnt)
 	local tag7, msg7 = test_dat_ser.del_usr(nickname, pwd, cnt)
 	printD("tag7 =%s, msg7 = %s", tag7, msg7)
 
-	if((true == tag1) and (true == tag2) 
-		and (true == tag3) and (true == tag4) and (true == tag5)) then
+	res_tag = (tag1 and tag2 and tag3 and tag4 and tag5 and tag6 and tag7)
+	if(res_tag) then
 		printD("%s", "测试全部通过")
 		return true, "测试全部通过"
 	else
