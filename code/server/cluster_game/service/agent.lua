@@ -2,6 +2,10 @@ local skynet = require "skynet"
 local socket = require "socket"
 local cluster= require "cluster"
 require "skynet.manager"
+local sgoly_pack=require "sgoly_pack"
+local crypt     = require "crypt"
+package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
+local cjson = require "cjson"
 local agent = {}
 
 local connection = {}
@@ -10,15 +14,26 @@ local connection = {}
 function agent.main(fd,mes)
 	skynet.error(mes)
 	skynet.error(mes.SESSION,mes.ID,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST)
-	local req=skynet.call(connection[fd].maingame,"lua","calc",fd,mes.SESSION,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST,connection[fd].name)
-	return req
+	if mes.ID=="4" then
+	   local req=skynet.call(connection[fd].maingame,"lua","calc",fd,mes.SESSION,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST,connection[fd].name)
+	   return req
+	elseif mes.ID=="5" then
+	   local req1=skynet.call(connection[fd].stats,"lua","tongji",fd,mes.SESSION,mes.TYPE,connection[fd].name)
+	   return req1
+   else  
+   	local req={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
+	local result1_2 = sgoly_pack.encode(req)
+	return result1_2
+end
 end
 
 function agent.start(fd,name)
 	  local maingame = skynet.newservice("maingame")
+	  local stats = skynet.newservice("stats")
 	  local c = {
 	  		name = name,
-	  		maingame = maingame
+	  		maingame = maingame,
+	  		stats=stats
 			}
 	  connection[fd] = c 
 end

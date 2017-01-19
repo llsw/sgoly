@@ -87,10 +87,10 @@ end
  -- 	moneydb=0          --赚得金额存数据库
 	-- deposit=0          --消耗金额
 	-- depositdb=0        --消耗金额存数据库
-	-- historyj=0         --历史中奖次数
+	historyj=0         --历史中奖次数
 	-- n=1                --number1 的索引
  --    x = 1              --1 为普通模式 2为困难模式 3为简单模式	
-	-- historynum=0       --历史抽奖次数
+	historynum=0       --历史抽奖次数
 	-- winmoney={}        --中奖金额
 --主循环判断
 function gamemain(fd,session,end_point,beilv,k,MONEY,cost,name) 
@@ -101,12 +101,16 @@ function gamemain(fd,session,end_point,beilv,k,MONEY,cost,name)
  	moneydb=0          --赚得金额存数据库
 	deposit=0          --消耗金额
 	depositdb=0        --消耗金额存数据库
-	historyj=0         --历史中奖次数
+	-- historyj=0         --历史中奖次数
 	n=1                --number1 的索引
-    x = 1              --1 为普通模式 2为困难模式 3为简单模式	
-	historynum=0       --历史抽奖次数
-	winmoney={}        --中奖金额                        --end_point底分    beilv 倍率   k 次数
-	skynet.error("zxxxxxx",MONEY,COST)
+	bo,y=sgoly_tool.getPlayModelFromRedis(name)
+    x=y[2]             --1 为普通模式 2为困难模式 3为简单模式	
+    skynet.error("x=",x,y[1],y[2])
+    skynet.error(type(x),type(y[2]))
+	-- historynum=0       --历史抽奖次数
+	winmoney={}        --中奖金额       
+	--end_point底分    beilv 倍率   k 次数
+	skynet.error("zxxxxxx",MONEY,cost)
 	historynum=historynum+k
 	local j=0           --记录本轮中奖总次数
 	local number1={}    --第几次中奖
@@ -738,13 +742,14 @@ end  --for 循环end
 	     	winmax=v
 	     end
 	end      
-----------------------获奖总金额------------------
+----------------------获奖总金额------------------d
     local winall =0
     for k,v in ipairs(winmoney) do
     	 winall=winall+v
     end
     local nowMONEY=MONEY+winall
-    --sgoly_tool.saveStatementsToRedis()
+    sgoly_tool.saveStatementsToRedis(name,winall,cost,k,j,max,winmax,0,x)
+    sgoly_tool.saveMoneyToRedis(name,nowMONEY)
 	return send_result(fd,session,max,j,winmax,winall,nowMONEY,sequence,winmoney)
 end
 
