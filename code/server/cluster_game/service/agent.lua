@@ -16,10 +16,10 @@ end
 
 function agent.start(fd,name)
 	  local maingame = skynet.newservice("maingame")
-	  c = {
-	  	name = name,
-	  	maingame = maingame
-		}
+	  local c = {
+	  		name = name,
+	  		maingame = maingame
+			}
 	  connection[fd] = c 
 end
 

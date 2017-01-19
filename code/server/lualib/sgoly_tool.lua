@@ -184,7 +184,7 @@ function sgoly_tool.getPlayModelFromRedis(nickname)
 	res = redis_query({"hmget", key, "eighthNoWin", "recoveryRate"})
 	if #res == 0 then
 		res[1]=0
-		res[2]=0
+		res[2]=1
 	end
 
 	return true, res

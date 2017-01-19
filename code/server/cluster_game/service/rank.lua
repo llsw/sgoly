@@ -13,7 +13,6 @@ local cjson = require "cjson"
 
 local handler = {}
 session=0
-sessionID={}
 function handler.open(source, conf)
 	printI("Gateway open source[%d]", source)
 end
@@ -28,7 +27,6 @@ function handler.message(fd, msg)
 		local mes = cjson.decode(password)
 		skynet.error(mes)
 		skynet.error(mes.SESSION,mes.CLUSTER,mes.SERVICE,mes.CMD,mes.ID,mes.NAME,mes.PASSWD)
-		--sessionID[mes.NAME]=mes.SESSION
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)
 		local req =cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
