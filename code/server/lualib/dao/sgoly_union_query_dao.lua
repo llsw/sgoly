@@ -20,4 +20,13 @@ function dao.get_stamtents_from_MySQL(nickname, dt)
 	return true, status
 end
 
+function dao.get_count_statements_from_MySQL(nickname)
+	local status = union_query.get_count_statements_from_MySQL(nickname)
+	if status.err then
+		return false, status.err
+	end
+
+	return true, status
+end
+
 return dao

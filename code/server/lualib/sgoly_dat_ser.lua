@@ -255,6 +255,25 @@ function dat_ser.update_statments_to_MySQL(nickname, winMoney, costMoney, playNu
 	return true, "Save statments to MySQL success"
 	
 end
-	
+
+function dat_ser.get_count_statements_from_MySQL(nickname)
+	if not nickname then
+		return false, "Args nil"
+	end
+	local ok, result = sgoly_union_query_server.get_count_statements_from_MySQL(nickname)
+	if #result > 0 then
+
+		return ok, 
+		{
+			winMoney = result[1].win, 
+			costMoney = result[1].cost, 
+			playNum = result[1].times, 
+			winNum = result[1].win_times, 
+			maxWinMoney = result[1].single_max, 
+			serialWinNum = result[1].conti_max,
+		}
+
+	end
+end
 
 return dat_ser

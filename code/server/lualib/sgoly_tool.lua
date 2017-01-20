@@ -10,6 +10,7 @@
 require "sgoly_query"
 local sgoly_tool = {}
 local sgoly_dat_ser = require "sgoly_dat_ser"
+local skynet = require "skynet"
 
 function sgoly_tool.wordToInt(str)
 	return str:byte(1) * 256 + str:byte(2)
@@ -195,15 +196,72 @@ function sgoly_tool.getPlayModelFromRedis(nickname)
 	return true, res
 end
 
+--!
+--! @brief      Gets the count statements from redis.
+--!
+--! @param      nickname  The nickname
+--!
+--! @return     The count statements from redis.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-20
+--!
 function sgoly_tool.getCountStatementsFromRedis(nickname)
 	local res = {}
 	
 	local key = "count:" .. nickname
 	local res = redis_query({"hgetall", key})
 	if #res > 0 then
-		return sgoly_tool.multipleToTable(res)
+
+		local ok1, result1 = sgoly_tool.multipleToTable(res)
+		local ok2, result2 = sgoly_tool.getStatementsFromRedis(nickname, os.date("%Y-%m-%d"))
+		local result3 = {
+							winMoney = result1.winMoney+result2.winMoney, 
+							costMoney = result1.costMoney+result2.costMoney, 
+							playNum = result1.playNum+result2.playNum, 
+							winNum = result1.winNum+result2.winNum,
+							serialWinNum = result1.serialWinNum, 
+							maxWinMoney = result1.maxWinMoney
+						}
+
+		if tonumber(result2.serialWinNum) > tonumber(result1.serialWinNum) then
+			skynet.error(result2.serialWinNum, result1.serialWinNum)
+			result3.serialWinNum = result2.serialWinNum
+		end
+		if tonumber(result2.maxWinMoney) > tonumber(result1.maxWinMoney) then
+			result3.maxWinMoney = result2.maxWinMoney
+		end
+		return ok2, result3	
 	end
-	return true, res
+
+	local ok, result = sgoly_dat_ser.get_count_statements_from_MySQL(nickname)
+	
+	if ok then
+		redis_query({"hmset", key, result})
+		local ok2, result2 = sgoly_tool.getStatementsFromRedis(nickname, os.date("%Y-%m-%d"))
+		local result3 = {
+							winMoney = result.winMoney+result2.winMoney, 
+							costMoney = result.costMoney+result2.costMoney, 
+							playNum = result.playNum+result2.playNum, 
+							winNum = result.winNum+result2.winNum, 
+							serialWinNum = result.serialWinNum, 
+							maxWinMoney = result.maxWinMoney
+						}
+
+
+		if tonumber(result2.serialWinNum) > tonumber(result.serialWinNum) then
+			result3.serialWinNum = result2.serialWinNum
+		end
+
+		if tonumber(result2.maxWinMoney) > tonumber(result.maxWinMoney) then
+			result3.maxWinMoney = result2.maxWinMoney
+		end
+
+		return ok, result3
+	end
+
+	return ok, result
+	
 end
 
 return sgoly_tool

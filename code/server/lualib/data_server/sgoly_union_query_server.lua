@@ -19,4 +19,13 @@ function server.get_stamtents_from_MySQL(nickname, dt)
 	return ok, {}
 end
 
+function server.get_count_statements_from_MySQL(nickname)
+	local ok, result = union_query_dao.get_count_statements_from_MySQL(nickname)
+	if ok then
+		return ok, result
+	end
+	return ok, {}
+end
+
+
 return server
