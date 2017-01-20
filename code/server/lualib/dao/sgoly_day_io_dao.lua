@@ -114,4 +114,13 @@ function day_io_dao.select_cost(uid, dt)
 	end
 end
 
+function day_io_dao.updateS(nickname, win, cost, dt)
+	local status = day_io.updateS(nickname, win, cost, dt)
+	if status.err then
+		return false, status.err
+	end
+
+	return true, status
+end
+
 return day_io_dao

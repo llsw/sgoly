@@ -164,4 +164,12 @@ function day_times_server.select_times(nickname, dt)
  	end
 end
 
+function day_times_server.updateS(nickname, times, win_times, dt)
+	if not nickname or not times or not win_times or not dt then
+		return false, "Args nil"
+	end
+
+ 	return day_times_dao.updateS(nickname, times, win_times, dt)
+end
+
 return day_times_server

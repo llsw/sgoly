@@ -175,4 +175,12 @@ function day_max_server.select_conti_max(nickname, dt)
  	end
 end
 
+function day_max_server.updateS(nickname, single_max, conti_max, dt)
+	if not nickname or not single_max or not conti_max or not dt then
+		return false, "Args nil"
+	end
+
+ 	return day_max_dao.updateS(nickname, single_max, conti_max, dt)
+end
+
 return day_max_server

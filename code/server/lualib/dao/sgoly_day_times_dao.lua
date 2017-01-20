@@ -115,4 +115,13 @@ function day_times_dao.select_times(uid, dt)
 	end
 end
 
+function day_times_dao.updateS(nickname, times, win_times, dt)
+	local status = day_times.updateS(nickname, times, win_times, dt)
+	if status.err then
+		return false, status.err
+	end
+
+	return true, status
+end
+
 return day_times_dao

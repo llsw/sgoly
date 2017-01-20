@@ -118,4 +118,14 @@ function day_max_dao.select_conti_max(uid, dt)
 	end
 end
 
+function day_max_dao.updateS(nickname, single_max, conti_max, dt)
+	local status = day_max.updateS(nickname, single_max, conti_max, dt)
+	if status.err then
+		return false, status.err
+	end
+
+	return true, status
+end
+
+
 return day_max_dao

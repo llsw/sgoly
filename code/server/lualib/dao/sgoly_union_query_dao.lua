@@ -8,15 +8,16 @@
 --]]
 
 require "sgoly_printf"
-local users = require "sgoly_users"
-local sgoly_union_query = {}
+local union_query = require "sgoly_union_query"
+local dao = {}
 
-function sgoly_union_query.getStamentsFromMySQL(nickname)
-	return true, msg
+function dao.get_stamtents_from_MySQL(nickname, dt)
+	local status = union_query.get_statmens_from_MySQL(nickname, dt)
+	if status.err then
+		return false, status.err
+	end
+
+	return true, status
 end
 
-function sgoly_union_query.saveStamentsToMySQL(nickname,)
-	-- body
-end
-
-return sgoly_union_query
+return dao

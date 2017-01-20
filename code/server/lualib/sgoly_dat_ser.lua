@@ -15,6 +15,8 @@ local day_tim_ser = require "sgoly_day_times_server"
 local max_awa_ser = require "sgoly_max_award_server"
 local max_tim_awa_ser = require "sgoly_max_times_award_server"
 local sin_awa_ser = require "sgoly_single_award_server"
+local sgoly_union_query_server = require "sgoly_union_query_server"
+local skynet = require "skynet"
 
 local dat_ser = {}
 
@@ -158,5 +160,64 @@ function dat_ser.upd_acc(nickname, money)
 	printI("dat_ser.up_acc(%s, %d)", nickname, money)
 	return acc_ser.update_money(nickname, money)
 end
+
+function dat_ser.get_statments_from_MySQL(nickname, dt)
+	printD("dat_ser.get_statements_from_mysql(%s)", nickname)
+	printI("dat_ser.get_statements_from_mysql(%s)", nickname)
+	if not nickname or not dt then
+		return false, "Args nil"
+	end
+
+	local ok, result = sgoly_union_query_server.get_stamtents_from_MySQL(nickname, dt)
+	if ok then
+
+		return ok, 
+		{
+			winMoney = result[1].win, 
+			costMoney = result[1].cost, 
+			playNum = result[1].times, 
+			winNum = result[1].win_times, 
+			maxWinMoney = result[1].single_max, 
+			serialWinNum = result[1].conti_max,
+		}
+	end
+	
+	local today = os.date("%Y-%m-%d")
+
+	if dt == today then
+		day_io_ser.insert(nickname, 0, 0, today)
+		day_tim_ser.insert(nickname, 0, 0, today)
+		day_max_ser.insert(nickname, 0, 0, today)
+	end
+
+	return true, {}
+end
+
+function dat_ser.update_statments_to_MySQL(nickname, winMoney, costMoney, playNum, winNum, maxWinMoney, serialWinNum, dt)
+	if not nickname or not dt then
+		return false, "Args nil"
+	end
+	local ok, result = day_io_ser.updateS(nickname, winMoney, costMoney, dt)
+	if not ok then
+		printE("error:%s", reslut)
+		return ok, result
+	end
+
+	ok, result = day_tim_ser.updateS(nickname, playNum, winNum, dt)
+	if not ok then
+		printE("error:%s", reslut)
+		return ok, result
+	end
+
+	ok, result = day_max_ser.updateS(nickname, maxWinMoney, serialWinNum, dt)
+	if not ok then
+		printE("error:%s", reslut)
+		return ok, result
+	end
+
+	return true, "Save statments to MySQL success"
+	
+end
+	
 
 return dat_ser

@@ -97,4 +97,31 @@ require "sgoly_printf"
  	return mysql_query(sql)
  end
 
+
+
+ --!
+ --! @brief      { function_description }
+ --!
+ --! @param      uid   The uid
+ --!
+ --! @return     { description_of_the_return_value }
+ --!
+ --! @author     kun si, 627795061@qq.com
+ --! @date       2017-01-20
+ --!
+ function day_io.updateS(nickname, win, cost, dt)
+ 	local sql = string.format(
+ 		[[
+ 			UPDATE users AS u
+		  	LEFT JOIN day_io AS dio ON u.id = dio.uid
+			SET dio.win = %d,
+ 				dio.cost = %d
+			WHERE
+				u.nickname = '%s'
+			AND dio.s_date = '%s';
+		]],win, cost, nickname, dt)
+ 	
+ 	return mysql_query(sql)
+ end
+
  return day_io

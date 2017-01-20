@@ -161,4 +161,13 @@ function day_io_server.select_cost(nickname, dt)
 	end
 end
 
+function day_io_server.updateS(nickname, win, cost, dt)
+	if not nickname or not win or not cost or not dt then
+		return false, "Day_io_server.updateS args nil"
+	end
+
+ 	return day_io_dao.updateS(nickname, win, cost, dt)
+
+end
+
 return day_io_server

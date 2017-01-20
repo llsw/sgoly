@@ -96,4 +96,20 @@ require "sgoly_printf"
  	return mysql_query(sql)
  end
 
+ function day_times.updateS(nickname, times, win_times, dt)
+ 	local sql = string.format(
+ 		[[
+ 			UPDATE users AS u
+		  	LEFT JOIN day_times AS dti ON u.id = dti.uid
+			SET dti.times = %d,
+ 				dti.win_times = %d
+			WHERE
+				u.nickname = '%s'
+			AND dti.s_date = '%s';
+		]],times, win_times, nickname, dt)
+ 	
+ 	return mysql_query(sql)
+ end
+
+
  return day_times
