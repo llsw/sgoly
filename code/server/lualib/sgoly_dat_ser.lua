@@ -161,6 +161,17 @@ function dat_ser.upd_acc(nickname, money)
 	return acc_ser.update_money(nickname, money)
 end
 
+--!
+--! @brief      Gets the statments from my sql.
+--!
+--! @param      nickname  The nickname
+--! @param      dt        { parameter_description }
+--!
+--! @return     The statments from my sql.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-20
+--!
 function dat_ser.get_statments_from_MySQL(nickname, dt)
 	printD("dat_ser.get_statements_from_mysql(%s)", nickname)
 	printI("dat_ser.get_statements_from_mysql(%s)", nickname)
@@ -169,7 +180,7 @@ function dat_ser.get_statments_from_MySQL(nickname, dt)
 	end
 
 	local ok, result = sgoly_union_query_server.get_stamtents_from_MySQL(nickname, dt)
-	if ok then
+	if #result > 0 then
 
 		return ok, 
 		{
@@ -180,6 +191,7 @@ function dat_ser.get_statments_from_MySQL(nickname, dt)
 			maxWinMoney = result[1].single_max, 
 			serialWinNum = result[1].conti_max,
 		}
+
 	end
 	
 	local today = os.date("%Y-%m-%d")
@@ -190,9 +202,34 @@ function dat_ser.get_statments_from_MySQL(nickname, dt)
 		day_max_ser.insert(nickname, 0, 0, today)
 	end
 
-	return true, {}
+	return true, 
+	{
+		winMoney = 0, 
+		costMoney = 0, 
+		playNum = 0, 
+		winNum = 0, 
+		maxWinMoney = 0, 
+		serialWinNum = 0,
+	}
 end
 
+--!
+--! @brief      { function_description }
+--!
+--! @param      nickname      The nickname
+--! @param      winMoney      The window money
+--! @param      costMoney     The cost money
+--! @param      playNum       The play number
+--! @param      winNum        The window number
+--! @param      maxWinMoney   The maximum window money
+--! @param      serialWinNum  The serial window number
+--! @param      dt            { parameter_description }
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-20
+--!
 function dat_ser.update_statments_to_MySQL(nickname, winMoney, costMoney, playNum, winNum, maxWinMoney, serialWinNum, dt)
 	if not nickname or not dt then
 		return false, "Args nil"

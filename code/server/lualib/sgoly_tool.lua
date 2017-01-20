@@ -103,14 +103,26 @@ end
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-19
 --!
-function sgoly_tool.getStatementsFromRedis(nickname)
+function sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if nickname == nil then
 		return false, "There are nil in args."
 	end
 	local res = {}
-	local key = "statements:" ..  nickname
+	local key = "statements:" ..  nickname .. dt
 	local res = redis_query({"hgetall", key})
-	return sgoly_tool.multipleToTable(res)
+	if #res > 0 then
+		return sgoly_tool.multipleToTable(res)
+	end
+
+	local ok, result = sgoly_dat_ser.get_statments_from_MySQL(nickname, dt)
+	if ok then
+		result.eighthNoWin = eighthNoWin
+		result.recoveryRate = recoveryRate
+		redis_query({"hmset", key, result})
+		return ok, result
+	end
+	return ok, result
+
 end
 --!
 --! @brief      保存游戏结算结果到Redis
@@ -130,7 +142,7 @@ end
 --! @author     kun si
 --! @date       2017-01-16
 --!
-function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum, winNum, serialWinNum, maxWinMoney, eighthNoWin, recoveryRate)
+function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum, winNum, serialWinNum, maxWinMoney, eighthNoWin, recoveryRate, dt)
 	if nickname == nil or winMoney == nil or 
 		costMoney == nil or playNum == nil 
 		or winNum == nil or serialWinNum == nil 
@@ -139,8 +151,8 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 		return false, "There are nil in args."
 	end
 	
-	local key = "statements:" .. nickname
-	local ok, result = sgoly_tool.getStatementsFromRedis(nickname)
+	local key = "statements:" .. nickname .. dt
+	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if ok then
 
 		result.winMoney = result.winMoney + winMoney
@@ -152,20 +164,11 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 		result.eighthNoWin = eighthNoWin
 		result.recoveryRate = recoveryRate
 		redis_query({"hmset", key, result})
+		sgoly_dat_ser.update_statments_to_MySQL(nickname, result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
 		return true, nil
 	end
 
-	result.winMoney = 0 + winMoney
-	result.costMoney = 0 + costMoney
-	result.playNum = 0 + playNum
-	result.winNum = 0 + winNum
-	result.serialWinNum = serialWinNum
-	result.maxWinMoney = maxWinMoney
-	result.eighthNoWin = eighthNoWin
-	result.recoveryRate = recoveryRate
-	redis_query({"hmset", key, result})
-
-	return true, nil
+	return ok, result
 end
 
 --!
@@ -180,7 +183,7 @@ end
 --!
 function sgoly_tool.getPlayModelFromRedis(nickname)
 	local res = {}
-	local key = "statements:" ..  nickname
+	local key = "statements:" ..  nickname .. os.date("%Y-%m-%d")
 	res = redis_query({"hmget", key, "eighthNoWin", "recoveryRate"})
 	if #res == 0 then
 		res[1]=0
