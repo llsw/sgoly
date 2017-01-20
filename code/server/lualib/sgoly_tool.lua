@@ -206,7 +206,7 @@ end
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-20
 --!
-function sgoly_tool.getCountStatementsFromRedis(nickname)
+function sgoly_tool.getCountStatementsFromRedis(nickname, dt)
 	local res = {}
 	
 	local key = "count:" .. nickname
@@ -234,7 +234,7 @@ function sgoly_tool.getCountStatementsFromRedis(nickname)
 		return ok2, result3	
 	end
 
-	local ok, result = sgoly_dat_ser.get_count_statements_from_MySQL(nickname)
+	local ok, result = sgoly_dat_ser.get_count_statements_from_MySQL(nickname, dt)
 	
 	if ok then
 		redis_query({"hmset", key, result})
