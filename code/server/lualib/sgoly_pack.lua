@@ -26,4 +26,19 @@ function sgoly_pack.c2s(req)
     local result = string.pack(">s2", strc2s)
     return result
 end
+
+function sgoly_pack.checkup(end_point,beilv,k,cost)
+    if end_point*beilv*k==tonumber(cost) then
+        if (end_point=="1000" or end_point=="2000" or end_point=="3000" 
+            or end_point=="4000" or end_point=="5000") and 
+        (beilv=="1" or beilv=="5" or beilv=="10" or beilv=="50" or beilv=="100") and 
+        (k=="1" or k=="10" or k=="30" or k=="50" or k=="100") then
+        return true
+        else
+            return false
+        end
+    else
+        return false
+    end
+end
 return sgoly_pack

@@ -13,10 +13,7 @@ local cjson = require "cjson"
 local CMD={}
 function CMD.tongji(fd,session,type,name)
 	if type=="today" then
-		-- local bool=true
-		-- local res={nickname="abcd",winMoney=1000,costMoney=2000,playNum=10,
-		-- winNum=1,serialWinNum=1,maxWinMoney=1000}
-		local bool,res=sgoly_tool.getStatementsFromRedis(name)
+		local bool,res=sgoly_tool.getStatementsFromRedis(name,os.date("%Y-%m-%d"))
 		if bool then
 			local  req={SESSION=session,
 			            ID="5",
@@ -43,8 +40,72 @@ function CMD.tongji(fd,session,type,name)
 		    return result2_2          
 	    end
 	elseif type=="yesterday" then
+		local a=os.date("%Y-%m-")
+		local b=tonumber(os.date("%d"))-1
+		local c=a..b
+		local bool,res=sgoly_tool.getStatementsFromRedis(name,c)
+		if bool then
+			local  reqy={SESSION=session,
+			            ID="5",
+			            TYPE="yesterday",
+			            STATE=true,
+			            winMoney=tonumber(res.winMoney),
+			            costMoney=tonumber(res.costMoney),
+			            playNum=tonumber(res.playNum),
+			            winNum=tonumber(res.winNum),
+			            serialWinNum=tonumber(res.serialWinNum),
+			            maxWinMoney=tonumber(res.maxWinMoney)
+			        }
+			skynet.error(reqy.SESSION,reqy.winMoney,reqy.costMoney,reqy.playNum,reqy.winNum,reqy.serialWinNum,reqy.maxWinMoney)
+			local resulty = sgoly_pack.encode(reqy)
+		    return resulty
+		elseif not bool then
+			local reqy1 = {SESSION=session,
+			              ID="5",
+			              TYPE="yesterday",
+			              STATE=false,
+			              MESSAGE=res
+			          }
+			local resulty1 = sgoly_pack.encode(reqy1)
+		    return resulty1          
+	    end
 	elseif type=="history"   then
-	end  
+		local bool,res=sgoly_tool.getCountStatementsFromRedis(name)
+		if bool then
+			local  reqh={SESSION=session,
+			            ID="5",
+			            TYPE="history",
+			            STATE=true,
+			            winMoney=tonumber(res.winMoney),
+			            costMoney=tonumber(res.costMoney),
+			            playNum=tonumber(res.playNum),
+			            winNum=tonumber(res.winNum),
+			            serialWinNum=tonumber(res.serialWinNum),
+			            maxWinMoney=tonumber(res.maxWinMoney)
+			        }
+			skynet.error(reqh.SESSION,reqh.winMoney,reqh.costMoney,reqh.playNum,reqh.winNum,reqh.serialWinNum,reqh.maxWinMoney)
+			local resulth = sgoly_pack.encode(reqh)
+		    return resulth
+		elseif not bool then
+			local reqh1 = {SESSION=session,
+			              ID="5",
+			              TYPE="history",
+			              STATE=false,
+			              MESSAGE=res
+			          }
+			local resulth1 = sgoly_pack.encode(reqh1)
+		    return resulth1         
+	    end
+	end
+	
+	local req3 = {SESSION=session,
+			      ID="5",
+			      TYPE="type",
+			      STATE=false,
+                  MESSAGE="error"
+			     }
+    local result3_2 = sgoly_pack.encode(req3)
+    return result3_2 
 end
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)

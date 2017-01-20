@@ -13,9 +13,9 @@ local connection = {}
 
 function agent.main(fd,mes)
 	skynet.error(mes)
-	skynet.error(mes.SESSION,mes.ID,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST)
+	skynet.error(mes.SESSION,mes.ID,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST)
 	if mes.ID=="4" then
-	   local req=skynet.call(connection[fd].maingame,"lua","calc",fd,mes.SESSION,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST,connection[fd].name)
+	   local req=skynet.call(connection[fd].maingame,"lua","calc",fd,mes.SESSION,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST,connection[fd].name)
 	   return req
 	elseif mes.ID=="5" then
 	   local req1=skynet.call(connection[fd].stats,"lua","tongji",fd,mes.SESSION,mes.TYPE,connection[fd].name)
