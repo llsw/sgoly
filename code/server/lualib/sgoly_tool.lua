@@ -111,7 +111,7 @@ function sgoly_tool.getStatementsFromRedis(nickname, dt)
 	local key = "statements:" ..  nickname .. dt
 	local res = redis_query({"hgetall", key})
 	if #res > 0 then
-		return true, sgoly_tool.multipleToTable(res)
+		return sgoly_tool.multipleToTable(res)
 	end
 
 	local ok, result = sgoly_dat_ser.get_statments_from_MySQL(nickname, dt)
