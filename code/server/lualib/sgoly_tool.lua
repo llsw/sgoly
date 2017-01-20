@@ -111,7 +111,7 @@ function sgoly_tool.getStatementsFromRedis(nickname, dt)
 	local key = "statements:" ..  nickname .. dt
 	local res = redis_query({"hgetall", key})
 	if #res > 0 then
-		return sgoly_tool.multipleToTable(res)
+		return true, sgoly_tool.multipleToTable(res)
 	end
 
 	local ok, result = sgoly_dat_ser.get_statments_from_MySQL(nickname, dt)
@@ -192,6 +192,17 @@ function sgoly_tool.getPlayModelFromRedis(nickname)
 	res[1]=tonumber(res[1])
 	res[2]=tonumber(res[2])
 
+	return true, res
+end
+
+function sgoly_tool.getCountStatementsFromRedis(nickname)
+	local res = {}
+	
+	local key = "count:" .. nickname
+	local res = redis_query({"hgetall", key})
+	if #res > 0 then
+		return sgoly_tool.multipleToTable(res)
+	end
 	return true, res
 end
 
