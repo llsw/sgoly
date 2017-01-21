@@ -21,17 +21,17 @@ function query.get_statmens_from_MySQL(nickname, dt)
 				win_times,
 				single_max,
 				conti_max,
-				dio.s_date
+				dmax.s_date
 			FROM
-				users AS u
-			LEFT JOIN day_io AS dio ON u.id = dio.uid
-			LEFT JOIN day_max AS dmax ON dio.uid = dmax.uid
-			AND dio.s_date = dmax.s_date
-			LEFT JOIN day_times AS dt ON dmax.uid = dt.uid
-			AND dmax.s_date = dt.s_date
+				day_io AS dio
+			LEFT JOIN day_times AS dti ON dio.uid = dti.uid
+			AND dio.s_date = dti.s_date
+			LEFT JOIN day_max AS dmax ON dti.uid = dmax.uid
+			AND dti.s_date = dmax.s_date
+			LEFT JOIN users AS u ON dmax.uid = u.id
 			WHERE
 				nickname = '%s'
-			AND dio.s_date = '%s'
+			AND dmax.s_date = '%s';
 		]], nickname, dt)
 	
 	return mysql_query(sql)
@@ -41,7 +41,6 @@ function query.get_count_statements_from_MySQL(nickname, dt)
 	local sql = string.format(
 		[[
 			SELECT
-				nickname,
 				sum(win) AS win,
 				sum(cost) AS cost,
 				sum(times) AS times,
@@ -49,13 +48,13 @@ function query.get_count_statements_from_MySQL(nickname, dt)
 				max(single_max) AS single_max,
 				max(conti_max) AS conti_max
 			FROM
-				users AS u
-			LEFT JOIN day_io AS dio ON u.id = dio.uid
+				day_io AS dio
+			LEFT JOIN day_times AS dti ON dio.uid = dti.uid
+			AND dio.s_date = dti.s_date
 			AND dio.s_date < '%s'
-			LEFT JOIN day_max AS dmax ON dio.uid = dmax.uid
-			AND dio.s_date = dmax.s_date
-			LEFT JOIN day_times AS dt ON dmax.uid = dt.uid
-			AND dmax.s_date = dt.s_date
+			LEFT JOIN day_max AS dmax ON dti.uid = dmax.uid
+			AND dti.s_date = dmax.s_date
+			LEFT JOIN users AS u ON dmax.uid = u.id
 			GROUP BY
 				nickname
 			HAVING
