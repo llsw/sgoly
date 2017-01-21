@@ -67,6 +67,17 @@ function account.select_money(id)
  	return mysql_query(sql)
 end
 
+ --!
+ --! @brief      更新用户金钱
+ --!
+ --! @param      nickname  用户名
+ --! @param      money     用户金钱
+ --!
+ --! @return     table     执行结果
+ --!
+ --! @author     kun si, 627795061@qq.com
+ --! @date       2017-01-21
+ --!
 function account.update_money_s(nickname, money)
 	local sql = string.format(
 				[[

@@ -80,6 +80,17 @@ function account_dao.select_money(id)
 	end
 end
 
+ --!
+ --! @brief      更新用户金钱
+ --!
+ --! @param      nickname  用户名
+ --! @param      money     用户金钱
+ --!
+ --! @return     bool, table	执行是否成功、执行结果
+ --!
+ --! @author     kun si, 627795061@qq.com
+ --! @date       2017-01-21
+ --!
 function account_dao.update_money_s(nickname, money)
 	local status = account.update_money_s(nickname, money)
 	if status.err then

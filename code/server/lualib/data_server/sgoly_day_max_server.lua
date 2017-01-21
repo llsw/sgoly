@@ -175,6 +175,19 @@ function day_max_server.select_conti_max(nickname, dt)
  	end
 end
 
+--!
+--! @brief      { function_description }
+--!
+--! @param      nickname    The nickname
+--! @param      single_max  The single maximum
+--! @param      conti_max   The conti maximum
+--! @param      dt          { parameter_description }
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-21
+--!
 function day_max_server.updateS(nickname, single_max, conti_max, dt)
 	if not nickname or not single_max or not conti_max or not dt then
 		return false, "Args nil"

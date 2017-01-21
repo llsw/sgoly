@@ -118,6 +118,19 @@ function day_max_dao.select_conti_max(uid, dt)
 	end
 end
 
+ --!
+ --! @brief      更新用户单次中最大奖金额和最大连续中奖次数
+ --!
+ --! @param      nickname    用户名
+ --! @param      single_max  单次中最大奖金额
+ --! @param      conti_max   最大连续中奖次数
+ --! @param      dt          日期
+ --!
+ --! @return     bool, table		执行是否成功、执行结果
+ --!
+ --! @author     kun si, 627795061@qq.com
+ --! @date       2017-01-21
+ --!
 function day_max_dao.updateS(nickname, single_max, conti_max, dt)
 	local status = day_max.updateS(nickname, single_max, conti_max, dt)
 	if status.err then

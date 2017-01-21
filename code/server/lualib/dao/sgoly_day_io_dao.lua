@@ -114,6 +114,19 @@ function day_io_dao.select_cost(uid, dt)
 	end
 end
 
+ --!
+ --! @brief      更新当天用户中将金币
+ --!
+ --! @param      nickname  用户名
+ --! @param      win       中奖金额
+ --! @param      cost      消耗金额
+ --! @param      dt        日期
+ --!
+ --! @return     bool, table		执行是否成功、执行结果
+ --!
+ --! @author     kun si, 627795061@qq.com
+ --! @date       2017-01-21
+ --!
 function day_io_dao.updateS(nickname, win, cost, dt)
 	local status = day_io.updateS(nickname, win, cost, dt)
 	if status.err then

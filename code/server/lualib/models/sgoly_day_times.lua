@@ -96,6 +96,19 @@ require "sgoly_printf"
  	return mysql_query(sql)
  end
 
+ --!
+ --! @brief      更新用户抽奖次数和中奖次数
+ --!
+ --! @param      nickname   用户名
+ --! @param      times      抽奖次数
+ --! @param      win_times  中奖次数
+ --! @param      dt         日期
+ --!
+ --! @return     table		执行结果
+ --!
+ --! @author     kun si, 627795061@qq.com
+ --! @date       2017-01-21
+ --!
  function day_times.updateS(nickname, times, win_times, dt)
  	local sql = string.format(
  		[[

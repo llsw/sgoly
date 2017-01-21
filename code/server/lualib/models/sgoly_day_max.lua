@@ -98,6 +98,19 @@ require "sgoly_printf"
  	return mysql_query(sql)
  end
 
+ --!
+ --! @brief      更新用户单次中最大奖金额和最大连续中奖次数
+ --!
+ --! @param      nickname    用户名
+ --! @param      single_max  单次中最大奖金额
+ --! @param      conti_max   最大连续中奖次数
+ --! @param      dt          日期
+ --!
+ --! @return     table       查询结果
+ --!
+ --! @author     kun si, 627795061@qq.com
+ --! @date       2017-01-21
+ --!
  function day_max.updateS(nickname, single_max, conti_max, dt)
  	local sql = string.format(
  		[[
