@@ -24,6 +24,9 @@ function agent.main(fd,mes)
 	elseif mes.ID=="6" then   --正常退出
 		local req2=exit(fd,mes)
 		return req2  
+	-- elseif mes.ID=="8" then   --签到
+	-- 	local req3=skynet.call(connection[fd].stats,"lua","tongji",fd,mes.SESSION,mes.TYPE,connection[fd].name)
+	-- 	return req3 
     else  
    	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
 	local result1_2 = sgoly_pack.encode(req)
