@@ -34,6 +34,7 @@ local function getUuid()
 end
 
 function sgoly_tool.multipleToTable(redisResult)
+
 	if #redisResult <= 0 then
 		printI("redisResult type[%s]", type(redisResult))
 		return false, redisResult
@@ -44,7 +45,7 @@ function sgoly_tool.multipleToTable(redisResult)
 		rt[redisResult[index]] = redisResult[index+1]
 		index = index + 2
 	end 
-
+	
 	return true, rt 
 end
 
@@ -300,15 +301,20 @@ end
 --! @date       2017-01-21
 --!
 function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
-	local key = "count:" .. nickname
+	local key1 = "count:" .. nickname
+	local key2 = "statements:" .. nickname .. dt
 	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
-	if #result > 0 then
+	if ok then
+		skynet.error(string.format("have statements"))
 		local ok , result = sgoly_dat_ser.update_statments_to_MySQL(nickname, result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
 			if ok then
-				redis_query({"del", key})
+				redis_query({"del", key1})
+				redis_query({"del", key2})
 			end
+			skynet.error(ok, result)
 		return ok, result
 	end 
+	skynet.error(string.format(" no have statements"))
 	return ok ,result
 	
 end
