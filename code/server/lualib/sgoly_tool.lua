@@ -12,27 +12,74 @@ local sgoly_tool = {}
 local sgoly_dat_ser = require "sgoly_dat_ser"
 local skynet = require "skynet"
 
+--!
+--! @brief      网络数据包取长度
+--!
+--! @param      str   网络网络数据包
+--!
+--! @return     网络数据包长度
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-16
+--!
 function sgoly_tool.wordToInt(str)
 	return str:byte(1) * 256 + str:byte(2)
 end
 
+--!
+--! @brief      数值用两个字节存储
+--!
+--! @param      num   数值
+--!
+--! @return     两个字节的数值
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-16
+--!
 function sgoly_tool.intToWord(num)
 	local wordH = string.char(math.floor(num / 256))
 	local wordL = string.char(num % 256)
 	return wordH .. wordL	
 end
---
 
+--!
+--! @brief      保存用户一键注册id
+--!
+--! @param      uuid  用户一键注册id
+--!
+--! @return     nil
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-16
+--!
 local function saveUuid(uuid)
 	redis_query({"set","uuid", uuid})
 end
 
+--!
+--! @brief      查询用户一键注册id
+--!
+--! @return     用户一键注册id
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-16
+--!
 local function getUuid()
 
 	local uuid = redis_query({"get", "uuid"})
 	return tonumber(uuid)
 end
 
+--!
+--! @brief      Redis数字索引table转字符串索引
+--!
+--! @param      redisResult  Redis查询结果
+--!
+--! @return     bool, table		执行是否成功、转换结果
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-16
+--!
 function sgoly_tool.multipleToTable(redisResult)
 
 	if #redisResult <= 0 then
@@ -49,14 +96,42 @@ function sgoly_tool.multipleToTable(redisResult)
 	return true, rt 
 end
 
+--!
+--! @brief      查询用户一键注册id
+--!
+--! @return     用户一键注册id
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-16
+--!
 function sgoly_tool.getUuid()
 	return getUuid()
 end
 
+--!
+--! @brief      保存用户一键注册id
+--!
+--! @param      uuid  用户一键注册id
+--!
+--! @return     nil
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-16
+--!
 function sgoly_tool.saveUuid(uuid)
 	saveUuid(uuid)
 end
 
+--!
+--! @brief      获得用户金钱
+--!
+--! @param      nickname  用户名
+--!
+--! @return     bool, money		执行是否成功、查询结果
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-16
+--!
 function sgoly_tool.getMoney(nickname)
 	local db = "user:" ..  nickname
 	local money = redis_query({"hget", db, "money"})
