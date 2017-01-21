@@ -101,6 +101,17 @@ end
  	end
  end
 
+ --!
+ --! @brief      更新用户金钱
+ --!
+ --! @param      nickname  用户名
+ --! @param      money     用户金钱
+ --!
+ --! @return     bool, table	执行是否成功、执行结果
+ --!
+ --! @author     kun si, 627795061@qq.com
+ --! @date       2017-01-21
+ --!
  function account_server.update_money_s(nickname, money)
  	if not nickname or not money then
 		return false, "Account_server.update_money_s args nil"

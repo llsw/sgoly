@@ -97,17 +97,18 @@ require "sgoly_printf"
  	return mysql_query(sql)
  end
 
-
-
  --!
- --! @brief      { function_description }
+ --! @brief      更新当天用户中将金币
  --!
- --! @param      uid   The uid
+ --! @param      nickname  用户名
+ --! @param      win       中奖金额
+ --! @param      cost      消耗金额
+ --! @param      dt        日期
  --!
- --! @return     { description_of_the_return_value }
+ --! @return     table		执行结果
  --!
  --! @author     kun si, 627795061@qq.com
- --! @date       2017-01-20
+ --! @date       2017-01-21
  --!
  function day_io.updateS(nickname, win, cost, dt)
  	local sql = string.format(

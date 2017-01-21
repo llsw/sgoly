@@ -115,6 +115,19 @@ function day_times_dao.select_times(uid, dt)
 	end
 end
 
+ --!
+ --! @brief      更新用户抽奖次数和中奖次数
+ --!
+ --! @param      nickname   用户名
+ --! @param      times      抽奖次数
+ --! @param      win_times  中奖次数
+ --! @param      dt         日期
+ --!
+ --! @return     bool, table		执行是否成功、执行结果
+ --!
+ --! @author     kun si, 627795061@qq.com
+ --! @date       2017-01-21
+ --!
 function day_times_dao.updateS(nickname, times, win_times, dt)
 	local status = day_times.updateS(nickname, times, win_times, dt)
 	if status.err then

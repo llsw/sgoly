@@ -162,12 +162,12 @@ function dat_ser.upd_acc(nickname, money)
 end
 
 --!
---! @brief      Gets the statments from my sql.
+--! @brief      查询用结算
 --!
---! @param      nickname  The nickname
---! @param      dt        { parameter_description }
+--! @param      nickname  用户名
+--! @param      dt        日期
 --!
---! @return     The statments from my sql.
+--! @return     bool, table	执行是否成功、执行结果
 --!
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-20
@@ -214,18 +214,18 @@ function dat_ser.get_statments_from_MySQL(nickname, dt)
 end
 
 --!
---! @brief      { function_description }
+--! @brief      更新用户结算
 --!
---! @param      nickname      The nickname
---! @param      winMoney      The window money
---! @param      costMoney     The cost money
---! @param      playNum       The play number
---! @param      winNum        The window number
---! @param      maxWinMoney   The maximum window money
---! @param      serialWinNum  The serial window number
---! @param      dt            { parameter_description }
+--! @param      nickname      用户名
+--! @param      winMoney      中奖金额
+--! @param      costMoney     消耗金额
+--! @param      playNum       抽奖次数
+--! @param      winNum        中奖次数
+--! @param      maxWinMoney   最大中奖金额
+--! @param      serialWinNum  连续中奖次数
+--! @param      dt            日期
 --!
---! @return     { description_of_the_return_value }
+--! @return     bool, table	执行是否成功、执行结果
 --!
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-20
@@ -258,11 +258,11 @@ end
 
 
 --!
---! @brief      Gets the count statements from my sql.
+--! @brief      统计用户结算
 --!
---! @param      nickname  The nickname
+--! @param      nickname  用户名
 --!
---! @return     The count statements from my sql.
+--! @return     bool, table	执行是否成功、执行结果
 --!
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-21
@@ -288,12 +288,12 @@ function dat_ser.get_count_statements_from_MySQL(nickname, dt)
 end
 
 --!
---! @brief      { function_description }
+--! @brief      更新用户金钱
 --!
---! @param      nickname  The nickname
---! @param      money     The money
+--! @param      nickname  用户名
+--! @param      money     用户金钱
 --!
---! @return     { description_of_the_return_value }
+--! @return     bool, table	执行是否成功、执行结果
 --!
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-21

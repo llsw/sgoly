@@ -31,7 +31,7 @@ git checkout dev
 git pull origin dev  
 ```
 ##服务端说明  
-获取仓库，先择好开发版后记得编译skynet  
+获取仓库，选择好开发版后记得编译skynet  
 ###运行一个节点的命令例子:  
 ```Bash
 cd code/server/skynet

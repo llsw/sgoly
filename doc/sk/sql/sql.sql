@@ -1,5 +1,7 @@
+###查连接状态
+SHOW PROCESSLIST;
 
-#查询
+###联合查询
 SELECT
 	*
 FROM
@@ -10,10 +12,6 @@ LEFT JOIN day_max AS dmax ON dio.uid = dmax.uid
 AND dio.s_date = dmax.s_date
 LEFT JOIN day_times AS dt ON dmax.uid = dt.uid
 AND dmax.s_date = dt.s_date
-
-
-
-
 
 ###统计结算
 SELECT
@@ -57,24 +55,14 @@ WHERE
 	nickname = 'interface'
 AND dmax.s_date = '2017-01-20';
 
-###更新
-
-UPDATE day_io,
- day_max
-SET day_io.win = 6,
- day_max.single_max = 6
+###更新钱
+UPDATE account AS acc
+LEFT JOIN users AS u ON acc.id = u.id
+SET acc.money = 100000
 WHERE
-	day_io.s_date = day_max.s_date
-AND day_io.s_date = '2017-01-19'
+	u.nickname = 'interface';
 
-UPDATE users AS u
-LEFT JOIN day_io AS dio ON u.id = dio.uid
-SET dio.win = % d,
- dio.cost = % d
-WHERE
-	u.nickname = % s
-AND dio.s_date = % s;
-
+###更新 day_io.win, day_io.cost
 UPDATE users AS u
 LEFT JOIN day_io AS dio ON u.id = dio.uid
 SET dio.win = 3,
@@ -83,13 +71,24 @@ WHERE
 	u.nickname = 'interface'
 AND dio.s_date = '2017-01-20';
 
-
-###更新钱
-
-UPDATE account AS acc
-LEFT JOIN users AS u ON acc.id = u.id
-SET acc.money = 100000
+###更新 day_max.single_max, day_max.conti_max
+UPDATE users AS u
+	LEFT JOIN day_max AS dmax ON u.id = dmax.uid
+SET dmax.single_max = %d,
+	dmax.conti_max = %d
 WHERE
-	u.nickname = 'interface';
+	u.nickname = '%s'
+AND dmax.s_date = '%s';
+
+###更新 day_times.times, day_times.win_times
+UPDATE users AS u
+	LEFT JOIN day_times AS dti ON u.id = dti.uid
+SET dti.times = %d,
+	dti.win_times = %d
+WHERE
+	u.nickname = '%s'
+AND dti.s_date = '%s';
+
+
 
 

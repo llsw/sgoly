@@ -10,6 +10,17 @@
 local query = {}
 require "sgoly_query"
 
+--!
+--! @brief      查用户结算
+--!
+--! @param      nickname  用户名
+--! @param      dt        日期
+--!
+--! @return     table     查询结果
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-21
+--!
 function query.get_statmens_from_MySQL(nickname, dt)
 	local sql = string.format(
 		[[
@@ -37,6 +48,17 @@ function query.get_statmens_from_MySQL(nickname, dt)
 	return mysql_query(sql)
 end
 
+--!
+--! @brief      查用户结算统计
+--!
+--! @param      nickname  用户名
+--! @param      dt        日期
+--!
+--! @return     table     查询结果
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-21
+--!
 function query.get_count_statements_from_MySQL(nickname, dt)
 	local sql = string.format(
 		[[

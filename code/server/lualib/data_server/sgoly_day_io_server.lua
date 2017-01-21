@@ -161,6 +161,19 @@ function day_io_server.select_cost(nickname, dt)
 	end
 end
 
+ --!
+ --! @brief      更新当天用户中将金币
+ --!
+ --! @param      nickname  用户名
+ --! @param      win       中奖金额
+ --! @param      cost      消耗金额
+ --! @param      dt        日期
+ --!
+ --! @return     bool, table		执行是否成功、执行结果
+ --!
+ --! @author     kun si, 627795061@qq.com
+ --! @date       2017-01-21
+ --!
 function day_io_server.updateS(nickname, win, cost, dt)
 	if not nickname or not win or not cost or not dt then
 		return false, "Day_io_server.updateS args nil"
