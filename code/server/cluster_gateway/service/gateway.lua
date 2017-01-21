@@ -54,6 +54,10 @@ end
 
 function handler.disconnect(fd)
 	--gateserver.closeclient(fd)
+	local req1=cluster.call("cluster_game",".agent","errorexit",fd)
+    printI("save ".." " ..req1)
+	local req=cluster.call("cluster_game",".agent","close",fd)
+	printI("save ".." " ..req)
 	printI("Client fd[%d] disconnect gateway", fd)
 end
 

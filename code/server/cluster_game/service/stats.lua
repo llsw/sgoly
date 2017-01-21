@@ -70,7 +70,7 @@ function CMD.tongji(fd,session,type,name)
 		    return resulty1          
 	    end
 	elseif type=="history"   then
-		local bool,res=sgoly_tool.getCountStatementsFromRedis(name)
+		local bool,res=sgoly_tool.getCountStatementsFromRedis(name,os.date("%Y-%m-%d"))
 		if bool then
 			local  reqh={SESSION=session,
 			            ID="5",

@@ -99,6 +99,9 @@ end
 	autocost=0
 	autowinall =0 
 	autowinmax =0
+	autozjnumsave=0
+	automaxsave=0
+	xsave=1
 	-- winmoney={}        --中奖金额
 --主循环判断
 function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name) 
@@ -111,14 +114,9 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 	depositdb=0        --消耗金额存数据库
 	-- historyj=0         --历史中奖次数
 	n=1                --number1 的索引
-    if k~="1" and TYPE=="start" then
-    	autonum=0
-    	autocost=0
-    	automoney={}
-    	autonumber1={}
-    end
 	bo,y=sgoly_tool.getPlayModelFromRedis(name)
-    x=y[2]             --1 为普通模式 2为困难模式 3为简单模式	
+    x=y[2] 
+    xsave=x            --1 为普通模式 2为困难模式 3为简单模式	
     skynet.error("x=",x,y[1],y[2])
     skynet.error(type(x),type(y[2]))
 	-- historynum=0       --历史抽奖次数
@@ -766,17 +764,20 @@ for i=1,k do
 	moneydb=moneydb+money
 	deposit=deposit+end_point*beilv
 	if historynum%10==0 and money/deposit>=0.9 then
-		x=2           
+		x=2
+		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d"))           
 		skynet.error("2 money/depost=",money,deposit,money/deposit)
 		money=0
 		deposit=0
 	elseif historynum%10==0 and money/deposit<=0.8 then
 		x=3
+		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d")) 
 		skynet.error("3 money/depost=",money,deposit,money/deposit)
 		money=0 
 		deposit=0
 	elseif historynum%10==0 and money/deposit>0.8 and money/deposit<0.9 then
 		x=1
+		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d")) 
 		skynet.error("2 money/depost=",money,deposit,money/deposit)
 		money=0
 		deposit=0
@@ -822,26 +823,7 @@ end  --for 循环end
 		end
 		skynet.error("最高连续中奖次数为",max)
 	end
--- -------------------自动最高连续中奖次数-----------------------------
--- 	autopersentmax=1    --记录自动最高连续中奖次数
--- 	if  not autonumber1[1] then
--- 		automax=0
--- 		skynet.error("自动最高连续中奖次数为",0)
--- 	else
--- 		automax=1  --最终最高连续中奖次数
--- 		for key,v in ipairs(autonumber1) do 
--- 				if v+1==autonumber1[key+1] then
--- 					autopersentmax=autopersentmax+1
 
--- 				else
--- 						if automax<autopersentmax then
--- 						   automax=autopersentmax
--- 						end
--- 						autopersentmax=1
--- 				end
--- 		end
--- 		skynet.error("最高连续中奖次数为",automax)
--- 	end
 ----------------------------------------------------------
 		for key,v in ipairs(number1) do
 			skynet.error("第",v,"次中奖","中奖类型为",number2[key])
@@ -875,73 +857,79 @@ end  --for 循环end
 	     	winmax=v
 	     end
 	end  
----------------------自动中奖最高金额---------------
- --    local autowinmax =0
-	-- for k,v in ipairs(automoney) do
-	--      if v>autowinmax then 
-	--      	autowinmax=v
-	--      end
-	-- end     
+   
 ----------------------获奖总金额------------------
     local winall =0
     for k,v in ipairs(winmoney) do
     	 winall=winall+v
     end
----------------------自动获奖总金额----------------
- 	-- local autowinall =0
-  --   for k,v in ipairs(automoney) do
-  --   	 autowinall=autowinall+v
-  --   end
--------------------------------------------------
+
     local nowMONEY=tonumber(MONEY)-tonumber(cost)+winall
-    if k~="1" then
+    if k~="1" and k~="0" then
        sgoly_tool.saveStatementsToRedis(name,winall,cost,k,j,max,winmax,0,x,os.date("%Y-%m-%d"))
        sgoly_tool.saveMoneyToRedis(name,nowMONEY)
-    elseif k=="0" and TYPE=="autoend" then
+   elseif TYPE=="autoend"  then
     -------------------自动最高连续中奖次数-----------------------------
-	autopersentmax=1    --记录自动最高连续中奖次数
-		if  not autonumber1[1] then
-			automax=0
-			skynet.error("自动最高连续中奖次数为",0)
-		else
-			automax=1  --最终最高连续中奖次数
-			for key,v in ipairs(autonumber1) do 
-				if v+1==autonumber1[key+1] then
-					autopersentmax=autopersentmax+1
+		autopersentmax=1    --记录自动最高连续中奖次数
+			if  not autonumber1[1] then
+				automax=0
+				skynet.error("自动最高连续中奖次数为",0)
+			else
+				automax=1  --最终最高连续中奖次数
+				for key,v in ipairs(autonumber1) do 
+					skynet.error("autonumber1",key,v)
+					if v+1==autonumber1[key+1] then
+						autopersentmax=autopersentmax+1
 
-				else
-						if automax<autopersentmax then
-						   automax=autopersentmax
-						end
-						autopersentmax=1
+					else
+							if automax<autopersentmax then
+							   automax=autopersentmax
+							end
+							autopersentmax=1
+					end
 				end
+				skynet.error("自动最高连续中奖次数为",automax)
+				automaxsave=automax
 			end
-			skynet.error("最高连续中奖次数为",automax)
-		end
-    ---------------------自动中奖最高金额---------------
-		    -- local autowinmax =0
-			for k,v in ipairs(automoney) do
-			     if v>autowinmax then 
-			     	autowinmax=v
-			     end
-			end
----------------------自动获奖总金额----------------
-		    -- local autowinall =0
-		    for k,v in ipairs(automoney) do
-		    	autowinall=autowinall+v
-		    end
--------------------------------------------------------
-	   local autozjnum=table.maxn(autonumber1)
-       sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnum,automax,autowinmax,0,x,os.date("%Y-%m-%d"))
-       sgoly_tool.saveMoneyToRedis(name,MONEY)
-       local who = "123456"
-	   local resultauto={ID="4",SESSION=session,TYPE=TYPE,STATE=true,AUTONUM=autonum,SERIES=automax,WCOUNT=autozjnum,
-	       MAXMONEY=autowinmax,SUNMONEY=autowinall,FINMONEY=MONEY}
-	   skynet.error("resultauto",resultauto.AUTONUM,resultauto.SERIES,resultauto.WCOUNT,resultauto.MAXMONEY,resultauto.SUNMONEY,resultauto.FINMONEY)
-       local resultauto1=cjson.encode(result)
-       local resultat1_1=crypt.aesencode(resultauto1,who,"")
-       local resultat1_2 = crypt.base64encode(resultat1_1)
-       return resultat1_2
+	    ---------------------自动中奖最高金额---------------
+			    -- local autowinmax =0
+				for k,v in ipairs(automoney) do
+					print("automoney",k,v)
+				     if v>autowinmax then 
+				     	autowinmax=v
+				     end
+				end
+	---------------------自动获奖总金额----------------
+			    -- local autowinall =0
+			    for k,v in ipairs(automoney) do
+			    	autowinall=autowinall+v
+			    	skynet.error("automoney",k,v)
+			    end
+	-------------------------------------------------------
+		   local autozjnum=#autonumber1
+		   autozjnumsave=autozjnum
+		   skynet.error("autozjnum",autozjnum)
+	       sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnum,automax,autowinmax,0,x,os.date("%Y-%m-%d"))
+	       sgoly_tool.saveMoneyToRedis(name,MONEY)
+	       local who = "123456"
+		   local resultauto={ID="4",SESSION=session,TYPE=TYPE,STATE=true,AUTONUM=autonum,SERIES=automax,WCOUNT=autozjnum,
+		   MAXMONEY=autowinmax,SUNMONEY=autowinall,FINMONEY=MONEY}
+		   skynet.error("resultauto",resultauto.AUTONUM,resultauto.SERIES,resultauto.WCOUNT,resultauto.MAXMONEY,resultauto.SUNMONEY,resultauto.FINMONEY)
+	       local resultauto1=cjson.encode(resultauto)
+	       local resultat1_1=crypt.aesencode(resultauto1,who,"")
+	       local resultat1_2 = crypt.base64encode(resultat1_1)
+	            if k=="0" and TYPE=="autoend" then
+					    	autonum=0
+					    	autocost=0
+					    	automoney={}
+					    	autonumber1={}
+					    	autowinall =0 
+							autowinmax =0
+							autozjnumsave=0
+							automaxsave=0
+							xsave=1
+		        end
+	       return resultat1_2
 
     end
 	return send_result(fd,session,TYPE,max,j,winmax,winall,nowMONEY,sequence,winmoney)
@@ -967,6 +955,27 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 		 return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 	end
 end
+
+function CMD.autosave(fd,name )
+	   local bool,req=sgoly_tool.getMoney(name)
+	   local money=tonumber(req)+autowinall-autocost
+	   local bo1=sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnumsave,automaxsave,autowinmax,0,xsave,os.date("%Y-%m-%d"))
+	   local bo2=sgoly_tool.saveMoneyToRedis(name,money)
+	   autonum=0
+    	autocost=0
+    	automoney={}
+    	autonumber1={}
+    	autowinall =0 
+		autowinmax =0
+		autozjnumsave=0
+		automaxsave=0
+		xsave=1
+	if bo1 and  bo2 then
+		return "suss"
+	else 
+		return "false"
+	end
+end
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(CMD[cmd], cmd .. "not found")
@@ -976,3 +985,4 @@ skynet.start(function()
     -- 要注册个服务的名字，以.开头
     --skynet.register(".maingame")
 end)
+ 
