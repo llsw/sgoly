@@ -300,11 +300,12 @@ end
 --! @date       2017-01-21
 --!
 function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
+	local key = "count:" .. nickname
 	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if #result > 0 then
 		local ok , result = sgoly_dat_ser.update_statments_to_MySQL(nickname, result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
 			if ok then
-				redis_query()
+				redis_query({"del", key})
 			end
 		return ok, result
 	end 
