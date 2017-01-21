@@ -1,0 +1,29 @@
+root = "./"
+thread = 8
+logger = nil
+logpath = "."
+harbor = 0 
+bootstrap = "snlua bootstrap"
+
+luaservice = root.."service/?.lua;"..root.."../protocol/?.lua;"..root.."../cluster_rank/?.lua;"..root.."../cluster_rank/service/?.lua;"..root.."../lualib/?.lua;"
+
+lualoader = root .. "lualib/loader.lua"
+
+-- preload = 
+
+snax = root.."../protocol/?.lua;"..root.."../cluster_rank/?.lua;"..root.."../cluster_rank/service/?.lua;"
+
+lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"..root.."../util/?.lua;"..root.."../lualib/?.lua;"..root.."../lualib/?/?.lua;"
+..root.."../lualib/models/?.lua;"..root.."../lualib/dao/?.lua;"..root..
+"../lualib/data_server/?.lua;"
+
+cpath = root.."cservice/?.so;"
+
+cluster = root .. "../clustername/clustername.lua"
+
+--debug_port = 8001
+
+log_dirname = "../log"
+log_basename = "cluster_rank_log"
+
+start = "rank_main"

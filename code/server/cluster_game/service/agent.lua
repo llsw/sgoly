@@ -15,15 +15,15 @@ local connection = {}
 function agent.main(fd,mes)
 	skynet.error(mes)
 	skynet.error(mes.SESSION,mes.ID,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST)
-	if mes.ID=="4" then
+	if mes.ID=="4" then       --主游戏
 	   local req=skynet.call(connection[fd].maingame,"lua","calc",fd,mes.SESSION,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST,connection[fd].name)
 	   return req
-	elseif mes.ID=="5" then
+	elseif mes.ID=="5" then   --统计面板
 	   local req1=skynet.call(connection[fd].stats,"lua","tongji",fd,mes.SESSION,mes.TYPE,connection[fd].name)
 	   return req1
-	elseif mes.ID=="6" then
+	elseif mes.ID=="6" then   --正常退出
 		local req2=exit(fd,mes)
-		return req2
+		return req2  
     else  
    	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
 	local result1_2 = sgoly_pack.encode(req)
