@@ -80,4 +80,13 @@ function account_dao.select_money(id)
 	end
 end
 
+function account_dao.update_money_s(nickname, money)
+	local status = account.update_money_s(nickname, money)
+	if status.err then
+		return false, status.err
+	end
+
+	return true, status
+end
+
 return account_dao

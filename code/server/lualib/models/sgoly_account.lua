@@ -67,4 +67,16 @@ function account.select_money(id)
  	return mysql_query(sql)
 end
 
+function account.update_money_s(nickname, money)
+	local sql = string.format(
+				[[
+					UPDATE account AS acc
+					LEFT JOIN users AS u ON acc.id = u.id
+					SET acc.money = %d
+					WHERE
+						u.nickname = '%s';
+				]], money, nickname)
+	return mysql_query(sql)
+end
+
 return account

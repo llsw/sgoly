@@ -256,11 +256,22 @@ function dat_ser.update_statments_to_MySQL(nickname, winMoney, costMoney, playNu
 	
 end
 
-function dat_ser.get_count_statements_from_MySQL(nickname)
+
+--!
+--! @brief      Gets the count statements from my sql.
+--!
+--! @param      nickname  The nickname
+--!
+--! @return     The count statements from my sql.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-21
+--!
+function dat_ser.get_count_statements_from_MySQL(nickname, dt)
 	if not nickname then
 		return false, "Args nil"
 	end
-	local ok, result = sgoly_union_query_server.get_count_statements_from_MySQL(nickname)
+	local ok, result = sgoly_union_query_server.get_count_statements_from_MySQL(nickname, dt)
 	if #result > 0 then
 
 		return ok, 
@@ -274,6 +285,23 @@ function dat_ser.get_count_statements_from_MySQL(nickname)
 		}
 
 	end
+end
+
+--!
+--! @brief      { function_description }
+--!
+--! @param      nickname  The nickname
+--! @param      money     The money
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-21
+--!
+function dat_ser.upadate_money_to_MySQL(nickname, money)
+	local ok, result = acc_ser.update_money_s(nickname, money)
+	return ok, result
+	
 end
 
 return dat_ser

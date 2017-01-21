@@ -165,7 +165,7 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 		result.eighthNoWin = eighthNoWin
 		result.recoveryRate = recoveryRate
 		redis_query({"hmset", key, result})
-		sgoly_dat_ser.update_statments_to_MySQL(nickname, result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
+		local ok , result = sgoly_dat_ser.update_statments_to_MySQL(nickname, result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
 		return true, nil
 	end
 
@@ -261,6 +261,53 @@ function sgoly_tool.getCountStatementsFromRedis(nickname, dt)
 	end
 
 	return ok, result
+	
+end
+
+--!
+--! @brief      { function_description }
+--!
+--! @param      nickname  The nickname
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-21
+--!
+function sgoly_tool.saveMoneyFromRdisToMySQL(nickname)
+	local key = "user:" .. nickname
+	local result = tonumber(redis_query({"hget", key , "money"}))
+	if result < 0 then
+		return false, "No money"
+	end
+	local ok , result = sgoly_dat_ser.upadate_money_to_MySQL(nickname, result)
+	if ok then
+		redis_query({"del", key})
+	end
+	return ok, result
+end
+
+--!
+--! @brief      { function_description }
+--!
+--! @param      nickname  The nickname
+--! @param      dt        { parameter_description }
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-21
+--!
+function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
+	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
+	if #result > 0 then
+		local ok , result = sgoly_dat_ser.update_statments_to_MySQL(nickname, result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
+			if ok then
+				redis_query()
+			end
+		return ok, result
+	end 
+	return ok ,result
 	
 end
 
