@@ -95,11 +95,12 @@ function sgoly_tool.saveMoneyToRedis(nickname, money)
 end
 
 --!
---! @brief      Gets the statements from redis.
+--! @brief      从Redis中获取结算信息
 --!
---! @param      nickname  The nickname
+--! @param      nickname  用户名
+--!	@param		dt		  日期		 		
 --!
---! @return     The statements from redis.
+--! @return     bool,table 执行成功与否、｛结算信息｝
 --!
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-19
@@ -197,11 +198,12 @@ function sgoly_tool.getPlayModelFromRedis(nickname)
 end
 
 --!
---! @brief      Gets the count statements from redis.
+--! @brief      获得结算统计
 --!
---! @param      nickname  The nickname
+--! @param      nickname	用户名
+--! @param 		dt			日期 
 --!
---! @return     The count statements from redis.
+--! @return     bool,table 执行成功与否、｛结算统计信息｝
 --!
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-20
@@ -265,11 +267,10 @@ function sgoly_tool.getCountStatementsFromRedis(nickname, dt)
 end
 
 --!
---! @brief      { function_description }
+--! @brief      保存钱到MySQL
 --!
---! @param      nickname  The nickname
---!
---! @return     { description_of_the_return_value }
+--! @param      nickname	用户名
+--! @return     bool, string  执行成功与否、错误信息
 --!
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-21
@@ -288,12 +289,12 @@ function sgoly_tool.saveMoneyFromRdisToMySQL(nickname)
 end
 
 --!
---! @brief      { function_description }
+--! @brief      保存结算到MySQL
 --!
---! @param      nickname  The nickname
---! @param      dt        { parameter_description }
+--! @param      nickname	用户名
+--! @param      dt			日期
 --!
---! @return     { description_of_the_return_value }
+--! @return    bool, string  执行成功与否、错误信息
 --!
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-21
