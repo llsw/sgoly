@@ -16,6 +16,7 @@ local max_awa_ser = require "sgoly_max_award_server"
 local max_tim_awa_ser = require "sgoly_max_times_award_server"
 local sin_awa_ser = require "sgoly_single_award_server"
 local sgoly_union_query_server = require "sgoly_union_query_server"
+local sgoly_uuid_server = require "sgoly_uuid_server"
 local skynet = require "skynet"
 
 local dat_ser = {}
@@ -302,6 +303,32 @@ function dat_ser.upadate_money_to_MySQL(nickname, money)
 	local ok, result = acc_ser.update_money_s(nickname, money)
 	return ok, result
 	
+end
+
+--!
+--! @brief      查询用户一键注册自增长id
+--!
+--! @return     bool, table		执行是否成功、查询结果
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-21
+--!
+function dat_ser.select_uuid()	
+	return sgoly_uuid_server.select_uuid()
+end
+
+--!
+--! @brief      更新用户一键注册自增长id
+--!
+--! @param      uuid  用户一键注册自增长id
+--!
+--! @return     bool, table		执行是否成功、查询结果
+--! 
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-21
+--!
+function dat_ser.update_uuid(uuid)
+	return sgoly_uuid_server.update_uuid(uuid)
 end
 
 return dat_ser
