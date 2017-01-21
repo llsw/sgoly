@@ -962,14 +962,14 @@ function CMD.autosave(fd,name )
 	   local bo1=sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnumsave,automaxsave,autowinmax,0,xsave,os.date("%Y-%m-%d"))
 	   local bo2=sgoly_tool.saveMoneyToRedis(name,money)
 	   autonum=0
-    	autocost=0
-    	automoney={}
-    	autonumber1={}
-    	autowinall =0 
-		autowinmax =0
-		autozjnumsave=0
-		automaxsave=0
-		xsave=1
+	   autocost=0
+	   automoney={}
+	   autonumber1={}
+	   autowinall =0 
+	   autowinmax =0
+       autozjnumsave=0
+	   automaxsave=0
+	   xsave=1
 	if bo1 and  bo2 then
 		return "suss"
 	else 
