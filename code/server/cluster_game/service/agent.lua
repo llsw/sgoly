@@ -31,7 +31,7 @@ function agent.main(fd,mes)
 end
 end
 
-function exit(fd,mes)
+function exit(fd,mes)   --用户正常退出
 	local bool,res=sgoly_tool.saveMoneyFromRdisToMySQL(connection[fd].name)
 	local bool1,res1=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,os.date("%Y-%m-%d"))
 		if bool and bool1 then
@@ -50,7 +50,7 @@ function exit(fd,mes)
 							MESSAGE=res.." "..res1} 	
 	        local result2_2 = sgoly_pack.encode(req2_1)
             return result2_2
-        end
+        end          
 end
 function agent.start(fd,name)
 	  local maingame = skynet.newservice("maingame")
@@ -63,7 +63,7 @@ function agent.start(fd,name)
 	  connection[fd] = c 
 end
 
-function agent.errorexit( fd )	
+function agent.errorexit( fd )	 --用户玩自动模式强制退出
 	if connection[fd] then
 		return skynet.call(connection[fd].maingame,"lua","autosave",fd,connection[fd].name)
 	else
@@ -71,19 +71,22 @@ function agent.errorexit( fd )
     end
 end
 
-function agent.close( fd )
+function agent.close( fd )        --用户玩普通模式强制退出
 	-- body
 	if connection[fd] then
 		local bool,res=sgoly_tool.saveMoneyFromRdisToMySQL(connection[fd].name)
 		local bool1,res1=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,os.date("%Y-%m-%d"))
-		if bool  and bool1 then 
+		if bool  and bool1 then
+		     connection[fd]=nil
 	    return  "suss"
 	    else
+	    	connection[fd]=nil
 		return "false"
 	    end
     else 
+    	connection[fd]=nil
     	return "no login".." " ..fd
-    end
+    end     
 end
 
 skynet.start(function()
