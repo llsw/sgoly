@@ -196,7 +196,7 @@ function sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if ok then
 		result.eighthNoWin = eighthNoWin
 		result.recoveryRate = recoveryRate
-		if dt~= os.date("%Y-%m-%d") then
+		if dt ~= os.date("%Y-%m-%d") then
 			result.saveStatementsToMySQL = 1
 		else
 			result.saveStatementsToMySQL = 1
@@ -393,11 +393,14 @@ function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
 	
 			skynet.error(ok, result)
 
-			redis_query({"del", key1})
-			redis_query({"del", key2})
-			redis_query({"del", key3})
-			return ok, result
+			
 		end
+
+		redis_query({"del", key1})
+		redis_query({"del", key2})
+		redis_query({"del", key3})
+
+		return ok, result
 		
 	end
 	skynet.error(string.format(" no have statements" .. dt))
