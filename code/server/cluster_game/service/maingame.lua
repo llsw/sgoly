@@ -305,10 +305,10 @@ for i=1,k do
 			table.insert(number2,"C3")
 			n=n+1
 			table.insert(sequence,picture_order("C3"))
-			skynet.error("得分为",end_point*beilv*1)
+			skynet.error("得分为",end_point*beilv*2)
 			money=money+end_point*beilv*1 
-			table.insert(winmoney,end_point*beilv*1)
-			table.insert(automoney,end_point*beilv*1)
+			table.insert(winmoney,end_point*beilv*2)
+			table.insert(automoney,end_point*beilv*2)
 		elseif a>=57535 and a<=76744 then
 			skynet.error(i,"中奖类型DDD----O(∩_∩)O~~-!") 
 			j=j+1
@@ -318,10 +318,10 @@ for i=1,k do
 			table.insert(number2,"D3")
 			n=n+1
 			table.insert(sequence,picture_order("D3"))
-			skynet.error("得分为",end_point*beilv*0.5)
+			skynet.error("得分为",end_point*beilv*1)
 			money=money+end_point*beilv*0.5
-			table.insert(winmoney,end_point*beilv*0.5) 
-			table.insert(automoney,end_point*beilv*0.5)
+			table.insert(winmoney,end_point*beilv*1) 
+			table.insert(automoney,end_point*beilv*1)
 		elseif a>=76745 and a<=148224 then
 			skynet.error(i,"中奖类型EEE----O(∩_∩)O~~-!") 
 			j=j+1
@@ -331,10 +331,10 @@ for i=1,k do
 			table.insert(number2,"E3")
 			n=n+1
 			table.insert(sequence,picture_order("E3"))
-			skynet.error("得分为",end_point*beilv*0.3)
+			skynet.error("得分为",end_point*beilv*0.5)
 			money=money+end_point*beilv*0.3 
-			table.insert(winmoney,end_point*beilv*0.3)
-			table.insert(automoney,end_point*beilv*0.3)
+			table.insert(winmoney,end_point*beilv*0.5)
+			table.insert(automoney,end_point*beilv*0.5)
 		else 
 			skynet.error(i,"没有中奖")
 			table.insert(sequence,picture_order("NO"))
@@ -513,10 +513,10 @@ for i=1,k do
 			table.insert(number2,"C3")
 			n=n+1
 			table.insert(sequence,picture_order("C3"))
-			skynet.error("得分为",end_point*beilv*1)
+			skynet.error("得分为",end_point*beilv*2)
 			money=money+end_point*beilv*1
-			table.insert(winmoney,end_point*beilv*1)
-			table.insert(automoney,end_point*beilv*1) 
+			table.insert(winmoney,end_point*beilv*2)
+			table.insert(automoney,end_point*beilv*2) 
 		elseif a>=56152 and a<=67981 then
 			skynet.error(i,"中奖类型DDD----O(∩_∩)O~~-!") 
 			j=j+1
@@ -526,10 +526,10 @@ for i=1,k do
 			table.insert(number2,"D3")
 			n=n+1
 			table.insert(sequence,picture_order("D3"))
-			skynet.error("得分为",end_point*beilv*0.5)
+			skynet.error("得分为",end_point*beilv*)
 			money=money+end_point*beilv*0.5 
-			table.insert(winmoney,end_point*beilv*0.5)
-			table.insert(automoney,end_point*beilv*0.5)
+			table.insert(winmoney,end_point*beilv*1)
+			table.insert(automoney,end_point*beilv*1)
 		elseif a>=67982 and a<=131571 then
 			skynet.error(i,"中奖类型EEE----O(∩_∩)O~~-!") 
 			j=j+1
@@ -539,10 +539,10 @@ for i=1,k do
 			table.insert(number2,"E3")
 			n=n+1
 			table.insert(sequence,picture_order("E3"))
-			skynet.error("得分为",end_point*beilv*0.3)
+			skynet.error("得分为",end_point*beilv*0.5)
 			money=money+end_point*beilv*0.3 
-			table.insert(winmoney,end_point*beilv*0.3)
-			table.insert(automoney,end_point*beilv*0.3)
+			table.insert(winmoney,end_point*beilv*0.5)
+			table.insert(automoney,end_point*beilv*0.5)
 		else 
 			skynet.error(i,"没有中奖")
 			table.insert(sequence,picture_order("NO"))
@@ -719,10 +719,10 @@ for i=1,k do
 			table.insert(number2,"C3")
 			n=n+1
 			table.insert(sequence,picture_order("C3"))
-			skynet.error("得分为",end_point*beilv*1) 
+			skynet.error("得分为",end_point*beilv*2) 
 			money=money+end_point*beilv*1
-			table.insert(winmoney,end_point*beilv*1)
-			table.insert(automoney,end_point*beilv*1)
+			table.insert(winmoney,end_point*beilv*2)
+			table.insert(automoney,end_point*beilv*2)
 		elseif a>=54071 and a<=82930 then
 			skynet.error(i,"中奖类型DDD----O(∩_∩)O~~-!") 
 			j=j+1
@@ -732,10 +732,10 @@ for i=1,k do
 			table.insert(number2,"D3")
 			n=n+1
 			table.insert(sequence,picture_order("D3"))
-			skynet.error("得分为",end_point*beilv*0.5)
+			skynet.error("得分为",end_point*beilv*1)
 			money=money+end_point*beilv*0.5 
-			table.insert(winmoney,end_point*beilv*0.5)
-			table.insert(automoney,end_point*beilv*0.5)
+			table.insert(winmoney,end_point*beilv*1)
+			table.insert(automoney,end_point*beilv*1)
 		elseif a>=82931 and a<=162480 then
 			skynet.error(i,"中奖类型EEE----O(∩_∩)O~~-!") 
 			j=j+1
@@ -745,10 +745,10 @@ for i=1,k do
 			table.insert(number2,"E3")
 			n=n+1
 			table.insert(sequence,picture_order("E3"))
-			skynet.error("得分为",end_point*beilv*0.3) 
+			skynet.error("得分为",end_point*beilv*0.5) 
 			money=money+end_point*beilv*0.3
-			table.insert(winmoney,end_point*beilv*0.3)
-			table.insert(automoney,end_point*beilv*0.3)
+			table.insert(winmoney,end_point*beilv*0.5)
+			table.insert(automoney,end_point*beilv*0.5)
 		else 
 			skynet.error(i,"没有中奖")
 			table.insert(sequence,picture_order("NO"))
@@ -877,7 +877,7 @@ end  --for 循环end
 			else
 				automax=1  --最终最高连续中奖次数
 				for key,v in ipairs(autonumber1) do 
-					skynet.error("autonumber1",key,v)
+					-- skynet.error("autonumber1",key,v)
 					if v+1==autonumber1[key+1] then
 						autopersentmax=autopersentmax+1
 
@@ -894,7 +894,7 @@ end  --for 循环end
 	    ---------------------自动中奖最高金额---------------
 			    -- local autowinmax =0
 				for k,v in ipairs(automoney) do
-					print("automoney",k,v)
+					-- print("automoney",k,v)
 				     if v>autowinmax then 
 				     	autowinmax=v
 				     end
@@ -936,7 +936,7 @@ end  --for 循环end
 end
 
 function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
-    if TYPE=="start" then 
+    if TYPE=="start"  then 
 	    local bool,reallymoney=sgoly_tool.getMoney(name)
 	    local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)
 	    print("reallymoney",reallymoney,"checkup",checkup)
@@ -951,12 +951,26 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 			local req1=sgoly_pack.encode(req)
 			return req1
 		end
+	elseif TYPE=="autostart" then
+		local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)
+		print("checkup",checkup)
+		if checkup==true and tonumber(cost)<=tonumber(MONEY) then
+            return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
+		elseif tonumber(cost)>tonumber(MONEY) then
+			local req3={SESSION=session,ID="4",STATE=false,MESSAGE="金币不足"}
+			local req3_1=sgoly_pack.encode(req3)
+			return req3_1
+		else
+			local req4={SESSION=session,ID="4",STATE=false,MESSAGE="无效数据"}
+			local req4_1=sgoly_pack.encode(req4)
+			return req4_1
+		end
 	else
 		 return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 	end
 end
 
-function CMD.autosave(fd,name )
+function CMD.autosave(fd,name)
 	   local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
 	   local bool,req=sgoly_tool.getMoney(name)
 	   local money=tonumber(req)+autowinall-autocost

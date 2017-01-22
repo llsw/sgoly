@@ -31,7 +31,7 @@ function handler.message(fd, msg)
 		--sessionID[mes.NAME]=mes.SESSION
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)
-		local req =cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
+		local req,reqfd =cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
 		print(req,"thisi  is req")
 		driver.send(fd,req)
     end

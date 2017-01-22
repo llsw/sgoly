@@ -9,39 +9,41 @@ local CMD={}
 
 function CMD.ranklist(fd,mes)
 	if type=="yesSERIES" then
-	-- TYPE="yesSERIES/ daySERIES/yesALLMONEY/dayALLMONEY"
-	--  local bool,rqs=sgoly_tool.
+	-- local bool,rqs=sgoly_tool.
 	-- if bool then 
-	--    local req={SESSION=session,ID="7",TYPE="yesSERIES",STATE=true,MESSAGE=rqs}
-	--     local req=sgoly_pack.encode(rqs)
-	--     return req
-    --     end
+	   local req={SESSION=session,ID="7",TYPE="yesSERIES",STATE=true}--,CONUTS=rqs}
+	    local req=sgoly_pack.encode(rqs)
+	    return req
+ --        end
     elseif  type=="daySERIES"   then
     --  local bool,rqs=sgoly_tool.
 	-- if bool then 
-	--    local req={SESSION=session,ID="7",TYPE="yesSERIES",STATE=true,MESSAGE=rqs}
-	--     local req=sgoly_pack.encode(rqs)
-	--     return req
+	   local req={SESSION=session,ID="7",TYPE="daySERIES",STATE=true}--,COUNTS=rqs}
+	    local req=sgoly_pack.encode(rqs)
+	    return req
     --     end
     elseif	type=="yesALLMONEY" then
     --  local bool,rqs=sgoly_tool.
 	-- if bool then 
-	--    local req={SESSION=session,ID="7",TYPE="yesSERIES",STATE=true,MESSAGE=rqs}
-	--     local req=sgoly_pack.encode(rqs)
-	--     return req
+	   local req={SESSION=session,ID="7",TYPE="yesALLMONEY",STATE=true}--,WINNUM=rqs}
+	    local req=sgoly_pack.encode(rqs)
+	    return req
     --     end
     elseif	type=="yesALLMONEY" then
     --  local bool,rqs=sgoly_tool.
 	-- if bool then 
-	--    local req={SESSION=session,ID="7",TYPE="yesSERIES",STATE=true,MESSAGE=rqs}
+	--    local req={SESSION=session,ID="7",TYPE="yesALLMONEY",STATE=true,WINNUM=rqs}
 	--     local req=sgoly_pack.encode(rqs)
 	--     return req
     --     end
 	-- else 
-	-- 	local req2={SESSION=session,ID="7",STATE=false,MESSAGE=rqs}
-	-- 	local req2_1=sgoly_pack.encode(req2)
-	-- 	return req2_1
+		local req2={SESSION=session,ID="7",STATE=false}--,--MESSAGE=rqs}
+		local req2_1=sgoly_pack.encode(req2)
+		return req2_1
     end
+    else 
+   	   return  false
+   	end
 end
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
