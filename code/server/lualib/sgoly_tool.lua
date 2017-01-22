@@ -317,12 +317,10 @@ function sgoly_tool.getCountStatementsFromRedis(nickname, dt)
 		end
 		return ok2, result3	
 	end
-
+	local ok2, result2 = sgoly_tool.getStatementsFromRedis(nickname, os.date("%Y-%m-%d"))
 	local ok, result = sgoly_dat_ser.get_count_statements_from_MySQL(nickname, dt)
-	
 	if ok then
 		redis_query({"hmset", key, result})
-		local ok2, result2 = sgoly_tool.getStatementsFromRedis(nickname, os.date("%Y-%m-%d"))
 		local result3 = {
 							winMoney = result.winMoney+result2.winMoney, 
 							costMoney = result.costMoney+result2.costMoney, 
@@ -344,7 +342,7 @@ function sgoly_tool.getCountStatementsFromRedis(nickname, dt)
 		return ok, result3
 	end
 
-	return ok, result
+	return ok2, result2
 	
 end
 
