@@ -196,6 +196,11 @@ function sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if ok then
 		result.eighthNoWin = eighthNoWin
 		result.recoveryRate = recoveryRate
+		if dt~= os.date("%Y-%m-%d") then
+			result.saveStatementsToMySQL = 1
+		else
+			result.saveStatementsToMySQL = 1
+		end
 		redis_query({"hmset", key, result})
 		return ok, result
 	end
@@ -241,6 +246,7 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 		result.maxWinMoney = maxWinMoney
 		result.eighthNoWin = eighthNoWin
 		result.recoveryRate = recoveryRate
+		result.saveStatementsToMySQL = 0
 		redis_query({"hmset", key, result})
 		local ok , result = sgoly_dat_ser.update_statments_to_MySQL(nickname, result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
 		return true, nil
@@ -382,16 +388,21 @@ function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
 	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if ok then
 		skynet.error(string.format("have statements"))
-		local ok , result = sgoly_dat_ser.update_statments_to_MySQL(nickname, result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
-			if ok then
-				redis_query({"del", key1})
-				redis_query({"del", key2})
-				redis_query({"del", key3})
-			end
-			skynet.error(ok, result)
-		return ok, result
-	end 
-	skynet.error(string.format(" no have statements"))
+			if tonumber(result.saveStatementsToMySQL) = 0 then 
+			local ok , result = sgoly_dat_ser.update_statments_to_MySQL(nickname, result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
+				if ok then
+					redis_query({"del", key1})
+					redis_query({"del", key2})
+					redis_query({"del", key3})
+				end
+				skynet.error(ok, result)
+
+				local yesterday = os.date("%Y-%m-") .. (tonumber(os.date("%d"))-1)
+				sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, yesterday)
+			return ok, result
+		end
+	end
+	skynet.error(string.format(" no have statements" .. dt))
 	return ok ,result
 	
 end
