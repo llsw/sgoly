@@ -341,7 +341,7 @@ function sgoly_tool.getCountStatementsFromRedis(nickname, dt)
 
 		return ok, result3
 	end
-
+	redis_query({"hmset", key, result})
 	return ok2, result2
 	
 end
