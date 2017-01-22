@@ -383,8 +383,8 @@ end
 --!
 function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
 	local key1 = "count:" .. nickname
-	local key2 = "statements:" .. nickname .. "*" 
-	local key3 = "user:" .. nickname .. "*"
+	local key2 = "statements:" .. nickname .. dt 
+	local key3 = "user:" .. nickname .. dt
 	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if ok then
 		skynet.error(string.format("have statements"))
@@ -393,17 +393,18 @@ function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
 	
 			skynet.error(ok, result)
 
-			local yesterday = os.date("%Y-%m-") .. (tonumber(os.date("%d"))-1)
-			sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, yesterday)
-		
+			redis_query({"del", key1})
+			redis_query({"del", key2})
+			redis_query({"del", key3})
+			return ok, result
 		end
-		redis_query({"del", key1})
-		redis_query({"del", key2})
-		redis_query({"del", key3})
-		return ok, result
+		
 	end
 	skynet.error(string.format(" no have statements" .. dt))
 	return ok ,result
+	
+end
+
 	
 end
 
