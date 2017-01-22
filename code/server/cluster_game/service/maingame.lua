@@ -957,9 +957,10 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 end
 
 function CMD.autosave(fd,name )
+	   local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
 	   local bool,req=sgoly_tool.getMoney(name)
 	   local money=tonumber(req)+autowinall-autocost
-	   local bo1=sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnumsave,automaxsave,autowinmax,0,xsave,os.date("%Y-%m-%d"))
+	   local bo1=sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnumsave,automaxsave,autowinmax,0,xsave,os.date("%Y-%m-%d"))	   
 	   local bo2=sgoly_tool.saveMoneyToRedis(name,money)
 	   autonum=0
 	   autocost=0

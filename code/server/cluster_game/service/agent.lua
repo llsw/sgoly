@@ -35,8 +35,10 @@ end
 end
 
 function exit(fd,mes)   --用户正常退出
+	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
 	local bool,res=sgoly_tool.saveMoneyFromRdisToMySQL(connection[fd].name)
 	local bool1,res1=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,os.date("%Y-%m-%d"))
+	local bool2,res2=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,c)
 		if bool and bool1 then
 			local req2={SESSION=mes.SESSION,
 			      TYPE=mes.TYPE,
@@ -76,9 +78,11 @@ end
 
 function agent.close( fd )        --用户玩普通模式强制退出
 	-- body
+	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
 	if connection[fd] then
 		local bool,res=sgoly_tool.saveMoneyFromRdisToMySQL(connection[fd].name)
 		local bool1,res1=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,os.date("%Y-%m-%d"))
+		local bool2,res2=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,c)
 		if bool  and bool1 then
 		     connection[fd]=nil
 	    return  "suss"

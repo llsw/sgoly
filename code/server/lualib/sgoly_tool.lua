@@ -384,7 +384,7 @@ end
 function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
 	local key1 = "count:" .. nickname
 	local key2 = "statements:" .. nickname .. dt 
-	local key3 = "user:" .. nickname .. dt
+	local key3 = "user:" .. nickname
 	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if ok then
 		skynet.error(string.format("have statements"))
@@ -409,6 +409,5 @@ function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
 end
 
 	
-end
 
 return sgoly_tool

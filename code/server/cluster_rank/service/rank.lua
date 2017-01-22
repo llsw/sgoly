@@ -17,8 +17,26 @@ function CMD.ranklist(fd,mes)
 	--     return req
     --     end
     elseif  type=="daySERIES"   then
+    --  local bool,rqs=sgoly_tool.
+	-- if bool then 
+	--    local req={SESSION=session,ID="7",TYPE="yesSERIES",STATE=true,MESSAGE=rqs}
+	--     local req=sgoly_pack.encode(rqs)
+	--     return req
+    --     end
     elseif	type=="yesALLMONEY" then
+    --  local bool,rqs=sgoly_tool.
+	-- if bool then 
+	--    local req={SESSION=session,ID="7",TYPE="yesSERIES",STATE=true,MESSAGE=rqs}
+	--     local req=sgoly_pack.encode(rqs)
+	--     return req
+    --     end
     elseif	type=="yesALLMONEY" then
+    --  local bool,rqs=sgoly_tool.
+	-- if bool then 
+	--    local req={SESSION=session,ID="7",TYPE="yesSERIES",STATE=true,MESSAGE=rqs}
+	--     local req=sgoly_pack.encode(rqs)
+	--     return req
+    --     end
 	-- else 
 	-- 	local req2={SESSION=session,ID="7",STATE=false,MESSAGE=rqs}
 	-- 	local req2_1=sgoly_pack.encode(req2)
