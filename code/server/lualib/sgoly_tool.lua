@@ -406,6 +406,76 @@ function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
 	
 end
 
+--!
+--! @brief      { function_description }
+--!
+--! @param      names  The names
+--! @param      args   The arguments
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-22
+--!
+function sortRank(names, args)
+	table.sort(names, function (n1, n2)
+		local t1 = args[n1][1]
+		local t2 = args[n2][1]
+		local d1 = args[n1][2]
+		local d2 = args[n2][2]
+		if t1 > t2 then
+			return true
+		end
+		if t1 == t2 then
+			if d1 < d2 then
+				return true
+			end
+			return false
+		end
+	end)
+end
+
+--!
+--! @brief      { function_description }
+--!
+--! @param      result  The result
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-22
+--!
+function rankArgsToTable(result, fori)
+	local res = {}
+	for i=1, fori do
+		local nickname, value, date = string.match(result[tostring(i)],"(.+):(.+):(.+)")
+		res[i] = {nickname = nickname, value = value, date = date }
+	end	
+	return res
+end
+
+--!
+--! @brief      Gets the rank from rdis.
+--!
+--! @param      dt    { parameter_description }
+--!
+--! @return     The rank from rdis.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-22
+--!
+function sgoly_tool.getRankFromRedis(date)
+	if date == nil then
+		return false, "There are nil in args."
+	end
+	local res = {}
+	local key = "rank:".. date
+	local res = redis_query({"hgetall", key})
+	if #res > 0 then
+		local ok, result = sgoly_tool.multipleToTable(res)
+		return rankArgsToTable(result, 3)
+	end
 	
+end
 
 return sgoly_tool
