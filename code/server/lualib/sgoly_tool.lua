@@ -11,6 +11,8 @@ require "sgoly_query"
 local sgoly_tool = {}
 local sgoly_dat_ser = require "sgoly_dat_ser"
 local skynet = require "skynet"
+local queue = require "skynet.queue"
+local lock = queue()
 
 --!
 --! @brief      网络数据包取长度
@@ -475,6 +477,7 @@ end
 function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 	local rank = {} 
 	local args = {}
+	local name_rank = {}
 	if date == nil then
 		return false, "There are nil in args."
 	end
@@ -483,10 +486,74 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 	local res = redis_query({"hmget", key, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
 	if #res > 0 then
 		rank, args = rankArgsToTable(res, #res)
-		--sortRank(rank, args)
-		sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
-		return true, rank, args
 	end
+	if rank_type == "serialWinNum" then
+		if value >= 4 then
+			for k,v in pairs(rank) do
+				name_rank[v] = k
+			end
+
+			if name_rank[nickname] then
+				if value > args[nickname][1] then
+					args[nickname][1] = value
+					args[nickname][2] = os.time()
+					lock(sortRank,rank, args)
+					for k,v in pairs(rank) do
+						name_rank[v] = k
+					end
+					sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
+				end
+
+			else
+				args[nickname] = {value, os.time()}
+				table.insert(rank,nickname)
+				lock(sortRank,rank, args)
+
+				local name = rank[11]
+				rank[11] = nil
+				args[name] = nil
+				for k,v in pairs(rank) do
+					name_rank[v] = k
+				end
+				sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
+			end
+
+		end
+	else
+		if value >= 400000 then
+			for k,v in pairs(rank) do
+				name_rank[v] = k
+			end
+
+			if name_rank[nickname] then
+				if value > args[nickname][1] then
+					args[nickname][1] = value
+					args[nickname][2] = os.time()
+					lock(sortRank,rank, args)
+					for k,v in pairs(rank) do
+						name_rank[v] = k
+					end
+					sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
+				end
+
+			else
+				args[nickname] = {value, os.time()}
+				table.insert(rank,nickname)
+				lock(sortRank,rank, args)
+
+				local name = rank[11]
+				rank[11] = nil
+				args[name] = nil
+				for k,v in pairs(rank) do
+					name_rank[v] = k
+				end
+				sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
+			end
+
+		end
+	end
+		
+	return true, {rank, args, name_rank, value}
 end
 
 --!
