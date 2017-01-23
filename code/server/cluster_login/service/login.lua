@@ -12,14 +12,13 @@ local loginuser = {}
 function handler(fd, mes)
 	local who="123456"
 ----------------------------用户注册-----------------------------------			
-	if mes.ID=="2" then 
-	    skynet.error("2",mes.PASSWD)            
+	if mes.ID=="2" then            
 	    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		local bool,msg=sgoly_users.register(mes.NAME,mes.PASSWD)
 		skynet.error(bool,msg)
 		if bool then            
 		    local bo,message=sgoly_users.usr_init(mes.NAME,500000)
-			skynet.error("asdasd=",bo,message)--test
+			skynet.error("usr_init",bo,message)--test
 			if bo then
 				local resuss={SESSION=mes.SESSION,ID="2",STATE=bo}
 				local resuss1_2=packtable(resuss)
@@ -58,8 +57,6 @@ function handler(fd, mes)
 				local str4_1=packtable(rep4)
 				return str4_1.."\n"	
 		end 	
-
-
 ---------------------------游客登录--------------------------------------			        	
     elseif mes.ID=="3" then               
 		   id=tourist()

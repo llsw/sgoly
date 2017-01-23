@@ -26,7 +26,7 @@ function CMD.tongji(fd,session,type,name)
 			            serialWinNum=tonumber(res.serialWinNum),
 			            maxWinMoney=tonumber(res.maxWinMoney)
 			        }
-			skynet.error(req.SESSION,req.winMoney,req.costMoney,req.playNum,req.winNum,req.serialWinNum,req.maxWinMoney)
+			skynet.error(name,req.SESSION,req.winMoney,req.costMoney,req.playNum,req.winNum,req.serialWinNum,req.maxWinMoney)
 			local result1_2 = sgoly_pack.encode(req)
 		    return result1_2
 		elseif not bool then
@@ -56,7 +56,7 @@ function CMD.tongji(fd,session,type,name)
 			            serialWinNum=tonumber(res.serialWinNum),
 			            maxWinMoney=tonumber(res.maxWinMoney)
 			        }
-			skynet.error(reqy.SESSION,reqy.winMoney,reqy.costMoney,reqy.playNum,reqy.winNum,reqy.serialWinNum,reqy.maxWinMoney)
+			skynet.error(name,reqy.SESSION,reqy.winMoney,reqy.costMoney,reqy.playNum,reqy.winNum,reqy.serialWinNum,reqy.maxWinMoney)
 			local resulty = sgoly_pack.encode(reqy)
 		    return resulty
 		elseif not bool then
@@ -83,7 +83,7 @@ function CMD.tongji(fd,session,type,name)
 			            serialWinNum=tonumber(res.serialWinNum),
 			            maxWinMoney=tonumber(res.maxWinMoney)
 			        }
-			skynet.error(reqh.SESSION,reqh.winMoney,reqh.costMoney,reqh.playNum,reqh.winNum,reqh.serialWinNum,reqh.maxWinMoney)
+			skynet.error(name,reqh.SESSION,reqh.winMoney,reqh.costMoney,reqh.playNum,reqh.winNum,reqh.serialWinNum,reqh.maxWinMoney)
 			local resulth = sgoly_pack.encode(reqh)
 		    return resulth
 		elseif not bool then

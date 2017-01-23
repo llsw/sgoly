@@ -105,6 +105,7 @@ end
 	-- winmoney={}        --中奖金额
 --主循环判断
 function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name) 
+    skynet.error("I am",name)
     gamenum=0          --游戏次数
  	gamenum8=0         --8次游戏次数
  	-- money=0            --赚的金额

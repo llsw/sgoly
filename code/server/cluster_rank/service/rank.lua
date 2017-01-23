@@ -8,45 +8,20 @@ local CMD={}
 
 
 function CMD.ranklist(fd,mes)
-	if mes.TYPE=="yesSERIES" then
-	-- local bool,rqs=sgoly_tool.
-	-- if bool then 
-	--     local req={SESSION=session,ID="7",mes.TYPE="yesSERIES",STATE=true,
-	--         LIST={NUM=,NAME="name",CONUTS=rqs,WINNUM=rqs}}
-	--     local req1=sgoly_pack.encode(req)
-	--     return req1
- -- --        end
- --    elseif  mes.TYPE=="daySERIES"   then
- --    --  local bool,rqs=sgoly_tool.
-	-- -- if bool then 
-	--    local req2={SESSION=session,ID="7",mes.TYPE="daySERIES",STATE=true,--,COUNTS=rqs}
-	--    LIST={NUM="1",NAME="name",CONUTS=rqs,WINNUM=rqs}}
-	--    local req2_1=sgoly_pack.encode(req2)
-	--     return req2_1
- --    --     end
- --    elseif	mes.TYPE=="yesALLMONEY" then
- --    --  local bool,rqs=sgoly_tool.
-	-- -- if bool then 
-	--     local req3={SESSION=session,ID="7",mes.TYPE="yesALLMONEY",STATE=true,--,WINNUM=rqs}
-	--     LIST={NUM="1",NAME="name",CONUTS=rqs,WINNUM=rqs}}
-	--     local req3_1=sgoly_pack.encode(req3)
-	--     return req3_1
- --    --     end
- --    elseif	mes.TYPE=="yesALLMONEY" then
- --    --  local bool,rqs=sgoly_tool.
-	-- -- if bool then 
-	--     local req4={SESSION=session,ID="7",mes.TYPE="yesALLMONEY",STATE=true,
-	--     LIST={NUM="1",NAME="name",CONUTS=rqs,WINNUM=rqs}}
-	--     local req4_1=sgoly_pack.encode(req4)
-	--     return req4_1
- --        end
-	-- -- else 
-	-- 	local req5={SESSION=session,ID="7",STATE=false}--,--MESSAGE=rqs}
-	-- 	local req5_1=sgoly_pack.encode(req5)
-	-- 	return req5_1
-	return true
+	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
+    	local bool1,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
+        local bool,rqs=sgoly_tool.getRankFromRedis(mes.NAME,tonumber(req1.serialWinNum), "serialWinNum",c)
+	    printI("this is rank",mes.NAME)
+	if bool1 and bool then 
+		rqs.SESSION=mes.session
+		rqs.ID="7"
+		rqs.STATE=true
+		local req2_1=sgoly_pack.encode(rqs)
+	    return req2_1
     else 
-   	   return  false
+        local req5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
+		local req5_1=sgoly_pack.encode(req5)
+		return req5_1
    	end
 end
 skynet.start(function()
