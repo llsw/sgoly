@@ -107,9 +107,25 @@ function tourist()          --游客登录协程互斥防止获取相同ID
 	return id 
 end
 function randomuserid(id)     --游客登录随机ID     
-	local a=string.char(math.random(65,122))
-	local b=string.char(math.random(65,122))
-	local c=string.char(math.random(65,122))
+	local a,b,c
+	local a1=math.random(1,100)
+	local b1=math.random(1,100)
+	local c1=math.random(1,100)
+		if a1<50 then
+		    a=string.char(math.random(65,90))
+		else
+			a=string.char(math.random(91,122))
+		end
+		if b1<50 then
+		    b=string.char(math.random(65,90))
+		else
+			a=string.char(math.random(91,122))
+		end
+		if c1<50 then
+		    c=string.char(math.random(65,90))
+		else
+			c=string.char(math.random(91,122))
+		end
 	local name="tr"..a..b..c..id
 	local password ="laohuji"
 	return name,password

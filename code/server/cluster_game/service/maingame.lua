@@ -769,13 +769,13 @@ for i=1,k do
 		skynet.error("2 money/depost=",money,deposit,money/deposit)
 		money=0
 		deposit=0
-	elseif historynum%10==0 and money/deposit<=0.8 then
+	elseif historynum%10==0 and money/deposit<=0.75 then
 		x=3
 		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d")) 
 		skynet.error("3 money/depost=",money,deposit,money/deposit)
 		money=0 
 		deposit=0
-	elseif historynum%10==0 and money/deposit>0.8 and money/deposit<0.9 then
+	elseif historynum%10==0 and money/deposit>0.9 and money/deposit<0.75 then
 		x=1
 		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d")) 
 		skynet.error("2 money/depost=",money,deposit,money/deposit)
