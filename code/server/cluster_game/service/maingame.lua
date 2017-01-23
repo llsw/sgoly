@@ -124,7 +124,7 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 	--end_point底分    beilv 倍率   k 次数
 	skynet.error("zxxxxxx",MONEY,cost)
 	--historynum=historynum+k
-	if TYPE=="autostart" then 
+	if TYPE=="autostart" or TYPE=="autogo" then 
 		autonum=autonum+k
 		autocost=autocost+end_point*beilv
 	end
@@ -306,7 +306,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("C3"))
 			skynet.error("得分为",end_point*beilv*2)
-			money=money+end_point*beilv*1 
+			money=money+end_point*beilv*2 
 			table.insert(winmoney,end_point*beilv*2)
 			table.insert(automoney,end_point*beilv*2)
 		elseif a>=57535 and a<=76744 then
@@ -319,7 +319,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("D3"))
 			skynet.error("得分为",end_point*beilv*1)
-			money=money+end_point*beilv*0.5
+			money=money+end_point*beilv*1
 			table.insert(winmoney,end_point*beilv*1) 
 			table.insert(automoney,end_point*beilv*1)
 		elseif a>=76745 and a<=148224 then
@@ -332,7 +332,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("E3"))
 			skynet.error("得分为",end_point*beilv*0.5)
-			money=money+end_point*beilv*0.3 
+			money=money+end_point*beilv*0.5 
 			table.insert(winmoney,end_point*beilv*0.5)
 			table.insert(automoney,end_point*beilv*0.5)
 		else 
@@ -514,7 +514,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("C3"))
 			skynet.error("得分为",end_point*beilv*2)
-			money=money+end_point*beilv*1
+			money=money+end_point*beilv*2
 			table.insert(winmoney,end_point*beilv*2)
 			table.insert(automoney,end_point*beilv*2) 
 		elseif a>=56152 and a<=67981 then
@@ -526,8 +526,8 @@ for i=1,k do
 			table.insert(number2,"D3")
 			n=n+1
 			table.insert(sequence,picture_order("D3"))
-			skynet.error("得分为",end_point*beilv*)
-			money=money+end_point*beilv*0.5 
+			skynet.error("得分为",end_point*beilv*1)
+			money=money+end_point*beilv*1 
 			table.insert(winmoney,end_point*beilv*1)
 			table.insert(automoney,end_point*beilv*1)
 		elseif a>=67982 and a<=131571 then
@@ -540,7 +540,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("E3"))
 			skynet.error("得分为",end_point*beilv*0.5)
-			money=money+end_point*beilv*0.3 
+			money=money+end_point*beilv*0.5 
 			table.insert(winmoney,end_point*beilv*0.5)
 			table.insert(automoney,end_point*beilv*0.5)
 		else 
@@ -720,7 +720,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("C3"))
 			skynet.error("得分为",end_point*beilv*2) 
-			money=money+end_point*beilv*1
+			money=money+end_point*beilv*2
 			table.insert(winmoney,end_point*beilv*2)
 			table.insert(automoney,end_point*beilv*2)
 		elseif a>=54071 and a<=82930 then
@@ -733,7 +733,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("D3"))
 			skynet.error("得分为",end_point*beilv*1)
-			money=money+end_point*beilv*0.5 
+			money=money+end_point*beilv*1 
 			table.insert(winmoney,end_point*beilv*1)
 			table.insert(automoney,end_point*beilv*1)
 		elseif a>=82931 and a<=162480 then
@@ -746,7 +746,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("E3"))
 			skynet.error("得分为",end_point*beilv*0.5) 
-			money=money+end_point*beilv*0.3
+			money=money+end_point*beilv*0.5
 			table.insert(winmoney,end_point*beilv*0.5)
 			table.insert(automoney,end_point*beilv*0.5)
 		else 
@@ -936,7 +936,21 @@ end  --for 循环end
 end
 
 function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
-    if TYPE=="start"  then 
+    if TYPE=="autogo" then
+    	local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)
+		print("checkup",checkup)
+		if checkup==true and tonumber(cost)<=tonumber(MONEY) then
+            return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
+		elseif tonumber(cost)>tonumber(MONEY) then
+			local req3={SESSION=session,ID="4",STATE=false,MESSAGE="金币不足"}
+			local req3_1=sgoly_pack.encode(req3)
+			return req3_1
+		else
+			local req4={SESSION=session,ID="4",STATE=false,MESSAGE="无效数据"}
+			local req4_1=sgoly_pack.encode(req4)
+			return req4_1
+		end
+    elseif TYPE=="start" or TYPE=="autostart" then 
 	    local bool,reallymoney=sgoly_tool.getMoney(name)
 	    local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)
 	    print("reallymoney",reallymoney,"checkup",checkup)
@@ -951,22 +965,13 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 			local req1=sgoly_pack.encode(req)
 			return req1
 		end
-	elseif TYPE=="autostart" then
-		local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)
-		print("checkup",checkup)
-		if checkup==true and tonumber(cost)<=tonumber(MONEY) then
-            return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
-		elseif tonumber(cost)>tonumber(MONEY) then
-			local req3={SESSION=session,ID="4",STATE=false,MESSAGE="金币不足"}
-			local req3_1=sgoly_pack.encode(req3)
-			return req3_1
-		else
-			local req4={SESSION=session,ID="4",STATE=false,MESSAGE="无效数据"}
-			local req4_1=sgoly_pack.encode(req4)
-			return req4_1
-		end
+	
+	elseif TYPE=="autoend" then
+	    return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 	else
-		 return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
+		local req5={SESSION=session,ID="4",STATE=false,MESSAGE="参数错误"}
+		local req5_1=sgoly_pack.encode(req5)
+		return req5_1
 	end
 end
 
