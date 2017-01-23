@@ -199,7 +199,7 @@ function sgoly_tool.getStatementsFromRedis(nickname, dt)
 		if dt ~= os.date("%Y-%m-%d") then
 			result.saveStatementsToMySQL = 1
 		else
-			result.saveStatementsToMySQL = 1
+			result.saveStatementsToMySQL = 0
 		end
 		redis_query({"hmset", key, result})
 		return ok, result
@@ -425,11 +425,15 @@ function sortRank(names, args)
 		local d2 = args[n2][2]
 		if t1 > t2 then
 			return true
-		end
-		if t1 == t2 then
+		elseif t1 == t2 then
 			if d1 < d2 then
 				return true
+			elseif d1 == d2 then
+				return false
+			else
+				return false
 			end
+		else
 			return false
 		end
 	end)
@@ -446,12 +450,16 @@ end
 --! @date       2017-01-22
 --!
 function rankArgsToTable(result, fori)
-	local res = {}
+	local rank = {}
+	local args = {}
+	skynet.error("fori", fori)
 	for i=1, fori do
-		local nickname, value, date = string.match(result[tostring(i)],"(.+):(.+):(.+)")
-		res[i] = {nickname = nickname, value = value, date = date }
+		skynet.error(result[i])
+		local nickname, value, date = string.match(result[i],"(.+):(.+):(.+)")
+		rank[i] = nickname
+		args[nickname]={tonumber(value), tonumber(date)}
 	end	
-	return res
+	return rank, args
 end
 
 --!
@@ -464,18 +472,49 @@ end
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-22
 --!
-function sgoly_tool.getRankFromRedis(date)
+function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
+	local rank = {} 
+	local args = {}
 	if date == nil then
 		return false, "There are nil in args."
 	end
 	local res = {}
-	local key = "rank:".. date
-	local res = redis_query({"hgetall", key})
+	local key = "rank:".. rank_type .. date
+	local res = redis_query({"hmget", key, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
 	if #res > 0 then
-		local ok, result = sgoly_tool.multipleToTable(res)
-		return rankArgsToTable(result, 3)
+		rank, args = rankArgsToTable(res, #res)
+		--sortRank(rank, args)
+		sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
+		return true, rank, args
 	end
-	
+end
+
+--!
+--! @brief      { function_description }
+--!
+--! @param      rank  The rank
+--! @param      args  The arguments
+--! @param      date  The date
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-23
+--!
+function sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
+	local key = "rank:" .. rank_type .. date
+	local result = {}
+	for i = 1, #rank do
+		local nickname = rank[i]
+		local value = nickname .. ":" .. args[nickname][1] .. ":" .. args[nickname][2]
+		skynet.error(i, "value" ,value)
+		result[tostring(i)] = value
+	end
+
+	if #rank > 0 then
+		redis_query({"hmset", key, result})
+		return true
+	end
 end
 
 return sgoly_tool
