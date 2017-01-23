@@ -553,7 +553,7 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 		end
 	end
 		
-	return true, {rank, name_rank, value}
+	return true, {rank, name_rank, args, value}
 end
 
 --!
