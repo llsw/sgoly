@@ -45,7 +45,7 @@ function exit(fd,mes)   --用户正常退出
 			 	  STATE=true
 			 	}
 	        local result2_1 = sgoly_pack.encode(req2)
-	        skynet.error(connection[fd].name),"用户退出")
+	        skynet.error(connection[fd].name,"用户退出")
             return result2_1
         else
         	local req2_1 ={ SESSION=mes.SESSION,
@@ -59,10 +59,12 @@ end
 function agent.start(fd,name)
 	  local maingame = skynet.newservice("maingame")
 	  local stats = skynet.newservice("stats")
+	  -- local sign = skynet.newservice("stats")
 	  local c = {
 	  		name = name,
 	  		maingame = maingame,
 	  		stats=stats
+	  		-- sign=sign
 			}
 	  connection[fd] = c 
 end

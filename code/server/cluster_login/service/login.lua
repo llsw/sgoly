@@ -116,7 +116,7 @@ function randomuserid(id)     --游客登录随机ID
 		if b1<50 then
 		    b=string.char(math.random(65,90))
 		else
-			a=string.char(math.random(91,122))
+			b=string.char(math.random(91,122))
 		end
 		if c1<50 then
 		    c=string.char(math.random(65,90))
