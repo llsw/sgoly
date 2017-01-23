@@ -22,7 +22,7 @@ function CMD.ranklist(fd,mes)
 		end
 	elseif mes.TYPE=="dayALLMONEY" then
 	    	local bool2,req2 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
-	        local bool2_1,rqs2_1=sgoly_tool.getRankFromRedis(mes.NAME,tonumber(req1.winMoney), "winMoney",os.date("%Y-%m-%d"))
+	        local bool2_1,rqs2_1=sgoly_tool.getRankFromRedis(mes.NAME,tonumber(req2.winMoney), "winMoney",os.date("%Y-%m-%d"))
 		    printI("this is rank,%s",mes.NAME)
 		if bool2 and bool2_1 then 
 			rqs2_1.SESSION=mes.session

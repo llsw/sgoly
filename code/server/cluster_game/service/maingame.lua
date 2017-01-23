@@ -801,14 +801,14 @@ end  --for 循环end
 	printI("本轮中奖次数%d",j)
 	for key,v in pairs(wintype) do
 		if v~=0  then
-			printI("中奖类型为%d,中奖次数为%d",key,v) 
+			skynet.error("中奖类型为%d,中奖次数为%s",key,v) 
 		end
 	end
 ------------------最高连续中奖次数-----------------------------	 
 	persentmax=1    --记录最高连续中奖次数
 	if  not number1[1] then
 		max=0
-		printI("最高连续中奖次数为0")
+		skynet.error("最高连续中奖次数为0")
 	else
 		max=1  --最终最高连续中奖次数
 		for key,v in ipairs(number1) do 
@@ -822,16 +822,16 @@ end  --for 循环end
 						persentmax=1
 				end
 		end
-		printI("最高连续中奖次数为%d",max)
+		skynet.error("最高连续中奖次数为%d",max)
 	end
 
 ----------------------------------------------------------
 		for key,v in ipairs(number1) do
-			printI("第%d次中奖,中奖类型为%s",v,number2[key])
+			skynet.error("第%d次中奖,中奖类型为%s",v,number2[key])
 		end
 ---------------------最高连续不中奖次数-----------------------
 	if not number1[1] then
-			printI("最高连续不中奖次数为0")
+			skynet.error("最高连续不中奖次数为0")
 	else
 		local max = number1[1]
 		for key,v in ipairs(number1) do
@@ -848,7 +848,7 @@ end  --for 循环end
 			end
 		end
 		if  max>0 then
-			printI("最高连续不中奖次数为%d,第%d-%d次",max-1,startnum,endnum)
+			skynet.error("最高连续不中奖次数为%d,第%d-%d次",max-1,startnum,endnum)
 		end
 	end
 ----------------------中奖最高金额---------------
@@ -874,7 +874,7 @@ end  --for 循环end
 		autopersentmax=1    --记录自动最高连续中奖次数
 			if  not autonumber1[1] then
 				automax=0
-				printI("自动最高连续中奖次数为0")
+				skynet.error("自动最高连续中奖次数为0")
 			else
 				automax=1  --最终最高连续中奖次数
 				for key,v in ipairs(autonumber1) do 
@@ -889,7 +889,7 @@ end  --for 循环end
 							autopersentmax=1
 					end
 				end
-				printI("自动最高连续中奖次数为%d",automax)
+				skynet.error("自动最高连续中奖次数为%d",automax)
 				automaxsave=automax
 			end
 	    ---------------------自动中奖最高金额---------------
@@ -904,12 +904,12 @@ end  --for 循环end
 			    -- local autowinall =0
 			    for k,v in ipairs(automoney) do
 			    	autowinall=autowinall+v
-			    	printI("automoney-k=%d,v=%d",k,v)
+			    	skynet.error("automoney-k=%d,v=%d",k,v)
 			    end
 	-------------------------------------------------------
 		   local autozjnum=#autonumber1
 		   autozjnumsave=autozjnum
-		   printI("autozjnum=",autozjnum)
+		   skynet.error("autozjnum=",autozjnum)
 	       sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnum,automax,autowinmax,0,x,os.date("%Y-%m-%d"))
 	       sgoly_tool.saveMoneyToRedis(name,MONEY)
 	       local who = "123456"
