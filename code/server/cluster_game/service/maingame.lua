@@ -306,7 +306,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("C3"))
 			skynet.error("得分为",end_point*beilv*2)
-			money=money+end_point*beilv*1 
+			money=money+end_point*beilv*2 
 			table.insert(winmoney,end_point*beilv*2)
 			table.insert(automoney,end_point*beilv*2)
 		elseif a>=57535 and a<=76744 then
@@ -319,7 +319,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("D3"))
 			skynet.error("得分为",end_point*beilv*1)
-			money=money+end_point*beilv*0.5
+			money=money+end_point*beilv*1
 			table.insert(winmoney,end_point*beilv*1) 
 			table.insert(automoney,end_point*beilv*1)
 		elseif a>=76745 and a<=148224 then
@@ -332,7 +332,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("E3"))
 			skynet.error("得分为",end_point*beilv*0.5)
-			money=money+end_point*beilv*0.3 
+			money=money+end_point*beilv*0.5 
 			table.insert(winmoney,end_point*beilv*0.5)
 			table.insert(automoney,end_point*beilv*0.5)
 		else 
@@ -514,7 +514,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("C3"))
 			skynet.error("得分为",end_point*beilv*2)
-			money=money+end_point*beilv*1
+			money=money+end_point*beilv*2
 			table.insert(winmoney,end_point*beilv*2)
 			table.insert(automoney,end_point*beilv*2) 
 		elseif a>=56152 and a<=67981 then
@@ -526,8 +526,8 @@ for i=1,k do
 			table.insert(number2,"D3")
 			n=n+1
 			table.insert(sequence,picture_order("D3"))
-			skynet.error("得分为",end_point*beilv*)
-			money=money+end_point*beilv*0.5 
+			skynet.error("得分为",end_point*beilv*1)
+			money=money+end_point*beilv*1 
 			table.insert(winmoney,end_point*beilv*1)
 			table.insert(automoney,end_point*beilv*1)
 		elseif a>=67982 and a<=131571 then
@@ -540,7 +540,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("E3"))
 			skynet.error("得分为",end_point*beilv*0.5)
-			money=money+end_point*beilv*0.3 
+			money=money+end_point*beilv*0.5 
 			table.insert(winmoney,end_point*beilv*0.5)
 			table.insert(automoney,end_point*beilv*0.5)
 		else 
@@ -720,7 +720,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("C3"))
 			skynet.error("得分为",end_point*beilv*2) 
-			money=money+end_point*beilv*1
+			money=money+end_point*beilv*2
 			table.insert(winmoney,end_point*beilv*2)
 			table.insert(automoney,end_point*beilv*2)
 		elseif a>=54071 and a<=82930 then
@@ -733,7 +733,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("D3"))
 			skynet.error("得分为",end_point*beilv*1)
-			money=money+end_point*beilv*0.5 
+			money=money+end_point*beilv*1 
 			table.insert(winmoney,end_point*beilv*1)
 			table.insert(automoney,end_point*beilv*1)
 		elseif a>=82931 and a<=162480 then
@@ -746,7 +746,7 @@ for i=1,k do
 			n=n+1
 			table.insert(sequence,picture_order("E3"))
 			skynet.error("得分为",end_point*beilv*0.5) 
-			money=money+end_point*beilv*0.3
+			money=money+end_point*beilv*0.5
 			table.insert(winmoney,end_point*beilv*0.5)
 			table.insert(automoney,end_point*beilv*0.5)
 		else 
