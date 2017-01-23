@@ -488,11 +488,11 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 		rank, args = rankArgsToTable(res, #res)
 	end
 	if rank_type == "serialWinNum" then
-		if value >= 4 then
-			for k,v in pairs(rank) do
+		for k,v in pairs(rank) do
 				name_rank[v] = k
-			end
+		end
 
+		if value >= 4 then	
 			if name_rank[nickname] then
 				if value > args[nickname][1] then
 					args[nickname][1] = value
@@ -520,11 +520,11 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 
 		end
 	else
-		if value >= 400000 then
-			for k,v in pairs(rank) do
+
+		for k,v in pairs(rank) do
 				name_rank[v] = k
 			end
-
+		if value >= 400000 then
 			if name_rank[nickname] then
 				if value > args[nickname][1] then
 					args[nickname][1] = value
@@ -553,7 +553,7 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 		end
 	end
 		
-	return true, {rank, args, name_rank, value}
+	return true, {rank, name_rank, value}
 end
 
 --!
