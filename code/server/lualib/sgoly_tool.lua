@@ -454,12 +454,12 @@ end
 function rankArgsToTable(result, fori)
 	local rank = {}
 	local args = {}
-	skynet.error("fori", fori)
+	--skynet.error("fori", fori)
 	for i=1, fori do
-		skynet.error(result[i])
-		local nickname, value, date = string.match(result[i],"(.+):(.+):(.+)")
+		--skynet.error(result[i])
+		local nickname, value, date, award = string.match(result[i],"(.+):(.+):(.+):(.+)")
 		rank[i] = nickname
-		args[nickname]={tonumber(value), tonumber(date)}
+		args[nickname]={tonumber(value), tonumber(date), tonumber(award)}
 	end	
 	return rank, args
 end
@@ -486,70 +486,77 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 	local res = redis_query({"hmget", key, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
 	if #res > 0 then
 		rank, args = rankArgsToTable(res, #res)
-	end
-	if rank_type == "serialWinNum" then
+
 		for k,v in pairs(rank) do
-				name_rank[v] = k
+			name_rank[v] = k
+		end
+	end
+
+	if date ~= os.date("%Y-%m-%d") then
+		if #res == 0 then
+			-- rank, args = rankArgsToTable(res, #res)
+			-- local ok, result = rank, args = sgoly_dat_ser.get_rank_from_MySQL(rank_type, date)
+			-- sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 		end
 
-		if value >= 4 then	
-			if name_rank[nickname] then
-				if value > args[nickname][1] then
-					args[nickname][1] = value
-					args[nickname][2] = os.time()
-					lock(sortRank,rank, args)
-					for k,v in pairs(rank) do
-						name_rank[v] = k
-					end
-					sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
-				end
-
-			else
-				args[nickname] = {value, os.time()}
-				table.insert(rank,nickname)
-				lock(sortRank,rank, args)
-
-				local name = rank[11]
-				rank[11] = nil
-				args[name] = nil
-				for k,v in pairs(rank) do
-					name_rank[v] = k
-				end
-				sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
-			end
-
-		end
 	else
 
-		for k,v in pairs(rank) do
-				name_rank[v] = k
-			end
-		if value >= 400000 then
-			if name_rank[nickname] then
-				if value > args[nickname][1] then
-					args[nickname][1] = value
-					args[nickname][2] = os.time()
+		if rank_type == "serialWinNum" then
+			if value >= 4 then	
+				if name_rank[nickname] then
+					if value > args[nickname][1] then
+						args[nickname][1] = value
+						args[nickname][2] = os.time()
+						lock(sortRank,rank, args)
+						for k,v in pairs(rank) do
+							name_rank[v] = k
+						end
+						sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
+					end
+
+				else
+					args[nickname] = {value, os.time()}
+					table.insert(rank,nickname)
 					lock(sortRank,rank, args)
+
+					local name = rank[11]
+					rank[11] = nil
+					args[name] = nil
 					for k,v in pairs(rank) do
 						name_rank[v] = k
 					end
 					sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 				end
 
-			else
-				args[nickname] = {value, os.time()}
-				table.insert(rank,nickname)
-				lock(sortRank,rank, args)
-
-				local name = rank[11]
-				rank[11] = nil
-				args[name] = nil
-				for k,v in pairs(rank) do
-					name_rank[v] = k
-				end
-				sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 			end
+		else
+			if value >= 400000 then
+				if name_rank[nickname] then
+					if value > args[nickname][1] then
+						args[nickname][1] = value
+						args[nickname][2] = os.time()
+						lock(sortRank,rank, args)
+						for k,v in pairs(rank) do
+							name_rank[v] = k
+						end
+						sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
+					end
 
+				else
+					args[nickname] = {value, os.time()}
+					table.insert(rank,nickname)
+					lock(sortRank,rank, args)
+
+					local name = rank[11]
+					rank[11] = nil
+					args[name] = nil
+					for k,v in pairs(rank) do
+						name_rank[v] = k
+					end
+					sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
+				end
+
+			end
 		end
 	end
 		
@@ -559,9 +566,10 @@ end
 --!
 --! @brief      { function_description }
 --!
---! @param      rank  The rank
---! @param      args  The arguments
---! @param      date  The date
+--! @param      rank       The rank
+--! @param      args       The arguments
+--! @param      rank_type  The rank type
+--! @param      date       The date
 --!
 --! @return     { description_of_the_return_value }
 --!
@@ -573,14 +581,35 @@ function sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 	local result = {}
 	for i = 1, #rank do
 		local nickname = rank[i]
-		local value = nickname .. ":" .. args[nickname][1] .. ":" .. args[nickname][2]
-		skynet.error(i, "value" ,value)
+		local value = nickname .. ":" .. args[nickname][1] .. ":" .. args[nickname][2] .. ":0"
+		--skynet.error(i, "value" ,value)
 		result[tostring(i)] = value
 	end
 
 	if #rank > 0 then
 		redis_query({"hmset", key, result})
 		return true
+	end
+end
+
+--!
+--! @brief      Saves a rank to my sql.
+--!
+--! @param      date  The date
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-24
+--!
+function sgoly_tool.saveRankToMySQL(date)
+	local rank = {} 
+	local args = {}
+	local key = "rank:".. rank_type .. date
+	local res = redis_query({"hmget", key, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
+	if #res > 0 then
+		rank, args = rankArgsToTable(res, #res)
+		-- local ok, result = sgoly_dat_ser.save_rank_to_MySQL(rank, args)
 	end
 end
 
