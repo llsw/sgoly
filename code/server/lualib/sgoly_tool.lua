@@ -526,9 +526,12 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 					table.insert(rank,nickname)
 					lock(sortRank,rank, args)
 
-					local name = rank[11]
-					rank[11] = nil
-					args[name] = nil
+					local len = #rank
+					if len  > 10 then
+						local name = rank[11]
+						rank[11] = nil
+						args[name] = nil
+					end
 					for k,v in pairs(rank) do
 						name_rank[v] = k
 					end
