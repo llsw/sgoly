@@ -70,8 +70,14 @@ function handler.warning(fd, size)
 end
 
 local CMD = {}
-
-	
+function CMD.seclose(fd,mes,boo)
+    if boo==true then
+		driver.send(fd,mes)
+		gateserver.closeclient(fd)
+    else 
+    	driver.send(fd,mes)
+    end
+end
 
 function handler.command(cmd, source, ...)
 	local f = assert(CMD[cmd])
