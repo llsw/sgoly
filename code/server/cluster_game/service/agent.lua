@@ -1,6 +1,8 @@
 local skynet = require "skynet"
 local socket = require "socket"
 local cluster= require "cluster"
+local driver = require "socketdriver"
+local gateserver = require "sgoly_gateserver"
 require "skynet.manager"
 local sgoly_tool=require "sgoly_tool"
 local sgoly_pack=require "sgoly_pack"
@@ -97,6 +99,25 @@ function agent.close( fd )        --用户玩普通模式强制退出
     end     
 end
 
+function agent.sclose(bool)
+	if bool ==true then
+		for k,v in pairs(connection) do
+			skynet.error("this is connection",k)
+			local req3={ID="8",STATE=true}
+			local result1_2 = sgoly_pack.encode(req3)
+		    -- local bool=cluster.call("cluster_gateway",".gateway","close",k,result1_2)
+		    cluster.call("cluster_gateway",".gateway","seclose",k,result1_2,true)
+		end
+    else
+    	for k,v in pairs(connection) do
+		skynet.error("this is connection",k)
+		local req1={ID="8",STATE=false,MESSAGE="服务器将于五分钟后关闭"}
+		local result2_2 = sgoly_pack.encode(req1)
+	    -- local bool=cluster.call("cluster_gateway",".gateway","close",k,result1_2)
+	    cluster.call("cluster_gateway",".gateway","seclose",k,result2_2,false)
+	    end
+	end
+end
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(agent[cmd], cmd .. "not found")
