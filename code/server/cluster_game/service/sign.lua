@@ -22,5 +22,5 @@ skynet.start(function()
 	end)
 	--skynet.error("this is maingame")
     -- 要注册个服务的名字，以.开头
-    skynet.register(".stats")
+    skynet.register(".sign")
 end)

@@ -23,6 +23,6 @@ skynet.start(function()
 		skynet.retpack(f(...))
 	end)
 
-	skynet.register(".serverzbclose")
+	skynet.register(".inform")
 	skynet.call(".agent","lua","sclose",false)
 end)

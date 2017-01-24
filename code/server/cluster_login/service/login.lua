@@ -5,6 +5,7 @@ local cluster   = require "cluster"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
 require "skynet.manager"
+require "sgoly_printf"
 local md5 = require "md5"
 local sgoly_tool=require"sgoly_tool"
 local CMD={}
@@ -41,7 +42,7 @@ function handler(fd, mes)
 ----------------登录成功返回拥有金钱-----------------	
 		if bool then
 		        local boo,money =sgoly_tool.getMoney(mes.NAME)
-		        skynet.error("money is",money)
+		        printI("money is %s",money)
 		    if boo then
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money}
 			    local str5_1=packtable(reqmoney)
@@ -70,8 +71,8 @@ function handler(fd, mes)
 			    skynet.error(bool,msg)
 			end
 	    if msg=="插入用户数据成功" then 
-			    skynet.error("插入用户数据成功")
-			    skynet.error(name,trpd)           
+			    printI("插入用户数据成功")
+			    printI("%s,%s",name,trpd)           
 				local bo,message=sgoly_users.usr_init(name,500000)
 				skynet.error("record_init=",bo,message)--test
 			if bo then 
@@ -111,17 +112,17 @@ function randomuserid(id)     --游客登录随机ID
 		if a1<50 then
 		    a=string.char(math.random(65,90))
 		else
-			a=string.char(math.random(91,122))
+			a=string.char(math.random(97,122))
 		end
 		if b1<50 then
 		    b=string.char(math.random(65,90))
 		else
-			b=string.char(math.random(91,122))
+			b=string.char(math.random(97,122))
 		end
 		if c1<50 then
 		    c=string.char(math.random(65,90))
 		else
-			c=string.char(math.random(91,122))
+			c=string.char(math.random(97,122))
 		end
 	local name="tr"..a..b..c..id
 	local password ="laohuji"
@@ -142,7 +143,7 @@ function packtable(req)
 end
 skynet.start(function()
 	i=sgoly_tool.getUuid()
-	skynet.error("i=",i)
+	printI("i=%s",i)
 	math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
 	co = coroutine.create(function ()
 		while true do 

@@ -17,8 +17,13 @@ function CMD.ranklist(fd,mes)
 			rqs.SESSION=mes.session
 			rqs.ID="7"
 			rqs.STATE=true
+			rqs.TYPE="daySERIES"
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
+		else 
+	        local req5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
+			local req5_1=sgoly_pack.encode(req5)
+			return req5_1
 		end
 	elseif mes.TYPE=="dayALLMONEY" then
 	    	local bool2,req2 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
@@ -28,8 +33,13 @@ function CMD.ranklist(fd,mes)
 			rqs2_1.SESSION=mes.session
 			rqs2_1.ID="7"
 			rqs2_1.STATE=true
+			rqs2_1.TYPE="dayALLMONEY"
 			local req2_2=sgoly_pack.encode(rqs2_1)
 		    return req2_2
+		else 
+	        local req5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
+			local req5_1=sgoly_pack.encode(req5)
+			return req5_1
 		end
 	elseif mes.TYPE=="yesSERIES" then
 	    	local bool3_1,req3_1 = sgoly_tool.getStatementsFromRedis(mes.NAME, c)
@@ -39,20 +49,48 @@ function CMD.ranklist(fd,mes)
 			rqs3.SESSION=mes.session
 			rqs3.ID="7"
 			rqs3.STATE=true
+			rqs3.TYPE="yesSERIES"
 			local req3_1=sgoly_pack.encode(rqs3)
 		    return req3_1
+		else 
+	        local req5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
+			local req5_1=sgoly_pack.encode(req5)
+			return req5_1
 		end
 	elseif mes.TYPE=="yesALLMONEY" then
-    	local bool4_1,req4_1 = sgoly_tool.getStatementsFromRedis(mes.NAME, c)
-     local bool4,rqs4=sgoly_tool.getRankFromRedis(mes.NAME,tonumber(req4_1.winMoney), "winMoney",c)
-	    printI("this is rank,%s",mes.NAME)
-	if bool4 and bool4_1 then 
-		rqs4.SESSION=mes.session
-		rqs4.ID="7"
-		rqs4.STATE=true
-		local req4_1=sgoly_pack.encode(rqs4)
-	    return req4_1
-	end
+    	    local bool4_1,req4_1 = sgoly_tool.getStatementsFromRedis(mes.NAME, c)
+    	    local bool4,rqs4=sgoly_tool.getRankFromRedis(mes.NAME,tonumber(req4_1.winMoney), "winMoney",c)
+	        printI("this is rank,%s",mes.NAME)
+		if bool4 and bool4_1 then 
+			rqs4.SESSION=mes.session
+			rqs4.ID="7"
+			rqs4.STATE=true
+			rqs4.TYPE="yesALLMONEY"
+			local req4_1=sgoly_pack.encode(rqs4)
+		    return req4_1
+		else 
+	        local req5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
+			local req5_1=sgoly_pack.encode(req5)
+			return req5_1
+		end
+	elseif mes.TYPE=="receive" then
+		    local bool5_1,money=sgoly_tool.getAwardFromRedis(tonumber(mes.RANK1),tonumber(mes.RANK2),c)
+		   	local bo,getmoney=sgoly_tool.getMoney(mes.NAME)
+    	    local bool5,reqs5=sgoly_tool.saveMoneyToRedis(mes.NAME,getmoney+money)
+	        printI("this is rank,%s",mes.NAME)
+		if bool5  then 
+			rqs5.SESSION=mes.session
+			rqs5.ID="7"
+			rqs5.STATE=true
+			rqs5.TYPE="receive"
+			rqs5.RANKMONEY=getmoney+money
+			local req5_1=sgoly_pack.encode(rqs5)
+		    return req5_1
+		else 
+	        local req5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
+			local req5_1=sgoly_pack.encode(req5)
+			return req5_1
+		end
     else 
         local req5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
 		local req5_1=sgoly_pack.encode(req5)

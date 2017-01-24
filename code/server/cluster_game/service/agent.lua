@@ -4,6 +4,7 @@ local cluster= require "cluster"
 local driver = require "socketdriver"
 local gateserver = require "sgoly_gateserver"
 require "skynet.manager"
+require "sgoly_printf"
 local sgoly_tool=require "sgoly_tool"
 local sgoly_pack=require "sgoly_pack"
 local crypt     = require "crypt"
@@ -15,7 +16,7 @@ local connection = {}
 
 
 function agent.main(fd,mes)
-	skynet.error("this is agent",mes.SESSION,mes.ID,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST)
+	printI("this is agent,%s,%s,%s,%s,%s,%s,%s,%s",mes.SESSION,mes.ID,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST)
 	if mes.ID=="4" then       --主游戏
 	   local req=skynet.call(connection[fd].maingame,"lua","calc",fd,mes.SESSION,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST,connection[fd].name)
 	   return req
@@ -26,7 +27,7 @@ function agent.main(fd,mes)
 		local req2=exit(fd,mes)
 		return req2  
 	-- elseif mes.ID=="8" then   --签到
-	-- 	local req3=skynet.call(connection[fd].stats,"lua","tongji",fd,mes.SESSION,mes.TYPE,connection[fd].name)
+	-- 	local req3=skynet.call(connection[fd].sign,"lua","sign_in",fd,mes.SESSION,mes.TYPE,connection[fd].name)
 	-- 	return req3 
     else  
    	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
@@ -47,7 +48,7 @@ function exit(fd,mes)   --用户正常退出
 			 	  STATE=true
 			 	}
 	        local result2_1 = sgoly_pack.encode(req2)
-	        skynet.error(connection[fd].name,"用户退出")
+	        printI("%s用户退出",connection[fd].name)
             return result2_1
         else
         	local req2_1 ={ SESSION=mes.SESSION,
@@ -61,7 +62,7 @@ end
 function agent.start(fd,name)
 	  local maingame = skynet.newservice("maingame")
 	  local stats = skynet.newservice("stats")
-	  -- local sign = skynet.newservice("stats")
+	  -- local sign = skynet.newservice("sign")
 	  local c = {
 	  		name = name,
 	  		maingame = maingame,
@@ -102,7 +103,7 @@ end
 function agent.sclose(bool)
 	if bool ==true then
 		for k,v in pairs(connection) do
-			skynet.error("this is connection",k)
+			printI("this is connection %s",k)
 			local req3={ID="8",STATE=true}
 			local result1_2 = sgoly_pack.encode(req3)
 		    -- local bool=cluster.call("cluster_gateway",".gateway","close",k,result1_2)
@@ -110,7 +111,7 @@ function agent.sclose(bool)
 		end
     else
     	for k,v in pairs(connection) do
-		skynet.error("this is connection",k)
+		printI("this is connection,%s",k)
 		local req1={ID="8",STATE=false,MESSAGE="服务器将于五分钟后关闭"}
 		local result2_2 = sgoly_pack.encode(req1)
 	    -- local bool=cluster.call("cluster_gateway",".gateway","close",k,result1_2)
