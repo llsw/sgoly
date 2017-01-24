@@ -17,6 +17,7 @@ local max_tim_awa_ser = require "sgoly_max_times_award_server"
 local sin_awa_ser = require "sgoly_single_award_server"
 local sgoly_union_query_server = require "sgoly_union_query_server"
 local sgoly_uuid_server = require "sgoly_uuid_server"
+local sgoly_rank_server = require "sgoly_rank_server"
 local skynet = require "skynet"
 
 local dat_ser = {}
@@ -329,6 +330,38 @@ end
 --!
 function dat_ser.update_uuid(uuid)
 	return sgoly_uuid_server.update_uuid(uuid)
+end
+
+--!
+--! @brief      保存排行榜到MySQL
+--!
+--!	@paaram		rank_type 	排行榜类型
+--! @param      rank  		排行榜table
+--! @param      args  		用户数据table
+--! @param      date  		日期
+--!
+--! @return     bool, string		执行是否成功、查询结果
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-24
+--!
+function dat_ser.save_rank_to_MySQL(rank_type, rank, args, date)
+	return sgoly_rank_server.save_rank_to_MySQL(rank_type, rank, args, date)
+end
+
+--!
+--! @brief      从MySQL中查询排行榜
+--!
+--! @param      rank_type  排行绑类型 "serialWinNum"或"winMoney"
+--! @param      date       The date
+--!
+--! @return     bool, table		执行是否成功、查询结果
+--! 
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-24
+--!
+function dat_ser.get_rank_from_MySQL(rank_type, date)
+	return sgoly_rank_server.get_rank_from_MySQL(rank_type, date)
 end
 
 return dat_ser

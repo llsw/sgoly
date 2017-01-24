@@ -493,12 +493,18 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 	end
 
 	if date ~= os.date("%Y-%m-%d") then
+		local ok, result
 		if #res == 0 then
-			-- rank, args = rankArgsToTable(res, #res)
-			-- local ok, result = rank, args = sgoly_dat_ser.get_rank_from_MySQL(rank_type, date)
-			-- sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
+			ok, result = sgoly_tool.getRankFromMySQL(rank_type, date)
+			if ok then
+				for k, v in pairs(result) do
+					skynet.error(v.rank, v.nickname, v.value, v.award)
+					rank[k] = v.nickname
+					args[v.nickname] = {v.value, k, v.award}
+				end	
+				sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
+			end
 		end
-
 	else
 
 		if rank_type == "serialWinNum" then
@@ -588,29 +594,52 @@ function sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 
 	if #rank > 0 then
 		redis_query({"hmset", key, result})
+		local year, month, day = string.math(date, "(.+)-(.+)-(.+)")
+		year = tonumber(year)
+		month = tonumber(month)
+		day = tonumber(day)
+		local time = os.time({day=day+3, month=month, year=year,hour = 0, min=0, sec=3})
+		redis_qeury({"EXPIREAT", key, time})
 		return true
 	end
 end
 
 --!
---! @brief      Saves a rank to my sql.
+--! @brief      保存排行榜到MySQL
 --!
---! @param      date  The date
---!
---! @return     { description_of_the_return_value }
+--! @param      rank_type  排行绑类型 "serialWinNum"或"winMoney"
+--! @param      date       日期
+--! 
+--! @return     bool, string		执行是否成功、查询结果
 --!
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-24
 --!
-function sgoly_tool.saveRankToMySQL(date)
+function sgoly_tool.saveRankToMySQL(rank_type, date)
 	local rank = {} 
 	local args = {}
 	local key = "rank:".. rank_type .. date
 	local res = redis_query({"hmget", key, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
 	if #res > 0 then
 		rank, args = rankArgsToTable(res, #res)
-		-- local ok, result = sgoly_dat_ser.save_rank_to_MySQL(rank, args)
+		local ok, result = sgoly_dat_ser.save_rank_to_MySQL(rank_type, rank, args, date)
+		skynet.error(res, ok, result)
 	end
+end
+
+--!
+--! @brief      从MySQL中查询排行榜
+--!
+--! @param      rank_type  排行绑类型 "serialWinNum"或"winMoney"
+--! @param      date       The date
+--!
+--! @return     bool, table		执行是否成功、查询结果
+--! 
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-24
+--!
+function sgoly_tool.getRankFromMySQL(rank_type, date)
+	return sgoly_dat_ser.get_rank_from_MySQL(rank_type, date)
 end
 
 return sgoly_tool
