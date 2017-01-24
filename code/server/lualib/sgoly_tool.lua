@@ -605,7 +605,7 @@ function sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 		year = tonumber(year)
 		month = tonumber(month)
 		day = tonumber(day)
-		local time = os.time({day=day+3, month=month, year=year,hour = 0, min=0, sec=3})
+		local time = os.time({day=day+2, month=month, year=year,hour = 0, min=0, sec=3})
 		redis_query({"expireat", key, time})
 		return true
 	end
@@ -647,6 +647,56 @@ end
 --!
 function sgoly_tool.getRankFromMySQL(rank_type, date)
 	return sgoly_dat_ser.get_rank_from_MySQL(rank_type, date)
+end
+
+--!
+--! @brief      领奖励
+--!
+--! @param      rank1  日连续中奖名次
+--! @param      rank1  日累计中奖金额名次
+--! @param      date   日期
+--!
+--! @return     bool, money 执行是否成功、奖励金额
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-01-24
+--!
+function sgoly_tool.getAwardFromRedis(rank1, rank2, date)
+	local money1 = 0
+	local money2 = 0
+	local key1 = "rank:" .. "serialWinNum" .. date
+	local key2 = "rank:" .. "winMoney" .. date
+	local year, month, day = string.match(date, "(.+)-(.+)-(.+)")
+	year = tonumber(year)
+	month = tonumber(month)
+	day = tonumber(day)
+
+	local time = os.time({day=day+2, month=month, year=year,hour = 0, min=0, sec=3})
+	if rank1 ~= 0 then
+		
+		local value = redis_query({"hget", key1 , rank1})
+		if value then
+			value  = string.sub(value, 1, #value - 1)
+			value = value .. 1
+			redis_query({"hset", key1, rank1, value})
+			redis_query({"expireat", key1, time})
+			money1 = 1
+		end
+	end
+
+	if rank2 ~= 0 then
+		local value = redis_query({"hget", key2 , rank1})
+		if value then
+			value  = string.sub(value, 1, #value - 1)
+			value = value .. 1
+			redis_query({"hset", key2, rank2, value})
+			redis_query({"expireat", key2, time})
+			money2 = 1
+		end
+	end
+
+	return true, money1 + money2
+	
 end
 
 return sgoly_tool
