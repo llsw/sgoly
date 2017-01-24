@@ -6,6 +6,7 @@ local crypt = require"crypt"
 local code = require"sgoly_cluster_code"
 local sgoly_tool=require"sgoly_tool"
 require "sgoly_printf"
+require "skynet.manager"
 local sgoly_pack=require "sgoly_pack"
 local code =require "sgoly_cluster_code"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
@@ -21,5 +22,5 @@ skynet.start(function()
 	end)
 	--skynet.error("this is maingame")
     -- 要注册个服务的名字，以.开头
-    -- skynet.register(".stats")
+    skynet.register(".stats")
 end)

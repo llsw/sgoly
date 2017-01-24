@@ -105,6 +105,7 @@ end
 	-- winmoney={}        --中奖金额
 --主循环判断
 function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name) 
+    printI("I am%s",name)
     gamenum=0          --游戏次数
  	gamenum8=0         --8次游戏次数
  	-- money=0            --赚的金额
@@ -117,12 +118,12 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 	bo,y=sgoly_tool.getPlayModelFromRedis(name)
     x=y[2] 
     xsave=x            --1 为普通模式 2为困难模式 3为简单模式	
-    skynet.error("x=",x,y[1],y[2])
+    printI("x=%d,%d,%d",x,y[1],y[2])
     skynet.error(type(x),type(y[2]))
 	-- historynum=0       --历史抽奖次数
 	winmoney={}        --中奖金额       
 	--end_point底分    beilv 倍率   k 次数
-	skynet.error("zxxxxxx",MONEY,cost)
+	printI("MONET=%s,cost=%s",MONEY,cost)
 	--historynum=historynum+k
 	if TYPE=="autostart" or TYPE=="autogo" then 
 		autonum=autonum+k
@@ -794,20 +795,20 @@ for i=1,k do
 end  --for 循环end
 -----------------------抽奖次数--------------------------
 	historyj=historyj+j
-	skynet.error("本轮抽奖次数",k)
-	skynet.error("历史抽奖次数",historynum)
-	skynet.error("历史中奖次数",historyj)
-	skynet.error("本轮中奖次数",j)
+	printI("本轮抽奖次数%d",k)
+	printI("历史抽奖次数%d",historynum)
+	printI("历史中奖次数%d",historyj)
+	printI("本轮中奖次数%d",j)
 	for key,v in pairs(wintype) do
 		if v~=0  then
-			skynet.error("中奖类型为",key,"中奖次数为",v) 
+			skynet.error("中奖类型为%d,中奖次数为%s",key,v) 
 		end
 	end
 ------------------最高连续中奖次数-----------------------------	 
 	persentmax=1    --记录最高连续中奖次数
 	if  not number1[1] then
 		max=0
-		skynet.error("最高连续中奖次数为",0)
+		skynet.error("最高连续中奖次数为0")
 	else
 		max=1  --最终最高连续中奖次数
 		for key,v in ipairs(number1) do 
@@ -821,12 +822,12 @@ end  --for 循环end
 						persentmax=1
 				end
 		end
-		skynet.error("最高连续中奖次数为",max)
+		skynet.error("最高连续中奖次数为%d",max)
 	end
 
 ----------------------------------------------------------
 		for key,v in ipairs(number1) do
-			skynet.error("第",v,"次中奖","中奖类型为",number2[key])
+			skynet.error("第%d次中奖,中奖类型为%s",v,number2[key])
 		end
 ---------------------最高连续不中奖次数-----------------------
 	if not number1[1] then
@@ -847,7 +848,7 @@ end  --for 循环end
 			end
 		end
 		if  max>0 then
-			skynet.error("最高连续不中奖次数为",max-1,"第",startnum,"-",endnum,"次")
+			skynet.error("最高连续不中奖次数为%d,第%d-%d次",max-1,startnum,endnum)
 		end
 	end
 ----------------------中奖最高金额---------------
@@ -873,7 +874,7 @@ end  --for 循环end
 		autopersentmax=1    --记录自动最高连续中奖次数
 			if  not autonumber1[1] then
 				automax=0
-				skynet.error("自动最高连续中奖次数为",0)
+				skynet.error("自动最高连续中奖次数为0")
 			else
 				automax=1  --最终最高连续中奖次数
 				for key,v in ipairs(autonumber1) do 
@@ -888,7 +889,7 @@ end  --for 循环end
 							autopersentmax=1
 					end
 				end
-				skynet.error("自动最高连续中奖次数为",automax)
+				skynet.error("自动最高连续中奖次数为%d",automax)
 				automaxsave=automax
 			end
 	    ---------------------自动中奖最高金额---------------
@@ -903,12 +904,12 @@ end  --for 循环end
 			    -- local autowinall =0
 			    for k,v in ipairs(automoney) do
 			    	autowinall=autowinall+v
-			    	skynet.error("automoney",k,v)
+			    	skynet.error("automoney-k=%d,v=%d",k,v)
 			    end
 	-------------------------------------------------------
 		   local autozjnum=#autonumber1
 		   autozjnumsave=autozjnum
-		   skynet.error("autozjnum",autozjnum)
+		   skynet.error("autozjnum=",autozjnum)
 	       sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnum,automax,autowinmax,0,x,os.date("%Y-%m-%d"))
 	       sgoly_tool.saveMoneyToRedis(name,MONEY)
 	       local who = "123456"
