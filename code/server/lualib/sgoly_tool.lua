@@ -504,6 +504,7 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 				end	
 				sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 			end
+			skynet.error(ok, #result)
 		end
 	else
 
@@ -594,12 +595,12 @@ function sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 
 	if #rank > 0 then
 		redis_query({"hmset", key, result})
-		local year, month, day = string.math(date, "(.+)-(.+)-(.+)")
+		local year, month, day = string.match(date, "(.+)-(.+)-(.+)")
 		year = tonumber(year)
 		month = tonumber(month)
 		day = tonumber(day)
 		local time = os.time({day=day+3, month=month, year=year,hour = 0, min=0, sec=3})
-		redis_qeury({"EXPIREAT", key, time})
+		redis_query({"expireat", key, time})
 		return true
 	end
 end

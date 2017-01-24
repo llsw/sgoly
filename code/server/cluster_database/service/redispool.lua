@@ -184,6 +184,12 @@ function CMD.hincrby(dbn, key, filed, value)
 	dbc:free(db)
 
 end
+
+function CMD.expireat(dbn, key, value)
+	local db = dbc:get()
+	local result = db:expireat(key, value)
+	dbc:free(db)
+end
 	
 
 skynet.start(function()
