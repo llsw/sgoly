@@ -235,7 +235,9 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 
 		return false, "There are nil in args."
 	end
-	
+	printI("Save statements nickname[%s]", "winMoney[%d]", "costMoney[%d]", "playNum[%d]", "winNum[%d]", 
+		"serialWinNum[%d]", "maxWinMoney[%d]", "eighthNoWin[%d]", "recoveryRate[%d]", "dt[%s]",
+		nickname, winMoney, costMoney, playNum, winNum, serialWinNum, maxWinMoney, eighthNoWin, recoveryRate, dt)
 	local key = "statements:" .. nickname .. dt
 	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if ok then
