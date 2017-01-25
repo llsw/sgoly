@@ -244,8 +244,16 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 		result.costMoney = result.costMoney + costMoney
 		result.playNum = result.playNum + playNum
 		result.winNum = result.winNum + winNum
-		result.serialWinNum = serialWinNum
-		result.maxWinMoney = maxWinMoney
+		
+		if serialWinNum > result.serialWinNum then
+			result.serialWinNum = serialWinNum
+		end
+
+		if maxWinMoney > result then
+
+			result.maxWinMoney = maxWinMoney
+		end
+
 		result.eighthNoWin = eighthNoWin
 		result.recoveryRate = recoveryRate
 		result.saveStatementsToMySQL = 0
