@@ -63,7 +63,7 @@ require "sgoly_printf"
  function max_award.select(id)
  	printD("max_award.select(%d)", id)
  	printI("max_award.select(%d)", id)
- 	local sql = string.format("select value sgoly.max_award where id = %d ;"
+ 	local sql = string.format("select value from sgoly.max_award where id = %d ;"
  							   , id)
  	return mysql_query(sql)
  end

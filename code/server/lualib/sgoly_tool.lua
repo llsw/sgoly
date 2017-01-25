@@ -671,7 +671,7 @@ function sgoly_tool.getAwardFromRedis(rank1, rank2, date)
 	month = tonumber(month)
 	day = tonumber(day)
 
-	local time = os.time({day=day+2, month=month, year=year,hour = 0, min=0, sec=3})
+	local time = os.time({day=day+2, month=month, year=year,hour = 0, min=1, sec=0})
 	if rank1 ~= 0 then
 		
 		local value = redis_query({"hget", key1 , rank1})
@@ -680,7 +680,7 @@ function sgoly_tool.getAwardFromRedis(rank1, rank2, date)
 			value = value .. 1
 			redis_query({"hset", key1, rank1, value})
 			redis_query({"expireat", key1, time})
-			money1 = 1
+			money1 = sgoly_dat_ser.get_award("max_times_award", rank1)
 		end
 	end
 
@@ -691,7 +691,7 @@ function sgoly_tool.getAwardFromRedis(rank1, rank2, date)
 			value = value .. 1
 			redis_query({"hset", key2, rank2, value})
 			redis_query({"expireat", key2, time})
-			money2 = 1
+			money2 = sgoly_dat_ser.get_award("max_award", rank2)
 		end
 	end
 
