@@ -605,7 +605,7 @@ function sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 		year = tonumber(year)
 		month = tonumber(month)
 		day = tonumber(day)
-		local time = os.time({day=day+2, month=month, year=year,hour = 0, min=0, sec=3})
+		local time = os.time({day=day+3, month=month, year=year,hour = 0, min=0, sec=0})
 		redis_query({"expireat", key, time})
 		return true
 	end
@@ -672,7 +672,7 @@ function sgoly_tool.getAwardFromRedis(rank1, rank2, date)
 	month = tonumber(month)
 	day = tonumber(day)
 
-	local time = os.time({day=day+2, month=month, year=year,hour = 0, min=1, sec=0})
+	local time = os.time({day=day+3, month=month, year=year,hour = 0, min=0, sec=0})
 	if rank1 ~= 0 then
 		
 		local value = redis_query({"hget", key1 , rank1})

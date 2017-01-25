@@ -45,5 +45,7 @@ skynet.start(function ()
  	for k, row in pairs(res) do
  		printI("row.id:%d row.test:%s", row.id, row.test)
  	end
+
+ 	skynet.uniqueservice("redisToMySQL")
 	
 end)
