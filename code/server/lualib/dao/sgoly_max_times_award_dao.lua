@@ -8,7 +8,7 @@
  --]]
 
 require "sgoly_printf"
-local max_times_award require "sgoly_max_times_award"
+local max_times_award = require "sgoly_max_times_award"
 
  local max_times_award_dao ={}
 
