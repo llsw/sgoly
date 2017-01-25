@@ -251,7 +251,7 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 			result.serialWinNum = serialWinNum
 		end
 
-		if maxWinMoney > result then
+		if maxWinMoney > result.maxWinMoney then
 
 			result.maxWinMoney = maxWinMoney
 		end
