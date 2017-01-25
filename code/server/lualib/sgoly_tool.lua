@@ -245,11 +245,11 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 		result.playNum = result.playNum + playNum
 		result.winNum = result.winNum + winNum
 		
-		if serialWinNum > result.serialWinNum then
+		if tonumber(serialWinNum) > tonumber(result.serialWinNum) then
 			result.serialWinNum = serialWinNum
 		end
 
-		if maxWinMoney > result.maxWinMoney then
+		if tonumber(maxWinMoney) > tonumber(result.maxWinMoney) then
 
 			result.maxWinMoney = maxWinMoney
 		end
