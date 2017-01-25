@@ -26,9 +26,12 @@ function agent.main(fd,mes)
 	elseif mes.ID=="6" then   --正常退出
 		local req2=exit(fd,mes)
 		return req2  
-	-- elseif mes.ID=="8" then   --签到
-	-- 	local req3=skynet.call(connection[fd].sign,"lua","sign_in",fd,mes.SESSION,mes.TYPE,connection[fd].name)
-	-- 	return req3 
+	-- elseif mes.ID=="8" then   --保险柜
+	-- 	local req3=skynet.call(connection[fd].safe,"lua","safe_in",fd,mes.SESSION,mes.TYPE,connection[fd].name)
+	-- 	return req3 	
+	-- elseif mes.ID=="9" then   --签到
+	-- 	local req4=skynet.call(connection[fd].sign,"lua","sign_in",fd,mes.SESSION,mes.TYPE,connection[fd].name)
+	-- 	return req4 
     else  
    	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
 	local result1_2 = sgoly_pack.encode(req)
@@ -60,13 +63,15 @@ function exit(fd,mes)   --用户正常退出
         end          
 end
 function agent.start(fd,name)
-	  local maingame = skynet.newservice("maingame")
-	  local stats = skynet.newservice("stats")
+	   local maingame = skynet.newservice("maingame")
+	   local stats = skynet.newservice("stats")
+	   -- local safe = skynet.newservice("safe")
 	  -- local sign = skynet.newservice("sign")
 	  local c = {
 	  		name = name,
 	  		maingame = maingame,
 	  		stats=stats
+	  		-- safe=safe
 	  		-- sign=sign
 			}
 	  connection[fd] = c 
@@ -119,6 +124,11 @@ function agent.sclose(bool)
 	    end
 	end
 end
+
+function agent.fdrelease(fd)
+	connection[fd]=nil
+end
+
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(agent[cmd], cmd .. "not found")

@@ -7,13 +7,15 @@ local code = require"sgoly_cluster_code"
 local sgoly_tool=require"sgoly_tool"
 require "sgoly_printf"
 require "skynet.manager"
+local md5 = require "md5"
 local sgoly_pack=require "sgoly_pack"
 local code =require "sgoly_cluster_code"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
 local CMD={}
-function CMD.sign_in(fd,session,type,name)
+function CMD.safe_in(fd,session,type,name)
 	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
+	local mes.PASSWD=md5.sumhexa(mes.PASSWD)
 	if mes.TYPE=="daySERIES" then
 	    	local bool1,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
 	        local bool,rqs=sgoly_tool.getRankFromRedis(mes.NAME,tonumber(req1.serialWinNum), "serialWinNum",os.date("%Y-%m-%d"))
@@ -39,5 +41,5 @@ skynet.start(function()
 	end)
 	--skynet.error("this is maingame")
     -- 要注册个服务的名字，以.开头
-    skynet.register(".sign")
+    skynet.register(".safe")
 end)

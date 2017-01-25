@@ -907,7 +907,7 @@ end  --for 循环end
 			    	skynet.error("automoney-k=%d,v=%d",k,v)
 			    end
 	-------------------------------------------------------
-		   local autozjnum=#autonumber1
+		   local autozjnum=#(autonumber1)
 		   autozjnumsave=autozjnum
 		   skynet.error("autozjnum=",autozjnum)
 	       sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnum,automax,autowinmax,0,x,os.date("%Y-%m-%d"))
