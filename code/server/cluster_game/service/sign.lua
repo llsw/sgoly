@@ -1,16 +1,9 @@
 local skynet = require "skynet"
-local driver = require "socketdriver"
-local gateserver = require "sgoly_gateserver"
-local cluster = require"cluster"
-local crypt = require"crypt"
-local code = require"sgoly_cluster_code"
 local sgoly_tool=require"sgoly_tool"
 require "sgoly_printf"
 require "skynet.manager"
+local md5 = require "md5"
 local sgoly_pack=require "sgoly_pack"
-local code =require "sgoly_cluster_code"
-package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
-local cjson = require "cjson"
 local CMD={}
 function CMD.sign_in(fd,session,type,name)
 	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)

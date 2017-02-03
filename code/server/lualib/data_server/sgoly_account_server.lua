@@ -36,6 +36,27 @@
 	end
  end
 
+--[[
+函数说明：
+		函数作用：删除用户金币账户
+		传入参数：nickname(用户昵称)
+		返回参数：true 或者 false , 正确或错误提示的字符串
+--]]
+function account_server.delete(nickname)
+	printD("account_server.delete(%s)", nickname)
+ 	printI("account_server.delete(%s)", nickname)
+ 	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	else
+		local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return account_dao.delete(uid)
+	 	end
+ 	end
+end
+
  --[[
  函数说明：
  		函数作用：更改用户账户金币数额

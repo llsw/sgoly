@@ -27,7 +27,7 @@ end
 
 skynet.start(function()
     --连接到服务器
-    local addr  =  "192.168.100.13:7000"
+    local addr  =  "192.168.100.35:7000"
     local id    = socket.open(addr)
     if not id then
         skynet.error("can't connect to "..addr)

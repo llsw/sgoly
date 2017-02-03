@@ -7,9 +7,6 @@ require "skynet.manager"
 require "sgoly_printf"
 local sgoly_tool=require "sgoly_tool"
 local sgoly_pack=require "sgoly_pack"
-local crypt     = require "crypt"
-package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
-local cjson = require "cjson"
 local agent = {}
 
 local connection = {}
@@ -27,10 +24,10 @@ function agent.main(fd,mes)
 		local req2=exit(fd,mes)
 		return req2  
 	-- elseif mes.ID=="8" then   --保险柜
-	-- 	local req3=skynet.call(connection[fd].safe,"lua","safe_in",fd,mes.SESSION,mes.TYPE,connection[fd].name)
+	-- 	local req3=skynet.call(connection[fd].safe,"lua","safe_in",fd,mes,connection[fd].name)
 	-- 	return req3 	
 	-- elseif mes.ID=="9" then   --签到
-	-- 	local req4=skynet.call(connection[fd].sign,"lua","sign_in",fd,mes.SESSION,mes.TYPE,connection[fd].name)
+	-- 	local req4=skynet.call(connection[fd].sign,"lua","sign_in",fd,mes,connection[fd].name)
 	-- 	return req4 
     else  
    	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}

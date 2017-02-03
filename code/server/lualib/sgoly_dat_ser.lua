@@ -95,6 +95,18 @@ end
 		传入参数：
 		返回参数：
 --]]
+function dat_ser.del_acc(nickname)
+	printD("dat_ser.del_acc(%s)", nickname)
+	printI("dat_ser.del_acc(%s)", nickname)
+	return acc_ser.delete(nickname)
+end
+
+--[[
+函数说明：
+		函数作用：
+		传入参数：
+		返回参数：
+--]]
 function dat_ser.del_usr(nickname, pwd)
 	printD(" dat_ser.del_usr(%s, %s)", nickname, pwd)
 	printI(" dat_ser.del_usr(%s, %s)", nickname, pwd)

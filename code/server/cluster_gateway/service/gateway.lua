@@ -3,6 +3,7 @@ local driver = require "socketdriver"
 local gateserver = require "sgoly_gateserver"
 local cluster = require"cluster"
 local crypt = require"crypt"
+local sgoly_pack=require "sgoly_pack"
 local code = require"sgoly_cluster_code"
 require "sgoly_printf"
 local code =require "sgoly_cluster_code"
@@ -14,6 +15,7 @@ local cjson = require "cjson"
 local handler = {}
 session=0
 sessionID={}
+sessionFD={}
 function handler.open(source, conf)
 	printI("Gateway open source[%d]", source)
 end
@@ -28,7 +30,16 @@ function handler.message(fd, msg)
 		local mes = cjson.decode(password)
 		skynet.error(mes)
 		skynet.error(mes.SESSION,mes.CLUSTER,mes.SERVICE,mes.CMD,mes.ID,mes.NAME,mes.PASSWD)
-		--sessionID[mes.NAME]=mes.SESSION
+		-- if mes.ID=="1" then
+			  
+		-- 	if sessionID[mes.NAME] then
+		-- 		printI("sessionID have")
+		-- 		local x = {}
+		-- 		sgoly_pack
+		-- 	else	
+		-- 	sessionID[mes.NAME]=mes.SESSION
+	 --   		end
+	 --    end
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)
 		local req=cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
