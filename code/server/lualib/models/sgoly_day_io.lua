@@ -35,8 +35,8 @@ require "sgoly_printf"
  function day_io.update_win(uid, win, dt)
  	printD("day_io.update_win(%d, %d, %s)", uid, win, dt)
  	printI("day_io.update_win(%d, %d, %s)", uid, win, dt)
- 	local sql = string.format("update sgoly.day_io set win = %d where uid = %d and dt ="
- 						.." '%s' ;", win, uid, dt)
+ 	local sql = string.format("update sgoly.day_io set win = %d where uid = %d "
+ 		.."and dt = '%s' ;", win, uid, dt)
  	return mysql_query(sql)
  end
 
@@ -50,8 +50,8 @@ require "sgoly_printf"
  	printD("day_io.update_cost(%d, %d, %s)", uid, cost, dt)
  	printI("day_io.update_cost(%d, %d, %s)", uid, cost, dt)
  	local sql = string.format("")
- 	local sql = string.format("update sgoly.day_io set cost = %d where uid = %d and dt ="
- 						.." '%s' ;", cost, uid, dt)
+ 	local sql = string.format("update sgoly.day_io set cost = %d where uid = %d "
+ 							.."and dt = '%s' ;", cost, uid, dt)
  	return mysql_query(sql)
  end
 
