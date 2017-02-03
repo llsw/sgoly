@@ -28,9 +28,9 @@ function agent.main(fd,mes)
 	-- 	local req4=skynet.call(connection[fd].sign,"lua","sign_in",fd,mes,connection[fd].name)
 	-- 	return req4 
     else  
-   	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
-	local result1_2 = sgoly_pack.encode(req)
-	return result1_2
+	   	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
+		local result1_2 = sgoly_pack.encode(req)
+		return result1_2
 end
 end
 
@@ -106,7 +106,6 @@ function agent.sclose(bool)
 			printI("this is connection %s",k)
 			local req3={ID="8",STATE=true}
 			local result1_2 = sgoly_pack.encode(req3)
-		    -- local bool=cluster.call("cluster_gateway",".gateway","close",k,result1_2)
 		    cluster.call("cluster_gateway",".gateway","seclose",k,result1_2,true)
 		end
     else
@@ -114,7 +113,6 @@ function agent.sclose(bool)
 		printI("this is connection,%s",k)
 		local req1={ID="8",STATE=false,MESSAGE="服务器将于五分钟后关闭"}
 		local result2_2 = sgoly_pack.encode(req1)
-	    -- local bool=cluster.call("cluster_gateway",".gateway","close",k,result1_2)
 	    cluster.call("cluster_gateway",".gateway","seclose",k,result2_2,false)
 	    end
 	end

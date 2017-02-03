@@ -14,7 +14,7 @@ local loginuser = {}
 function handler(fd, mes)
 	local who="123456"
 ----------------------------用户注册-----------------------------------			
-	if mes.ID=="2" then            
+	if  mes.ID=="2" then            
 	    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		local bool,msg=sgoly_users.register(mes.NAME,mes.PASSWD)
 		skynet.error(bool,msg)
@@ -90,14 +90,14 @@ function handler(fd, mes)
 			       local str2=packtable(rep)
 			       return str2.."\n"
 	    end 
-
-    end
+    else
       local rep6={SESSION=mes.SESSION,ID="3",STATE=bo,MESSAGE="注册登录错误"}
 	  local str6_1=packtable(rep6)
       return str6_1.."\n"
+    end
 end
 
-function tourist()          --游客登录协程互斥防止获取相同ID
+function tourist()           --游客登录协程互斥防止获取相同ID
 	local  ty,id
 	repeat 
 		ty,id=coroutine.resume(co)

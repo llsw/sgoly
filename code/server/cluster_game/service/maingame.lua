@@ -11,7 +11,7 @@ local cjson = require "cjson"
 local CMD = {}
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
 
-function picture_order(picturetype)                       --图片序列函数
+function picture_order(picturetype)              --图片序列函数
 	local letter = string.sub(picturetype,1,1)
 	local num = tonumber(string.sub(picturetype,2,2))
 	if num == 5  then
@@ -82,19 +82,19 @@ end
 	--记录中奖类型
  -- 	gamenum=0          --游戏次数
  -- 	gamenum8=0         --8次游戏次数
- 	money=0            --赚的金额
+ 	money=0                --赚的金额
  -- 	money8=0		   --8次游戏金额
  -- 	moneydb=0          --赚得金额存数据库
-	deposit=0          --消耗金额
-	-- depositdb=0        --消耗金额存数据库
-	historyj=0         --历史中奖次数
-	--autoj=0               --自动中奖次数
-	-- n=1                --number1 的索引
- --    x = 1              --1 为普通模式 2为困难模式 3为简单模式	
-	historynum=0       --历史抽奖次数
+	deposit=0              --消耗金额
+	-- depositdb=0         --消耗金额存数据库
+	historyj=0             --历史中奖次数
+	--autoj=0              --自动中奖次数
+	-- n=1                 --number1 的索引
+ --    x = 1               --1 为普通模式 2为困难模式 3为简单模式	
+	historynum=0           --历史抽奖次数
 	autonum=0              --自动抽奖次数
 	automoney={}           --自动中奖金额
-	autonumber1={}        --自动第几次中奖
+	autonumber1={}         --自动第几次中奖
 	autocost=0
 	autowinall =0 
 	autowinmax =0
@@ -104,7 +104,7 @@ end
 	-- winmoney={}        --中奖金额
 --主循环判断
 function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name) 
-    printI("I am%s",name)
+    printI("I am %s",name)
     gamenum=0          --游戏次数
  	gamenum8=0         --8次游戏次数
  	-- money=0            --赚的金额
@@ -1106,17 +1106,17 @@ end  --for 循环end
 	       local resultauto1=cjson.encode(resultauto)
 	       local resultat1_1=crypt.aesencode(resultauto1,who,"")
 	       local resultat1_2 = crypt.base64encode(resultat1_1)
-	            if k=="0" and TYPE=="autoend" then
-					    	autonum=0
-					    	autocost=0
-					    	automoney={}
-					    	autonumber1={}
-					    	autowinall =0 
-							autowinmax =0
-							autozjnumsave=0
-							automaxsave=0
-							xsave=1
-		        end
+            if k=="0" and TYPE=="autoend" then
+				    	autonum=0
+				    	autocost=0
+				    	automoney={}
+				    	autonumber1={}
+				    	autowinall =0 
+						autowinmax =0
+						autozjnumsave=0
+						automaxsave=0
+						xsave=1
+	        end
 	       return resultat1_2
 
     end
@@ -1164,20 +1164,20 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 end
 
 function CMD.autosave(fd,name)
-	   local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
-	   local bool,req=sgoly_tool.getMoney(name)
-	   local money=tonumber(req)+autowinall-autocost
-	   local bo1=sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnumsave,automaxsave,autowinmax,0,xsave,os.date("%Y-%m-%d"))	   
-	   local bo2=sgoly_tool.saveMoneyToRedis(name,money)
-	   autonum=0
-	   autocost=0
-	   automoney={}
-	   autonumber1={}
-	   autowinall =0 
-	   autowinmax =0
-       autozjnumsave=0
-	   automaxsave=0
-	   xsave=1
+   	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
+    local bool,req=sgoly_tool.getMoney(name)
+    local money=tonumber(req)+autowinall-autocost
+    local bo1=sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnumsave,automaxsave,autowinmax,0,xsave,os.date("%Y-%m-%d"))	   
+    local bo2=sgoly_tool.saveMoneyToRedis(name,money)
+    autonum=0
+    autocost=0
+    automoney={}
+    autonumber1={}
+    autowinall =0 
+    autowinmax =0
+    autozjnumsave=0
+    automaxsave=0
+    xsave=1
 	if bo1 and  bo2 then
 		return "suss"
 	else 

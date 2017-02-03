@@ -27,9 +27,20 @@ function CMD.safebox(fd,mes,name)
 		else 
 	        return returnfalse()
 		end
+	elseif mes.TYPE=="reset" then
+		    local PASSWD=md5.sumhexa(mes.PASSWD)
+	        local bool,rqs=sgoly_tool.getRankFromRedis()
+		    printI("this is safe3,%s",mes.NAME)
+		if  bool then 
+			local rqs={SESSION=mes.session,ID="9",STATE=true,TYPE="reset"}
+			local req2_1=sgoly_pack.encode(rqs)
+		    return req2_1
+		else 
+	        return returnfalse()
+		end
 	elseif mes.TYPE=="login" then
 	       local bool,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
-		   printI("this is safe3,%s",mes.NAME)
+		   printI("this is safe4,%s",mes.NAME)
 		if bool then 
 			local rqs={SESSION=mes.session,ID="9",STATE=true,TYPE="login"}
 			local req2_1=sgoly_pack.encode(rqs)
@@ -37,13 +48,36 @@ function CMD.safebox(fd,mes,name)
 		else 
 	        return returnfalse()
 		end
+	elseif mes.TYPE=="save" then
+	       local bool,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
+		   printI("this is safe5,%s",mes.NAME)
+		if bool then 
+		   local rqs={SESSION=mes.session,ID="9",STATE=true,TYPE="save"}
+	       local req2_1=sgoly_pack.encode(rqs)
+		   return req2_1
+		else 
+	       return returnfalse()
+		end
+	elseif mes.TYPE=="load" then
+	       local bool,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
+		   printI("this is safe4,%s",mes.NAME)
+		if bool then 
+		   local rqs={SESSION=mes.session,ID="9",STATE=true,TYPE="load"}
+		   local req2_1=sgoly_pack.encode(rqs)
+		   return req2_1
+		else 
+	       return returnfalse()
+		end
 	else 
-		function returnfalse()
+		returnfalse()
+	end
+end
+
+
+function returnfalse()
 	        local req1={SESSION=mes.session,ID="9",STATE=false,MESSAGE="false"}
 			local req1_1=sgoly_pack.encode(req1)
 			return req1_1
-		end
-	end
 end
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
