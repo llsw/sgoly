@@ -1,8 +1,6 @@
 local skynet = require "skynet"
 local socket = require "socket"
 local cluster= require "cluster"
-local driver = require "socketdriver"
-local gateserver = require "sgoly_gateserver"
 require "skynet.manager"
 require "sgoly_printf"
 local sgoly_tool=require "sgoly_tool"
