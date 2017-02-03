@@ -28,19 +28,6 @@ require "sgoly_printf"
 
 --[[
 函数说明：
-		函数作用：
-		传入参数：
-		返回参数：
---]]
-function account.delete(id)
-	printD("account.delete(%d)", id)
- 	printI("account.delete(%d)", id)
- 	local sql = string.format("delete from sgoly.account where id = %d;", id)
- 	return mysql_query(sql)
-end
-
---[[
-函数说明：
 		函数作用：更改用户的金币数额
 		传入参数：id(用户id), money(金币数额)
  		返回参数：返回参数：sql语句执行状态
