@@ -1,5 +1,6 @@
 local skynet    = require "skynet"
 local crypt 	= require "crypt"
+local coroutine = require "skynet.coroutine"
 local sgoly_users=require "sgoly_dat_ser"
 local cluster   = require "cluster"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
