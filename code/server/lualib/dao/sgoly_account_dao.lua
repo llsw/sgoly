@@ -31,23 +31,6 @@ end
 
 --[[
 函数说明：
-		函数作用：删除用户帐号
-		传入参数：id(用户id)
-		返回参数：true 或者 false , 正确或错误提示的字符串
---]]
-function account_dao.delete(id)
-	printD("account_dao.delete(%d)", id)
- 	printI("account_dao.delete(%d)", id)
-	local status = account.delete(id)
-	if((0 == status.warning_count) and (1 == status.affected_rows)) then
-		return true, "删除用户金币资产数据成功"
-	else
-		return false, status.err
-	end
-end
-
---[[
-函数说明：
 		函数作用：检查account.update_money函数的参数并调用执行
 		传入参数：id(用户id), money(金币数额)
  		返回参数：执行结果的正确与否的布尔值和相关返回值
