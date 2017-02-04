@@ -1,7 +1,7 @@
 local skynet    = require "skynet"
 local crypt 	= require "crypt"
 local coroutine = require "skynet.coroutine"
-local sgoly_users=require "sgoly_dat_ser"
+local dat_ser=require "sgoly_dat_ser"
 local cluster   = require "cluster"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
@@ -11,15 +11,17 @@ local md5 = require "md5"
 local sgoly_tool=require"sgoly_tool"
 local CMD={}
 local loginuser = {}
+local sessionID={} 
 function handler(fd, mes)
 	local who="123456"
-----------------------------用户注册-----------------------------------			
+	printI("login NAME=%s,SESSION=%s,CMD=%s,ID=%s",mes.NAME,mes.SESSION,mes.CMD,mes.ID)
+-------------------------用户注册-----------------------------------			
 	if  mes.ID=="2" then            
 	    mes.PASSWD=md5.sumhexa(mes.PASSWD)
-		local bool,msg=sgoly_users.register(mes.NAME,mes.PASSWD)
+		local bool,msg=dat_ser.register(mes.NAME,mes.PASSWD)
 		skynet.error(bool,msg)
 		if bool then            
-		    local bo,message=sgoly_users.usr_init(mes.NAME,500000)
+		    local bo,message=dat_ser.usr_init(mes.NAME,500000)
 			skynet.error("usr_init",bo,message)--test
 			if bo then
 				local resuss={SESSION=mes.SESSION,ID="2",STATE=bo}
@@ -35,16 +37,18 @@ function handler(fd, mes)
 			local refal1_2=packtable(refal)
 			return refal1_2.."\n"
 		end
-------------------------- --用户登录-------------------------------------
+-------------------------用户登录-------------------------------------
     elseif mes.ID=="1" then               
 		    mes.PASSWD=md5.sumhexa(mes.PASSWD)
-		    local bool,msg=sgoly_users.login(mes.NAME, mes.PASSWD)
+		    local bool,msg=dat_ser.login(mes.NAME, mes.PASSWD)
 		    skynet.error(bool,msg)
-----------------登录成功返回拥有金钱-----------------	
-		if bool then
+		if bool then     --登录成功返回拥有金钱
 		        local boo,money =sgoly_tool.getMoney(mes.NAME)
 		        printI("money is %s",money)
 		    if boo then
+		    -- math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
+			-- local ses=math.random(1,100000)
+
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money}
 			    local str5_1=packtable(reqmoney)
 			    cluster.call("cluster_game",".agent","start",fd,mes.NAME)
@@ -59,22 +63,22 @@ function handler(fd, mes)
 				local str4_1=packtable(rep4)
 				return str4_1.."\n"	
 		end 	
----------------------------游客登录--------------------------------------			        	
+-------------------------游客登录--------------------------------------			        	
     elseif mes.ID=="3" then               
 		   id=tourist()
 		   id=tostring(id)
 		   local name,password=randomuserid(id)
 		   local trpd=md5.sumhexa(password)
-		   local bool,msg=sgoly_users.register(name,trpd)
+		   local bool,msg=dat_ser.register(name,trpd)
 		   while  msg=="昵称已被使用" do
 			    local name,trpd=randomuserid()
-		    	bool,msg=sgoly_users.register(name,trpd)
+		    	bool,msg=dat_ser.register(name,trpd)
 			    skynet.error(bool,msg)
 			end
 	    if msg=="插入用户数据成功" then 
 			    printI("插入用户数据成功")
 			    printI("%s,%s",name,trpd)           
-				local bo,message=sgoly_users.usr_init(name,500000)
+				local bo,message=dat_ser.usr_init(name,500000)
 				skynet.error("record_init=",bo,message)--test
 			if bo then 
 				local rep={SESSION=mes.SESSION,ID="3",STATE=bo,NAME=name,PASSWD=password}
@@ -90,8 +94,54 @@ function handler(fd, mes)
 			       local str2=packtable(rep)
 			       return str2.."\n"
 	    end 
+-------------------------修改密码----------------------------------	    
+    elseif  mes.ID=="11" then            
+		    local PASSWD=md5.sumhexa(mes.PASSWARD)
+		    local CURPASSWARD=md5.sumhexa(mes.CURPASSWARD)
+			local bool,msg=dat_ser.cha_pwd(mes.NAME,CURPASSWARD,PASSWD)
+			skynet.error(bool,msg)
+			if bool then            
+					local resuss={SESSION=mes.SESSION,ID="11",STATE=true}
+					local resuss1_2=packtable(resuss)
+				  	return resuss1_2.."\n"
+			else 
+				local refal={SESSION=mes.SESSION,ID="11",STATE=bool,MESSAGE=msg}
+				local refal1_2=packtable(refal)
+				return refal1_2.."\n"
+			end
+-------------------------修改头像----------------------------------
+	elseif  mes.ID=="12" then 
+	    if  mes.TYPE=="query"  then         
+			local bool,msg=dat_ser.cha_pwd(mes.NAME,CURPASSWARD,PASSWD)
+			skynet.error(bool,msg)
+			if bool then            
+					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="query"}
+					local resuss1_2=packtable(resuss)
+				  	return resuss1_2.."\n"
+			else 
+				local refal={SESSION=mes.SESSION,ID="12",STATE=false,TYPE="query",MESSAGE=msg}
+				local refal1_2=packtable(refal)
+				return refal1_2.."\n"
+			end
+		elseif mes.TYPE=="reset" then
+			local bool,msg=dat_ser.cha_pwd(mes.NAME,CURPASSWARD,PASSWD)
+			skynet.error(bool,msg)
+			if bool then            
+					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="reset",PORTRAIT=mes.PORTRAIT}
+					local resuss1_2=packtable(resuss)
+				  	return resuss1_2.."\n"
+			else 
+				local refal={SESSION=mes.SESSION,ID="12",STATE=false,TYPE="reset",MESSAGE=msg}
+				local refal1_2=packtable(refal)
+				return refal1_2.."\n"
+			end
+		else
+		    local rep6={SESSION=mes.SESSION,ID=mes.ID,STATE=false,TYPE==mes.TYPE,MESSAGE="未知错误"}
+			local str6_1=packtable(rep6)
+		    return str6_1.."\n"
+		end
     else
-      local rep6={SESSION=mes.SESSION,ID="3",STATE=bo,MESSAGE="注册登录错误"}
+      local rep6={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
 	  local str6_1=packtable(rep6)
       return str6_1.."\n"
     end

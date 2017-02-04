@@ -13,8 +13,6 @@ local cjson = require "cjson"
 
 local handler = {}
 session=0
-sessionID={}
-sessionFD={}
 function handler.open(source, conf)
 	printI("Gateway open source[%d]", source)
 end
@@ -27,7 +25,6 @@ function handler.message(fd, msg)
 		local who="123456"
 		password=crypt.aesdecode(str1,who,"")
 		local mes = cjson.decode(password)
-		skynet.error(mes)
 		skynet.error(mes.SESSION,mes.CLUSTER,mes.SERVICE,mes.CMD,mes.ID,mes.NAME,mes.PASSWD)
 		-- if mes.ID=="1" then
 			  
@@ -48,9 +45,11 @@ function handler.message(fd, msg)
 end
 
 
-function handler.connect(fd, addr)
+function handler.connect(fd,addr)
 	gateserver.openclient(fd)
 	printI("Client fd[%d] connect gateway", fd)
+	-- math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
+	-- local ses=math.random(1,100000)
 	session=session+1
 	local ses=tostring(session)
 	local rep={SESSION=ses,ID="0"}
