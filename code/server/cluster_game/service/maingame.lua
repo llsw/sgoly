@@ -79,7 +79,7 @@ function send_result(fd,session,TYPE,SERIES,WCOUNT,MAXMONEY,SUNMONEY,FINMONEY,WI
     return result1_2
 end
 
-	--记录中奖类型
+ --     记录中奖类型
  -- 	gamenum=0          --游戏次数
  -- 	gamenum8=0         --8次游戏次数
  	money=0                --赚的金额

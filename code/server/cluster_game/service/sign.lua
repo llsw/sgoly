@@ -7,43 +7,43 @@ local sgoly_pack=require "sgoly_pack"
 local CMD={}
 function CMD.sign_in(fd,mes,name)
 	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
-	if mes.TYPE=="look" then
+	if mes.TYPE=="query" then
 	    	local bool1,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
-		    printI("this is rank1,%s",mes.NAME)
+		    printI("this is sign1,%s",mes.NAME)
 		if bool1 and bool then 
-			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="look",LIST=list}
+			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="query",LIST=list}
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
-	        return returnfalse()
+	        return returnfalse(mes,req1)
 		end
 	elseif mes.TYPE=="signin" then
 	    	local bool1,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
-		    printI("this is rank1,%s",mes.NAME)
+		    printI("this is sign2,%s",mes.NAME)
 		if bool1  then 
 			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="signin"}
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
-	        return returnfalse()
+	        return returnfalse(mes,req1)
 		end
 	elseif mes.TYPE=="award" then
 	    	local bool1,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
-		    printI("this is rank1,%s",mes.NAME)
+		    printI("this is sign3,%s",mes.NAME)
 		if bool1  then 
 			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="award",MONEY=50000}
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
-	        return returnfalse()
+	        return returnfalse(mes,req1)
 		end
 	else 
-		returnfalse()
+		returnfalse(mes,"参数错误")
 	end           
 end
 
-function returnfalse()
-	        local req1={SESSION=mes.session,ID="10",STATE=false,MESSAGE="false"}
+function returnfalse(mes,msg)
+	        local req1={SESSION=mes.session,ID="10",STATE=false,TYPE=mes.TYPE,MESSAGE=msg}
 			local req1_1=sgoly_pack.encode(req1)
 			return req1_1
 end
