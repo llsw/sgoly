@@ -27,7 +27,7 @@ function head.insert(uid, img_name, path)
 		printI("head.insert(%d, %s)", uid, img_name)
 	end
 	local sql = ""
-	if(nil == path)
+	if(nil == path) then
 		sql = string.format("insert into sgoly.head value(%d, '%s', null) ;",
 								uid, image)
 	else
@@ -77,3 +77,33 @@ function head.select(uid)
 	local sql = string.format("select * from sgoly.head where uid = %d ;", uid)
 	return mysql_query(sql)
 end
+
+--[[
+函数说明：
+		函数作用：select img_name of head info
+		传入参数：uid(users id)
+		返回参数：mysql excute status
+--]]
+function head.select_img_name(uid)
+	printD("head.select_img_name(%d)", uid)
+	printI("head.select_img_name(%d)", uid)
+	local sql = string.format("select img_name from sgoly.head where uid = %d ;"
+							   , uid)
+	return mysql_query(sql)
+end
+
+--[[
+函数说明：
+		函数作用：select path of head info
+		传入参数：uid(users id)
+		返回参数：mysql excute status
+--]]
+function head.select_path(uid)
+	printD("head.select_path(%d)", uid)
+	printI("head.select_path(%d)", uid)
+	local sql = string.format("select path from sgoly.head where uid = %d ;", 
+								uid)
+	return mysql_query(sql)
+end
+
+return head

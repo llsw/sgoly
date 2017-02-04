@@ -19,6 +19,7 @@ local sgoly_union_query_server = require "sgoly_union_query_server"
 local sgoly_uuid_server = require "sgoly_uuid_server"
 local sgoly_rank_server = require "sgoly_rank_server"
 local saf_ser = require "sgoly_safe_server"
+local head_ser = require "sgoly_head_server"
 local skynet = require "skynet"
 
 local dat_ser = {}
@@ -479,6 +480,71 @@ function dat_ser.cha_saf_pwd(nickname, old_pwd, new_pwd)
 	printD("dat_ser.cha_saf_pwd(%s, %s, %s)", nickname, old_pwd, new_pwd)
 	printI("dat_ser.cha_saf_pwd(%s)", nickname)
 	return saf_ser.update_passwd(nickname, old_pwd, new_pwd)
+end
+
+--[[
+函数说明：
+		函数作用：设置用户头像
+		传入参数：nickname(用户昵称), img_name(头像名称), path(头像路径, 可为空值)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function dat_ser.set_head(nickname, img_name, path)
+	if(nil ~= path) then
+		printD("dat_ser.set_head(%s, %s, %s)", nickname, img_name, path)
+		printI("dat_ser.set_head(%s, %s, %s)", nickname, img_name, path)
+	else
+		printD("dat_ser.set_head(%s, %s)", nickname, img_name)
+		printI("dat_ser.set_head(%s, %s)", nickname, img_name)
+	end
+	return head_ser.insert(nickname, img_name, path)
+end
+
+--[[
+函数说明：
+		函数作用：更改用户头像名称
+		传入参数：nickname(用户昵称), new_img_name(新头像名称)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function dat_ser.cha_img_name(nickname, new_img_name)
+	printD("dat_ser.cha_img_name(%s, %s)", nickname, new_img_name)
+	printI("dat_ser.cha_img_name(%s, %s)", nickname, new_img_name)
+	return head_ser.update_img_name(nickname, new_img_name)
+end
+
+--[[
+函数说明：
+		函数作用：更改头像路径
+		传入参数：nickname(用户昵称) new_path(新头像路径)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function dat_ser.cha_path(nickname, new_path)
+	printD("dat_ser.cha_path(%s, %s)", nickname, new_path)
+	printI("dat_ser.cha_path(%s, %s)", nickname, new_path)
+	return head_ser.update_path(nickname, new_path)
+end
+
+--[[
+函数说明：
+		函数作用：获取用户头像名称
+		传入参数：nickname(用户昵称)
+		返回参数：(false, err_msg) or (true, true_values)
+--]]
+function dat_ser.get_img_name(nickname)
+	printD("dat_ser.get_img_name(%s)", nickname)
+	printI("dat_ser.get_img_name(%s)", nickname)
+	return head_ser.select_img_name(nickname)
+end
+
+--[[
+函数说明：
+		函数作用：获取用户头像路径
+		传入参数：nickname(用户昵称)
+		返回参数：(false, err_msg) or (true, true_values)
+--]]
+function dat_ser.get_img_path(nickname)
+	printD("dat_ser.get_img_path(%s)", nickname)
+	printI("dat_ser.get_img_path(%s)", nickname)
+	return head_ser.select_path(nickname)
 end
 
 return dat_ser

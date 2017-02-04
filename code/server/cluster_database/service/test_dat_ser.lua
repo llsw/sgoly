@@ -353,13 +353,146 @@ end
 
 --[[
 函数说明：
+		函数作用：测试 dat_ser.set_head
+		传入参数：nickname(用户昵称), img_name(头像名称), path(头像路径), 
+				 cnt(测试次数)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function test_dat_ser.set_head(nickname, img_name, path, cnt)
+	printD("test dat_ser.set_head(%s, %s, %s., %d)", nickname, img_name, path, 
+			cnt)
+	local tested_cnt = 0
+	for i = 1, cnt do
+		local tmpname = nickname.."-"..i
+		local tmp_img_name = img_name.."-"..i
+		local tmp_path = path.."-"..i
+		local tag, msg = dat_ser.set_head(tmpname, tmp_img_name, tmp_path)
+		printD("test dat_ser.set_head tag = %s, msg = %s", tag, msg)
+		if(true == tag) then
+			tested_cnt = tested_cnt + 1
+		end
+	end
+	if(cnt == tested_cnt) then
+		return true, "测试 dat_ser.set_head 通过"
+	else
+		printD("test_cnt = %d", tested_cnt)
+		return false, "测试 dat_ser.set_head 不通过"
+	end
+end
+
+--[[
+函数说明：
+		函数作用：测试 dat_ser.cha_img_name
+		传入参数：nickname(用户昵称), img_name(头像名称), cnt(测试次数)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function test_dat_ser.cha_img_name(nickname, img_name, cnt)
+	printD("test dat_ser.cha_img_name(%s, %s, %d)", nickname, img_name, cnt)
+	local tested_cnt = 0
+	for i = 1, cnt do
+		local tmpname = nickname.."-"..i
+		local new_img_name = "new_"..img_name.."-"..i
+		local tag, msg = dat_ser.cha_img_name(tmpname, new_img_name)
+		printD("test dat_ser.cha_img_name tag = %s, msg = %s", tag, msg)
+		if(true == tag) then
+			tested_cnt = tested_cnt + 1
+		end
+	end
+	if(cnt == tested_cnt) then
+		return true, "测试 dat_ser.cha_img_name 通过"
+	else
+		printD("test_cnt = %d", tested_cnt)
+		return false, "测试 dat_ser.cha_img_name 不通过"
+	end
+end
+
+--[[
+函数说明：
+		函数作用：测试 dat_ser.cha_path
+		传入参数：nickname(用户昵称), path(头像路径), cnt(测试次数)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function test_dat_ser.cha_path(nickname, path, cnt)
+	printD("test dat_ser.cha_path(%s, %s, %d)", nickname, path, cnt)
+	local tested_cnt = 0
+	for i = 1, cnt do
+		local tmpname = nickname.."-"..i
+		local new_path = "new_"..path.."-"..i
+		local tag, msg = dat_ser.cha_path(tmpname, new_path)
+		printD("test dat_ser.cha_path tag = %s, msg = %s", tag, msg)
+		if(true == tag) then
+			tested_cnt = tested_cnt + 1
+		end
+	end
+	if(cnt == tested_cnt) then
+		return true, "测试 dat_ser.cha_path 通过"
+	else
+		printD("test_cnt = %d", tested_cnt)
+		return false, "测试 dat_ser.cha_path 不通过"
+	end
+end
+
+--[[
+函数说明：
+		函数作用：测试 dat_ser.get_img_name
+		传入参数：nickname(用户昵称)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function test_dat_ser.get_img_name(nickname, cnt)
+	printD("test dat_ser.get_img_name(%s, %d)", nickname, cnt)
+	local tested_cnt = 0
+	for i = 1, cnt do
+		local tmpname = nickname.."-"..i
+		local tag, msg = dat_ser.get_img_name(tmpname)
+		printD("test dat_ser.get_img_name tag = %s, msg = %s", tag, msg)
+		if(true == tag) then
+			tested_cnt = tested_cnt + 1
+		end
+	end
+	if(cnt == tested_cnt) then
+		return true, "测试 dat_ser.get_img_name 通过"
+	else
+		printD("test_cnt = %d", tested_cnt)
+		return false, "测试 dat_ser.get_img_name 不通过"
+	end
+end
+
+--[[
+函数说明：
+		函数作用：测试 dat_ser.get_img_path
+		传入参数：nickname(用户昵称)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function test_dat_ser.get_img_path(nickname, cnt)
+	printD("test dat_ser.get_img_path(%s, %d)", nickname, cnt)
+	local tested_cnt = 0
+	for i = 1, cnt do
+		local tmpname = nickname.."-"..i
+		local tag, msg = dat_ser.get_img_path(tmpname)
+		printD("test dat_ser.get_img_path tag = %s, msg = %s", tag, msg)
+		if(true == tag) then
+			tested_cnt = tested_cnt + 1
+		end
+	end
+	if(cnt == tested_cnt) then
+		return true, "测试 dat_ser.get_img_path 通过"
+	else
+		printD("test_cnt = %d", tested_cnt)
+		return false, "测试 dat_ser.get_img_path 不通过"
+	end
+end
+
+--[[
+函数说明：
 		函数作用：检测各个子测试,汇总
 		传入参数：nickname(用户昵称), pwd(用户注册登录密码), money(用户金币), 
 				 saf_pwd(用户保险柜密码), saf_money(用户保险柜金币数额), 
 				 cnt(测试次数)
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
-function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, cnt)
+function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name, 
+						   path, cnt)
+
 	printD("test_dat_ser.main(%s, %s, %d, %d)", nickname, pwd, money, cnt)
 
 	local tag1, msg1 = test_dat_ser.register(nickname, pwd, cnt)
@@ -404,14 +537,39 @@ function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, cnt)
 
 	local new_pwd = "new_"..saf_pwd
 	local tag15, msg15 = test_dat_ser.open_saf(nickname, new_pwd, cnt)
-	printD("tag15 =%s, msg15 = %s", tag15, msg15)
+	printD("tag15 = %s, msg15 = %s", tag15, msg15)
+
+	local tag16, msg16 = test_dat_ser.set_head(nickname, img_name, path, cnt)
+	printD("tag16 = %s, msg16 = %s", tag16, msg16)
+
+	local tag17, msg17 = test_dat_ser.get_img_name(nickname, cnt)
+	printD("tag17 = %s, msg17 = %s", tag17, msg17)
+
+	local tag18, msg18 = test_dat_ser.get_img_path(nickname, cnt)
+	printD("tag18 = %s, msg18 = %s", tag18, msg18)
+
+	local tag19, msg19 = test_dat_ser.cha_img_name(nickname, img_name, cnt)
+	printD("tag19 = %s, msg19 = %s", tag19, msg19)
+
+
+	local tag20, msg20 = test_dat_ser.cha_path(nickname, path, cnt)
+	printD("tag20 = %s, msg20 = %s", tag20, msg20)
+
+	local tag21, msg21 = test_dat_ser.get_img_name(nickname, cnt)
+	printD("tag21 = %s, msg21 = %s", tag21, msg21)
+
+	local tag22, msg22 = test_dat_ser.get_img_path(nickname, cnt)
+	printD("tag22 = %s, msg22 = %s", tag22, msg22)
+
 
 	local tag6, msg6 = test_dat_ser.del_usr(nickname, pwd, cnt)
 	printD("tag6 =%s, msg6 = %s", tag6, msg6)
 
 	res_tag = (tag1 and tag2 and tag3 and tag4 and tag5 and tag6 and tag7 and 
 			   tag8 and tag9 and tag10 and tag11 and tag12 and tag13 and tag14 
-			   and tag15)
+			   and tag15 and tag16 and tag17 and tag18 and tag19 and tag20 and 
+			   tag21 and tag22)
+
 	if(res_tag) then
 		printD("%s", "测试全部通过")
 		return true, "测试全部通过"
@@ -427,7 +585,10 @@ skynet.start(function()
 	local money = 6666
 	local saf_pwd = "test_saf_pwd"
 	local saf_money = 8888
+	local img_name = "test_img_name" 
+	local path = "test_path"
 	local cnt = 3
-	test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, cnt)
+	test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name, 
+						   path, cnt)
 	skynet.exit()
 end)
