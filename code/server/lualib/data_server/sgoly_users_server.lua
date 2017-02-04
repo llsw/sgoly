@@ -78,7 +78,7 @@
  function users_server.update_pwd(nickname, old_pwd, new_pwd)
 	printD("users_server.update_pwd(%s, %s, %s)", nickname, old_pwd, new_pwd)
 	printI("users_server.update_pwd(%s)", nickname)
-	if((nil == old_nickname) or ("" == old_nickname)) then
+	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif((nil == old_pwd) or ("" == old_pwd)) then
 		return false, "旧密码空值错误"
