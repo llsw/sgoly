@@ -75,9 +75,11 @@ end
 		返回参数：mysql excute status
 --]]
 function safe.select_money(uid)
-	printD("safe.select_money(%d)", uid)
 	printI("safe.select_money(%d)", uid)
+	printD("safe.select_money(%d)", uid)
 	local sql = string.format("select money from sgoly.safe where uid = %d ;",
 								uid)
 	return mysql_query(sql)
 end
+
+return safe

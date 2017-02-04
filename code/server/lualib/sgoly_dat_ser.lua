@@ -18,6 +18,7 @@ local sin_awa_ser = require "sgoly_single_award_server"
 local sgoly_union_query_server = require "sgoly_union_query_server"
 local sgoly_uuid_server = require "sgoly_uuid_server"
 local sgoly_rank_server = require "sgoly_rank_server"
+local saf_ser = require "sgoly_safe_server"
 local skynet = require "skynet"
 
 local dat_ser = {}
@@ -350,6 +351,134 @@ end
 --!
 function dat_ser.get_rank_from_MySQL(rank_type, date)
 	return sgoly_rank_server.get_rank_from_MySQL(rank_type, date)
+end
+
+--[[
+函数说明：
+		函数作用：检查用户是否已设置保险柜密码
+		传入参数：nickname(用户昵称)
+		返回参数：(false, err_msg) or (true, true_value)
+--]]
+function dat_ser.seted_safe_pwd(nickname)
+	printD("dat_ser.seted_safe_pwd(%s)", nickname)
+	printI("dat_ser.seted_safe_pwd(%s)", nickname)
+	local tag, money = saf_ser.select_money(nickname)
+	if( false == tag) then
+		return false, money
+	else
+		if(nil == money) then
+			return false, "未设置保险柜密码"
+		else
+			return true, "已设置保险柜密码"
+		end
+	end
+end
+
+--[[
+函数说明：
+		函数作用：设置保险柜密码
+		传入参数：nickname(用户昵称), passwd(用户保险柜密码)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function dat_ser.set_safe_pwd(nickname, passwd)
+	printD("dat_ser.set_safe_pwd(%s, %s)", nickname, passwd)
+	printI("dat_ser.set_safe_pwd(%s)", nickname)
+	local init_saf_money = 0
+	return saf_ser.insert(nickname, passwd, init_saf_money)
+end
+
+--[[
+函数说明：
+		函数作用：打开保险柜
+		传入参数：nickname(用户昵称), passwd(用户保险柜密码)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function dat_ser.open_saf(nickname, passwd)
+	printD("dat_ser.open_saf(%s, %s)", nickname, passwd)
+	printI("dat_ser.open_saf(%s)", nickname)
+	local tag, status = saf_ser.select_passwd(nickname)
+	if(false == tag) then
+		return false, status
+	else
+		if(status == passwd) then
+			return true, "保险柜打开成功"
+		else
+			return false, "保险柜打开不成功"
+		end
+	end
+end
+
+--[[
+函数说明：
+		函数作用：查询保险柜余额
+		传入参数：nickname(用户昵称)
+		返回参数：(false, err_msg) or (true, true_value)
+--]]
+function dat_ser.query_saf_money(nickname)
+	printD("dat_ser.query_saf_money(%s)", nickname)
+	printI("dat_ser.query_saf_money(%s)", nickname)
+	return saf_ser.select_money(nickname)
+end
+
+--[[
+函数说明：
+		函数作用：存金币到保险柜
+		传入参数：nickname(用户昵称), money(金币数额)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function dat_ser.save_money_2saf(nickname, money)
+	printD("dat_ser.save_money_2saf(%s, %d)", nickname, money)
+	printI("dat_ser.save_money_2saf(%s, %d)", nickname, money)
+	local tag1, src_money = saf_ser.select_money(nickname)
+	if(false == tag1) then
+		return false, src_money
+	end
+	local dst_money = src_money + money
+	local tag2, status = saf_ser.update_money(nickname, dst_money)
+	if(false == tag2) then
+		printD("dat_ser.save_money_2saf() 存钱失败 status = %s", status)
+		return false, "存金币失败"
+	else
+		return true, "存金币成功"
+	end
+end
+
+--[[
+函数说明：
+		函数作用：从保险柜取出金币
+		传入参数：nickname(用户昵称), money(金币数额)
+		返回参数：(false, err_msg) or (true, 要取数额)
+--]]
+function dat_ser.get_saf_money(nickname, money)
+	printD("dat_ser.get_saf_money(%s, %d)", nickname, money)
+	printI("dat_ser.get_saf_money(%s, %d)", nickname, money)
+	local tag1, src_money = saf_ser.select_money(nickname)
+	if(false == tag1) then
+		return false, src_money
+	end
+	if(src_money < money) then
+		return false, "取金币失败,余额小于要取数额"
+	end
+	local dst_money = src_money - money
+	local tag2, status = saf_ser.update_money(nickname, dst_money)
+	if(false == tag2) then
+		printD("dat_ser.get_saf_money() 取金币失败 status = %s", status)
+		return false, "取金币失败"
+	else
+		return true, money
+	end
+end
+
+--[[
+函数说明：
+		函数作用： 更改保险柜密码
+		传入参数：nickname(用户昵称), old_pwd(旧密码), new_pwd(新密码)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function dat_ser.cha_saf_pwd(nickname, old_pwd, new_pwd)
+	printD("dat_ser.cha_saf_pwd(%s, %s, %s)", nickname, old_pwd, new_pwd)
+	printI("dat_ser.cha_saf_pwd(%s)", nickname)
+	return saf_ser.update_passwd(nickname, old_pwd, new_pwd)
 end
 
 return dat_ser
