@@ -56,6 +56,20 @@ end
 
 --[[
 函数说明：
+		函数作用：查询保险柜所有信息
+		传入参数：uid(用户id)
+		返回参数：mysql excute status
+--]]
+function safe.select(uid)
+	printD("safe.select(%d)", uid)
+	printI("safe.select(%d)", uid)
+	local sql = string.format("select * from sgoly.safe where uid = %d ;",
+								uid)
+	return mysql_query(sql)
+end
+
+--[[
+函数说明：
 		函数作用：select users pass word
 		传入参数：uid(users id)
 		返回参数：mysql excute status

@@ -65,7 +65,28 @@ end
 
 --[[
 函数说明：
-		函数作用：select users pass word and valid return values
+		函数作用：select safe_info word and valid return values
+		传入参数：uid(users id)
+		返回参数：(false, status.err) or (true, status[1].passwd)
+--]]
+function safe_dao.select(uid)
+	printD("safe_dao.select(%d)", uid)
+	printI("safe_dao.select(%d)", uid)
+	local status = safe.select(uid)
+	if(status.err) then
+		return false, status.err
+	else
+		if(1 == #status) then
+			return true, status
+		else
+			return false, nil
+		end
+	end
+end
+
+--[[
+函数说明：
+		函数作用：select users _safe_pass word and valid return values
 		传入参数：uid(users id)
 		返回参数：(false, status.err) or (true, status[1].passwd)
 --]]

@@ -362,11 +362,11 @@ end
 function dat_ser.seted_safe_pwd(nickname)
 	printD("dat_ser.seted_safe_pwd(%s)", nickname)
 	printI("dat_ser.seted_safe_pwd(%s)", nickname)
-	local tag, money = saf_ser.select_money(nickname)
+	local tag, status = saf_ser.select(nickname)
 	if( false == tag) then
-		return false, money
+		return false, status
 	else
-		if(nil == money) then
+		if(nil == status) then
 			return false, "未设置保险柜密码"
 		else
 			return true, "已设置保险柜密码"

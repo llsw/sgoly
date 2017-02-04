@@ -99,6 +99,27 @@ end
 
 --[[
 函数说明：
+		函数作用：select safe_info word and valid args
+		传入参数：nickname(users nickname)
+		返回参数：(false, err_msg) or (true, true_value)
+--]]
+function safe_server.select(nickname)
+	printD("safe_server.select(%s)", nickname)
+	printI("safe_server.select(%s)", nickname)
+	if((nil == nickname) or ("" == nickname)) then
+ 		return false, "昵称空值错误"
+ 	else
+	 	local tag, uid = users_server.select_uid(nickname)
+	 	if(false == tag ) then
+	 		return false, "用户不存在"
+	 	else
+	 		return safe_dao.select(uid)
+	 	end
+	end
+end
+
+--[[
+函数说明：
 		函数作用：select users pass word and valid args
 		传入参数：nickname(users nickname)
 		返回参数：(false, err_msg) or (true, true_value)
