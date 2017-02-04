@@ -5,8 +5,6 @@ require "sgoly_printf"
 require "skynet.manager"
 local CMD={}
 
-
-
 function CMD.ranklist(fd,mes)
 	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
 	if mes.TYPE=="daySERIES" then
@@ -21,9 +19,7 @@ function CMD.ranklist(fd,mes)
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
-	        local req5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
-			local req5_1=sgoly_pack.encode(req5)
-			return req5_1
+	        return returnfalse(rqs)
 		end
 	elseif mes.TYPE=="dayALLMONEY" then
 	    	local bool2,req2 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
@@ -37,9 +33,7 @@ function CMD.ranklist(fd,mes)
 			local req2_2=sgoly_pack.encode(rqs2_1)
 		    return req2_2
 		else 
-	        local req5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
-			local req5_1=sgoly_pack.encode(req5)
-			return req5_1
+	        return returnfalse(rqs2_1)
 		end
 	elseif mes.TYPE=="yesSERIES" then
 	    	local bool3_1,req3_1 = sgoly_tool.getStatementsFromRedis(mes.NAME, c)
@@ -53,9 +47,7 @@ function CMD.ranklist(fd,mes)
 			local req3_1=sgoly_pack.encode(rqs3)
 		    return req3_1
 		else 
-	        local req5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
-			local req5_1=sgoly_pack.encode(req5)
-			return req5_1
+	        return returnfalse(rqs3)
 		end
 	elseif mes.TYPE=="yesALLMONEY" then
     	    local bool4_1,req4_1 = sgoly_tool.getStatementsFromRedis(mes.NAME, c)
@@ -69,9 +61,7 @@ function CMD.ranklist(fd,mes)
 			local req4_1=sgoly_pack.encode(rqs4)
 		    return req4_1
 		else 
-	        local req5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
-			local req5_1=sgoly_pack.encode(req5)
-			return req5_1
+	        return returnfalse(rqs4)
 		end
 	elseif mes.TYPE=="receive" then
 		printI("this is receive")
@@ -90,15 +80,18 @@ function CMD.ranklist(fd,mes)
 			local reqs5_1=sgoly_pack.encode(req5)
 		    return reqs5_1
 		else 
-	        local reqs5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
-			local reqs5_1=sgoly_pack.encode(reqs5)
-			return reqs5_1
+	        return returnfalse(reqs5)
 		end
     else 
-        local reqs5={SESSION=mes.session,ID="7",STATE=false,MESSAGE="false"}--,--MESSAGE=rqs}
-		local reqs5=sgoly_pack.encode(reqs5)
-		return reqs5
+        return returnfalse(reqs5)
    	end
+end
+
+
+function returnfalse(mes)
+	        local req1={SESSION=mes.session,ID="7",STATE=false,MESSAGE=mes}
+			local req1_1=sgoly_pack.encode(req1)
+			return req1_1
 end
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)

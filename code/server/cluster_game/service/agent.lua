@@ -1,8 +1,6 @@
 local skynet = require "skynet"
 local socket = require "socket"
 local cluster= require "cluster"
-local driver = require "socketdriver"
-local gateserver = require "sgoly_gateserver"
 require "skynet.manager"
 require "sgoly_printf"
 local sgoly_tool=require "sgoly_tool"
@@ -23,16 +21,16 @@ function agent.main(fd,mes)
 	elseif mes.ID=="6" then   --正常退出
 		local req2=exit(fd,mes)
 		return req2  
-	-- elseif mes.ID=="8" then   --保险柜
-	-- 	local req3=skynet.call(connection[fd].safe,"lua","safe_in",fd,mes,connection[fd].name)
-	-- 	return req3 	
-	-- elseif mes.ID=="9" then   --签到
+	elseif mes.ID=="9" then   --保险柜
+		local req3=skynet.call(connection[fd].safe,"lua","safebox",fd,mes,connection[fd].name)
+		return req3 	
+	-- elseif mes.ID=="10" then   --签到
 	-- 	local req4=skynet.call(connection[fd].sign,"lua","sign_in",fd,mes,connection[fd].name)
 	-- 	return req4 
     else  
-   	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
-	local result1_2 = sgoly_pack.encode(req)
-	return result1_2
+	   	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
+		local result1_2 = sgoly_pack.encode(req)
+		return result1_2
 end
 end
 
@@ -62,13 +60,13 @@ end
 function agent.start(fd,name)
 	   local maingame = skynet.newservice("maingame")
 	   local stats = skynet.newservice("stats")
-	   -- local safe = skynet.newservice("safe")
+	   local safe = skynet.newservice("safe")
 	  -- local sign = skynet.newservice("sign")
 	  local c = {
 	  		name = name,
 	  		maingame = maingame,
-	  		stats=stats
-	  		-- safe=safe
+	  		stats=stats,
+	  		safe=safe
 	  		-- sign=sign
 			}
 	  connection[fd] = c 
@@ -108,7 +106,6 @@ function agent.sclose(bool)
 			printI("this is connection %s",k)
 			local req3={ID="8",STATE=true}
 			local result1_2 = sgoly_pack.encode(req3)
-		    -- local bool=cluster.call("cluster_gateway",".gateway","close",k,result1_2)
 		    cluster.call("cluster_gateway",".gateway","seclose",k,result1_2,true)
 		end
     else
@@ -116,7 +113,6 @@ function agent.sclose(bool)
 		printI("this is connection,%s",k)
 		local req1={ID="8",STATE=false,MESSAGE="服务器将于五分钟后关闭"}
 		local result2_2 = sgoly_pack.encode(req1)
-	    -- local bool=cluster.call("cluster_gateway",".gateway","close",k,result1_2)
 	    cluster.call("cluster_gateway",".gateway","seclose",k,result2_2,false)
 	    end
 	end

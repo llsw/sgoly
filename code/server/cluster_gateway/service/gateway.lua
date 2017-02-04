@@ -6,7 +6,6 @@ local crypt = require"crypt"
 local sgoly_pack=require "sgoly_pack"
 local code = require"sgoly_cluster_code"
 require "sgoly_printf"
-local code =require "sgoly_cluster_code"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
 
