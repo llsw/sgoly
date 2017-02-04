@@ -21,10 +21,10 @@ function agent.main(fd,mes)
 	elseif mes.ID=="6" then   --正常退出
 		local req2=exit(fd,mes)
 		return req2  
-	-- elseif mes.ID=="8" then   --保险柜
-	-- 	local req3=skynet.call(connection[fd].safe,"lua","safe_in",fd,mes,connection[fd].name)
-	-- 	return req3 	
-	-- elseif mes.ID=="9" then   --签到
+	elseif mes.ID=="9" then   --保险柜
+		local req3=skynet.call(connection[fd].safe,"lua","safebox",fd,mes,connection[fd].name)
+		return req3 	
+	-- elseif mes.ID=="10" then   --签到
 	-- 	local req4=skynet.call(connection[fd].sign,"lua","sign_in",fd,mes,connection[fd].name)
 	-- 	return req4 
     else  
@@ -60,13 +60,13 @@ end
 function agent.start(fd,name)
 	   local maingame = skynet.newservice("maingame")
 	   local stats = skynet.newservice("stats")
-	   -- local safe = skynet.newservice("safe")
+	   local safe = skynet.newservice("safe")
 	  -- local sign = skynet.newservice("sign")
 	  local c = {
 	  		name = name,
 	  		maingame = maingame,
-	  		stats=stats
-	  		-- safe=safe
+	  		stats=stats,
+	  		safe=safe
 	  		-- sign=sign
 			}
 	  connection[fd] = c 
