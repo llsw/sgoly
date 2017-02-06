@@ -144,10 +144,8 @@ local users = require "sgoly_users"
 	printI("users_dao.select_uid(%s)", nickname)
 	local status = users.select_uid(nickname)
 	if(1 == #status) then
-		printD("users_dao.select_uid line 147")
 		return true, status[1].id
 	else
-		printD("users_dao.select_uid line 149")
 		return false, status.err
 	end
  end

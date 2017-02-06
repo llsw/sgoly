@@ -72,12 +72,12 @@ end
 		传入参数：nickname(用户昵称), money(金币数额), cnt(测试次数)
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
-function test_dat_ser.usr_init(nickname, money, cnt)
+function test_dat_ser.usr_init(nickname, money, img_name, path, cnt)
 	printD("test usr_init(%s, %d, %d)", nickname, money, cnt)
 	local tested_cnt = 0
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
-		local tag, msg = dat_ser.usr_init(tmpname, money)
+		local tag, msg = dat_ser.usr_init(tmpname, money, img_name, path)
 		printD("test usr_init. tag = %s, msg = %s", tag, msg)
 		if(true == tag) then
 			tested_cnt = tested_cnt + 1
@@ -484,6 +484,61 @@ end
 
 --[[
 函数说明：
+		函数作用：测试函数 dat_ser.sign
+		传入参数：nickname, date, cnt
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function  test_dat_ser.sign(nickname, date, cnt)
+	printD("test_dat_ser.sign(%s, %s, %d)", nickname, date, cnt)
+	local tested_cnt = 0
+	for i = 1, cnt do
+		local tmpname = nickname.."-"..i
+		local tmp_date = date..i
+		local tag, uid = dat_ser.get_uid(tmpname)
+		tag1, msg1 = dat_ser.sign(uid, tmp_date)
+		printD("test dat_ser.sign tag = %s, msg = %s", tag1, msg1)
+		if(true == tag1) then
+			tested_cnt = tested_cnt + 1
+		end
+	end
+	if(cnt == tested_cnt) then
+		return true, "测试 dat_ser.sign 通过"
+	else
+		printD("test_cnt = %d", tested_cnt)
+		return false, "测试 dat_ser.sign 不通过"
+	end
+end
+
+--[[
+函数说明：
+		函数作用：测试函数 dat_ser.query_sign
+		传入参数：nickname, cnt
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function test_dat_ser.query_sign(nickname, cnt)
+	printD("test_dat_ser.query_sign(%s, %d)", nickname, cnt)
+	local tested_cnt = 0
+	for i = 1, cnt do
+		local tmpname = nickname.."-"..i
+		local tag, uid = dat_ser.get_uid(tmpname)
+		tag1, msg1 = dat_ser.query_sign(uid)
+		if(true == tag1) then
+			for k, v in pairs(msg1) do
+				printD("%d, %s", k, v)
+			end
+			tested_cnt = tested_cnt + 1
+		end
+	end
+	if(cnt == tested_cnt) then
+		return true, "测试 dat_ser.query_sign 通过"
+	else
+		printD("test_cnt = %d", tested_cnt)
+		return false, "测试 dat_ser.query_sign 不通过"
+	end
+end
+
+--[[
+函数说明：
 		函数作用：检测各个子测试,汇总
 		传入参数：nickname(用户昵称), pwd(用户注册登录密码), money(用户金币), 
 				 saf_pwd(用户保险柜密码), saf_money(用户保险柜金币数额), 
@@ -491,14 +546,15 @@ end
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name, 
-						   path, cnt)
+						   path, date, cnt)
 
 	printD("test_dat_ser.main(%s, %s, %d, %d)", nickname, pwd, money, cnt)
 
 	local tag1, msg1 = test_dat_ser.register(nickname, pwd, cnt)
 	printD("tag1 =%s, msg1 = %s", tag1, msg1)
 
-	local tag2, msg2 = test_dat_ser.usr_init(nickname, money, cnt)
+	local tag2, msg2 = test_dat_ser.usr_init(nickname, money, img_name, path, 
+											 cnt)
 	printD("tag2 =%s, msg2 = %s", tag2, msg2)
 
 	local tag3, msg3 = test_dat_ser.login(nickname, pwd, cnt)
@@ -561,6 +617,11 @@ function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name,
 	local tag22, msg22 = test_dat_ser.get_img_path(nickname, cnt)
 	printD("tag22 = %s, msg22 = %s", tag22, msg22)
 
+	local tag23, msg23 = test_dat_ser.sign(nickname, date, cnt)
+	printD("tag23 =%s, msg23 =%s", ta23, msg23)
+
+	local tag24, msg24 = test_dat_ser.query_sign(nickname, cnt)
+	printD("tag24 =%s, msg24 =%s", tag24, msg24)
 
 	local tag6, msg6 = test_dat_ser.del_usr(nickname, pwd, cnt)
 	printD("tag6 =%s, msg6 = %s", tag6, msg6)
@@ -568,7 +629,7 @@ function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name,
 	res_tag = (tag1 and tag2 and tag3 and tag4 and tag5 and tag6 and tag7 and 
 			   tag8 and tag9 and tag10 and tag11 and tag12 and tag13 and tag14 
 			   and tag15 and tag16 and tag17 and tag18 and tag19 and tag20 and 
-			   tag21 and tag22)
+			   tag21 and tag22 and tag23 and tag24)
 
 	if(res_tag) then
 		printD("%s", "测试全部通过")
@@ -587,8 +648,9 @@ skynet.start(function()
 	local saf_money = 8888
 	local img_name = "test_img_name" 
 	local path = "test_path"
+	local date = "2017-02-0"
 	local cnt = 3
 	test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name, 
-						   path, cnt)
+						   path, date, cnt)
 	skynet.exit()
 end)

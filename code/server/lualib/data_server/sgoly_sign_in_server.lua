@@ -49,7 +49,7 @@ function sign_in_server.select_date(uid)
 		else
 			local tmptab = {}
 			for k, v in pairs(status) do
-				table.insert(tmptab, v)
+				table.insert(tmptab, v.s_date)
 			end
 			return true, tmptab
 		end

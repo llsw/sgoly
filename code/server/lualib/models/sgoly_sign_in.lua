@@ -15,10 +15,10 @@ local sign_in = {}
 函数说明：
 		函数作用：insert users sign in data
 		传入参数：uid(u用户id), date(日期)
-		返回参数：mysql excute status
+		返回参数：mysql excute status  sgoly.sign_in
 --]]
 function sign_in.insert(uid, date)
-	local sql = string.format("insert into sgoly.sign_in value(%d, %s", uid, 
+	local sql = string.format("insert into sgoly.sign_in value(%d, '%s')", uid, 
 								date)
 	return mysql_query(sql)
 end
