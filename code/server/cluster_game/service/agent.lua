@@ -66,7 +66,7 @@ function agent.start(fd,name)
 	  		name = name,
 	  		maingame = maingame,
 	  		stats=stats,
-	  		safe=safe
+	  		safe=safe,
 	  		-- sign=sign
 			}
 	  connection[fd] = c 

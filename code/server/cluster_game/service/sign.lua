@@ -1,5 +1,6 @@
 local skynet = require "skynet"
 local sgoly_tool=require"sgoly_tool"
+local dat_ser=require "sgoly_dat_ser"
 require "sgoly_printf"
 require "skynet.manager"
 local md5 = require "md5"
@@ -7,10 +8,12 @@ local sgoly_pack=require "sgoly_pack"
 local CMD={}
 function CMD.sign_in(fd,mes,name)
 	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
+	local bool,uid=dat_ser.get_uid(name)
+	printI("uid,%s",uid)
 	if mes.TYPE=="query" then
 	    	local bool1,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
 		    printI("this is sign1,%s",mes.NAME)
-		if bool1 and bool then 
+		if bool1  then 
 			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="query",LIST=list}
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1

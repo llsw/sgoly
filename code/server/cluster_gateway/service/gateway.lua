@@ -50,7 +50,7 @@ function handler.connect(fd,addr)
 	printI("Client fd[%d] connect gateway", fd)
 	-- math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
 	-- local ses=math.random(1,100000)
-	session=session+1
+	session=fd
 	local ses=tostring(session)
 	local rep={SESSION=ses,ID="0"}
 	local json_text = cjson.encode(rep)

@@ -295,7 +295,17 @@ function dat_ser.get_count_statements_from_MySQL(nickname, dt)
 			maxWinMoney = result[1].single_max, 
 			serialWinNum = result[1].conti_max,
 		}
+	elseif #result ==0 then
 
+		return ok, 
+		{
+			winMoney = 0, 
+			costMoney = 0, 
+			playNum = 0, 
+			winNum = 0, 
+			maxWinMoney = 0, 
+			serialWinNum = 0,
+		}
 	end
 end
 
