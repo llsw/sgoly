@@ -47,8 +47,9 @@ function handler(fd, mes)
 		        printI("money is %s",money)
 		    if boo then
 		    -- math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
-			-- local ses=math.random(1,100000)
-
+            --repeat
+            -- local ses=math.random(1,100000)
+            -- until (sessionID[mes.NAME]=nil)
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money}
 			    local str5_1=packtable(reqmoney)
 			    cluster.call("cluster_game",".agent","start",fd,mes.NAME)
@@ -112,10 +113,10 @@ function handler(fd, mes)
 -------------------------修改头像----------------------------------
 	elseif  mes.ID=="12" then 
 	    if  mes.TYPE=="query"  then         
-			local bool,msg=dat_ser.cha_pwd(mes.NAME,CURPASSWARD,PASSWD)
+			local bool,msg=dat_ser.get_img_name(mes.NAME)
 			skynet.error(bool,msg)
 			if bool then            
-					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="query"}
+					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="query",PORTRAIT=msg}
 					local resuss1_2=packtable(resuss)
 				  	return resuss1_2.."\n"
 			else 
@@ -124,10 +125,10 @@ function handler(fd, mes)
 				return refal1_2.."\n"
 			end
 		elseif mes.TYPE=="reset" then
-			local bool,msg=dat_ser.cha_pwd(mes.NAME,CURPASSWARD,PASSWD)
+			local bool,msg=dat_ser.cha_img_name(mes.NAME,mes.PORTRAIT)
 			skynet.error(bool,msg)
 			if bool then            
-					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="reset",PORTRAIT=mes.PORTRAIT}
+					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="reset",PORTRAIT=tonumber(mes.PORTRAIT)}
 					local resuss1_2=packtable(resuss)
 				  	return resuss1_2.."\n"
 			else 
@@ -191,6 +192,10 @@ function packtable(req)
 	local result1=crypt.aesencode(result,who,"")
 	local result1_1=crypt.base64encode(result1)
 	return result1_1
+end
+
+function CMD.release(fd)
+	-- sessionID[name]=nil
 end
 skynet.start(function()
 	i=sgoly_tool.getUuid()
