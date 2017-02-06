@@ -8,7 +8,6 @@
 --]]
 
 require "sgoly_query"
-require "sgoly_printf"
 
 local sign_in = {}
 
@@ -31,13 +30,13 @@ end
 		返回参数：(false, err_msg) or (true, true_value)
 --]]
 function sign_in.select_date(uid)
-	local sql = string.format([["select s_date 
+	local sql = string.format("select s_date 
 								 from sgoly.sign_in 
 								 where uid = %d 
 								 order by
 								 			s_date desc
 								 limit 7 ;
-								]]
+								"
 								, uid)
 	return mysql_query(sql)
 end

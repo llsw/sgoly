@@ -29,10 +29,10 @@ function head.insert(uid, img_name, path)
 	local sql = ""
 	if(nil == path) then
 		sql = string.format("insert into sgoly.head value(%d, '%s', null) ;",
-								uid, image)
+								uid, img_name)
 	else
 		sql = string.format("insert into sgoly.head value(%d, '%s', '%s') ;",
-								uid, image, path)
+								uid, img_name, path)
 	end
 	return mysql_query(sql)
 end

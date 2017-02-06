@@ -20,7 +20,7 @@ local sgoly_uuid_server = require "sgoly_uuid_server"
 local sgoly_rank_server = require "sgoly_rank_server"
 local saf_ser = require "sgoly_safe_server"
 local head_ser = require "sgoly_head_server"
-local sign_in = require "sgoly_sign_in"
+local sign_in_ser = require "sgoly_sign_in_server"
 local skynet = require "skynet"
 
 local dat_ser = {}
@@ -98,8 +98,8 @@ end
 		返回参数：ture和成功提示信息 或者 false 和错误信息
 --]]
 function dat_ser.usr_init(nickname, money, img_name, path)
-	printD("dat_ser.usr_init(%s, %d)", nickname, money)
-	printI("dat_ser.usr_init(%s, %d)", nickname, money)
+	printD("dat_ser.usr_init(%s, %d, %s, %s)", nickname, money, img_name, path)
+	printI("dat_ser.usr_init(%s, %d, %s, %s)", nickname, money, img_name, path)
 	tag1, msg1 = acc_ser.insert(nickname, money)
 	tag2, msg2 = head_ser.insert(nickname, img_name, path)
 	if(not tag1) then
@@ -565,6 +565,28 @@ function dat_ser.get_img_path(nickname)
 	printD("dat_ser.get_img_path(%s)", nickname)
 	printI("dat_ser.get_img_path(%s)", nickname)
 	return head_ser.select_path(nickname)
+end
+
+--[[
+函数说明：
+		函数作用：签到
+		传入参数：uid(u用户id), date(日期)
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function dat_ser.sign(uid, date)
+	printD("sign_in_ser.sign(%d, %s)", uid, date)
+	printI("sign_in_ser.sign(%d, %s)", uid, date)
+	return sign_in_ser.insert(uid, date)
+end
+
+--[[
+函数说明：
+		函数作用：
+		传入参数：
+		返回参数：
+--]]
+function dat_ser.query_sign(uid)
+	
 end
 
 return dat_ser
