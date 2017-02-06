@@ -593,7 +593,7 @@ end
 函数说明：
 		函数作用：查询签到情况
 		传入参数：uid(用户id)
-		返回参数：(false, err_msg) or (true, value(最近的7天))
+		返回参数：(false, err_msg) or (true, value(最近的7天 k-date 键值对))
 --]]
 function dat_ser.query_sign(uid)
 	return sign_in_ser.select_date(uid)
