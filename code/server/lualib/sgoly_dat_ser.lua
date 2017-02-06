@@ -20,6 +20,7 @@ local sgoly_uuid_server = require "sgoly_uuid_server"
 local sgoly_rank_server = require "sgoly_rank_server"
 local saf_ser = require "sgoly_safe_server"
 local head_ser = require "sgoly_head_server"
+local sign_in = require "sgoly_sign_in"
 local skynet = require "skynet"
 
 local dat_ser = {}
@@ -57,6 +58,16 @@ end
 
 --[[
 函数说明：
+		函数作用：get users id
+		传入参数：nickname
+		返回参数：(false, err_msg) or (true, true_value)
+--]]
+function dat_ser.get_uid(nickname)
+	return use_ser.select_uid(nickname)
+end
+
+--[[
+函数说明：
 		函数作用：更改用户的昵称
 		传入参数：old_nic(旧昵称), new_nick()新昵称, pwd(密码)
 		返回参数：ture和成功提示信息 或者 false 和错误信息
@@ -82,20 +93,29 @@ end
 --[[
 函数说明：
 		函数作用：初始化用户金币数额
-		传入参数：nickname(用户你从), money(金币数额)
+		传入参数：nickname(用户你从), money(金币数额),
+				 img_name(图片名称), path(图片路径, 不需要可设置为: nil )
 		返回参数：ture和成功提示信息 或者 false 和错误信息
 --]]
-function dat_ser.usr_init(nickname, money)
+function dat_ser.usr_init(nickname, money, img_name, path)
 	printD("dat_ser.usr_init(%s, %d)", nickname, money)
 	printI("dat_ser.usr_init(%s, %d)", nickname, money)
-	return acc_ser.insert(nickname, money)
+	tag1, msg1 = acc_ser.insert(nickname, money)
+	tag2, msg2 = head_ser.insert(nickname, img_name, path)
+	if(not tag1) then
+		return false, msg1
+	elseif(not tag2) then
+		return false, msg2
+	else
+		return true, "初始化用户信息成功"
+	end
 end
 
 --[[
 函数说明：
-		函数作用：
-		传入参数：
-		返回参数：
+		函数作用：dell users and users conf
+		传入参数：nickname(用户昵称), pwd(密码)
+		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function dat_ser.del_usr(nickname, pwd)
 	printD(" dat_ser.del_usr(%s, %s)", nickname, pwd)
@@ -132,9 +152,9 @@ end
 
 --[[
 函数说明：
-		函数作用：
-		传入参数：
-		返回参数：
+		函数作用：get users account money
+		传入参数：nickname(用户昵称)
+		返回参数：(false, err_msg) or (true, true_value)
 --]]
 function dat_ser.get_money(nickname)
 	printD("dat_ser.get_money(%s)", nickname)
@@ -143,9 +163,9 @@ end
 
 --[[
 函数说明：
-		函数作用：
-		传入参数：
-		返回参数：
+		函数作用：更新用户账户金币数额
+		传入参数：nickname(用户你从), money(金币数额)
+		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function dat_ser.upd_acc(nickname, money)
 	printD("dat_ser.up_acc(%s, %d)", nickname, money)
