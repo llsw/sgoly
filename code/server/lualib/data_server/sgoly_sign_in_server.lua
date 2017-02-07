@@ -45,7 +45,7 @@ function sign_in_server.select_date(uid)
 	else
 		local status = sign_in.select_date(uid)
 		if(0 >= #status) then
-			return false, nil
+			return true, "没有签到"
 		else
 			local tmptab = {}
 			for k, v in pairs(status) do
