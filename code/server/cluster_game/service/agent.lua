@@ -67,6 +67,7 @@ function agent.start(fd,name)
 	  		maingame = maingame,
 	  		stats=stats,
 	  		safe=safe,
+	  		line=os.time()
 	  		-- sign=sign
 			}
 	  connection[fd] = c 
@@ -88,13 +89,16 @@ function agent.close( fd )        --用户玩普通模式强制退出
 		local bool1,res1=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,os.date("%Y-%m-%d"))
 		local bool2,res2=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,c)
 		if bool  and bool1 then
+			-- cluster.call("cluster_login",".login","release",fd,connection[fd].name)
 		     connection[fd]=nil
-	    return  "suss"
+	   		 return  "suss"
 	    else
+	    	-- cluster.call("cluster_login",".login","release",fd,connection[fd].name)
 	    	connection[fd]=nil
-		return "false"
+			return "false"
 	    end
     else 
+    	-- cluster.call("cluster_login",".login","release",fd,connection[fd].name)
     	connection[fd]=nil
     	return "no login".." " ..fd
     end     
@@ -118,8 +122,14 @@ function agent.sclose(bool)
 	end
 end
 
-function agent.fdrelease(fd)
-	connection[fd]=nil
+function agent.setline(fd)
+	connection[fd].line=os.time()
+end
+
+
+function agent.getline(fd)
+	 return connection[fd].line
+	
 end
 
 skynet.start(function()

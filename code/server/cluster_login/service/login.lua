@@ -21,7 +21,7 @@ function handler(fd, mes)
 		local bool,msg=dat_ser.register(mes.NAME,mes.PASSWD)
 		skynet.error(bool,msg)
 		if bool then            
-		    local bo,message=dat_ser.usr_init(mes.NAME,500000)
+		    local bo,message=dat_ser.usr_init(mes.NAME,500000,"0",nil)
 			skynet.error("usr_init",bo,message)--test
 			if bo then
 				local resuss={SESSION=mes.SESSION,ID="2",STATE=bo}
@@ -38,7 +38,13 @@ function handler(fd, mes)
 			return refal1_2.."\n"
 		end
 -------------------------用户登录-------------------------------------
-    elseif mes.ID=="1" then               
+    elseif mes.ID=="1" then   
+    --     if sessionID[mes.NAME] then
+				-- local reqmoney={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="该用户已登录"}
+			 --    local str3_1=packtable(reqmoney)
+				-- return str3_1.."\n"
+    --     end
+            sessionID[mes.NAME]=mes.session            
 		    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		    local bool,msg=dat_ser.login(mes.NAME, mes.PASSWD)
 		    skynet.error(bool,msg)
@@ -46,12 +52,9 @@ function handler(fd, mes)
 		        local boo,money =sgoly_tool.getMoney(mes.NAME)
 		        printI("money is %s",money)
 		    if boo then
-		    -- math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
-            --repeat
-            -- local ses=math.random(1,100000)
-            -- until (sessionID[mes.NAME]=nil)
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money}
 			    local str5_1=packtable(reqmoney)
+			    cluster.call("cluster_gateway",".gateway","heart",fd)
 			    cluster.call("cluster_game",".agent","start",fd,mes.NAME)
 			    return str5_1.."\n"
 		    elseif not boo then
@@ -79,7 +82,7 @@ function handler(fd, mes)
 	    if msg=="插入用户数据成功" then 
 			    printI("插入用户数据成功")
 			    printI("%s,%s",name,trpd)           
-				local bo,message=dat_ser.usr_init(name,500000)
+				local bo,message=dat_ser.usr_init(name,500000,"0",nil)
 				skynet.error("record_init=",bo,message)--test
 			if bo then 
 				local rep={SESSION=mes.SESSION,ID="3",STATE=bo,NAME=name,PASSWD=password}
@@ -141,6 +144,11 @@ function handler(fd, mes)
 			local str6_1=packtable(rep6)
 		    return str6_1.."\n"
 		end
+	elseif  mes.ID=="13" then 
+
+		    cluster.call("cluster_game",".agent","setline",fd)
+		    printI("this is 13,fd,%d",fd)
+		    return nil
     else
       local rep6={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
 	  local str6_1=packtable(rep6)
@@ -194,8 +202,8 @@ function packtable(req)
 	return result1_1
 end
 
-function CMD.release(fd)
-	-- sessionID[name]=nil
+function CMD.release(fd,name)
+	sessionID[name]=nil
 end
 skynet.start(function()
 	i=sgoly_tool.getUuid()

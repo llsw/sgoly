@@ -11,17 +11,17 @@ function CMD.sign_in(fd,mes,name)
 	local bool,uid=dat_ser.get_uid(name)
 	printI("uid,%s",uid)
 	if mes.TYPE=="query" then
-	    	local bool1,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
+	    	local bool1,req1 = dat_ser.query_sign(uid)
 		    printI("this is sign1,%s",mes.NAME)
 		if bool1  then 
-			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="query",LIST=list}
+			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="query",LIST=req1}
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
 	        return returnfalse(mes,req1)
 		end
 	elseif mes.TYPE=="signin" then
-	    	local bool1,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
+	    	local bool1,req1 = dat_ser.sign(uid, os.date("%Y-%m-d"))
 		    printI("this is sign2,%s",mes.NAME)
 		if bool1  then 
 			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="signin"}

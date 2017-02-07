@@ -39,8 +39,10 @@ function handler.message(fd, msg)
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)
 		local req=cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
-		print(req,"this  is req")
-		driver.send(fd,req)
+		if req~=nil then 
+		  print(req,"this  is req")
+		  driver.send(fd,req)
+        end
     end
 end
 
@@ -88,6 +90,27 @@ function CMD.seclose(fd,mes,boo)
     end
 end
 
+function CMD.heart(fd)
+	skynet.fork(handlerfork,fd)
+	
+end
+function handlerfork(fd)
+	while true do
+		skynet.sleep(1000)
+		local line =  cluster.call("cluster_game",".agent","getline",fd)
+		printI("this is linefd,%s",line)
+		if(os.time()-line>20) then
+		   break
+		end
+		local req={ID="13",TYPE="heart"}
+		local req2_1=sgoly_pack.encode(req)
+	    driver.send(fd,req2_1)
+	    printI("this is handlerforkfd,%d",fd)
+    	
+    end
+    gateserver.closeclient(fd)
+    printI(">50 %d",fd)
+end
 function handler.command(cmd, source, ...)
 	local f = assert(CMD[cmd])
 	return f(...)
