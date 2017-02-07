@@ -40,14 +40,14 @@ end
 		返回参数：
 --]]
 function sign_in_server.select_date(uid)
+	local tmptab = {}
 	if(nil == uid) then
 		return false, "uid nil"
 	else
 		local status = sign_in.select_date(uid)
 		if(0 >= #status) then
-			return true, "没有签到"
+			return true, tmptab
 		else
-			local tmptab = {}
 			for k, v in pairs(status) do
 				table.insert(tmptab, v.s_date)
 			end
