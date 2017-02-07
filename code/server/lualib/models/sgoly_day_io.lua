@@ -19,8 +19,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function day_io.insert(uid, win, cost, dt)
- 	printD("day_io.insert(%s, %d, %d, %s)", uid, win, cost, dt)
- 	printI("day_io.insert(%s, %d, %d, %s)", uid, win, cost, dt)
  	local sql = string.format("insert into sgoly.day_io value(null, %d, %d, "
  		.."%d, '%s' );", uid, win, cost, dt)
  	return mysql_query(sql)
@@ -33,8 +31,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function day_io.update_win(uid, win, dt)
- 	printD("day_io.update_win(%d, %d, %s)", uid, win, dt)
- 	printI("day_io.update_win(%d, %d, %s)", uid, win, dt)
  	local sql = string.format("update sgoly.day_io set win = %d where uid = %d and dt ="
  						.." '%s' ;", win, uid, dt)
  	return mysql_query(sql)
@@ -47,8 +43,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function day_io.update_cost(uid, cost, dt)
- 	printD("day_io.update_cost(%d, %d, %s)", uid, cost, dt)
- 	printI("day_io.update_cost(%d, %d, %s)", uid, cost, dt)
  	local sql = string.format("")
  	local sql = string.format("update sgoly.day_io set cost = %d where uid = %d and dt ="
  						.." '%s' ;", cost, uid, dt)
@@ -62,8 +56,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function day_io.select(uid, dt)
- 	printD("day_io.select(%d, %s)", uid, dt)
- 	printI("day_io.select(%d, %s)", uid, dt)
  	local sql = string.format("select * from sgoly.day_io where uid = %d and "
  						.."dt ='%s' ;", uid, dt)
  	return mysql_query(sql)
@@ -76,8 +68,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function day_io.select_win(uid, dt)
- 	printD("day_io.select_win(%d, %s)", uid, dt)
- 	printI("day_io.select_win(%d, %s)", uid, dt)
  	local sql = string.format("select win from sgoly.day_io where uid = %d and "
  						.."dt ='%s' ;", uid, dt)
  	return mysql_query(sql)
@@ -90,8 +80,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function day_io.select_cost(uid, dt)
- 	printD("day_io.select_cost(%d, %s)", uid, dt)
- 	printI("day_io.select_cost(%d, %s)", uid, dt)
  	local sql = string.format("select cost from sgoly.day_io where uid = %d and "
  						.."dt ='%s' ;", uid, dt)
  	return mysql_query(sql)

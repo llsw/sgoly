@@ -19,8 +19,6 @@ require "sgoly_printf"
  		返回参数：返回参数：sql语句执行状态
  --]]
  function account.insert(id, money)
- 	printD("account.insert(%d, %d)", id, money)
- 	printI("account.insert(%d, %d)", id, money)
  	local sql = string.format("insert into sgoly.account value(%d, %d)", id,
  							   money)
  	return mysql_query(sql)
@@ -33,8 +31,6 @@ require "sgoly_printf"
  		返回参数：返回参数：sql语句执行状态
 --]]
 function account.update_money(id, money)
-	printD("account.update_money(%d, %d)", id, money)
- 	printI("account.update_money(%d, %d)", id, money)
  	local sql = string.format("update sgoly.account set money = %d where id = "
  							   .."%d ;", money, id)
  	return mysql_query(sql)
@@ -47,8 +43,6 @@ end
 		返回参数：返回参数：sql语句执行状态
 --]]
 function account.select_money(id)
-	printD("account.update_money(%d)", id)
- 	printI("account.update_money(%d)", id)
  	local sql = string.format("select money from sgoly.account where id = %d ;"
  							   , id)
  	return mysql_query(sql)

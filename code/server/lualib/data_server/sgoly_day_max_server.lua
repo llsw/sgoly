@@ -21,10 +21,6 @@
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function day_max_server.insert(nickname, single_max, conti_max, dt)
-	printD("day_max_server.insert(%s, %d, %d, %s)", nickname, single_max, 
-			conti_max, dt)
- 	printI("day_max_server.insert(%s, %d, %d, %s)", nickname, single_max, 
- 			conti_max, dt)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif(nil == single_max ) then
@@ -52,10 +48,6 @@
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function day_max_server.update_single_max(nickname, single_max, dt)
- 	printD("day_max_server.update_single_max(%s, %d, %s)", nickname, single_max, 
- 			dt)
- 	printI("day_max_server.update_single_max(%s, %d, %s)", nickname, single_max, 
- 			dt)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif(nil == single_max ) then
@@ -81,10 +73,6 @@
  		返回参数：执行结果的正确与否的布尔值和相关消息
 --]]
 function day_max_server.update_conti_max(nickname, conti_max, dt)
- 	printD("day_max_server.update_conti_max(%s, %d, %s)", nickname, conti_max, 
- 			dt)
- 	printI("day_max_server.update_conti_max(%s, %d, %s)", nickname, conti_max, 
- 			dt)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif(nil == conti_max) then
@@ -109,8 +97,6 @@ end
  		返回参数：执行结果的正确与否的布尔值和相关消息
 --]]
 function day_max_server.select(nickname, dt)
- 	printD("day_max_server.select(%s, %s)", nickname, dt)
- 	printI("day_max_server.select(%s, %s)", nickname, dt)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif((nil == dt) or ("" == dt)) then
@@ -134,8 +120,6 @@ end
  		返回参数：执行结果的正确与否的布尔值和相关消息
 --]]
 function day_max_server.select_single_max(nickname, dt)
- 	printD("day_max_server.select_single_max(%s, %s)", nickname, dt)
- 	printI("day_max_server.select_single_max(%s, %s)", nickname, dt)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif((nil == dt) or ("" == dt)) then
@@ -159,8 +143,6 @@ end
  		返回参数：执行结果的正确与否的布尔值和相关消息
 --]]
 function day_max_server.select_conti_max(nickname, dt)
- 	printD("day_max_server.select_conti_max(%s, %s)", nickname, dt)
- 	printI("day_max_server.select_conti_max(%s, %s)", nickname, dt)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif((nil == dt) or ("" == dt)) then

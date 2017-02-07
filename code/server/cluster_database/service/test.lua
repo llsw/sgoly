@@ -539,6 +539,57 @@ end
 
 --[[
 函数说明：
+		函数作用：测试 award
+		传入参数：
+		返回参数：(false, err_msg) or (true, true_msg)
+--]]
+function test_dat_ser.get_award()
+	local tested_cnt = 0
+	local name = "dayMaxContinuous"
+	for i = 1, 10 do
+		local tag, msg = dat_ser.get_award(name, i)
+		if(tag) then
+			tested_cnt = tested_cnt + 1
+			printD("%d", msg)
+		else
+			printD("%s", msg)
+		end
+	end
+
+	name = "dayMaxWin"
+	for i = 1, 10 do
+		local tag, msg = dat_ser.get_award(name, i)
+		if(tag) then
+			tested_cnt = tested_cnt + 1
+			printD("%d", msg)
+		else
+			printD("%s", msg)
+		end
+	end
+
+	name = "signIn"
+	local index = 3
+	for i = 1, 3 do
+		local tag, msg = dat_ser.get_award(name, index )
+		index = index + 2
+		if(tag) then
+			tested_cnt = tested_cnt + 1
+			printD("%d", msg)
+		else
+			printD("%s", msg)
+		end
+	end
+	if(23 == tested_cnt) then
+		printD("tested_cnt = %d", tested_cnt)
+		return true, "测试 award 通过"
+	else
+		printD("tested_cnt = %d", tested_cnt)
+		return false, "测试 award 不通过"
+	end
+end
+
+--[[
+函数说明：
 		函数作用：检测各个子测试,汇总
 		传入参数：nickname(用户昵称), pwd(用户注册登录密码), money(用户金币), 
 				 saf_pwd(用户保险柜密码), saf_money(用户保险柜金币数额), 
@@ -595,8 +646,8 @@ function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name,
 	local tag15, msg15 = test_dat_ser.open_saf(nickname, new_pwd, cnt)
 	printD("tag15 = %s, msg15 = %s", tag15, msg15)
 
-	local tag16, msg16 = test_dat_ser.set_head(nickname, img_name, path, cnt)
-	printD("tag16 = %s, msg16 = %s", tag16, msg16)
+	-- local tag16, msg16 = test_dat_ser.set_head(nickname, img_name, path, cnt)
+	-- printD("tag16 = %s, msg16 = %s", tag16, msg16)
 
 	local tag17, msg17 = test_dat_ser.get_img_name(nickname, cnt)
 	printD("tag17 = %s, msg17 = %s", tag17, msg17)
@@ -623,13 +674,16 @@ function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name,
 	local tag24, msg24 = test_dat_ser.query_sign(nickname, cnt)
 	printD("tag24 =%s, msg24 =%s", tag24, msg24)
 
+	local tag25, msg25 = test_dat_ser.get_award()
+	printD("tag25 =%s, msg25 =%s", tag25, msg25)
+
 	local tag6, msg6 = test_dat_ser.del_usr(nickname, pwd, cnt)
 	printD("tag6 =%s, msg6 = %s", tag6, msg6)
 
 	res_tag = (tag1 and tag2 and tag3 and tag4 and tag5 and tag6 and tag7 and 
 			   tag8 and tag9 and tag10 and tag11 and tag12 and tag13 and tag14 
-			   and tag15 and tag16 and tag17 and tag18 and tag19 and tag20 and 
-			   tag21 and tag22 and tag23 and tag24)
+			   and tag15 and tag17 and tag18 and tag19 and tag20 and 
+			   tag21 and tag22 and tag23 and tag24 and tag25)
 
 	if(res_tag) then
 		printD("%s", "测试全部通过")

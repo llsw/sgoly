@@ -20,13 +20,6 @@ local head_server = {}
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function head_server.insert(nickname, img_name, path)
-	if(nil ~= path) then
-		printD("head_server.insert(%s, %s, %s)", nickname, img_name, path)
-		printI("head_server.insert(%s, %s, %s)", nickname, img_name, path)
-	else
-		printD("head_server.insert(%s, %s)", nickname, img_name)
-		printI("head_server.insert(%s, %s)", nickname, img_name)
-	end
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif((nil == img_name) or ("" == img_name)) then
@@ -48,8 +41,6 @@ end
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function head_server.update_img_name(nickname, new_img_name)
-	printD("head_server.update_img_name(%s, %s)", nickname, new_img_name)
-	printI("head_server.update_img_name(%s, %s)", nickname, new_img_name)
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif((nil == new_img_name) or ("" == new_img_name)) then
@@ -71,8 +62,6 @@ end
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function head_server.update_path(nickname, new_path)
-	printD("head_server.update_path(%s, %s)", nickname, new_path)
-	printI("head_server.update_path(%s, %s)", nickname, new_path)
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif((nil == new_path) or ("" == new_path)) then
@@ -94,8 +83,6 @@ end
 		返回参数：(false, err_msg) or (true, true_values)
 --]]
 function head_server.select(nickname)
-	printD("head_server.select(%s)", nickname)
-	printI("head_server.select(%s)", nickname)
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	else
@@ -115,8 +102,6 @@ end
 		返回参数：(false, err_msg) or (true, true_values)
 --]]
 function head_server.select_img_name(nickname)
-	printD("head_server.select_img_name(%s)", nickname)
-	printI("head_server.select_img_name(%s)", nickname)
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	else
@@ -136,8 +121,6 @@ end
 		返回参数：(false, err_msg) or (true, true_values)
 --]]
 function head_server.select_path(nickname)
-	printD("head_server.select_path(%s)", nickname)
-	printI("head_server.select_path(%s)", nickname)
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	else

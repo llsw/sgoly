@@ -20,8 +20,6 @@ local safe_server = {}
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function safe_server.insert(nickname, passwd, money)
-	printD("safe_server.insert(%s, %s, %d)", nickname, passwd, money)
-	printI("safe_server.insert(%s, %d)", nickname, money)
 	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif((nil == passwd) or ("" == passwd)) then
@@ -46,9 +44,6 @@ end
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function safe_server.update_passwd(nickname, oldpasswd, newpasswd)
-	printD("safe_server.update_passwd(%s, %s, %s)", nickname, oldpasswd, 
-			newpasswd)
-	printI("safe_server.update_passwd(%s)", nickname)
 	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif((nil == oldpasswd) or ("" == oldpasswd)) then
@@ -81,8 +76,6 @@ end
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function safe_server.update_money(nickname, newmoney)
-	printD("safe_server.update_money(%s, %d)", nickname, newmoney)
-	printI("safe_server.update_money(%s, %d)", nickname, newmoney)
 	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif(nil == newmoney) then
@@ -104,8 +97,6 @@ end
 		返回参数：(false, err_msg) or (true, true_value)
 --]]
 function safe_server.select(nickname)
-	printD("safe_server.select(%s)", nickname)
-	printI("safe_server.select(%s)", nickname)
 	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	else
@@ -125,8 +116,6 @@ end
 		返回参数：(false, err_msg) or (true, true_value)
 --]]
 function safe_server.select_passwd(nickname)
-	printD("safe_server.select_passwd(%s)", nickname)
-	printI("safe_server.select_passwd(%s)", nickname)
 	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	else
@@ -146,8 +135,6 @@ end
 		返回参数：(false, err_msg) or (true, true_value)
 --]]
 function safe_server.select_money(nickname)
-	printD("safe_server.select_money(%s)", nickname)
-	printI("safe_server.select_money(%s)", nickname)
 	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	else

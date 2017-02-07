@@ -19,13 +19,6 @@ local head = {}
 		返回参数：mysql excute status
 --]]
 function head.insert(uid, img_name, path)
-	if(nil ~= path) then
-		printD("head.insert(%d, %s,%s", uid, img_name, path)
-		printI("head.insert(%d, %s,%s", uid, img_name, path)
-	else
-		printD("head.insert(%d, %s)", uid, img_name)
-		printI("head.insert(%d, %s)", uid, img_name)
-	end
 	local sql = ""
 	if(nil == path) then
 		sql = string.format("insert into sgoly.head value(%d, '%s', null) ;",
@@ -44,8 +37,6 @@ end
 		返回参数：mysql excute status
 --]]
 function head.update_img_name(uid, new_img_name)
-	printD("head.update_img_name(%d, %s)", uid, new_img_name)
-	printI("head.update_img_name(%d, %s)", uid, new_img_name)
 	local sql = string.format("update sgoly.head set img_name = '%s' where uid "
 								.."= %d ;", new_img_name, uid)
 	return mysql_query(sql)
@@ -58,8 +49,6 @@ end
 		返回参数：mysql excute status
 --]]
 function head.update_path(uid, new_path)
-	printD("head.update_path(%d, %s)", uid, new_path)
-	printI("head.update_path(%d, %s)", uid, new_path)
 	local sql = string.format("update sgoly.head set path = '%s' where uid "
 								.."= %d ;", new_path, uid)
 	return mysql_query(sql)
@@ -72,8 +61,6 @@ end
 		返回参数：mysql excute status
 --]]
 function head.select(uid)
-	printD("head.select(%d)", uid)
-	printI("head.select(%d)", uid)
 	local sql = string.format("select * from sgoly.head where uid = %d ;", uid)
 	return mysql_query(sql)
 end
@@ -85,8 +72,6 @@ end
 		返回参数：mysql excute status
 --]]
 function head.select_img_name(uid)
-	printD("head.select_img_name(%d)", uid)
-	printI("head.select_img_name(%d)", uid)
 	local sql = string.format("select img_name from sgoly.head where uid = %d ;"
 							   , uid)
 	return mysql_query(sql)
@@ -99,8 +84,6 @@ end
 		返回参数：mysql excute status
 --]]
 function head.select_path(uid)
-	printD("head.select_path(%d)", uid)
-	printI("head.select_path(%d)", uid)
 	local sql = string.format("select path from sgoly.head where uid = %d ;", 
 								uid)
 	return mysql_query(sql)

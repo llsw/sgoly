@@ -20,8 +20,6 @@ local users_server = require "sgoly_users_server"
  		返回参数：true 或者 false , 正确或错误提示的字符串
  --]]
  function account_server.insert(nickname, money)
- 	printD("account_server.insert(%s, %d)", nickname, money)
- 	printI("account_server.insert(%s, %d)", nickname, money)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif(nil == money) then
@@ -43,8 +41,6 @@ local users_server = require "sgoly_users_server"
  		返回参数：true 或者 false , 正确或错误提示的字符串
  --]]
  function account_server.update_money(nickname, money)
-	printD("account_server.update_money(%s, %d)", nickname, money)
- 	printI("account_server.update_money(%s, %d)", nickname, money)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif(nil == money) then
@@ -66,8 +62,6 @@ local users_server = require "sgoly_users_server"
  		返回参数：true 或者 false , 正确或错误提示的字符串
  --]]
  function account_server.select_money(nickname)
-	printD("account_server.select_money(%s)", nickname)
- 	printI("account_server.select_money(%s)", nickname)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	else

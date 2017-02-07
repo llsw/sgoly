@@ -19,8 +19,6 @@
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_server.insert(nickname, pwd)
-	printD("users_server.insert(%s, %s)", nickname, pwd)
-	printI("users_server.insert(%s)", nickname)
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif((nil == pwd) or ("" == pwd)) then
@@ -37,8 +35,6 @@
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_server.delete(nickname, pwd)
-	printD("users_server.delete(%s, %s)", nickname, pwd)
-	printI("users_server.delete(%s)", nickname)
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif((nil == pwd) or ("" == pwd)) then
@@ -55,9 +51,6 @@
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_server.update_nickname(old_nickname, new_nickname, pwd)
-	printD("users_server.update_nickname(%s, %s)", old_nickname, new_nickname, 
-			pwd)
-	printI("users_server.update_nickname(%s, %s)", old_nickname, new_nickname)
 	if((nil == old_nickname) or ("" == old_nickname)) then
 		return false, "旧昵称空值错误"
 	elseif((nil == new_nickname) or ("" == new_nickname)) then
@@ -76,8 +69,6 @@
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_server.update_pwd(nickname, old_pwd, new_pwd)
-	printD("users_server.update_pwd(%s, %s, %s)", nickname, old_pwd, new_pwd)
-	printI("users_server.update_pwd(%s)", nickname)
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif((nil == old_pwd) or ("" == old_pwd)) then
@@ -96,8 +87,6 @@
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_server.select(nickname)
-	printD("users_server.select(%s)", nickname)
-	printI("users_server.select(%s)", nickname)
 	if((nil == old_nickname) or ("" == old_nickname)) then
 		return false, "昵称空值错误"
 	else
@@ -112,8 +101,6 @@
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_server.select_uid(nickname)
-	printD("users_server.select_uid(%s)", nickname)
-	printI("users_server.select_uid(%s)", nickname)
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	else
@@ -129,8 +116,6 @@
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_server.select_pwd(nickname)
-	printD("users_server.select_pwd(%s)", nickname)
-	printI("users_server.select_pwd(%s)", nickname)
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	else

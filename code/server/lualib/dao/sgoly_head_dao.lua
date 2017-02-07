@@ -19,13 +19,6 @@ local head_dao = {}
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function head_dao.insert(uid, img_name, path)
-	if(nil ~= path) then
-		printD("head_dao.insert(%d, %s,%s", uid, img_name, path)
-		printI("head_dao.insert(%d, %s,%s", uid, img_name, path)
-	else
-		printD("head_dao.insert(%d, %s)", uid, img_name)
-		printI("head_dao.insert(%d, %s)", uid, img_name)
-	end
 	local status = head.insert(uid, img_name, path)
 	if(status.err) then
 		return false, status.err
@@ -41,8 +34,6 @@ end
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function head_dao.update_img_name(uid, new_img_name)
-	printD("head_dao.update_img_name(%d, %s)", uid, new_img_name)
-	printI("head_dao.update_img_name(%d, %s)", uid, new_img_name)
 	local status = head.update_img_name(uid, new_img_name)
 	if(status.err) then
 		return false, status.err
@@ -58,8 +49,6 @@ end
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function head_dao.update_path(uid, new_path)
-	printD("head_dao.update_path(%d, %s)", uid, new_path)
-	printI("head_dao.update_path(%d, %s)", uid, new_path)
 	local status = head.update_path(uid, new_path)
 	if(status.err) then
 		return false, status.err
@@ -75,8 +64,6 @@ end
 		返回参数：(false, err_msg) or (true, true_values)
 --]]
 function head_dao.select(uid)
-	printD("head_dao.select(%d)", uid)
-	printI("head_dao.select(%d)", uid)
 	local status = head.select(uid)
 	if(1 == #status) then
 		return true, status
@@ -92,8 +79,6 @@ end
 		返回参数：(false, err_msg) or (true, true_values)
 --]]
 function head_dao.select_img_name(uid)
-	printD("head_dao.select_img_name(%d)", uid)
-	printI("head_dao.select_img_name(%d)", uid)
 	local status = head.select_img_name(uid)
 	if(1 == #status) then
 		return true, status[1].img_name
@@ -109,8 +94,6 @@ end
 		返回参数：(false, err_msg) or (true, true_values)
 --]]
 function head_dao.select_path(uid)
-	printD("head_dao.select_path(%d)", uid)
-	printI("head_dao.select_path(%d)", uid)
 	local status = head.select_path(uid)
 	if(1 == #status) then
 		return true, status[1].path

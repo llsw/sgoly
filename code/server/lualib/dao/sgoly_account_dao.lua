@@ -19,8 +19,6 @@
  		返回参数：执行结果的正确与否的布尔值和相关返回值
  --]]
  function account_dao.insert(id, money)
- 	printD("account_dao.insert(%d, %d)", id, money)
- 	printI("account_dao.insert(%d, %d)", id, money)
 	local status = account.insert(id, money)
 	if((0 == status.warning_count) and (1 == status.affected_rows)) then
 		return true, "插入用户金币资产数据成功"
@@ -36,8 +34,6 @@ end
  		返回参数：执行结果的正确与否的布尔值和相关返回值
 --]]
 function account_dao.update_money(id, money)
-	printD("account_dao.update_money(%d, %d)", id, money)
- 	printI("account_dao.update_money(%d, %d)", id, money)
 	local status = account.update_money(id, money)
 	if((0 == status.warning_count) and (1 == status.affected_rows)) then
 		return true, "更新用户金币资产数据成功"
@@ -53,8 +49,6 @@ end
 		返回参数：执行结果的正确与否的布尔值和相关返回值
 --]]
 function account_dao.select_money(id)
-	printD("account_dao.update_money(%d)", id)
- 	printI("account_dao.update_money(%d)", id)
 	local status = account.select_money(id)
 	if(1 == #status) then
 		return true, status[1].money

@@ -21,10 +21,6 @@ local day_times_server = {}
 		返回参数：true 或者 false , 正确或错误提示的字符串
 --]]
 function day_times_server.insert(nickname, win_times, times, dt)
- 	printD("day_times_server.insert(%s, %d, %d, %s)", nickname, win_times, times,
- 	 dt)
- 	printI("day_times_server.insert(%s, %d, %d, %s)", nickname, win_times, times,
- 	 dt)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif(nil == win_times) then
@@ -50,10 +46,6 @@ end
 		返回参数：true 或者 false , 正确或错误提示的字符串
 --]]
 function day_times_server.update_win_times(nickname, win_times, dt)
- 	printD("day_times_server.update_win_times(%s, %d, %s)", nickname, win_times,
- 	 dt)
- 	printI("day_times_server.update_win_times(%s, %d, %s)", nickname, win_times,
- 	 dt)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif(nil == win_times) then
@@ -77,8 +69,6 @@ end
 		返回参数：true 或者 false , 正确或错误提示的字符串
 --]]
 function day_times_server.update_times(nickname, times, dt)
- 	printD("day_times_server.update_times(%s, %d, %s)", nickname, times, dt)
- 	printI("day_times_server.update_times(%s, %d, %s)", nickname, times, dt)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif(nil == times) then
@@ -102,8 +92,6 @@ end
 		返回参数：true 或者 false , 某日赢奖次数和玩游戏次数 或 错误提示的字符串
 --]]
 function day_times_server.select(nickname, dt)
- 	printD("day_times_server.select(%s, %s)", nickname, dt)
- 	printI("day_times_server.select(%s, %s)", nickname, dt)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif((nil == dt) or ("" == dt)) then
@@ -125,8 +113,6 @@ end
 		返回参数：true 或者 false , 赢奖次数 或 错误提示的字符串
 --]]
 function day_times_server.select_win_times(nickname, dt)
- 	printD("day_times_server.select_win_times(%s, %s)", nickname, dt)
- 	printI("day_times_server.select_win_times(%s, %s)", nickname, dt)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif((nil == dt) or ("" == dt)) then
@@ -148,8 +134,6 @@ end
 		返回参数：true 或者 false , 玩游戏次数 或 错误提示的字符串
 --]]
 function day_times_server.select_times(nickname, dt)
- 	printD("day_times_server.select_times(%s, %s)", nickname, dt)
- 	printI("day_times_server.select_times(%s, %s)", nickname, dt)
  	if((nil == nickname) or ("" == nickname)) then
  		return false, "昵称空值错误"
  	elseif((nil == dt) or ("" == dt)) then

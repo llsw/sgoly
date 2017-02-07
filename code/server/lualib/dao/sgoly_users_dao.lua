@@ -19,8 +19,6 @@ local users = require "sgoly_users"
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_dao.insert(nickname, pwd)
-	printD("users_dao.insert(%s, %s)", nickname, pwd)
-	printI("users_dao.insert(%s)", nickname)
 	local tab = users.select(nickname)
 	if(1 == #tab) then
 		return false, "昵称已被使用"
@@ -41,8 +39,6 @@ local users = require "sgoly_users"
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_dao.delete(nickname, pwd)
-	printD("users_dao.delete(%s, %s)", nickname, pwd)
-	printI("users_dao.delete(%s)", nickname)
 	local tab = users.select(nickname)
 	if(0 == #tab) then
 		return false, "昵称不存在"
@@ -67,9 +63,6 @@ local users = require "sgoly_users"
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_dao.update_nickname(old_nickname, new_nickname, pwd)
-	printD("users_dao.update_nickname(%s, %s, %s)", old_nickname, new_nickname,
-			pwd)
-	printI("users_dao.update_nickname(%s, %s)", old_nickname, new_nickname)
 	local tab = users.select(old_nickname)
 	local tab2 = users.select(new_nickname)
 	if(0 == #tab) then
@@ -97,8 +90,6 @@ local users = require "sgoly_users"
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_dao.update_pwd(nickname, old_pwd, new_pwd)
-	printD("users_dao.update_pwd(%s, %s, %s)", nickname, old_pwd, new_pwd)
-	printI("users_dao.update_pwd(%s)", nickname)
 	local tab = users.select(nickname)
 	if(0 == #tab) then
 		return false, "用户不存在"
@@ -123,8 +114,6 @@ local users = require "sgoly_users"
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_dao.select(nickname)
-	printD("users_dao.select(%s)", nickname)
-	printI("users_dao.select(%s)", nickname)
  	local status = users.select(nickname)
  	if(1 == #status) then
 		return true, status[1]
@@ -140,8 +129,6 @@ local users = require "sgoly_users"
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_dao.select_uid(nickname)
-	printD("users_dao.select_uid(%s)", nickname)
-	printI("users_dao.select_uid(%s)", nickname)
 	local status = users.select_uid(nickname)
 	if(1 == #status) then
 		return true, status[1].id
@@ -157,8 +144,6 @@ local users = require "sgoly_users"
  		返回参数：执行结果的正确与否的布尔值和相关消息
  --]]
  function users_dao.select_pwd(nickname)
-	printD("users_dao.select_pwd(%s)", nickname)
-	printI("users_dao.select_pwd(%s)", nickname)
  	local status = users.select_pwd(nickname)
 	if(1 == #status) then
 		return true, status[1].pwd

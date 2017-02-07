@@ -20,8 +20,6 @@ local day_io_server = {}
 		返回参数：true 或者 false , 正确或错误提示的字符串
 --]]
 function day_io_server.insert(nickname, win, cost, dt)
-	printD("day_io_server.insert(%s, %d, %d, %s)", nickname, win, cost, dt)
-	printI("day_io_server.insert(%s, %d, %d, %s)", nickname, win, cost, dt)
 	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif(nil == win) then
@@ -47,8 +45,6 @@ end
 		返回参数：true 或者 false , 正确或错误提示的字符串
 --]]
 function day_io_server.update_win(nickname, win, dt)
- 	printD("day_io_server.update_win(%s, %d, %s)", nickname, win, dt)
- 	printI("day_io_server.update_win(%s, %d, %s)", nickname, win, dt)
  	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif(nil == win) then
@@ -72,8 +68,6 @@ end
 		返回参数：true 或者 false , 正确或错误提示的字符串
 --]]
 function day_io_server.update_cost(nickname, cost, dt)
- 	printD("day_io_server.update_cost(%s, %d, %s)", nickname, cost, dt)
- 	printI("day_io_server.update_cost(%s, %d, %s)", nickname, cost, dt)
  	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif(nil == win) then
@@ -99,8 +93,6 @@ end
 		返回参数：true 或者 false , 收支情况 或 错误提示的字符串
 --]]
 function day_io_server.select(nickname, dt)
- 	printD("day_io_server.select(%s, %s)", nickname, dt)
- 	printI("day_io_server.select(%s, %s)", nickname, dt)
  	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif((nil == dt) or ("" == dt)) then
@@ -122,8 +114,6 @@ end
 		返回参数：true 或者 false , 收入数值 或 错误提示的字符串
 --]]
 function day_io_server.select_win(nickname, dt)
- 	printD("day_io_server.select_win(%s, %s)", nickname, dt)
- 	printI("day_io_server.select_win(%s, %s)", nickname, dt)
  	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif((nil == dt) or ("" == dt)) then
@@ -145,8 +135,6 @@ end
 		返回参数：true 或者 false , 支出 或 错误提示的字符串
 --]]
 function day_io_server.select_cost(nickname, dt)
- 	printD("day_io_server.select_cost(%s, %s)", nickname, dt)
- 	printI("day_io_server.select_cost(%s, %s)", nickname, dt)
  	if((nil == nickname) or ("" == nickname)) then
 		return false, "昵称空值错误"
 	elseif((nil == dt) or ("" == dt)) then

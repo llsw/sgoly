@@ -19,8 +19,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function day_max.insert(uid, single_max, conti_max, dt)
- 	printD("day_max.insert(%d, %d, %d, %s)", uid, single_max, conti_max, dt)
- 	printI("day_max.insert(%d, %d, %d, %s)", uid, single_max, conti_max, dt)
  	local sql = string.format("insert into sgoly.day_max value(null, %d, %d,"
  	 						  .."%d, '%s' )", uid, single_max, conti_max, dt)
  	return mysql_query(sql)
@@ -33,8 +31,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function day_max.update_single_max(uid, single_max, dt)
- 	printD("day_max.update_single_max(%d, %d, %s)", uid, single_max, dt)
- 	printI("day_max.update_single_max(%d, %d, %s)", uid, single_max, dt)
  	local sql = string.format("update sgoly.day_max set single_max = %d where "
  							  .."uid = %d and s_date = '%s'; ", single_max, 
  							  uid, dt)
@@ -48,8 +44,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function day_max.update_conti_max(uid, conti_max, dt)
- 	printD("day_max.update_conti_max(%d, %d, %s)", uid, conti_max, dt)
- 	printI("day_max.update_conti_max(%d, %d, %s)", uid, conti_max, dt)
  	local sql = string.format("update sgoly.day_max set conti_max = %d where "
  							  .."uid = %d and s_date = '%s'; ", conti_max, 
  							  uid, dt)
@@ -63,8 +57,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function day_max.select(uid, dt)
- 	printD("day_max.select(%d, %s)", uid, dt)
- 	printI("day_max.select(%d, %s)", uid, dt)
  	local sql = string.format("select * from sgoly.day_max where uid = %d and "
  							   .."s_date = '%s' ;", uid, dt)
  	return mysql_query(sql)
@@ -77,8 +69,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function day_max.select_single_max(uid, dt)
- 	printD("day_max.select_single_max(%d, %s)", uid, dt)
- 	printI("day_max.select_single_max(%d, %s)", uid, dt)
  	local sql = string.format("select single_max from sgoly.day_max where uid = "
  							   .."%d and s_date = '%s' ;", uid, dt)
  	return mysql_query(sql)
@@ -91,8 +81,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function day_max.select_conti_max(uid, dt)
- 	printD("day_max.select_conti_max(%d, %s)", uid, dt)
- 	printI("day_max.select_conti_max(%d, %s)", uid, dt)
  	local sql = string.format("select conti_max from sgoly.day_max where uid = "
  							   .."%d and s_date = '%s' ;", uid, dt)
  	return mysql_query(sql)

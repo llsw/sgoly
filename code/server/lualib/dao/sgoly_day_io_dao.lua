@@ -19,8 +19,6 @@
 		返回参数：执行结果的正确与否的布尔值和相关返回值
 --]]
 function day_io_dao.insert(uid, win, cost, dt)
- 	printD("day_io_dao.insert(%s, %d, %d, %s)", uid, win, cost, dt)
- 	printI("day_io_dao.insert(%s, %d, %d, %s)", uid, win, cost, dt)
 	local status = day_io.insert(uid, win, cost, dt)
 	if((0 == status.warning_count) and (1 == status.affected_rows)) then
 		return true, "插入用户当日收支数据成功"
@@ -36,8 +34,6 @@ end
 		返回参数：执行结果的正确与否的布尔值和相关返回值
 --]]
 function day_io_dao.update_win(uid, win, dt)
- 	printD("day_io_dao.update_win(%d, %d, %s)", uid, win, dt)
- 	printI("day_io_dao.update_win(%d, %d, %s)", uid, win, dt)
 	local status = day_io.update_win(uid, win, dt)
 	if((0 == status.warning_count) and (1 == status.affected_rows)) then
 		return true, "更新用户当日收入数据成功"
@@ -53,8 +49,6 @@ end
 		返回参数：执行结果的正确与否的布尔值和相关返回值
 --]]
 function day_io_dao.update_cost(uid, cost, dt)
- 	printD("day_io_dao.update_cost(%d, %d, %s)", uid, cost, dt)
- 	printI("day_io_dao.update_cost(%d, %d, %s)", uid, cost, dt)
 	local status = day_io.update_cost(uid, cost, dt)
 	if((0 == status.warning_count) and (1 == status.affected_rows)) then
 		return true, "更新用户当日支出数据成功"
@@ -70,8 +64,6 @@ end
 		返回参数：执行结果的正确与否的布尔值和相关返回值
 --]]
 function day_io_dao.select(uid, dt)
- 	printD("day_io_dao.select(%d, %s)", uid, dt)
- 	printI("day_io_dao.select(%d, %s)", uid, dt)
 	local status = day_io.select(uid, dt)
 	if(1 == #status) then
 		return true, status[1]
@@ -87,8 +79,6 @@ end
 		返回参数：执行结果的正确与否的布尔值和相关返回值
 --]]
 function day_io_dao.select_win(uid, dt)
- 	printD("day_io_dao.select_win(%d, %s)", uid, dt)
- 	printI("day_io_dao.select_win(%d, %s)", uid, dt)
 	local status = day_io.select_win(uid, dt)
 	if(1 == #status) then
 		return true, status[1].win
@@ -104,8 +94,6 @@ end
 		返回参数：执行结果的正确与否的布尔值和相关返回值
 --]]
 function day_io_dao.select_cost(uid, dt)
- 	printD("day_io_dao.select_cost(%d, %s)", uid, dt)
- 	printI("day_io_dao.select_cost(%d, %s)", uid, dt)
 	local status = day_io.select_cost(uid, dt)
 	if(1 == #status) then
 		return true, status[1].cost

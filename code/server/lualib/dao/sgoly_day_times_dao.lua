@@ -20,8 +20,6 @@
 		返回参数：正确与否的布尔值 以及相关其他相关返回值
 --]]
 function day_times_dao.insert(uid, win_times, times, dt)
- 	printD("day_times_dao.insert(%d, %d, %d, %s)", uid, win_times, times, dt)
- 	printI("day_times_dao.insert(%d, %d, %d, %s)", uid, win_times, times, dt)
 	local status = day_times.insert(uid, win_times, times, dt)
 	if((0 == status.warning_count) and (1 == status.affected_rows)) then
 		return true, "插入用户当日获奖次数数据成功"
@@ -37,8 +35,6 @@ end
 		返回参数：正确与否的布尔值 以及相关其他相关返回值
 --]]
 function day_times_dao.update_win_times(uid, win_times, dt)
- 	printD("day_times_dao.update_win_times(%d, %d, %s)", uid, win_times, dt)
- 	printI("day_times_dao.update_win_times(%d, %d, %s)", uid, win_times, dt)
 	local status = day_times.update_win_times(uid, win_times, dt)
 	if((0 == status.warning_count) and (1 == status.affected_rows)) then
 		return true, "更改用户当日获奖次数数据成功"
@@ -54,8 +50,6 @@ end
 		返回参数：正确与否的布尔值 以及相关其他相关返回值
 --]]
 function day_times_dao.update_times(uid, times, dt)
- 	printD("day_times_dao.update_times(%d, %d, %s)", uid, times, dt)
- 	printI("day_times_dao.update_times(%d, %d, %s)", uid, times, dt)
 	local status = day_times.update_times(uid, times, dt)
 	if((0 == status.warning_count) and (1 == status.affected_rows)) then
 		return true, "更改用户当日玩游戏次数数据成功"
@@ -71,8 +65,6 @@ end
 		返回参数：正确与否的布尔值 以及相关其他相关返回值
 --]]
 function day_times_dao.select(uid, dt)
- 	printD("day_times_dao.select(%d, %s)", uid, dt)
- 	printI("day_times_dao.select(%d, %s)", uid, dt)
 	local status = day_times.select(uid, dt)
 	if(1 == #status) then
 		return true, status[1]
@@ -88,8 +80,6 @@ end
 		返回参数：正确与否的布尔值 以及相关其他相关返回值
 --]]
 function day_times_dao.select_win_times(uid, dt)
- 	printD("day_times_dao.select_win_times(%d, %s)", uid, dt)
- 	printI("day_times_dao.select_win_times(%d, %s)", uid, dt)
 	local status = day_times.select_win_times(uid, dt)
 	if(1 == #status) then
 		return true, status[1].win_times
@@ -105,8 +95,6 @@ end
 		返回参数：正确与否的布尔值 以及相关其他相关返回值
 --]]
 function day_times_dao.select_times(uid, dt)
- 	printD("day_times_dao.select_times(%d, %s)", uid, dt)
- 	printI("day_times_dao.select_times(%d, %s)", uid, dt)
 	local status = day_times.select_times(uid, dt)
 	if(1 == #status) then
 		return true, status[1].times

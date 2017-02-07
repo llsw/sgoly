@@ -12,15 +12,13 @@ local acc_ser = require "sgoly_account_server"
 local day_io_ser = require "sgoly_day_io_server"
 local day_max_ser = require "sgoly_day_max_server"
 local day_tim_ser = require "sgoly_day_times_server"
-local max_awa_ser = require "sgoly_max_award_server"
-local max_tim_awa_ser = require "sgoly_max_times_award_server"
-local sin_awa_ser = require "sgoly_single_award_server"
 local sgoly_union_query_server = require "sgoly_union_query_server"
 local sgoly_uuid_server = require "sgoly_uuid_server"
 local sgoly_rank_server = require "sgoly_rank_server"
 local saf_ser = require "sgoly_safe_server"
 local head_ser = require "sgoly_head_server"
 local sign_in_ser = require "sgoly_sign_in_server"
+local award_ser = require "sgoly_award_server"
 local skynet = require "skynet"
 
 local dat_ser = {}
@@ -135,19 +133,8 @@ end
 function dat_ser.get_award(award_name, id)
 	printD("dat_ser.get_award(%s, %d)", award_name, id)
 	printI("dat_ser.get_award(%s, %d)", award_name, id)
-	if((nil == award_name) or ("" == award_name)) then
-		return false, "排名项目名称为空错误"
-	else
-		if("max_award" == award_name) then
-			return max_awa_ser.select(id)
-		elseif("max_times_award" == award_name) then
-			return max_tim_awa_ser.select(id)
-		elseif("single_award" == award_name) then
-			return sin_awa_ser.select(id)
-		else
-			return false, "不在查找范围"
-		end
-	end
+	local type = award_name.."-"..id
+	return award_ser.select_money(type)
 end
 
 --[[

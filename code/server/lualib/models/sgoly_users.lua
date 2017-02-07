@@ -19,8 +19,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function users.insert(nickname, pwd)
- 	printD("users.insert(%s, %s)", nickname, pwd)
- 	printI("users.insert(%s)", nickname)
  	local sql = string.format("insert into sgoly.users value(null, '%s', '%s')",
  				nickname, pwd)
  	return mysql_query(sql)
@@ -33,8 +31,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function users.delete(nickname)
- 	printD("users.delete(%s)", nickname)
- 	printI("users.delete(%s)", nickname)
  	local sql = string.format("delete from sgoly.users where "
 			.."nickname = '%s' ;", nickname)
  	return mysql_query(sql)
@@ -47,8 +43,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function users.update_nickname(old_nickname, new_nickname)
- 	printD("users.update_nickname(%s, %s)", old_nickname, new_nickname)
- 	printI("users.update_nickname(%s, %s)", old_nickname, new_nickname)
  	local sql = string.format("update sgoly.users set nickname = '%s' "
  				.."where nickname = '%s' ;", new_nickname, old_nickname)
  	return mysql_query(sql)
@@ -61,8 +55,6 @@ require "sgoly_printf"
  		返回参数：sql语句执行状态
  --]]
  function users.update_pwd(nickname, new_pwd)
- 	printD("users.update_pwd(%s, %s)", nickname, new_pwd)
- 	printI("users.update_pwd(%s)", nickname)
  	sql = string.format("update sgoly.users set pwd = '%s' "
  				.."where nickname = '%s' ;", new_pwd, nickname)
  	return mysql_query(sql)
@@ -75,8 +67,6 @@ require "sgoly_printf"
 		返回参数：用户信息表
 --]]
 function users.select(nickname)
-	printD("users.select_users(%s)", nickname)
-	printI("users.select_users(%s)", nickname)
 	local sql = string.format("select * from sgoly.users where "
 		.."nickname = '%s' ;", nickname)
  	return mysql_query(sql)
@@ -89,8 +79,6 @@ end
 		返回参数：用户信息表
 --]]
 function users.select_uid(nickname)
-	printD("users.select_uid(%s)", nickname)
-	printI("users.select_uid(%s)", nickname)
 	local sql = string.format("select id from sgoly.users where "
 		.."nickname = '%s' ;", nickname)
  	return mysql_query(sql)
@@ -103,8 +91,6 @@ end
 		返回参数：用户信息表
 --]]
 function users.select_pwd(nickname)
-	printD("users.select_pwd(%s)", nickname)
-	printI("users.select_pwd(%s)", nickname)
 	local sql = string.format("select pwd from sgoly.users where "
 		.."nickname = '%s' ;", nickname)
  	return mysql_query(sql)
