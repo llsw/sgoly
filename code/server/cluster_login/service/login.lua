@@ -147,7 +147,6 @@ function handler(fd, mes)
 	elseif  mes.ID=="13" then 
 
 		    cluster.call("cluster_game",".agent","setline",fd)
-		    printI("this is 13,fd,%d",fd)
 		    return nil
     else
       local rep6={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
@@ -205,6 +204,7 @@ end
 function CMD.release(fd,name)
 	sessionID[name]=nil
 end
+
 skynet.start(function()
 	i=sgoly_tool.getUuid()
 	printI("i=%s",i)

@@ -26,16 +26,6 @@ function handler.message(fd, msg)
 		password=crypt.aesdecode(str1,who,"")
 		local mes = cjson.decode(password)
 		skynet.error(mes.SESSION,mes.CLUSTER,mes.SERVICE,mes.CMD,mes.ID,mes.NAME,mes.PASSWD)
-		-- if mes.ID=="1" then
-			  
-		-- 	if sessionID[mes.NAME] then
-		-- 		printI("sessionID have")
-		-- 		local x = {}
-		-- 		sgoly_pack
-		-- 	else	
-		-- 	sessionID[mes.NAME]=mes.SESSION
-	 --   		end
-	 --    end
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)
 		local req=cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
@@ -50,8 +40,6 @@ end
 function handler.connect(fd,addr)
 	gateserver.openclient(fd)
 	printI("Client fd[%d] connect gateway", fd)
-	-- math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
-	-- local ses=math.random(1,100000)
 	session=fd
 	local ses=tostring(session)
 	local rep={SESSION=ses,ID="0"}
@@ -99,7 +87,10 @@ function handlerfork(fd)
 		skynet.sleep(1000)
 		local line =  cluster.call("cluster_game",".agent","getline",fd)
 		printI("this is linefd,%s",line)
-		if(os.time()-line>20) then
+		if  line==false then
+			break
+		end
+		if(os.time()-line>30) then
 		   break
 		end
 		local req={ID="13",TYPE="heart"}
@@ -109,7 +100,7 @@ function handlerfork(fd)
     	
     end
     gateserver.closeclient(fd)
-    printI(">50 %d",fd)
+    printI(">30s %d",fd)
 end
 function handler.command(cmd, source, ...)
 	local f = assert(CMD[cmd])
@@ -117,3 +108,6 @@ function handler.command(cmd, source, ...)
 end
 
 gateserver.start(handler)
+
+
+        

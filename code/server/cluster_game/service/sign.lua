@@ -21,7 +21,7 @@ function CMD.sign_in(fd,mes,name)
 	        return returnfalse(mes,req1)
 		end
 	elseif mes.TYPE=="signin" then
-	    	local bool1,req1 = dat_ser.sign(uid, os.date("%Y-%m-d"))
+	    	local bool1,req1 = dat_ser.sign(uid,os.date("%Y-%m-%d"))
 		    printI("this is sign2,%s",mes.NAME)
 		if bool1  then 
 			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="signin"}
@@ -31,14 +31,16 @@ function CMD.sign_in(fd,mes,name)
 	        return returnfalse(mes,req1)
 		end
 	elseif mes.TYPE=="award" then
-	    	local bool1,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
+	    	local bool1,req1 = dat_ser.get_award("signIn",mes.DAY)
+	    	local bool,req=sgoly_tool.getMoney(name)
+	    	local bool2,req2=sgoly_tool.saveMoneyToRedis(name,req+req1)
 		    printI("this is sign3,%s",mes.NAME)
-		if bool1  then 
-			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="award",MONEY=50000}
+		if bool1 and bool and bool2 then 
+			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="award",MONEY=req+req1}
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
-	        return returnfalse(mes,req1)
+	        return returnfalse(mes,req1..req..req2)
 		end
 	else 
 		returnfalse(mes,"参数错误")

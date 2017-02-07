@@ -83,7 +83,7 @@ function CMD.ranklist(fd,mes)
 	        return returnfalse(reqs5)
 		end
 	elseif mes.TYPE=="wealth" then
-		printI("this is receive")
+		printI("this is wealth")
 		    local bool5_1,money=sgoly_tool.getAwardFromRedis(tonumber(mes.RANK1),tonumber(mes.RANK2),c)
 		   	local bo,getmoney=sgoly_tool.getMoney(mes.NAME)
     	    local bool5,reqs5=sgoly_tool.saveMoneyToRedis(mes.NAME,getmoney+money)

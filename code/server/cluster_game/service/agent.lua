@@ -24,9 +24,9 @@ function agent.main(fd,mes)
 	elseif mes.ID=="9" then   --保险柜
 		local req3=skynet.call(connection[fd].safe,"lua","safebox",fd,mes,connection[fd].name)
 		return req3 	
-	-- elseif mes.ID=="10" then   --签到
-	-- 	local req4=skynet.call(connection[fd].sign,"lua","sign_in",fd,mes,connection[fd].name)
-	-- 	return req4 
+	elseif mes.ID=="10" then   --签到
+		local req4=skynet.call(connection[fd].sign,"lua","sign_in",fd,mes,connection[fd].name)
+		return req4 
     else  
 	   	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
 		local result1_2 = sgoly_pack.encode(req)
@@ -61,14 +61,14 @@ function agent.start(fd,name)
 	   local maingame = skynet.newservice("maingame")
 	   local stats = skynet.newservice("stats")
 	   local safe = skynet.newservice("safe")
-	  -- local sign = skynet.newservice("sign")
+	  local sign = skynet.newservice("sign")
 	  local c = {
 	  		name = name,
 	  		maingame = maingame,
 	  		stats=stats,
 	  		safe=safe,
-	  		line=os.time()
-	  		-- sign=sign
+	  		line=os.time(),
+	  		sign=sign
 			}
 	  connection[fd] = c 
 end
@@ -123,13 +123,16 @@ function agent.sclose(bool)
 end
 
 function agent.setline(fd)
-	connection[fd].line=os.time()
+	  connection[fd].line=os.time()
 end
 
 
 function agent.getline(fd)
+	if connection[fd]==nil then
+		return false
+	else
 	 return connection[fd].line
-	
+	end
 end
 
 skynet.start(function()
