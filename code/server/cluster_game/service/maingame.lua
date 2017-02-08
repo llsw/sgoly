@@ -46,8 +46,8 @@ function picture_order(picturetype)              --图片序列函数
 		until (letter~=b and letter~=c)
 		if a==1 then
 			if letter=="F" then
-				skynet.error("图片顺序为",letter:rep(num) .. b..c.."10")
-				local sequence = letter:rep(num).. b..c.."10"
+				skynet.error("图片顺序为",letter:rep(num) .. b..c.."1")
+				local sequence = letter:rep(num).. b..c.."1"
 			    return sequence
 			else
 				skynet.error("图片顺序为",letter:rep(num) .. b..c)
@@ -56,8 +56,8 @@ function picture_order(picturetype)              --图片序列函数
 		    end
 		elseif a==2 then
 			if letter=="F" then
-				skynet.error("图片顺序为",b .. letter:rep(num)..c.."10")
-				local sequence = b..letter:rep(num)..c.."10"
+				skynet.error("图片顺序为",b .. letter:rep(num)..c.."1")
+				local sequence = b..letter:rep(num)..c.."1"
 			    return sequence
 			else
 				skynet.error("图片顺序为",b .. letter:rep(num)..c)
@@ -66,8 +66,8 @@ function picture_order(picturetype)              --图片序列函数
 			end
 		elseif a==3 then
 			if letter=="F" then
-				skynet.error("图片顺序为",b ..c.. letter:rep(num).."10")
-				local sequence = b..c..letter:rep(num).."10"
+				skynet.error("图片顺序为",b ..c.. letter:rep(num).."1")
+				local sequence = b..c..letter:rep(num).."1"
 			    return sequence
 			else
 				skynet.error("图片顺序为",b ..c.. letter:rep(num))
@@ -103,16 +103,9 @@ function send_result(fd,session,TYPE,SERIES,WCOUNT,MAXMONEY,SUNMONEY,FINMONEY,WI
 end
 
  --     记录中奖类型
- -- 	gamenum=0          --游戏次数
- -- 	gamenum8=0         --8次游戏次数
  	money=0                --赚的金额
- -- 	money8=0		   --8次游戏金额
- -- 	moneydb=0          --赚得金额存数据库
 	deposit=0              --消耗金额
-	-- depositdb=0         --消耗金额存数据库
 	historyj=0             --历史中奖次数
-	--autoj=0              --自动中奖次数
-	-- n=1                 --number1 的索引
  --    x = 1               --1 为普通模式 2为困难模式 3为简单模式	
 	historynum=0           --历史抽奖次数
 	autonum=0              --自动抽奖次数
@@ -144,7 +137,6 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
     skynet.error(type(x),type(y[2]))
 	-- historynum=0       --历史抽奖次数
 	winmoney={}        --中奖金额       
-	--end_point底分    beilv 倍率   k 次数
 	printI("MONET=%s,cost=%s",MONEY,cost)
 	--historynum=historynum+k
 	if TYPE=="autostart" or TYPE=="autogo" then 
@@ -164,7 +156,6 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 				table.insert(autonumber1,autonum)
 			end
 			table.insert(number2,type)
-			n=n+1
 			table.insert(sequence,picture_order(type))
 			skynet.error("得分为",end_point*beilv*grade)
 			money=money+end_point*beilv*grade
@@ -244,28 +235,27 @@ for i=1,k do
 			skynet.error(i,"中奖类型ABCDE----O(∩_∩)O~~-!") 
 			j=j+1
 			reqpack(wintype,"A6",1000,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		-- elseif a>=148235 and a<=158234 then
-		-- 	if TYPE=="autostart" or TYPE=="autogo" then 
-				-- skynet.error(i,"没有中奖")
-				-- table.insert(sequence,picture_order("NO"))
-				-- skynet.error("得分为",end_point*beilv*0)
-				-- money=money+end_point*beilv*0
-				-- table.insert(winmoney,end_point*beilv*0)
-				-- if TYPE=="autostart" or TYPE=="autogo" then 
-				-- 	table.insert(automoney,end_point*beilv*0)
-				-- end
-		--     else
-		-- 		skynet.error(i,"中奖类型FFF----O(∩_∩)O~~-!") 
-		-- 		j=j+1
-		-- 		wintype.A6=wintype.A6+1
-		-- 		table.insert(number1,i)
-		-- 		table.insert(number2,"ABCDE")
-		-- 		n=n+1
-		-- 		table.insert(sequence,picture_order("ABCDE"))
-		-- 		skynet.error("得分为",end_point*beilv*1000)
-		-- 		money=money+end_point*beilv*1000
-		-- 		table.insert(winmoney,end_point*beilv*1000)
-		-- 	end
+		elseif a>=148235 and a<=158234 then
+			if TYPE=="autostart" or TYPE=="autogo" then 
+				skynet.error(i,"没有中奖")
+				table.insert(sequence,picture_order("NO"))
+				skynet.error("得分为",end_point*beilv*0)
+				money=money+end_point*beilv*0
+				table.insert(winmoney,end_point*beilv*0)
+				if TYPE=="autostart" or TYPE=="autogo" then 
+					table.insert(automoney,end_point*beilv*0)
+				end
+		    else
+				skynet.error(i,"中奖类型FFF----O(∩_∩)O~~-!") 
+				j=j+1
+				wintype.F3=wintype.F3+1
+				table.insert(number1,i)
+				table.insert(number2,"F3")
+				table.insert(sequence,picture_order("F3"))
+				skynet.error("得分为",end_point*beilv*0)
+				money=money+end_point*beilv*0
+				table.insert(winmoney,end_point*beilv*0)
+			end
 	    else 
 			skynet.error(i,"没有中奖")
 			table.insert(sequence,picture_order("NO"))
@@ -344,28 +334,27 @@ for i=1,k do
 			skynet.error(i,"中奖类型ABCDE----O(∩_∩)O~~-!") 
 			j=j+1
 			reqpack(wintype,"A6",1000,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		-- elseif a>=131582 and a<=141581 then
-		-- 	if TYPE=="autostart" or TYPE=="autogo" then 
-				-- skynet.error(i,"没有中奖")
-				-- table.insert(sequence,picture_order("NO"))
-				-- skynet.error("得分为",end_point*beilv*0)
-				-- money=money+end_point*beilv*0 
-				-- table.insert(winmoney,end_point*beilv*0)
-				-- if TYPE=="autostart" or TYPE=="autogo" then 
-				-- 	table.insert(automoney,end_point*beilv*0)
-				-- end
-		--     else
-		-- 		skynet.error(i,"中奖类型FFF----O(∩_∩)O~~-!") 
-		-- 		j=j+1
-		-- 		wintype.A6=wintype.A6+1
-		-- 		table.insert(number1,i)
-		-- 		table.insert(number2,"ABCDE")
-		-- 		n=n+1
-		-- 		table.insert(sequence,picture_order("ABCDE"))
-		-- 		skynet.error("得分为",end_point*beilv*1000)
-		-- 		money=money+end_point*beilv*1000
-		-- 		table.insert(winmoney,end_point*beilv*1000)
-		-- 	end
+		elseif a>=131582 and a<=141581 then
+			if TYPE=="autostart" or TYPE=="autogo" then 
+				skynet.error(i,"没有中奖")
+				table.insert(sequence,picture_order("NO"))
+				skynet.error("得分为",end_point*beilv*0)
+				money=money+end_point*beilv*0 
+				table.insert(winmoney,end_point*beilv*0)
+				if TYPE=="autostart" or TYPE=="autogo" then 
+					table.insert(automoney,end_point*beilv*0)
+				end
+		    else
+				skynet.error(i,"中奖类型FFF----O(∩_∩)O~~-!") 
+				j=j+1
+				wintype.F3=wintype.F3+1
+				table.insert(number1,i)
+				table.insert(number2,"F3")
+				table.insert(sequence,picture_order("F3"))
+				skynet.error("得分为",end_point*beilv*0)
+				money=money+end_point*beilv*0
+				table.insert(winmoney,end_point*beilv*0)
+			end
 		else 
 			skynet.error(i,"没有中奖")
 			table.insert(sequence,picture_order("NO"))
@@ -443,28 +432,27 @@ for i=1,k do
 			skynet.error(i,"中奖类型ABCDE----O(∩_∩)O~~-!") 
 			j=j+1
 			reqpack(wintype,"A6",1000,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		-- elseif a>=162491 and a<=172490 then
-		-- 	if TYPE=="autostart" or TYPE=="autogo" then 
-				-- skynet.error(i,"没有中奖")
-				-- table.insert(sequence,picture_order("NO"))
-				-- skynet.error("得分为",end_point*beilv*0)
-				-- money=money+end_point*beilv*0 
-				-- table.insert(winmoney,end_point*beilv*0)
-				-- if TYPE=="autostart" or TYPE=="autogo" then 
-				-- 	table.insert(automoney,end_point*beilv*0)
-				-- end
-		--     else
-		-- 		skynet.error(i,"中奖类型FFF----O(∩_∩)O~~-!") 
-		-- 		j=j+1
-		-- 		wintype.A6=wintype.A6+1
-		-- 		table.insert(number1,i)
-		-- 		table.insert(number2,"ABCDE")
-		-- 		n=n+1
-		-- 		table.insert(sequence,picture_order("ABCDE"))
-		-- 		skynet.error("得分为",end_point*beilv*1000)
-		-- 		money=money+end_point*beilv*1000
-		-- 		table.insert(winmoney,end_point*beilv*1000)
-		-- 	end
+		elseif a>=162491 and a<=172490 then
+			if TYPE=="autostart" or TYPE=="autogo" then 
+				skynet.error(i,"没有中奖")
+				table.insert(sequence,picture_order("NO"))
+				skynet.error("得分为",end_point*beilv*0)
+				money=money+end_point*beilv*0 
+				table.insert(winmoney,end_point*beilv*0)
+				if TYPE=="autostart" or TYPE=="autogo" then 
+					table.insert(automoney,end_point*beilv*0)
+				end
+		    else
+				skynet.error(i,"中奖类型FFF----O(∩_∩)O~~-!") 
+				j=j+1
+				wintype.F3=wintype.F3+1
+				table.insert(number1,i)
+				table.insert(number2,"F3")
+				table.insert(sequence,picture_order("F3"))
+				skynet.error("得分为",end_point*beilv*0)
+				money=money+end_point*beilv*0
+				table.insert(winmoney,end_point*beilv*0)
+			end
 		else 
 			skynet.error(i,"没有中奖")
 			table.insert(sequence,picture_order("NO"))
@@ -727,7 +715,6 @@ skynet.start(function()
 		local f = assert(CMD[cmd], cmd .. "not found")
 		skynet.retpack(f(...))
 	end)
-	--skynet.error("this is maingame")
     -- 要注册个服务的名字，以.开头
     --skynet.register(".maingame")
 end)
