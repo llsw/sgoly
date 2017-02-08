@@ -96,7 +96,7 @@ function send_result(fd,session,TYPE,SERIES,WCOUNT,MAXMONEY,SUNMONEY,FINMONEY,WI
 	local result={ID="4",SESSION=session,TYPE=TYPE,STATE=true,SERIES=SERIES,WCOUNT=WCOUNT,
 	       MAXMONEY=MAXMONEY,SUNMONEY=SUNMONEY,FINMONEY=FINMONEY,
 	       WINLIST=WINLIST,WMONEY=WMONEY}
-	skynet.error("this is maingame session=%s,SUNMONEY=%s,WMONEY=%s",session,SUNMONEY,WMONEY)
+	printI("this is maingame session=%s,SUNMONEY=%s,WMONEY=%s",session,SUNMONEY,WMONEY)
     local result1=cjson.encode(result)
     local result1_1=crypt.aesencode(result1,who,"")
     local result1_2 = crypt.base64encode(result1_1)
