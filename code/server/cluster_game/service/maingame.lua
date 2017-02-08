@@ -46,7 +46,7 @@ function picture_order(picturetype)              --图片序列函数
 		until (letter~=b and letter~=c)
 		if a==1 then
 			if letter=="F" then
-				skynet.error("图片顺序为",letter:rep(num) .. b..c.."10")
+				skynet.error("图片顺序为",letter:rep(num) .. b..c.."1")
 				local sequence = letter:rep(num).. b..c.."1"
 			    return sequence
 			else
@@ -96,6 +96,7 @@ function send_result(fd,session,TYPE,SERIES,WCOUNT,MAXMONEY,SUNMONEY,FINMONEY,WI
 	local result={ID="4",SESSION=session,TYPE=TYPE,STATE=true,SERIES=SERIES,WCOUNT=WCOUNT,
 	       MAXMONEY=MAXMONEY,SUNMONEY=SUNMONEY,FINMONEY=FINMONEY,
 	       WINLIST=WINLIST,WMONEY=WMONEY}
+	skynet.error("this is maingame session=%s,SUNMONEY=%s,WMONEY=%s",session,SUNMONEY,WMONEY)
     local result1=cjson.encode(result)
     local result1_1=crypt.aesencode(result1,who,"")
     local result1_2 = crypt.base64encode(result1_1)
@@ -691,6 +692,7 @@ function CMD.autosave(fd,name)
    	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
     local bool,req=sgoly_tool.getMoney(name)
     local money=tonumber(req)+autowinall-autocost
+    printI("this is req=%d,autowinall=%d,autocost=%d",req,autowinall,autocost)
     local bo1=sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnumsave,automaxsave,autowinmax,0,xsave,os.date("%Y-%m-%d"))	   
     local bo2=sgoly_tool.saveMoneyToRedis(name,money)
     autonum=0

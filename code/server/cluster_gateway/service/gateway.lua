@@ -8,11 +8,13 @@ local code = require"sgoly_cluster_code"
 require "sgoly_printf"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
+local skynet_queue = require "skynet.queue"
+local lock = skynet_queue()
 
 
 
 local handler = {}
-session=0
+
 function handler.open(source, conf)
 	printI("Gateway open source[%d]", source)
 end
@@ -31,7 +33,7 @@ function handler.message(fd, msg)
 		local req=cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
 		if req~=nil then 
 		  print(req,"this  is req")
-		  driver.send(fd,req)
+		  lock(reqsend,fd,req )
         end
     end
 end
@@ -40,8 +42,8 @@ end
 function handler.connect(fd,addr)
 	gateserver.openclient(fd)
 	printI("Client fd[%d] connect gateway", fd)
-	session=fd
-	local ses=tostring(session)
+	local session=1
+	local ses=tostring("fd-"..fd..":session*"..session)
 	local rep={SESSION=ses,ID="0"}
 	local json_text = cjson.encode(rep)
     local password 
@@ -74,10 +76,13 @@ function CMD.seclose(fd,mes,boo)
 		driver.send(fd,mes)
 		gateserver.closeclient(fd)
     else 
-    	driver.send(fd,mes)
+    	lock(reqsend,fd,mes)
     end
 end
 
+function reqsend(fd,mes)
+	driver.send(fd,mes)
+end
 function CMD.heart(fd)
 	skynet.fork(handlerfork,fd)
 	
