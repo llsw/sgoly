@@ -32,16 +32,22 @@ function CMD.sign_in(fd,mes,name)
 		end
 	elseif mes.TYPE=="award" then
 		    local bool3,req3 = dat_ser.query_sign(uid)
+		    local weekday = dateToWeek(req3)
+		    local seri=tostring(seriLogin(weekday))
+		if seri==mes.DAY then
 	    	local bool1,req1 = dat_ser.get_award("signIn",mes.DAY)
 	    	local bool,req=sgoly_tool.getMoney(name)
 	    	local bool2,req2=sgoly_tool.saveMoneyToRedis(name,req+req1)
 		    printI("this is sign3,%s",mes.NAME)
-		if bool1 and bool and bool2 then 
-			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="award",MONEY=req+req1}
-			local req2_1=sgoly_pack.encode(rqs)
-		    return req2_1
+			if bool1 and bool and bool2 then 
+				local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="award",MONEY=req+req1}
+				local req2_1=sgoly_pack.encode(rqs)
+			    return req2_1
+			else 
+		        return returnfalse(mes,req1..req..req2)
+			end
 		else 
-	        return returnfalse(mes,req1..req..req2)
+	        return returnfalse(mes,"领取失败")
 		end
 	else 
 		returnfalse(mes,"参数错误")
@@ -54,6 +60,68 @@ function returnfalse(mes,msg)
 			return req1_1
 end
 
+function dateToWeek(dateT)
+
+	local function dateToTime(date)
+		local y,m,d = string.match(date,"(.+)-(.+)-(.+)")
+			y = tonumber(y)
+			m = tonumber(m)
+			d = tonumber(d)
+		local t = os.time({day = d, month = m, year = y})
+		return t
+	end
+	local function dateToWeekday(date)
+		local y,m,d = string.match(date,"(.+)-(.+)-(.+)")
+			y = tonumber(y)
+			m = tonumber(m)
+			d = tonumber(d)
+		local t = os.time({day = d, month = m, year = y})
+		local weekday = os.date("%w", t)
+		return tonumber(weekday)
+	end
+	local function dateToDay(t)
+
+		local weekday = {0, 0, 0, 0, 0, 0, 0}
+		local number = dateToWeekday(t[1])
+		if number == 0 then
+		 	number = 7
+		end
+
+		local count = 0
+
+		for i = 1, 7 do
+			if dateToTime(t[1]) - dateToTime(t[i]) >= 24 * 3600 * number then
+				break
+			end
+			count = i
+			local day = dateToWeekday(t[i])
+			if day == 0 then
+				day = 7
+			end
+			weekday[day] = 1
+		end
+		return weekday
+	end
+
+	return dateToDay(dateT)
+end
+
+
+function seriLogin(t)
+	local max = 0
+	local count = 0
+
+	for i=1, 7 do
+		if t[i] == 1 then
+			count = count + 1
+		end
+		if t[i] == 0  or i == 7 then
+			max = count
+			count = 0 
+		end
+	end
+	return max 
+end
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(CMD[cmd], cmd .. "not found")
