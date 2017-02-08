@@ -45,17 +45,35 @@ function picture_order(picturetype)              --图片序列函数
 			 c =string.char(math.random(65,70))
 		until (letter~=b and letter~=c)
 		if a==1 then
-			skynet.error("图片顺序为",letter:rep(num) .. b..c)
-			local sequence = letter:rep(num).. b..c
-		    return sequence
+			if letter=="F" then
+				skynet.error("图片顺序为",letter:rep(num) .. b..c.."10")
+				local sequence = letter:rep(num).. b..c.."10"
+			    return sequence
+			else
+				skynet.error("图片顺序为",letter:rep(num) .. b..c)
+				local sequence = letter:rep(num).. b..c
+			    return sequence
+		    end
 		elseif a==2 then
-			skynet.error("图片顺序为",b .. letter:rep(num)..c)
-			local sequence = b..letter:rep(num)..c
-		    return sequence
+			if letter=="F" then
+				skynet.error("图片顺序为",b .. letter:rep(num)..c.."10")
+				local sequence = b..letter:rep(num)..c.."10"
+			    return sequence
+			else
+				skynet.error("图片顺序为",b .. letter:rep(num)..c)
+				local sequence = b..letter:rep(num)..c
+			    return sequence
+			end
 		elseif a==3 then
-			skynet.error("图片顺序为",b ..c.. letter:rep(num))
-			local sequence = b..c..letter:rep(num)
-		    return sequence
+			if letter=="F" then
+				skynet.error("图片顺序为",b ..c.. letter:rep(num).."10")
+				local sequence = b..c..letter:rep(num).."10"
+			    return sequence
+			else
+				skynet.error("图片顺序为",b ..c.. letter:rep(num))
+				local sequence = b..c..letter:rep(num)
+			    return sequence
+			end
 		end
 	else
 		local a,b,c,d,e
@@ -654,6 +672,7 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 			local req4_1=sgoly_pack.encode(req4)
 			return req4_1
 		end
+
     elseif TYPE=="start" or TYPE=="autostart" then 
 	    local bool,reallymoney=sgoly_tool.getMoney(name)
 	    local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)
