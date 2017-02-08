@@ -672,7 +672,8 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 			local req4_1=sgoly_pack.encode(req4)
 			return req4_1
 		end
-
+    elseif TYPE=="gift" then
+    	return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
     elseif TYPE=="start" or TYPE=="autostart" then 
 	    local bool,reallymoney=sgoly_tool.getMoney(name)
 	    local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)

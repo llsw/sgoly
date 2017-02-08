@@ -44,7 +44,10 @@ function handler(fd, mes)
 			 --    local str3_1=packtable(reqmoney)
 				-- return str3_1.."\n"
     --     end
-            sessionID[mes.NAME]=mes.session            
+            sessionID[mes.NAME]=mes.session
+            for k,v in pairs(sessionID) do
+                   printI("k=%s,v=%s",k,v)
+            end            
 		    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		    local bool,msg=dat_ser.login(mes.NAME, mes.PASSWD)
 		    skynet.error(bool,msg)
