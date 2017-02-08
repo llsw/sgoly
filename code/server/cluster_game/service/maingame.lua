@@ -46,7 +46,7 @@ function picture_order(picturetype)              --图片序列函数
 		until (letter~=b and letter~=c)
 		if a==1 then
 			if letter=="F" then
-				skynet.error("图片顺序为",letter:rep(num) .. b..c.."1")
+				skynet.error("图片顺序为",letter:rep(num) .. b..c.."10")
 				local sequence = letter:rep(num).. b..c.."1"
 			    return sequence
 			else
