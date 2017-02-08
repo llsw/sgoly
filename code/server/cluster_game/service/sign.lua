@@ -31,6 +31,7 @@ function CMD.sign_in(fd,mes,name)
 	        return returnfalse(mes,req1)
 		end
 	elseif mes.TYPE=="award" then
+		    local bool3,req3 = dat_ser.query_sign(uid)
 	    	local bool1,req1 = dat_ser.get_award("signIn",mes.DAY)
 	    	local bool,req=sgoly_tool.getMoney(name)
 	    	local bool2,req2=sgoly_tool.saveMoneyToRedis(name,req+req1)
