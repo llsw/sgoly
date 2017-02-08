@@ -1,3 +1,3 @@
 code/server/log/*.log
 code/server/cluster_database/service/w_test.lua
-code/server/skynet
+code/server/skynet/*
