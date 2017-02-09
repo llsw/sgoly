@@ -14,7 +14,7 @@ local loginuser = {}
 local sessionID={} 
 function handler(fd, mes)
 	local who="123456"
-	printI("login NAME=%s,SESSION=%s,CMD=%s,ID=%s",mes.NAME,mes.SESSION,mes.CMD,mes.ID)
+	-- printI("login NAME=%s,SESSION=%s,CMD=%s,ID=%s",mes.NAME,mes.SESSION,mes.CMD,mes.ID)
 -------------------------用户注册-----------------------------------			
 	if  mes.ID=="2" then            
 	    mes.PASSWD=md5.sumhexa(mes.PASSWD)
@@ -44,9 +44,9 @@ function handler(fd, mes)
 			 --    local str3_1=packtable(reqmoney)
 				-- return str3_1.."\n"
     --     end
-            sessionID[mes.NAME]=mes.session
+            sessionID[mes.NAME]=mes.SESSION
             for k,v in pairs(sessionID) do
-                   printI("k=%s,v=%s",k,v)
+                   printI("sessionID,k=%s,v=%s",k,v)
             end            
 		    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		    local bool,msg=dat_ser.login(mes.NAME, mes.PASSWD)
@@ -205,6 +205,7 @@ function packtable(req)
 end
 
 function CMD.release(fd,name)
+	printI("release sessionID")
 	sessionID[name]=nil
 end
 

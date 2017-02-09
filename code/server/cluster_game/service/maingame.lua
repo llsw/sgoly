@@ -91,12 +91,12 @@ function picture_order(picturetype)              --图片序列函数
 end
 
 
-function send_result(fd,session,TYPE,SERIES,WCOUNT,MAXMONEY,SUNMONEY,FINMONEY,WINLIST,WMONEY)
+function send_result(fd,session,TYPE,SERIES,WCOUNT,MAXMONEY,SUNMONEY,FINMONEY,WINLIST,WMONEY,name)
 	local who = "123456"
 	local result={ID="4",SESSION=session,TYPE=TYPE,STATE=true,SERIES=SERIES,WCOUNT=WCOUNT,
 	       MAXMONEY=MAXMONEY,SUNMONEY=SUNMONEY,FINMONEY=FINMONEY,
 	       WINLIST=WINLIST,WMONEY=WMONEY}
-	printI("this is maingame session=%s,SUNMONEY=%s,WMONEY=%s",session,SUNMONEY,WMONEY)
+	printI("this is maingame name=%s,session=%s,SUNMONEY=%s,WMONEY=%s",name,session,SUNMONEY,WMONEY)
     local result1=cjson.encode(result)
     local result1_1=crypt.aesencode(result1,who,"")
     local result1_2 = crypt.base64encode(result1_1)
@@ -112,12 +112,12 @@ end
 	autonum=0              --自动抽奖次数
 	automoney={}           --自动中奖金额
 	autonumber1={}         --自动第几次中奖
-	autocost=0
-	autowinall =0 
-	autowinmax =0
-	autozjnumsave=0
-	automaxsave=0
-	xsave=1
+	autocost=0             --自动消耗金钱
+	autowinall =0          --自动中奖总金额
+	autowinmax =0          --自动中奖最高金额
+	autozjnumsave=0        --自动中奖次数存数据库
+	automaxsave=0		   --自动最高连续中奖次数
+	xsave=1                --游戏模式存数据库
 	-- winmoney={}        --中奖金额
 --主循环判断
 function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name) 
@@ -643,7 +643,7 @@ end  --for 循环end
 				return req5_1
 			end
     end
-	return send_result(fd,session,TYPE,max,j,winmax,winall,nowMONEY,sequence,winmoney)
+	return send_result(fd,session,TYPE,max,j,winmax,winall,nowMONEY,sequence,winmoney,name)
 end
 
 function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
