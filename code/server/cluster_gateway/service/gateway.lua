@@ -75,7 +75,6 @@ end
 local CMD = {}
 function CMD.seclose(fd,mes,boo)
     if boo==true then
-		-- driver.send(fd,mes)
 		driver.send(fd,mes)
 		gateserver.closeclient(fd)
     else 
@@ -98,12 +97,9 @@ function handlerfork(fd)
 			break
 		end
 		if(os.time()-line>20) then
-		
-		local req={ID="13",TYPE="heart"}
-		local req2_1=sgoly_pack.encode(req)
-	    -- driver.send(fd,req2_1)
-	    driver.send(fd,req2_1)
-	    printI("this is handlerforkfd,%d",fd)
+			local req={ID="13",TYPE="heart"}
+		    driver.send(fd,req2_1)
+		    printI("this is handlerforkfd,%d",fd)
     	end
     	if(os.time()-line>50) then
     		break

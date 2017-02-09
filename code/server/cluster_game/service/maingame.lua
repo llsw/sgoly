@@ -606,7 +606,6 @@ end  --for 循环end
 				automaxsave=automax
 			end
 	    ---------------------自动中奖最高金额---------------
-			    -- local autowinmax =0
 				for k,v in ipairs(automoney) do
 					-- print("automoney",k,v)
 				     if v>autowinmax then 
@@ -704,7 +703,7 @@ function CMD.autosave(fd,name)
     local bool1,req1 = sgoly_tool.getStatementsFromRedis(name, os.date("%Y-%m-%d"))
 	local bool2,rqs=sgoly_tool.getRankFromRedis(name,tonumber(req1.serialWinNum), "serialWinNum",os.date("%Y-%m-%d"))
     local bool5,req3 = sgoly_tool.getStatementsFromRedis(name, os.date("%Y-%m-%d"))
-	local bool6,rqs3_1=sgoly_tool.getRankFromRedis(name,tonumber(req2.winMoney), "winMoney",os.date("%Y-%m-%d"))
+	local bool6,rqs3_1=sgoly_tool.getRankFromRedis(name,tonumber(req3.winMoney), "winMoney",os.date("%Y-%m-%d"))
     autonum=0
     autocost=0
     automoney={}
