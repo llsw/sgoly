@@ -23,6 +23,6 @@ skynet.start(function()
 		skynet.retpack(f(...))
 	end)
 
-	skynet.register(".inform")
-	skynet.call(".agent","lua","sclose",false,"服务器将于五分钟后关闭")
+	skynet.register(".inform1")
+	skynet.call(".agent","lua","sclose",false,"服务器重启完毕")
 end)

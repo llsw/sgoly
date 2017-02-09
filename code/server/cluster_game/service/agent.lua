@@ -105,13 +105,13 @@ function agent.close( fd )        --用户玩普通模式强制退出
 			return "false"
 	    end
     else 
-    	cluster.call("cluster_login",".login","release",fd,connection[fd].name)
+    	-- cluster.call("cluster_login",".login","release",fd,connection[fd].name)
     	connection[fd]=nil
     	return "no login".." " ..fd
     end     
 end
 
-function agent.sclose(bool)
+function agent.sclose(bool,msg)
 	if bool ==true then
 		for k,v in pairs(connection) do
 			printI("this is connection %s",k)
@@ -122,7 +122,7 @@ function agent.sclose(bool)
     else
     	for k,v in pairs(connection) do
 		printI("this is connection,%s",k)
-		local req1={ID="8",STATE=false,MESSAGE="服务器将于五分钟后关闭"}
+		local req1={ID="8",STATE=false,MESSAGE=msg}
 		local result2_2 = sgoly_pack.encode(req1)
 	    cluster.call("cluster_gateway",".gateway","seclose",k,result2_2,false)
 	    end

@@ -24,5 +24,5 @@ skynet.start(function()
 	end)
 
 	skynet.register(".serverclose")
-	skynet.call(".agent","lua","sclose",true)
+	skynet.call(".agent","lua","sclose",true,"暂无")
 end)
