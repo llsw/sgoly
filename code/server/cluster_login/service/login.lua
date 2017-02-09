@@ -39,11 +39,11 @@ function handler(fd, mes)
 		end
 -------------------------用户登录-------------------------------------
     elseif mes.ID=="1" then   
-    --     if sessionID[mes.NAME] then
-				-- local reqmoney={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="该用户已登录"}
-			 --    local str3_1=packtable(reqmoney)
-				-- return str3_1.."\n"
-    --     end
+        if sessionID[mes.NAME] then
+				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="该用户已登录"}
+			    local str3_1=packtable(reqmoney)
+				return str3_1.."\n"
+        end
             sessionID[mes.NAME]=mes.SESSION
             for k,v in pairs(sessionID) do
                    printI("sessionID,k=%s,v=%s",k,v)

@@ -6,7 +6,7 @@ require "skynet.manager"
 local md5 = require "md5"
 local sgoly_pack=require "sgoly_pack"
 local CMD={}
-function CMD.sign_in(fd,mes,name)
+function CMD.getgrant(fd,mes,name)
 	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
 	local bool,uid=dat_ser.get_uid(name)
 	printI("uid,%s",uid)
@@ -48,7 +48,7 @@ function CMD.sign_in(fd,mes,name)
 end
 
 function returnfalse(mes,msg)
-	        local req1={SESSION=mes.session,ID="10",STATE=false,TYPE=mes.TYPE,MESSAGE=msg}
+	        local req1={SESSION=mes.session,ID="14",STATE=false,MESSAGE=msg}
 			local req1_1=sgoly_pack.encode(req1)
 			return req1_1
 end

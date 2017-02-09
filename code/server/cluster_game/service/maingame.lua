@@ -543,8 +543,9 @@ end  --for 循环end
 			skynet.error("第%d次中奖,中奖类型为%s",v,number2[key])
 		end
 ---------------------最高连续不中奖次数-----------------------
+    local houmian=0
 	if not number1[1] then
-			skynet.error("最高连续不中奖次数为0")
+			skynet.error("最高连续不中奖次数为k")
 	else
 		local max = number1[1]
 		for key,v in ipairs(number1) do
@@ -554,15 +555,19 @@ end  --for 循环end
 			 	    startnum=v
 			 	    endnum=number1[key+1]
 			 	 end
+			else 
+                houmian=k-v
 			end
 			if max==number1[1] then
 				startnum=1
 				endnum=number1[1]
 			end
 		end
-		if  max>0 then
+		if  max>0 and max>houmian then
 			skynet.error("最高连续不中奖次数为%d,第%d-%d次",max-1,startnum,endnum)
-		end
+	    else
+	    	printI("最高连续不中奖次数为%d,第%d-%d次",houmian,endnum+1,k)
+	    end
 	end
 ----------------------中奖最高金额---------------
 	local winmax =0
