@@ -90,7 +90,7 @@ function CMD.heart(fd)
 end
 function handlerfork(fd)
 	while true do
-		skynet.sleep(2000)
+		skynet.sleep(1800)
 		local line =  cluster.call("cluster_game",".agent","getline",fd)
 		printI("this is linefd,%s",line)
 		if  line==false then
