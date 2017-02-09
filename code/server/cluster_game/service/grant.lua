@@ -60,5 +60,5 @@ skynet.start(function()
 		skynet.retpack(f(...))
 	end)
     -- 要注册个服务的名字，以.开头
-    skynet.register(".sign")
+    skynet.register(".grant")
 end)

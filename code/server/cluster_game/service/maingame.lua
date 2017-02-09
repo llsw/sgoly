@@ -694,6 +694,37 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 end
 
 function CMD.autosave(fd,name)
+		autopersentmax=1    --记录自动最高连续中奖次数
+			if  not autonumber1[1] then
+				automax=0
+				skynet.error("autosave自动最高连续中奖次数为0")
+			else
+				automax=1  --最终最高连续中奖次数
+				for key,v in ipairs(autonumber1) do 
+					skynet.error("autonumber1",key,v)
+					if v+1==autonumber1[key+1] then
+						autopersentmax=autopersentmax+1
+
+					else
+							if automax<autopersentmax then
+							   automax=autopersentmax
+							end
+							autopersentmax=1
+					end
+				end
+				skynet.error("autosave自动最高连续中奖次数为%d",automax)
+				automaxsave=automax
+			end
+	    ---------------------自动中奖最高金额---------------
+				for k,v in ipairs(automoney) do
+					-- print("automoney",k,v)
+				     if v>autowinmax then 
+				     	autowinmax=v
+				     end
+				end
+	local autozjnum = #(autonumber1)
+	local autozjnumsave=autozjnum
+		  skynet.error("autozjnum=",autozjnum)
    	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
     local bool,req=sgoly_tool.getMoney(name)
     local money=tonumber(req)+autowinall-autocost
