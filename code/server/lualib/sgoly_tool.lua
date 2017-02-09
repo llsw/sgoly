@@ -370,7 +370,7 @@ end
 function sgoly_tool.saveMoneyFromRdisToMySQL(nickname)
 	local key = "user:" .. nickname
 	local result = tonumber(redis_query({"hget", key , "money"}))
-	if result < 0 then
+	if result == nil then
 		return false, "No money"
 	end
 	local ok , result = sgoly_dat_ser.upadate_money_to_MySQL(nickname, result)
