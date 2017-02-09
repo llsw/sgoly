@@ -163,6 +163,7 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 			table.insert(winmoney,end_point*beilv*grade)
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				table.insert(automoney,end_point*beilv*grade)
+				autowinall=autowinall+end_point*beilv*grade
 			end
     end
 for i=1,k do
@@ -245,6 +246,7 @@ for i=1,k do
 				table.insert(winmoney,end_point*beilv*0)
 				if TYPE=="autostart" or TYPE=="autogo" then 
 					table.insert(automoney,end_point*beilv*0)
+					autowinall=autowinall+end_point*beilv*0
 				end
 		    else
 				skynet.error(i,"中奖类型FFF----O(∩_∩)O~~-!") 
@@ -265,6 +267,7 @@ for i=1,k do
 			table.insert(winmoney,end_point*beilv*0)
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				table.insert(automoney,end_point*beilv*0)
+				autowinall=autowinall+end_point*beilv*0
 			end
 		end
 ---------------------困难模式-----------------------	
@@ -344,6 +347,7 @@ for i=1,k do
 				table.insert(winmoney,end_point*beilv*0)
 				if TYPE=="autostart" or TYPE=="autogo" then 
 					table.insert(automoney,end_point*beilv*0)
+					autowinall=autowinall+end_point*beilv*0
 				end
 		    else
 				skynet.error(i,"中奖类型FFF----O(∩_∩)O~~-!") 
@@ -364,6 +368,7 @@ for i=1,k do
 			table.insert(winmoney,end_point*beilv*0)
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				table.insert(automoney,end_point*beilv*0)
+				autowinall=autowinall+end_point*beilv*0
 			end
 		end
 ------------------------简单模式-----------------------------
@@ -442,6 +447,7 @@ for i=1,k do
 				table.insert(winmoney,end_point*beilv*0)
 				if TYPE=="autostart" or TYPE=="autogo" then 
 					table.insert(automoney,end_point*beilv*0)
+					autowinall=autowinall+end_point*beilv*0
 				end
 		    else
 				skynet.error(i,"中奖类型FFF----O(∩_∩)O~~-!") 
@@ -462,6 +468,7 @@ for i=1,k do
 			table.insert(winmoney,end_point*beilv*0)
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				table.insert(automoney,end_point*beilv*0)
+				autowinall=autowinall+end_point*beilv*0
 			end
 		end
 	end
@@ -607,11 +614,10 @@ end  --for 循环end
 				     end
 				end
 	---------------------自动获奖总金额----------------
-			    -- local autowinall =0
-			    for k,v in ipairs(automoney) do
-			    	autowinall=autowinall+v
-			    	skynet.error("automoney-k=%d,v=%d",k,v)
-			    end
+			    -- for k,v in ipairs(automoney) do
+			    -- 	autowinall=autowinall+v
+			    -- 	skynet.error("automoney-k=%d,v=%d",k,v)
+			    -- end
 			    printI("autowinall is %s",autowinall)
 	-------------------------------------------------------
 		   local autozjnum = #(autonumber1)
@@ -692,9 +698,13 @@ function CMD.autosave(fd,name)
    	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
     local bool,req=sgoly_tool.getMoney(name)
     local money=tonumber(req)+autowinall-autocost
-    printI("this is req=%d,autowinall=%d,autocost=%d",req,autowinall,autocost)
+    printI("this is name=%s,req=%d,autowinall=%d,autocost=%d",name,req,autowinall,autocost)
     local bo1=sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnumsave,automaxsave,autowinmax,0,xsave,os.date("%Y-%m-%d"))	   
     local bo2=sgoly_tool.saveMoneyToRedis(name,money)
+    local bool1,req1 = sgoly_tool.getStatementsFromRedis(name, os.date("%Y-%m-%d"))
+	local bool2,rqs=sgoly_tool.getRankFromRedis(name,tonumber(req1.serialWinNum), "serialWinNum",os.date("%Y-%m-%d"))
+    local bool5,req3 = sgoly_tool.getStatementsFromRedis(name, os.date("%Y-%m-%d"))
+	local bool6,rqs3_1=sgoly_tool.getRankFromRedis(name,tonumber(req2.winMoney), "winMoney",os.date("%Y-%m-%d"))
     autonum=0
     autocost=0
     automoney={}
@@ -704,7 +714,7 @@ function CMD.autosave(fd,name)
     autozjnumsave=0
     automaxsave=0
     xsave=1
-	if bo1 and  bo2 then
+	if bo1 and  bo2 and bool1 and bool2 then
 		return "suss"
 	else 
 		return "false"
