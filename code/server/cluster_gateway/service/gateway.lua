@@ -97,9 +97,11 @@ function handlerfork(fd)
 			break
 		end
 		if(os.time()-line>20) then
-			local req={ID="13",TYPE="heart"}
-		    driver.send(fd,req2_1)
-		    printI("this is handlerforkfd,%d",fd)
+		
+		local req={ID="13",TYPE="heart"}
+		local req2_1=sgoly_pack.encode(req)
+	    driver.send(fd,req2_1)
+	    printI("this is handlerforkfd,%d",fd)
     	end
     	if(os.time()-line>50) then
     		break

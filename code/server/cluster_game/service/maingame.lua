@@ -700,10 +700,6 @@ function CMD.autosave(fd,name)
     printI("this is name=%s,req=%d,autowinall=%d,autocost=%d",name,req,autowinall,autocost)
     local bo1=sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnumsave,automaxsave,autowinmax,0,xsave,os.date("%Y-%m-%d"))	   
     local bo2=sgoly_tool.saveMoneyToRedis(name,money)
-    local bool1,req1 = sgoly_tool.getStatementsFromRedis(name, os.date("%Y-%m-%d"))
-	local bool2,rqs=sgoly_tool.getRankFromRedis(name,tonumber(req1.serialWinNum), "serialWinNum",os.date("%Y-%m-%d"))
-    local bool5,req3 = sgoly_tool.getStatementsFromRedis(name, os.date("%Y-%m-%d"))
-	local bool6,rqs3_1=sgoly_tool.getRankFromRedis(name,tonumber(req3.winMoney), "winMoney",os.date("%Y-%m-%d"))
     autonum=0
     autocost=0
     automoney={}
@@ -713,7 +709,7 @@ function CMD.autosave(fd,name)
     autozjnumsave=0
     automaxsave=0
     xsave=1
-	if bo1 and  bo2 and bool1 and bool2 then
+	if bo1 and  bo2  then
 		return "suss"
 	else 
 		return "false"

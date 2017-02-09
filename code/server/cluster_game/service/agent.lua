@@ -39,11 +39,7 @@ function exit(fd,mes)   --用户正常退出
 	local bool,res=sgoly_tool.saveMoneyFromRdisToMySQL(connection[fd].name)
 	local bool1,res1=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,os.date("%Y-%m-%d"))
 	local bool2,res2=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,c)
-	local bool3,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
-	local bool4,rqs=sgoly_tool.getRankFromRedis(mes.NAME,tonumber(req1.serialWinNum), "serialWinNum",os.date("%Y-%m-%d"))
-	local bool5,req3 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
-	local bool6,rqs3_1=sgoly_tool.getRankFromRedis(mes.NAME,tonumber(req3.winMoney), "winMoney",os.date("%Y-%m-%d"))
-		if bool and bool1 and bool3 and bool4 then
+		if bool and bool1 then
 			local req2={SESSION=mes.SESSION,
 			      TYPE=mes.TYPE,
 			 	  ID=mes.ID,
@@ -93,9 +89,9 @@ function agent.close( fd )        --用户玩普通模式强制退出
 		local bool1,res1=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,os.date("%Y-%m-%d"))
 		local bool2,res2=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,c)
 		local bool3,req1 = sgoly_tool.getStatementsFromRedis(connection[fd].name, os.date("%Y-%m-%d"))
-		local bool4,rqs=sgoly_tool.getRankFromRedis(connection[fd].name,tonumber(req1.serialWinNum), "serialWinNum",os.date("%Y-%m-%d"))
-	    local bool5,req3 = sgoly_tool.getStatementsFromRedis(connection[fd].name, os.date("%Y-%m-%d"))
-		local bool6,rqs3_1=sgoly_tool.getRankFromRedis(connection[fd].name,tonumber(req3.winMoney), "winMoney",os.date("%Y-%m-%d"))
+	    local bool4,rqs=sgoly_tool.getRankFromRedis(connection[fd].name,tonumber(req1.serialWinNum), "serialWinNum",os.date("%Y-%m-%d"))
+		local bool5,req2 = sgoly_tool.getStatementsFromRedis(connection[fd].name, os.date("%Y-%m-%d"))
+	    local bool5_1,rqs2_1=sgoly_tool.getRankFromRedis(connection[fd].name,tonumber(req2.winMoney), "winMoney",os.date("%Y-%m-%d"))
 		if bool  and bool1 then
 			-- cluster.call("cluster_login",".login","release",fd,connection[fd].name)
 		     connection[fd]=nil
@@ -106,7 +102,7 @@ function agent.close( fd )        --用户玩普通模式强制退出
 			return "false"
 	    end
     else 
-    	-- cluster.call("cluster_login",".login","release",fd,connection[fd].name)
+    	cluster.call("cluster_login",".login","release",fd,connection[fd].name)
     	connection[fd]=nil
     	return "no login".." " ..fd
     end     
