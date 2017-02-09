@@ -123,7 +123,12 @@ function agent.sclose(bool)
 end
 
 function agent.setline(fd)
-	  connection[fd].line=os.time()
+	if connection[fd]~=nil  then
+		if connection[fd]~=nil  then
+			printI("this is setline")
+		   connection[fd].line=os.time()
+		end
+	end
 end
 
 

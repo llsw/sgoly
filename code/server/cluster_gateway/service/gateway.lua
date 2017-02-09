@@ -30,10 +30,11 @@ function handler.message(fd, msg)
 		skynet.error(mes.SESSION,mes.CLUSTER,mes.SERVICE,mes.CMD,mes.ID,mes.NAME,mes.PASSWD)
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)
+		 cluster.call("cluster_game",".agent","setline",fd)
 		local req=cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
 		if req~=nil then 
 		  print(req,"this  is req")
-		  lock(reqsend,fd,req )
+		  driver.send(fd,req)
         end
     end
 end
@@ -50,6 +51,7 @@ function handler.connect(fd,addr)
     local who="123456"
     password =crypt.aesencode(json_text,who,"")
     local str1 = crypt.base64encode(password)
+    -- driver.send(fd,str1)
     driver.send(fd,str1)
 end
 
@@ -73,36 +75,39 @@ end
 local CMD = {}
 function CMD.seclose(fd,mes,boo)
     if boo==true then
+		-- driver.send(fd,mes)
 		driver.send(fd,mes)
 		gateserver.closeclient(fd)
     else 
-    	lock(reqsend,fd,mes)
+    	driver.send(fd,mes)
     end
 end
 
-function reqsend(fd,mes)
-	driver.send(fd,mes)
-end
+
 function CMD.heart(fd)
 	skynet.fork(handlerfork,fd)
 	
 end
 function handlerfork(fd)
 	while true do
-		skynet.sleep(1000)
+		skynet.sleep(2000)
 		local line =  cluster.call("cluster_game",".agent","getline",fd)
 		printI("this is linefd,%s",line)
 		if  line==false then
+			printI("line=false")
 			break
 		end
-		if(os.time()-line>30) then
-		   break
-		end
+		if(os.time()-line>20) then
+		
 		local req={ID="13",TYPE="heart"}
 		local req2_1=sgoly_pack.encode(req)
+	    -- driver.send(fd,req2_1)
 	    driver.send(fd,req2_1)
 	    printI("this is handlerforkfd,%d",fd)
-    	
+    	end
+    	if(os.time()-line>50) then
+    		break
+    	end
     end
     gateserver.closeclient(fd)
     printI(">30s %d",fd)

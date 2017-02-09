@@ -138,7 +138,7 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
     skynet.error(type(x),type(y[2]))
 	-- historynum=0       --历史抽奖次数
 	winmoney={}        --中奖金额       
-	printI("MONET=%s,cost=%s",MONEY,cost)
+	printI("MONEY=%s,cost=%s",MONEY,cost)
 	--historynum=historynum+k
 	if TYPE=="autostart" or TYPE=="autogo" then 
 		autonum=autonum+k
