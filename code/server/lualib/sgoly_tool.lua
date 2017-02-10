@@ -762,4 +762,47 @@ function sgoly_tool.setCharityTimesToRedis(nickname, times)
 	return true, nil
 end
 
+--!
+--! @brief      Gets the money rank from redis.
+--!
+--! @param      nickname  The nickname
+--! @param      money     The money
+--!
+--! @return     The money rank from redis.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-10
+--!
+function sgoly_tool.getMoneyRankFromRedis(nickname, money)
+	local rank = {} 
+	local args = {}
+	local name_rank = {}
+
+	local function redisArgsToTable(result, fori)
+		local rank_i = {}
+		local args_i = {}
+		--skynet.error("fori", fori)
+		for i=1, fori do
+			--skynet.error(result[i])
+			local nickname_i, value_i, time_i = string.match(result[i],"(.+):(.+):(.+)")
+			rank_i[i] = nickname_i
+			args_i[nickname_i]={tonumber(value_i), tonumber(time_i)}
+		end	
+		return rank_i, args_i
+	end
+
+
+	local key = "rank:money"
+	local res = redis_query({"hmget", key, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
+	if #res > 0 then
+		rank, args = redisArgsToTable(res, #res)
+
+		for k,v in pairs(rank) do
+			name_rank[v] = k
+		end
+	end
+
+	return true, {rank, name_rank, args, value}
+end
+
 return sgoly_tool

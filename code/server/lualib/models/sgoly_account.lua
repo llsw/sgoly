@@ -22,6 +22,7 @@ require "sgoly_printf"
  	local time = os.date("%Y-%m-%d %H:%M:%S")
  	local sql = string.format("insert into sgoly.account value(%d, %d, '%s')", id,
  							   money, time)
+
  	return mysql_query(sql)
  end
 
@@ -35,6 +36,7 @@ function account.update_money(id, money)
 	local time = os.date("%Y-%m-%d %H:%M:%S")
  	local sql = string.format("update sgoly.account set money = %d, update_time = '%s' where id = "
  							   .."%d ;", money, time, id)
+
  	return mysql_query(sql)
 end
 
@@ -71,6 +73,7 @@ function account.update_money_s(nickname, money)
 					WHERE
 						u.nickname = '%s';
 				]], money, time, nickname)
+	
 	return mysql_query(sql)
 end
 
