@@ -13,6 +13,7 @@ local sgoly_dat_ser = require "sgoly_dat_ser"
 local skynet = require "skynet"
 local queue = require "skynet.queue"
 local lock = queue()
+local sgoly_rank = require "sgoly_rank"
 
 --!
 --! @brief      网络数据包取长度
@@ -600,24 +601,40 @@ end
 --! @date       2017-01-23
 --!
 function sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
-	local key = "rank:" .. rank_type .. date
+	if date ~= nil then
+		local key = "rank:" .. rank_type .. date
+		local result = {}
+		for i = 1, #rank do
+			local nickname = rank[i]
+			local value = nickname .. ":" .. args[nickname][1] .. ":" .. args[nickname][2] .. ":0"
+			--skynet.error(i, "value" ,value)
+			result[tostring(i)] = value
+		end
+
+		if #rank > 0 then
+			redis_query({"hmset", key, result})
+			local year, month, day = string.match(date, "(.+)-(.+)-(.+)")
+			year = tonumber(year)
+			month = tonumber(month)
+			day = tonumber(day)
+			local time = os.time({day=day+3, month=month, year=year,hour = 0, min=0, sec=0})
+			redis_query({"expireat", key, time})
+			return true
+		end
+	end
+
+	local key = "rank:" .. rank_type
 	local result = {}
 	for i = 1, #rank do
 		local nickname = rank[i]
-		local value = nickname .. ":" .. args[nickname][1] .. ":" .. args[nickname][2] .. ":0"
+		local value = nickname .. ":" .. args[nickname][1] .. ":" .. args[nickname][2]
 		--skynet.error(i, "value" ,value)
 		result[tostring(i)] = value
 	end
 
 	if #rank > 0 then
-		redis_query({"hmset", key, result})
-		local year, month, day = string.match(date, "(.+)-(.+)-(.+)")
-		year = tonumber(year)
-		month = tonumber(month)
-		day = tonumber(day)
-		local time = os.time({day=day+3, month=month, year=year,hour = 0, min=0, sec=0})
-		redis_query({"expireat", key, time})
-		return true
+			redis_query({"hmset", key, result})
+			return true
 	end
 end
 
@@ -773,7 +790,7 @@ end
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-02-10
 --!
-function sgoly_tool.getMoneyRankFromRedis(nickname, money)
+function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 	local rank = {} 
 	local args = {}
 	local name_rank = {}
@@ -799,6 +816,73 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, money)
 
 		for k,v in pairs(rank) do
 			name_rank[v] = k
+		end
+		if name_rank[nickname] then
+			if value > args[nickname][1] then
+				args[nickname][1] = value
+				args[nickname][2] = os.time()
+				lock(sortRank,rank, args)
+				for k,v in pairs(rank) do
+					name_rank[v] = k
+				end
+				sgoly_tool.updateRankToRedis(rank, args, "money")
+			end
+
+		else
+			args[nickname] = {value, os.time()}
+			table.insert(rank,nickname)
+			lock(sortRank,rank, args)
+
+			local len = #rank
+			if len  > 10 then
+				local name = rank[11]
+				rank[11] = nil
+				args[name] = nil
+			end
+			for k,v in pairs(rank) do
+				name_rank[v] = k
+			end
+			sgoly_tool.updateRankToRedis(rank, args, "money")
+		end
+
+	else 
+		local ok, result = sgoly_rank.get_money_rank_from_MySQL()
+		if #result > 0 then
+			for k, v in ipairs(result) do
+				rank[k] = v.nickname
+				name_rank[v.nickname] = k
+				local year, month, day, hour, minute, second = string.match(v.update_time,"(.+)-(.+)-(.+) (.+):(.+):(.+)")
+				local time = os.time({day=day, month=month, year=year, hour=hour, min=minute, sec=second})
+				args[v.nickname] = {v.money, time}
+			end
+		end
+
+		if name_rank[nickname] then
+			if value > args[nickname][1] then
+				args[nickname][1] = value
+				args[nickname][2] = os.time()
+				lock(sortRank,rank, args)
+				for k,v in pairs(rank) do
+					name_rank[v] = k
+				end
+				sgoly_tool.updateRankToRedis(rank, args, "money")
+			end
+
+		else
+			args[nickname] = {value, os.time()}
+			table.insert(rank,nickname)
+			lock(sortRank,rank, args)
+
+			local len = #rank
+			if len  > 10 then
+				local name = rank[11]
+				rank[11] = nil
+				args[name] = nil
+			end
+			for k,v in pairs(rank) do
+				name_rank[v] = k
+			end
+			sgoly_tool.updateRankToRedis(rank, args, "money")
 		end
 	end
 
