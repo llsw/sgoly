@@ -23,7 +23,7 @@ local sgoly_tool = require "sgoly_tool"
 --!
 local function redisToMySQL()
 	local date = os.date("%Y-%m-%d")
-	local timeEnd = os.time({day=tonumber(os.date("%d")), month=tonumber(os.date("%m")), year=tonumber(os.date("%Y")),hour = 23, min=59, sec=59})
+	local timeEnd = os.time({day=tonumber(os.date("%d")), month=tonumber(os.date("%m")), year=tonumber(os.date("%Y")),hour = 17, min=40, sec=0})
 	local time = timeEnd - os.time() 
 	skynet.sleep(time * 100)
 
