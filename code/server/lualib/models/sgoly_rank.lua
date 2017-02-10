@@ -115,14 +115,14 @@ function model.get_money_rank_from_MySQL()
 	local sql = string.format(
 		[[
 			SELECT
-				nickname,
+				id,
 				money,
 				update_time
 			FROM
 				users,
 				account
 			WHERE
-				users.id = account.id
+				account
 			ORDER BY
 				money DESC,
 				update_time ASC
