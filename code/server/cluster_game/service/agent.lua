@@ -64,14 +64,16 @@ function agent.start(fd,name)
 	   local maingame = skynet.newservice("maingame")
 	   local stats = skynet.newservice("stats")
 	   local safe = skynet.newservice("safe")
-	  local sign = skynet.newservice("sign")
+	   local sign = skynet.newservice("sign")
+	   -- local grant = skynet.newservice("grant")
 	  local c = {
 	  		name = name,
 	  		maingame = maingame,
 	  		stats=stats,
 	  		safe=safe,
 	  		line=os.time(),
-	  		sign=sign
+	  		sign=sign,
+	  		-- grant=grant
 			}
 	  connection[fd] = c 
 end
@@ -96,16 +98,15 @@ function agent.close( fd )        --用户玩普通模式强制退出
 		local bool5,req2 = sgoly_tool.getStatementsFromRedis(connection[fd].name, os.date("%Y-%m-%d"))
 	    local bool5_1,rqs2_1=sgoly_tool.getRankFromRedis(connection[fd].name,tonumber(req2.winMoney), "winMoney",os.date("%Y-%m-%d"))
 		if bool  and bool1 then
-			-- cluster.call("cluster_login",".login","release",fd,connection[fd].name)
+			cluster.call("cluster_login",".login","release",fd,connection[fd].name)
 		     connection[fd]=nil
 	   		 return  "suss"
 	    else
-	    	-- cluster.call("cluster_login",".login","release",fd,connection[fd].name)
+	    	cluster.call("cluster_login",".login","release",fd,connection[fd].name)
 	    	connection[fd]=nil
 			return "false"
 	    end
     else 
-    	-- cluster.call("cluster_login",".login","release",fd,connection[fd].name)
     	connection[fd]=nil
     	return "no login".." " ..fd
     end     
