@@ -128,19 +128,19 @@ end
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-21
 --!
--- function day_io.updateS(nickname, win, cost, dt)
--- 	local sql = string.format(
--- 		[[
--- 			UPDATE users AS u
--- 	  	LEFT JOIN day_io AS dio ON u.id = dio.uid
--- 		SET dio.win = %d,
--- 				dio.cost = %d
--- 		WHERE
--- 			u.nickname = '%s'
--- 		AND dio.s_date = '%s';
--- 	]],win, cost, nickname, dt)
+function day_io.updateS(nickname, win, cost, dt)
+	local sql = string.format(
+		[[
+			UPDATE users AS u
+	  	LEFT JOIN day_io AS dio ON u.id = dio.uid
+		SET dio.win = %d,
+				dio.cost = %d
+		WHERE
+			u.id = %d
+		AND dio.s_date = '%s';
+	]],win, cost, nickname, dt)
 	
--- 	return mysql_query(sql)
--- end
+	return mysql_query(sql)
+end
 
 return day_io

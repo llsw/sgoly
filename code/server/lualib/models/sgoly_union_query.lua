@@ -41,7 +41,7 @@ function query.get_statmens_from_MySQL(nickname, dt)
 			AND dti.s_date = dmax.s_date
 			LEFT JOIN users AS u ON dmax.uid = u.id
 			WHERE
-				nickname = '%s'
+				u.id = %d
 			AND dmax.s_date = '%s';
 		]], nickname, dt)
 	
@@ -78,9 +78,9 @@ function query.get_count_statements_from_MySQL(nickname, dt)
 			AND dti.s_date = dmax.s_date
 			LEFT JOIN users AS u ON dmax.uid = u.id
 			GROUP BY
-				nickname
+				u.id
 			HAVING
-				nickname = '%s';
+				u.id = %d;
 		]], dt, nickname)
 	
 	return mysql_query(sql)

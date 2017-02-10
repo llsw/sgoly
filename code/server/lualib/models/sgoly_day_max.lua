@@ -129,20 +129,20 @@ end
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-21
 --!
--- function day_max.updateS(nickname, single_max, conti_max, dt)
--- 	local sql = string.format(
--- 		[[
--- 			UPDATE users AS u
--- 	  	LEFT JOIN day_max AS dmax ON u.id = dmax.uid
--- 		SET dmax.single_max = %d,
--- 				dmax.conti_max = %d
--- 		WHERE
--- 			u.nickname = '%s'
--- 		AND dmax.s_date = '%s';
--- 	]],single_max, conti_max, nickname, dt)
+function day_max.updateS(nickname, single_max, conti_max, dt)
+	local sql = string.format(
+		[[
+			UPDATE users AS u
+	  	LEFT JOIN day_max AS dmax ON u.id = dmax.uid
+		SET dmax.single_max = %d,
+				dmax.conti_max = %d
+		WHERE
+			u.id = %d
+		AND dmax.s_date = '%s';
+	]],single_max, conti_max, nickname, dt)
 	
--- 	return mysql_query(sql)
--- end
+	return mysql_query(sql)
+end
 
 
 return day_max

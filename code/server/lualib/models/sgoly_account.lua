@@ -76,16 +76,16 @@ end
  --! @author     kun si, 627795061@qq.com
  --! @date       2017-01-21
  --!
--- function account.update_money_s(nickname, money)
--- 	local sql = string.format(
--- 				[[
--- 					UPDATE account AS acc
--- 					LEFT JOIN users AS u ON acc.id = u.id
--- 					SET acc.money = %d
--- 					WHERE
--- 						u.nickname = '%s';
--- 				]], money, nickname)
--- 	return mysql_query(sql)
--- end
+function account.update_money_s(nickname, money)
+	local sql = string.format(
+				[[
+					UPDATE account AS acc
+					LEFT JOIN users AS u ON acc.id = u.id
+					SET acc.money = %d
+					WHERE
+						u.id = %d;
+				]], money, nickname)
+	return mysql_query(sql)
+end
 
 return account

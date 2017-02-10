@@ -127,20 +127,20 @@ end
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-21
 --!
--- function day_times.updateS(nickname, times, win_times, dt)
--- 	local sql = string.format(
--- 		[[
--- 			UPDATE users AS u
--- 	  	LEFT JOIN day_times AS dti ON u.id = dti.uid
--- 		SET dti.times = %d,
--- 				dti.win_times = %d
--- 		WHERE
--- 			u.nickname = '%s'
--- 		AND dti.s_date = '%s';
--- 	]],times, win_times, nickname, dt)
+function day_times.updateS(nickname, times, win_times, dt)
+	local sql = string.format(
+		[[
+			UPDATE users AS u
+	  	LEFT JOIN day_times AS dti ON u.id = dti.uid
+		SET dti.times = %d,
+				dti.win_times = %d
+		WHERE
+			u.id = %d
+		AND dti.s_date = '%s';
+	]],times, win_times, nickname, dt)
 	
--- 	return mysql_query(sql)
--- end
+	return mysql_query(sql)
+end
 
 
 return day_times
