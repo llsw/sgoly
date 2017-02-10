@@ -20,11 +20,6 @@
  --]]
  function account_dao.insert(id, money)
 	local status = account.insert(id, money)
-	if((0 == status.warning_count) and (1 == status.affected_rows)) then
-		return true, "插入用户金币资产数据成功"
-	else
-		return false, status.err
-	end
 end
 
 --[[

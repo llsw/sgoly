@@ -53,34 +53,12 @@ function test_dat_ser.login(nickname, pwd, cnt)
 		local tmpname = nickname.."-"..i
 		local tmppwd = pwd.."-"..i
 		local tag, msg = dat_ser.login(tmpname, tmppwd)
-		printD("test login. tag = %s, msg = %s", tag, msg)
+		
 		if(true == tag) then
+			printD("test login. tag = %s, msg = %d", tag, msg)
 			tested_cnt = tested_cnt + 1
-		end
-	end
-	if(cnt == tested_cnt) then
-		return true, "测试通过"
-	else
-		printD("test_cnt = %d", tested_cnt)
-		return false, "测试不通过"
-	end
-end
-
---[[
-函数说明：
-		函数作用：测试用户账户初始化功能
-		传入参数：nickname(用户昵称), money(金币数额), cnt(测试次数)
-		返回参数：(false, err_msg) or (true, true_msg)
---]]
-function test_dat_ser.usr_init(nickname, money, img_name, path, cnt)
-	printD("test usr_init(%s, %d, %d)", nickname, money, cnt)
-	local tested_cnt = 0
-	for i = 1, cnt do
-		local tmpname = nickname.."-"..i
-		local tag, msg = dat_ser.usr_init(tmpname, money, img_name, path)
-		printD("test usr_init. tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		else
+			printD("test login. tag = %s, msg = %s", tag, msg)
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -102,10 +80,15 @@ function test_dat_ser.get_money(nickname, cnt)
 	local tested_cnt = 0
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
-		local tag, msg = dat_ser.get_money(tmpname)
-		printD("test get_money. tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			local tag, msg = dat_ser.get_money(uid)
+			if(true == tag) then
+				printD("test get_money. tag = %s, msg = %d", tag, msg)
+				tested_cnt = tested_cnt + 1
+			else
+				printD("test get_money. tag = %s, msg = %s", tag, msg)
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -128,10 +111,14 @@ function test_dat_ser.upd_acc(nickname, money, cnt)
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
 		local tmp_money = 6668 + i
-		local tag, msg = dat_ser.upd_acc(tmpname, tmp_money)
-		printD("test upd_acc. tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+
+		if(true == status) then
+			local tag, msg = dat_ser.upd_acc(uid, tmp_money)
+			printD("test upd_acc. tag = %s, msg = %s", tag, msg)
+			if(true == tag) then
+				tested_cnt = tested_cnt + 1
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -179,10 +166,13 @@ function test_dat_ser.seted_safe_pwd(nickname, cnt)
 	local tested_cnt = 0
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
-		local tag, msg = dat_ser.seted_safe_pwd(tmpname)
-		printD("test del_usr.seted_safe_pwd tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			local tag, msg = dat_ser.seted_safe_pwd(uid)
+			printD("test del_usr.seted_safe_pwd tag = %s, msg = %s", tag, msg)
+			if(true == tag) then
+				tested_cnt = tested_cnt + 1
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -205,10 +195,13 @@ function test_dat_ser.set_safe_pwd(nickname, saf_pwd, cnt)
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
 		local tmp_saf_pwd = saf_pwd.."-"..i
-		local tag, msg = dat_ser.set_safe_pwd(tmpname, tmp_saf_pwd)
-		printD("test dat_ser.set_safe_pwd tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			local tag, msg = dat_ser.set_safe_pwd(uid, tmp_saf_pwd)
+			printD("test dat_ser.set_safe_pwd tag = %s, msg = %s", tag, msg)
+			if(true == tag) then
+				tested_cnt = tested_cnt + 1
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -231,10 +224,13 @@ function test_dat_ser.open_saf(nickname, saf_pwd, cnt)
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
 		local tmp_saf_pwd = saf_pwd.."-"..i
-		local tag, msg = dat_ser.open_saf(tmpname, tmp_saf_pwd)
-		printD("test dat_ser.open_saf tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			local tag, msg = dat_ser.open_saf(uid, tmp_saf_pwd)
+			printD("test dat_ser.open_saf tag = %s, msg = %s", tag, msg)
+			if(true == tag) then
+				tested_cnt = tested_cnt + 1
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -256,10 +252,13 @@ function test_dat_ser.query_saf_money(nickname, cnt)
 	local tested_cnt = 0
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
-		local tag, msg = dat_ser.query_saf_money(tmpname)
-		printD("test dat_ser.query_saf_money tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			local tag, msg = dat_ser.query_saf_money(uid)
+			printD("test dat_ser.query_saf_money tag = %s, msg = %s", tag, msg)
+			if(true == tag) then
+				tested_cnt = tested_cnt + 1
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -282,10 +281,13 @@ function test_dat_ser.save_money_2saf(nickname, saf_money, cnt)
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
 		local tmp_money = saf_money + i
-		local tag, msg = dat_ser.save_money_2saf(tmpname, tmp_money)
-		printD("test dat_ser.save_money_2saf tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			local tag, msg = dat_ser.save_money_2saf(uid, tmp_money)
+			printD("test dat_ser.save_money_2saf tag = %s, msg = %s", tag, msg)
+			if(true == tag) then
+				tested_cnt = tested_cnt + 1
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -308,12 +310,15 @@ function test_dat_ser.get_saf_money(nickname, saf_money, cnt)
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
 		local tmp_money = saf_money + i
-		local tag, msg = dat_ser.get_saf_money(tmpname, tmp_money)
-		if(true == tag) then
-			printD("test dat_ser.get_saf_money tag = %s, msg = %d", tag, msg)
-			tested_cnt = tested_cnt + 1
-		else
-			printD("test dat_ser.get_saf_money tag = %s, msg = %s", tag, msg)
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			local tag, msg = dat_ser.get_saf_money(uid, tmp_money)
+			if(true == tag) then
+				printD("test dat_ser.get_saf_money tag = %s, msg = %d", tag, msg)
+				tested_cnt = tested_cnt + 1
+			else
+				printD("test dat_ser.get_saf_money tag = %s, msg = %s", tag, msg)
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -337,10 +342,13 @@ function test_dat_ser.cha_saf_pwd(nickname, saf_pwd, cnt)
 		local tmpname = nickname.."-"..i
 		local old_pwd = saf_pwd.."-"..i
 		local new_pwd = "new_"..saf_pwd.."-"..i
-		local tag, msg = dat_ser.cha_saf_pwd(tmpname, old_pwd, new_pwd)
-		printD("test dat_ser.cha_saf_pwd tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			local tag, msg = dat_ser.cha_saf_pwd(uid, old_pwd, new_pwd)
+			printD("test dat_ser.cha_saf_pwd tag = %s, msg = %s", tag, msg)
+			if(true == tag) then
+				tested_cnt = tested_cnt + 1
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -348,35 +356,6 @@ function test_dat_ser.cha_saf_pwd(nickname, saf_pwd, cnt)
 	else
 		printD("test_cnt = %d", tested_cnt)
 		return false, "测试 dat_ser.cha_saf_pwd 不通过"
-	end
-end
-
---[[
-函数说明：
-		函数作用：测试 dat_ser.set_head
-		传入参数：nickname(用户昵称), img_name(头像名称), path(头像路径), 
-				 cnt(测试次数)
-		返回参数：(false, err_msg) or (true, true_msg)
---]]
-function test_dat_ser.set_head(nickname, img_name, path, cnt)
-	printD("test dat_ser.set_head(%s, %s, %s., %d)", nickname, img_name, path, 
-			cnt)
-	local tested_cnt = 0
-	for i = 1, cnt do
-		local tmpname = nickname.."-"..i
-		local tmp_img_name = img_name.."-"..i
-		local tmp_path = path.."-"..i
-		local tag, msg = dat_ser.set_head(tmpname, tmp_img_name, tmp_path)
-		printD("test dat_ser.set_head tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
-		end
-	end
-	if(cnt == tested_cnt) then
-		return true, "测试 dat_ser.set_head 通过"
-	else
-		printD("test_cnt = %d", tested_cnt)
-		return false, "测试 dat_ser.set_head 不通过"
 	end
 end
 
@@ -392,10 +371,13 @@ function test_dat_ser.cha_img_name(nickname, img_name, cnt)
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
 		local new_img_name = "new_"..img_name.."-"..i
-		local tag, msg = dat_ser.cha_img_name(tmpname, new_img_name)
-		printD("test dat_ser.cha_img_name tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			local tag, msg = dat_ser.cha_img_name(uid, new_img_name)
+			printD("test dat_ser.cha_img_name tag = %s, msg = %s", tag, msg)
+			if(true == tag) then
+				tested_cnt = tested_cnt + 1
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -418,10 +400,13 @@ function test_dat_ser.cha_path(nickname, path, cnt)
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
 		local new_path = "new_"..path.."-"..i
-		local tag, msg = dat_ser.cha_path(tmpname, new_path)
-		printD("test dat_ser.cha_path tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			local tag, msg = dat_ser.cha_path(uid, new_path)
+			printD("test dat_ser.cha_path tag = %s, msg = %s", tag, msg)
+			if(true == tag) then
+				tested_cnt = tested_cnt + 1
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -443,10 +428,13 @@ function test_dat_ser.get_img_name(nickname, cnt)
 	local tested_cnt = 0
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
-		local tag, msg = dat_ser.get_img_name(tmpname)
-		printD("test dat_ser.get_img_name tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			local tag, msg = dat_ser.get_img_name(uid)
+			printD("test dat_ser.get_img_name tag = %s, msg = %s", tag, msg)
+			if(true == tag) then
+				tested_cnt = tested_cnt + 1
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -468,10 +456,13 @@ function test_dat_ser.get_img_path(nickname, cnt)
 	local tested_cnt = 0
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
-		local tag, msg = dat_ser.get_img_path(tmpname)
-		printD("test dat_ser.get_img_path tag = %s, msg = %s", tag, msg)
-		if(true == tag) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			local tag, msg = dat_ser.get_img_path(uid)
+			printD("test dat_ser.get_img_path tag = %s, msg = %s", tag, msg)
+			if(true == tag) then
+				tested_cnt = tested_cnt + 1
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -494,11 +485,13 @@ function  test_dat_ser.sign(nickname, date, cnt)
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
 		local tmp_date = date..i
-		local tag, uid = dat_ser.get_uid(tmpname)
-		tag1, msg1 = dat_ser.sign(uid, tmp_date)
-		printD("test dat_ser.sign tag = %s, msg = %s", tag1, msg1)
-		if(true == tag1) then
-			tested_cnt = tested_cnt + 1
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			tag1, msg1 = dat_ser.sign(uid, tmp_date)
+			printD("test dat_ser.sign tag = %s, msg = %s", tag1, msg1)
+			if(true == tag1) then
+				tested_cnt = tested_cnt + 1
+			end
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -520,13 +513,15 @@ function test_dat_ser.query_sign(nickname, cnt)
 	local tested_cnt = 0
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
-		local tag, uid = dat_ser.get_uid(tmpname)
-		tag1, msg1 = dat_ser.query_sign(uid)
-		if(true == tag1) then
-			for k, v in pairs(msg1) do
-				printD("%d, %s", k, v)
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			tag1, msg1 = dat_ser.query_sign(uid)
+			if(true == tag1) then
+				for k, v in pairs(msg1) do
+					printD("%d, %s", k, v)
+				end
+				tested_cnt = tested_cnt + 1
 			end
-			tested_cnt = tested_cnt + 1
 		end
 	end
 	if(cnt == tested_cnt) then
@@ -604,10 +599,6 @@ function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name,
 	local tag1, msg1 = test_dat_ser.register(nickname, pwd, cnt)
 	printD("tag1 =%s, msg1 = %s", tag1, msg1)
 
-	local tag2, msg2 = test_dat_ser.usr_init(nickname, money, img_name, path, 
-											 cnt)
-	printD("tag2 =%s, msg2 = %s", tag2, msg2)
-
 	local tag3, msg3 = test_dat_ser.login(nickname, pwd, cnt)
 	printD("tag3 =%s, msg3 = %s", tag3, msg3)
 
@@ -680,7 +671,7 @@ function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name,
 	local tag6, msg6 = test_dat_ser.del_usr(nickname, pwd, cnt)
 	printD("tag6 =%s, msg6 = %s", tag6, msg6)
 
-	res_tag = (tag1 and tag2 and tag3 and tag4 and tag5 and tag6 and tag7 and 
+	res_tag = (tag1 and tag3 and tag4 and tag5 and tag6 and tag7 and 
 			   tag8 and tag9 and tag10 and tag11 and tag12 and tag13 and tag14 
 			   and tag15 and tag17 and tag18 and tag19 and tag20 and 
 			   tag21 and tag22 and tag23 and tag24 and tag25)

@@ -15,19 +15,24 @@ local sign_in = {}
 函数说明：
 		函数作用：insert users sign in data
 		传入参数：uid(u用户id), date(日期)
-		返回参数：mysql excute status  sgoly.sign_in
+		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function sign_in.insert(uid, date)
 	local sql = string.format("insert into sgoly.sign_in value(%d, '%s')", uid, 
 								date)
-	return mysql_query(sql)
+	local status = mysql_query(sql)
+	if(0 == status.warning_count) then
+		return true, "插入成功"
+	else
+		return false, status.err
+	end
 end
 
 --[[
 函数说明：
 		函数作用：select users sign_in date
 		传入参数：uid(u用户id)
-		返回参数：(false, err_msg) or (true, true_value)
+		返回参数：(false, err_msg) or (true, value)
 --]]
 function sign_in.select_date(uid)
 	local sql = string.format([[select s_date 
@@ -38,7 +43,16 @@ function sign_in.select_date(uid)
 								 limit 7 ;
 								]]
 								, uid)
-	return mysql_query(sql)
+	local status = mysql_query(sql)
+	local sigtab= {}
+ 	if(1 <= #status) then
+		for k, date in pairs(status) do
+			table.insert(sigtab, date)
+		end
+		return true, sigtab
+	else
+		return false, sigtab
+	end
 end
 
 return sign_in

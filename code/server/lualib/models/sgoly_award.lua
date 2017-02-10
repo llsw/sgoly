@@ -15,12 +15,17 @@ local award = {}
 函数说明：
 		函数作用：get award money
 		传入参数：type(award name and rank)
-		返回参数：mysql excute status
+		返回参数：(false, err_msg) or (true, value)
 --]]
 function award.select_money(type)
 	local sql = string.format("select money from sgoly.award where type = '%s' ;",
 								type)
-	return mysql_query(sql)
+	local status = mysql_query(sql)
+ 	if(1 == #status) then
+		return true, status[1].money
+	else
+		return false, status.err
+	end
 end
 
 return award

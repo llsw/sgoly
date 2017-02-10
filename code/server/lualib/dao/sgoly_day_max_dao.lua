@@ -119,14 +119,14 @@ end
  --! @author     kun si, 627795061@qq.com
  --! @date       2017-01-21
  --!
-function day_max_dao.updateS(nickname, single_max, conti_max, dt)
-	local status = day_max.updateS(nickname, single_max, conti_max, dt)
-	if status.err then
-		return false, status.err
-	end
+-- function day_max_dao.updateS(nickname, single_max, conti_max, dt)
+-- 	local status = day_max.updateS(nickname, single_max, conti_max, dt)
+-- 	if status.err then
+-- 		return false, status.err
+-- 	end
 
-	return true, status
-end
+-- 	return true, status
+-- end
 
 
 return day_max_dao

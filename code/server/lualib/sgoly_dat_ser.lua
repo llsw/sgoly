@@ -3,22 +3,22 @@
  * @Author:      GitHubNull
  * @Email:       641570479@qq.com
  * @github:      GitHubNull
- * @Description: -- test
+ * @Description: 数据管理模块
  * @DateTime:    2017-01-17 16:33:15
  --]]
 
-local use_ser = require "sgoly_users_server"
-local acc_ser = require "sgoly_account_server"
-local day_io_ser = require "sgoly_day_io_server"
-local day_max_ser = require "sgoly_day_max_server"
-local day_tim_ser = require "sgoly_day_times_server"
-local sgoly_union_query_server = require "sgoly_union_query_server"
-local sgoly_uuid_server = require "sgoly_uuid_server"
-local sgoly_rank_server = require "sgoly_rank_server"
-local saf_ser = require "sgoly_safe_server"
-local head_ser = require "sgoly_head_server"
-local sign_in_ser = require "sgoly_sign_in_server"
-local award_ser = require "sgoly_award_server"
+local users = require "sgoly_users"
+local account = require "sgoly_account"
+local day_io = require "sgoly_day_io"
+local day_max = require "sgoly_day_max"
+local day_times = require "sgoly_day_times"
+local union_query_server = require "sgoly_union_query_server"
+local uuid_server = require "sgoly_uuid_server"
+local rank_server = require "sgoly_rank_server"
+local safe = require "sgoly_safe"
+local head = require "sgoly_head"
+local sign_in = require "sgoly_sign_in"
+local award = require "sgoly_award"
 local skynet = require "skynet"
 
 local dat_ser = {}
@@ -26,13 +26,41 @@ local dat_ser = {}
 --[[
 函数说明：
 		函数作用：用户注册
-		传入参数：nickname(用户你从), pwd(密码)
+		传入参数：nickname(用户昵称), pwd(密码)
 		返回参数：ture和成功提示信息 或者 false 和错误信息
 --]]
 function dat_ser.register(nickname, pwd)
 	printD("dat_ser.register(%s, %s)", nickname, pwd)
 	printI("dat_ser.register(%s)", nickname)
-	return use_ser.insert(nickname, pwd)
+
+	local status1, tab = users.select(nickname)
+	if((nil ~= tab) and (1 == #tab)) then
+		return false, "昵称已被使用"
+	end
+
+	local status2, msg2 = users.insert(nickname, pwd)
+	printD(" status2 = %s", status2)
+
+	--	init users users account
+	local type = "register"
+	local status3, money = award.select_money(type)
+	local status4, uid = users.select_uid(nickname)
+	local status5, msg5 = account.insert(uid, money)
+	printD(" status5 = %s", status5)
+
+	--	init users head
+	local img_name = "1"
+	local path = "usersHead"
+	local status6, msg6 = head.insert(uid, img_name, path)
+	printD(" status6 = %s", status6)
+
+	local status = (status2 and status5 and  status6)
+	if(true == status) then
+		return true, "注册成功"
+	else
+		printD("status =%s", status)
+		return false, "注册失败"
+	end
 end
 
 --[[
@@ -44,13 +72,14 @@ end
 function dat_ser.login(nickname, pwd)
 	printD("dat_ser.login(%s, %s)", nickname, pwd)
 	printI("dat_ser.login(%s)", nickname)
-	local tag, status = use_ser.select_pwd(nickname)
-	if(false == tag) then
-		return false, status
-	elseif(status ~= pwd) then
+
+	local status1, tab = users.select(nickname)
+	if(false == status1) then
+		return false, "用户不存在"
+	elseif(tab.pwd ~= pwd) then
 		return false, "密码错误"
 	else
-		return true, "登录成功"
+		return true, tab.id
 	end
 end
 
@@ -61,7 +90,7 @@ end
 		返回参数：(false, err_msg) or (true, true_value)
 --]]
 function dat_ser.get_uid(nickname)
-	return use_ser.select_uid(nickname)
+	return users.select_uid(nickname)
 end
 
 --[[
@@ -73,7 +102,20 @@ end
 function dat_ser.cha_nic(old_nic, new_nick, pwd)
 	printD("dat_ser.cha_nic(%s, %s, %s)", old_nic, new_nick, pwd)
 	printI("dat_ser.cha_nic(%s, %s, %s)", old_nic, new_nick, pwd)
-	return use_ser.update_nickname(old_nic, new_nick, pwd)
+
+	local status1, tab = users.select(old_nic)
+	if(0 == #tab) then
+		return false, "用户不存在"
+	elseif(tab.pwd ~= pwd) then
+		return false, "密码错误"
+	else
+		local status2, msg = users.update_nickname(tab.id, new_nick)
+		if(true == status2) then
+			return false, "更改昵称成功"
+		else
+			return true, "更改昵称失败"
+		end
+	end
 end
 
 --[[
@@ -85,27 +127,19 @@ end
 function dat_ser.cha_pwd(nic, old_pwd, new_pwd)
 	printD("dat_ser.cha_pwd(%s, %s, %s)", nic, old_pwd, new_pwd)
 	printI("dat_ser.cha_pwd(%s, %s, %s)", nic, old_pwd, new_pwd)
-	return use_ser.update_pwd(nic, old_pwd, new_pwd)
-end
 
---[[
-函数说明：
-		函数作用：初始化用户金币数额
-		传入参数：nickname(用户你从), money(金币数额),
-				 img_name(图片名称), path(图片路径, 不需要可设置为: nil )
-		返回参数：ture和成功提示信息 或者 false 和错误信息
---]]
-function dat_ser.usr_init(nickname, money, img_name, path)
-	printD("dat_ser.usr_init(%s, %d, %s, %s)", nickname, money, img_name, path)
-	printI("dat_ser.usr_init(%s, %d, %s, %s)", nickname, money, img_name, path)
-	tag1, msg1 = acc_ser.insert(nickname, money)
-	tag2, msg2 = head_ser.insert(nickname, img_name, path)
-	if(not tag1) then
-		return false, msg1
-	elseif(not tag2) then
-		return false, msg2
+	local status1, tab = users.select(nic)
+	if(0 == #tab) then
+		return false, "用户不存在"
+	elseif(tab.pwd ~= old_pwd) then
+		return false, "旧密码错误"
 	else
-		return true, "初始化用户信息成功"
+		local status2, msg2 = users.update_pwd(tab.id, new_pwd)
+		if(true == status2) then
+			return true, "更改帐号密码成功"
+		else
+			return false, "更改帐号密码失败"
+		end
 	end
 end
 
@@ -118,46 +152,65 @@ end
 function dat_ser.del_usr(nickname, pwd)
 	printD(" dat_ser.del_usr(%s, %s)", nickname, pwd)
 	printI(" dat_ser.del_usr(%s, %s)", nickname, pwd)
-	return use_ser.delete(nickname, pwd)
+
+	local status1, tab = users.select(nickname)
+	if(nil == tab) then
+		return false, "用户不存在"
+	elseif(tab.pwd ~= pwd) then
+		return false, "密码错误"
+	else
+		local status2, msg2 = users.delete(nickname)
+		if(true == status2) then
+			return true, "删除帐号成功"
+		else
+			return false, "删除帐号失败"
+		end
+	end
 end
 
 --[[
 函数说明：
 		函数作用：获得排名对应的赢得的金币数额
 		传入参数：award_name(排名项目名字), id(名次)
-				 award_name 可选参数:max_award(当日获得金币数额最大的前n名的)
-				 					max_times_award(当日获奖次数最大的前n名)
-				 					single_award(单次获得金币最大的前n名)
-		返回参数：true, 金币数额 或者 false, 错误信息
+		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function dat_ser.get_award(award_name, id)
 	printD("dat_ser.get_award(%s, %d)", award_name, id)
 	printI("dat_ser.get_award(%s, %d)", award_name, id)
+
 	local type = award_name.."-"..id
-	return award_ser.select_money(type)
+	local status1, money = award.select_money(type)
+	if(true == status1) then
+		return true, money
+	else
+		return false, "未知错误"
+	end
 end
 
 --[[
 函数说明：
-		函数作用：get users account money
-		传入参数：nickname(用户昵称)
-		返回参数：(false, err_msg) or (true, true_value)
+		函数作用： get users account money
+		传入参数： id(users id)
+		返回参数： (false, err_msg) or (true, true_value)
 --]]
-function dat_ser.get_money(nickname)
-	printD("dat_ser.get_money(%s)", nickname)
-	return acc_ser.select_money(nickname)
+function dat_ser.get_money(id)
+	printD("dat_ser.get_money(%d)", id)
+	printI("dat_ser.get_money(%d)", id)
+
+	return account.select_money(id)
 end
 
 --[[
 函数说明：
-		函数作用：更新用户账户金币数额
-		传入参数：nickname(用户你从), money(金币数额)
-		返回参数：(false, err_msg) or (true, true_msg)
+		函数作用： 更新用户账户金币数额
+		传入参数： id(users id), money(金币数额)
+		返回参数： (false, err_msg) or (true, true_msg)
 --]]
-function dat_ser.upd_acc(nickname, money)
-	printD("dat_ser.up_acc(%s, %d)", nickname, money)
-	printI("dat_ser.up_acc(%s, %d)", nickname, money)
-	return acc_ser.update_money(nickname, money)
+function dat_ser.upd_acc(id, money)
+	printD("dat_ser.up_acc(%d, %d)", id, money)
+	printI("dat_ser.up_acc(%d, %d)", id, money)
+
+	return account.update_money(id, money)
 end
 
 --!
@@ -178,7 +231,7 @@ function dat_ser.get_statments_from_MySQL(nickname, dt)
 		return false, "Args nil"
 	end
 
-	local ok, result = sgoly_union_query_server.get_stamtents_from_MySQL(nickname, dt)
+	local ok, result = union_query_server.get_stamtents_from_MySQL(nickname, dt)
 	if #result > 0 then
 
 		return ok, 
@@ -196,9 +249,9 @@ function dat_ser.get_statments_from_MySQL(nickname, dt)
 	local today = os.date("%Y-%m-%d")
 
 	if dt == today then
-		day_io_ser.insert(nickname, 0, 0, today)
-		day_tim_ser.insert(nickname, 0, 0, today)
-		day_max_ser.insert(nickname, 0, 0, today)
+		day_io.insert(nickname, 0, 0, today)
+		day_times.insert(nickname, 0, 0, today)
+		day_max.insert(nickname, 0, 0, today)
 	end
 
 	return true, 
@@ -233,19 +286,19 @@ function dat_ser.update_statments_to_MySQL(nickname, winMoney, costMoney, playNu
 	if not nickname or not dt then
 		return false, "Args nil"
 	end
-	local ok, result = day_io_ser.updateS(nickname, winMoney, costMoney, dt)
+	local ok, result = day_io.updateS(nickname, winMoney, costMoney, dt)
 	if not ok then
 		printE("error:%s", reslut)
 		return ok, result
 	end
 
-	ok, result = day_tim_ser.updateS(nickname, playNum, winNum, dt)
+	ok, result = day_times.updateS(nickname, playNum, winNum, dt)
 	if not ok then
 		printE("error:%s", reslut)
 		return ok, result
 	end
 
-	ok, result = day_max_ser.updateS(nickname, maxWinMoney, serialWinNum, dt)
+	ok, result = day_max.updateS(nickname, maxWinMoney, serialWinNum, dt)
 	if not ok then
 		printE("error:%s", reslut)
 		return ok, result
@@ -270,7 +323,7 @@ function dat_ser.get_count_statements_from_MySQL(nickname, dt)
 	if not nickname then
 		return false, "Args nil"
 	end
-	local ok, result = sgoly_union_query_server.get_count_statements_from_MySQL(nickname, dt)
+	local ok, result = union_query_server.get_count_statements_from_MySQL(nickname, dt)
 	if #result > 0 then
 
 		return ok, 
@@ -308,7 +361,7 @@ end
 --! @date       2017-01-21
 --!
 function dat_ser.upadate_money_to_MySQL(nickname, money)
-	local ok, result = acc_ser.update_money_s(nickname, money)
+	local ok, result = account.update_money_s(nickname, money)
 	return ok, result
 	
 end
@@ -322,7 +375,7 @@ end
 --! @date       2017-01-21
 --!
 function dat_ser.select_uuid()	
-	return sgoly_uuid_server.select_uuid()
+	return uuid_server.select_uuid()
 end
 
 --!
@@ -336,7 +389,7 @@ end
 --! @date       2017-01-21
 --!
 function dat_ser.update_uuid(uuid)
-	return sgoly_uuid_server.update_uuid(uuid)
+	return uuid_server.update_uuid(uuid)
 end
 
 --!
@@ -353,7 +406,7 @@ end
 --! @date       2017-01-24
 --!
 function dat_ser.save_rank_to_MySQL(rank_type, rank, args, date)
-	return sgoly_rank_server.save_rank_to_MySQL(rank_type, rank, args, date)
+	return rank_server.save_rank_to_MySQL(rank_type, rank, args, date)
 end
 
 --!
@@ -368,19 +421,19 @@ end
 --! @date       2017-01-24
 --!
 function dat_ser.get_rank_from_MySQL(rank_type, date)
-	return sgoly_rank_server.get_rank_from_MySQL(rank_type, date)
+	return rank_server.get_rank_from_MySQL(rank_type, date)
 end
 
 --[[
 函数说明：
 		函数作用：检查用户是否已设置保险柜密码
-		传入参数：nickname(用户昵称)
+		传入参数：uid(用户id)
 		返回参数：(false, err_msg) or (true, true_value)
 --]]
-function dat_ser.seted_safe_pwd(nickname)
-	printD("dat_ser.seted_safe_pwd(%s)", nickname)
-	printI("dat_ser.seted_safe_pwd(%s)", nickname)
-	local tag, status = saf_ser.select(nickname)
+function dat_ser.seted_safe_pwd(uid)
+	printD("dat_ser.seted_safe_pwd(%d)", uid)
+	printI("dat_ser.seted_safe_pwd(%d)", uid)
+	local tag, status = safe.select(uid)
 	if( false == tag) then
 		return false, status
 	else
@@ -395,26 +448,26 @@ end
 --[[
 函数说明：
 		函数作用：设置保险柜密码
-		传入参数：nickname(用户昵称), passwd(用户保险柜密码)
+		传入参数：uid(用户id), passwd(用户保险柜密码)
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
-function dat_ser.set_safe_pwd(nickname, passwd)
-	printD("dat_ser.set_safe_pwd(%s, %s)", nickname, passwd)
-	printI("dat_ser.set_safe_pwd(%s)", nickname)
+function dat_ser.set_safe_pwd(uid, passwd)
+	printD("dat_ser.set_safe_pwd(%d, %s)", uid, passwd)
+	printI("dat_ser.set_safe_pwd(%d)", uid)
 	local init_saf_money = 0
-	return saf_ser.insert(nickname, passwd, init_saf_money)
+	return safe.insert(uid, passwd, init_saf_money)
 end
 
 --[[
 函数说明：
 		函数作用：打开保险柜
-		传入参数：nickname(用户昵称), passwd(用户保险柜密码)
+		传入参数：uid(用户id), passwd(用户保险柜密码)
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
-function dat_ser.open_saf(nickname, passwd)
-	printD("dat_ser.open_saf(%s, %s)", nickname, passwd)
-	printI("dat_ser.open_saf(%s)", nickname)
-	local tag, status = saf_ser.select_passwd(nickname)
+function dat_ser.open_saf(uid, passwd)
+	printD("dat_ser.open_saf(%d, %s)", uid, passwd)
+	printI("dat_ser.open_saf(%d)", uid)
+	local tag, status = safe.select_passwd(uid)
 	if(false == tag) then
 		return false, status
 	else
@@ -428,31 +481,31 @@ end
 
 --[[
 函数说明：
-		函数作用：查询保险柜余额
-		传入参数：nickname(用户昵称)
-		返回参数：(false, err_msg) or (true, true_value)
+		函数作用： 查询保险柜余额
+		传入参数： uid(用户id)
+		返回参数： (false, err_msg) or (true, true_value)
 --]]
-function dat_ser.query_saf_money(nickname)
-	printD("dat_ser.query_saf_money(%s)", nickname)
-	printI("dat_ser.query_saf_money(%s)", nickname)
-	return saf_ser.select_money(nickname)
+function dat_ser.query_saf_money(uid)
+	printD("dat_ser.query_saf_money(%d)", uid)
+	printI("dat_ser.query_saf_money(%d)", uid)
+	return safe.select_money(uid)
 end
 
 --[[
 函数说明：
 		函数作用：存金币到保险柜
-		传入参数：nickname(用户昵称), money(金币数额)
+		传入参数：uid(用户id), money(金币数额)
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
-function dat_ser.save_money_2saf(nickname, money)
-	printD("dat_ser.save_money_2saf(%s, %d)", nickname, money)
-	printI("dat_ser.save_money_2saf(%s, %d)", nickname, money)
-	local tag1, src_money = saf_ser.select_money(nickname)
+function dat_ser.save_money_2saf(uid, money)
+	printD("dat_ser.save_money_2saf(%d, %d)", uid, money)
+	printI("dat_ser.save_money_2saf(%d, %d)", uid, money)
+	local tag1, src_money = safe.select_money(uid)
 	if(false == tag1) then
 		return false, src_money
 	end
 	local dst_money = src_money + money
-	local tag2, status = saf_ser.update_money(nickname, dst_money)
+	local tag2, status = safe.update_money(uid, dst_money)
 	if(false == tag2) then
 		printD("dat_ser.save_money_2saf() 存钱失败 status = %s", status)
 		return false, "存金币失败"
@@ -464,13 +517,13 @@ end
 --[[
 函数说明：
 		函数作用：从保险柜取出金币
-		传入参数：nickname(用户昵称), money(金币数额)
+		传入参数：uid(用户id), money(金币数额)
 		返回参数：(false, err_msg) or (true, 要取数额)
 --]]
-function dat_ser.get_saf_money(nickname, money)
-	printD("dat_ser.get_saf_money(%s, %d)", nickname, money)
-	printI("dat_ser.get_saf_money(%s, %d)", nickname, money)
-	local tag1, src_money = saf_ser.select_money(nickname)
+function dat_ser.get_saf_money(uid, money)
+	printD("dat_ser.get_saf_money(%d, %d)", uid, money)
+	printI("dat_ser.get_saf_money(%d, %d)", uid, money)
+	local tag1, src_money = safe.select_money(uid)
 	if(false == tag1) then
 		return false, src_money
 	end
@@ -478,7 +531,7 @@ function dat_ser.get_saf_money(nickname, money)
 		return false, "取金币失败,余额小于要取数额"
 	end
 	local dst_money = src_money - money
-	local tag2, status = saf_ser.update_money(nickname, dst_money)
+	local tag2, status = safe.update_money(uid, dst_money)
 	if(false == tag2) then
 		printD("dat_ser.get_saf_money() 取金币失败 status = %s", status)
 		return false, "取金币失败"
@@ -490,90 +543,124 @@ end
 --[[
 函数说明：
 		函数作用： 更改保险柜密码
-		传入参数：nickname(用户昵称), old_pwd(旧密码), new_pwd(新密码)
-		返回参数：(false, err_msg) or (true, true_msg)
+		传入参数： uid(用户id), old_pwd(旧密码), new_pwd(新密码)
+		返回参数： (false, err_msg) or (true, true_msg)
 --]]
-function dat_ser.cha_saf_pwd(nickname, old_pwd, new_pwd)
-	printD("dat_ser.cha_saf_pwd(%s, %s, %s)", nickname, old_pwd, new_pwd)
-	printI("dat_ser.cha_saf_pwd(%s)", nickname)
-	return saf_ser.update_passwd(nickname, old_pwd, new_pwd)
+function dat_ser.cha_saf_pwd(uid, old_pwd, new_pwd)
+	printD("dat_ser.cha_saf_pwd(%d, %s, %s)", uid, old_pwd, new_pwd)
+	printI("dat_ser.cha_saf_pwd(%d)", uid)
+	local status, src_pwd = safe.select_passwd(uid)
+	if(false == status) then
+		return false, "修改密码失败"
+	end
+
+	if(src_pwd ~= old_pwd) then
+		return false, "旧密码不正确"
+	end
+
+	local status2, msg = safe.update_passwd(uid, new_pwd)
+	if(true == status2) then
+		return true, "修改密码成功"
+	else
+		return false, msg
+	end
 end
 
 --[[
 函数说明：
 		函数作用：设置用户头像
-		传入参数：nickname(用户昵称), img_name(头像名称), path(头像路径, 可为空值)
+		传入参数：uid(用户id), img_name(头像名称), path(头像路径, 可为空值)
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
-function dat_ser.set_head(nickname, img_name, path)
+function dat_ser.set_head(uid, img_name, path)
 	if(nil ~= path) then
-		printD("dat_ser.set_head(%s, %s, %s)", nickname, img_name, path)
-		printI("dat_ser.set_head(%s, %s, %s)", nickname, img_name, path)
+		printD("dat_ser.set_head(%d, %s, %s)", uid, img_name, path)
+		printI("dat_ser.set_head(%d, %s, %s)", uid, img_name, path)
 	else
-		printD("dat_ser.set_head(%s, %s)", nickname, img_name)
-		printI("dat_ser.set_head(%s, %s)", nickname, img_name)
+		printD("dat_ser.set_head(%d, %s)", uid, img_name)
+		printI("dat_ser.set_head(%d, %s)", uid, img_name)
 	end
-	return head_ser.insert(nickname, img_name, path)
+	local status, msg = head.insert(uid, img_name, path)
+	if(true == status) then
+		return true, "设置头像成功"
+	else
+		return false, msg
+	end
 end
 
 --[[
 函数说明：
 		函数作用：更改用户头像名称
-		传入参数：nickname(用户昵称), new_img_name(新头像名称)
+		传入参数：uid(用户id), new_img_name(新头像名称)
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
-function dat_ser.cha_img_name(nickname, new_img_name)
-	printD("dat_ser.cha_img_name(%s, %s)", nickname, new_img_name)
-	printI("dat_ser.cha_img_name(%s, %s)", nickname, new_img_name)
-	return head_ser.update_img_name(nickname, new_img_name)
+function dat_ser.cha_img_name(uid, new_img_name)
+	printD("dat_ser.cha_img_name(%d, %s)", uid, new_img_name)
+	printI("dat_ser.cha_img_name(%d, %s)", uid, new_img_name)
+	local status, msg = head.update_img_name(uid, new_img_name)
+	if(true == status) then
+		return true, "修改头像成功"
+	else
+		return false, msg
+	end
 end
 
 --[[
 函数说明：
 		函数作用：更改头像路径
-		传入参数：nickname(用户昵称) new_path(新头像路径)
+		传入参数：uid(用户id) new_path(新头像路径)
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
-function dat_ser.cha_path(nickname, new_path)
-	printD("dat_ser.cha_path(%s, %s)", nickname, new_path)
-	printI("dat_ser.cha_path(%s, %s)", nickname, new_path)
-	return head_ser.update_path(nickname, new_path)
+function dat_ser.cha_path(uid, new_path)
+	printD("dat_ser.cha_path(%d, %s)", uid, new_path)
+	printI("dat_ser.cha_path(%d, %s)", uid, new_path)
+	local status, msg = head.update_path(uid, new_path)
+	if(true == status) then
+		return true, "修改头像路径成功"
+	else
+		return false, msg
+	end
 end
 
 --[[
 函数说明：
 		函数作用：获取用户头像名称
-		传入参数：nickname(用户昵称)
+		传入参数：uid(用户id)
 		返回参数：(false, err_msg) or (true, true_values)
 --]]
-function dat_ser.get_img_name(nickname)
-	printD("dat_ser.get_img_name(%s)", nickname)
-	printI("dat_ser.get_img_name(%s)", nickname)
-	return head_ser.select_img_name(nickname)
+function dat_ser.get_img_name(uid)
+	printD("dat_ser.get_img_name(%d)", uid)
+	printI("dat_ser.get_img_name(%d)", uid)
+	return head.select_img_name(uid)
 end
 
 --[[
 函数说明：
 		函数作用：获取用户头像路径
-		传入参数：nickname(用户昵称)
+		传入参数：uid(用户id)
 		返回参数：(false, err_msg) or (true, true_values)
 --]]
-function dat_ser.get_img_path(nickname)
-	printD("dat_ser.get_img_path(%s)", nickname)
-	printI("dat_ser.get_img_path(%s)", nickname)
-	return head_ser.select_path(nickname)
+function dat_ser.get_img_path(uid)
+	printD("dat_ser.get_img_path(%d)", uid)
+	printI("dat_ser.get_img_path(%d)", uid)
+	return head.select_path(uid)
 end
 
 --[[
 函数说明：
 		函数作用：签到
-		传入参数：uid(u用户id), date(日期)
+		传入参数：uid(用户id), date(日期)
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function dat_ser.sign(uid, date)
-	printD("sign_in_ser.sign(%d, %s)", uid, date)
-	printI("sign_in_ser.sign(%d, %s)", uid, date)
-	return sign_in_ser.insert(uid, date)
+	printD("sign_in.sign(%d, %s)", uid, date)
+	printI("sign_in.sign(%d, %s)", uid, date)
+	local status, msg = sign_in.insert(uid, date)
+	if(true == status) then
+		return true, "签到成功"
+	else
+		return false, "签到失败"
+	end
 end
 
 --[[
@@ -583,7 +670,9 @@ end
 		返回参数：(false, err_msg) or (true, value(最近的7天 k-date 键值对))
 --]]
 function dat_ser.query_sign(uid)
-	return sign_in_ser.select_date(uid)
+	printD("dat_ser.query_sign(%d)", uid)
+	printI("dat_ser.query_sign(%d)", uid)
+	return sign_in.select_date(uid)
 end
 
 return dat_ser

@@ -19,9 +19,9 @@ local day_io_server = {}
 		传入参数：nickname(昵称), win(收入), cost(支出), dt(日期)
 		返回参数：true 或者 false , 正确或错误提示的字符串
 --]]
-function day_io_server.insert(nickname, win, cost, dt)
-	if((nil == nickname) or ("" == nickname)) then
-		return false, "昵称空值错误"
+function day_io_server.insert(uid, win, cost, dt)
+	if(nil == uid) then
+		return false, "nil uid"
 	elseif(nil == win) then
 		return false, "win空值错误"
 	elseif(nil == cost) then
@@ -45,8 +45,8 @@ end
 		返回参数：true 或者 false , 正确或错误提示的字符串
 --]]
 function day_io_server.update_win(nickname, win, dt)
- 	if((nil == nickname) or ("" == nickname)) then
-		return false, "昵称空值错误"
+ 	if(nil == uid) then
+		return false, "nil uid"
 	elseif(nil == win) then
 		return false, "win空值错误"
 	elseif((nil == dt) or ("" == dt)) then
@@ -68,8 +68,8 @@ end
 		返回参数：true 或者 false , 正确或错误提示的字符串
 --]]
 function day_io_server.update_cost(nickname, cost, dt)
- 	if((nil == nickname) or ("" == nickname)) then
-		return false, "昵称空值错误"
+ 	if(nil == uid) then
+		return false, "nil uid"
 	elseif(nil == win) then
 		return false, "win空值错误"
 	elseif(nil == cost) then
@@ -93,8 +93,8 @@ end
 		返回参数：true 或者 false , 收支情况 或 错误提示的字符串
 --]]
 function day_io_server.select(nickname, dt)
- 	if((nil == nickname) or ("" == nickname)) then
-		return false, "昵称空值错误"
+ 	if(nil == uid) then
+		return false, "nil uid"
 	elseif((nil == dt) or ("" == dt)) then
 		return false, "日期空值错误"
 	else
@@ -114,8 +114,8 @@ end
 		返回参数：true 或者 false , 收入数值 或 错误提示的字符串
 --]]
 function day_io_server.select_win(nickname, dt)
- 	if((nil == nickname) or ("" == nickname)) then
-		return false, "昵称空值错误"
+ 	if(nil == uid) then
+		return false, "nil uid"
 	elseif((nil == dt) or ("" == dt)) then
 		return false, "日期空值错误"
 	else
@@ -135,8 +135,8 @@ end
 		返回参数：true 或者 false , 支出 或 错误提示的字符串
 --]]
 function day_io_server.select_cost(nickname, dt)
- 	if((nil == nickname) or ("" == nickname)) then
-		return false, "昵称空值错误"
+ 	if(nil == uid) then
+		return false, "nil uid"
 	elseif((nil == dt) or ("" == dt)) then
 		return false, "日期空值错误"
 	else
