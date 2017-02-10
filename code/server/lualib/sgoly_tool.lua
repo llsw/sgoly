@@ -780,12 +780,12 @@ function sgoly_tool.setCharityTimesToRedis(nickname, times)
 end
 
 --!
---! @brief      Gets the money rank from redis.
+--! @brief      从Redis获取财富绑
 --!
---! @param      nickname  The nickname
---! @param      money     The money
+--! @param      nickname  用户名
+--! @param      value     用户当前的金额
 --!
---! @return     The money rank from redis.
+--! @return     bool, table		执行是否成功、查询结果
 --!
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-02-10
