@@ -529,7 +529,7 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 
 		if rank_type == "serialWinNum" then
 			if value >= 4 then	
-				if name_rank[nickname] then
+				if name_rank[my_name] then
 					if value > args[nickname][1] then
 						args[nickname][1] = value
 						args[nickname][2] = os.time()
@@ -560,7 +560,7 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 			end
 		else
 			if value >= 400000 then
-				if name_rank[nickname] then
+				if name_rank[my_name] then
 					if value > args[nickname][1] then
 						args[nickname][1] = value
 						args[nickname][2] = os.time()
