@@ -530,9 +530,9 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 		if rank_type == "serialWinNum" then
 			if value >= 4 then	
 				if name_rank[my_name] then
-					if value > args[nickname][1] then
-						args[nickname][1] = value
-						args[nickname][2] = os.time()
+					if value > args[my_name][1] then
+						args[my_name][1] = value
+						args[my_name][2] = os.time()
 						lock(sortRank,rank, args)
 						for k,v in pairs(rank) do
 							name_rank[v] = k
@@ -561,9 +561,9 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 		else
 			if value >= 400000 then
 				if name_rank[my_name] then
-					if value > args[nickname][1] then
-						args[nickname][1] = value
-						args[nickname][2] = os.time()
+					if value > args[my_name][1] then
+						args[my_name][1] = value
+						args[my_name][2] = os.time()
 						lock(sortRank,rank, args)
 						for k,v in pairs(rank) do
 							name_rank[v] = k
@@ -871,10 +871,10 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 			end
 		end
 
-		if name_rank[nickname] then
-			if value > args[nickname][1] then
-				args[nickname][1] = value
-				args[nickname][2] = os.time()
+		if name_rank[my_name] then
+			if value > args[my_name][1] then
+				args[my_name][1] = value
+				args[my_name][2] = os.time()
 				lock(sortRank,rank, args)
 				for k,v in pairs(rank) do
 					name_rank[v] = k

@@ -1,0 +1,26 @@
+local skynet = require "skynet"
+local sgoly_pack=require "sgoly_pack"
+local sgoly_tool=require "sgoly_tool"
+require "sgoly_printf"
+require "skynet.manager"
+local CMD={}
+
+function CMD.shoplist(fd,mes)
+	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
+end
+
+
+function returnfalse(mes)
+	        local req1={SESSION=mes.SESSION,ID="15",STATE=false,MESSAGE=mes}
+			local req1_1=sgoly_pack.encode(req1)
+			return req1_1
+end
+skynet.start(function()
+	skynet.dispatch("lua", function(session, source, cmd, ...)
+		local f = assert(CMD[cmd], cmd .. "not found")
+		skynet.retpack(f(...))
+	end)
+	--skynet.error("this is maingame")
+    -- 要注册个服务的名字，以.开头
+    skynet.register(".shop")
+end)
