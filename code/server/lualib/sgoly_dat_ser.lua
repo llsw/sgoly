@@ -95,6 +95,17 @@ end
 
 --[[
 函数说明：
+		函数作用：
+		传入参数：
+		返回参数：
+--]]
+function dat_ser.get_nickname(uid)
+	printD("", )
+	return users.select_nickname(uid)
+end
+
+--[[
+函数说明：
 		函数作用：更改用户的昵称
 		传入参数：old_nic(旧昵称), new_nick()新昵称, pwd(密码)
 		返回参数：ture和成功提示信息 或者 false 和错误信息
@@ -121,20 +132,17 @@ end
 --[[
 函数说明：
 		函数作用：更改用户的密码
-		传入参数：nic(用户昵称), old_pwd(旧的密码), new_pwd(新密码)
+		传入参数：uid(用户id), old_pwd(旧的密码), new_pwd(新密码)
 		返回参数：ture和成功提示信息 或者 false 和错误信息
 --]]
-function dat_ser.cha_pwd(nic, old_pwd, new_pwd)
-	printD("dat_ser.cha_pwd(%s, %s, %s)", nic, old_pwd, new_pwd)
-	printI("dat_ser.cha_pwd(%s, %s, %s)", nic, old_pwd, new_pwd)
-
-	local status1, tab = users.select(nic)
-	if(0 == #tab) then
-		return false, "用户不存在"
-	elseif(tab.pwd ~= old_pwd) then
+function dat_ser.cha_pwd(uid, old_pwd, new_pwd)
+	printD("dat_ser.cha_pwd(%d, %s, %s)", uid, old_pwd, new_pwd)
+	printI("dat_ser.cha_pwd(%d, %s, %s)", uid, old_pwd, new_pwd)
+	local status1, pwd = users.select_pwd(uid)
+	if(pwd ~= old_pwd) then
 		return false, "旧密码错误"
 	else
-		local status2, msg2 = users.update_pwd(tab.id, new_pwd)
+		local status2, msg2 = users.update_pwd(uid, new_pwd)
 		if(true == status2) then
 			return true, "更改帐号密码成功"
 		else

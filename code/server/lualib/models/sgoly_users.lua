@@ -116,6 +116,23 @@ end
 
 --[[
 函数说明：
+		函数作用：
+		传入参数：
+		返回参数：
+--]]
+function users.select_nickname(uid)
+	local sql = string.format("select nickname from sgoly.users where "
+		.."id = %d ;", uid)
+	local status = mysql_query(sql)
+ 	if(1 == #status) then
+		return true, status[1].nickname
+	else
+		return false, status.err
+	end
+end
+
+--[[
+函数说明：
 		函数作用：选出指定用户名的pwd
 		传入参数：id(users id)
 		返回参数：(false, err_msg) or (true, value)
