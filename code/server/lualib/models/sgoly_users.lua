@@ -116,9 +116,9 @@ end
 
 --[[
 函数说明：
-		函数作用：
-		传入参数：
-		返回参数：
+		函数作用：获取用户的昵称
+		传入参数：uid(用户id)
+		返回参数：(false, err_msg) or (true, value)
 --]]
 function users.select_nickname(uid)
 	local sql = string.format("select nickname from sgoly.users where "
