@@ -21,7 +21,7 @@ end
 
 function handler.message(fd, msg)
 	if msg then
-		skynet.error("client"..fd, " says: ", msg)
+		skynet.error("client"..fd, " says: ")
 		local str1 = crypt.base64decode(msg)
 		local password
 		local who="123456"
@@ -33,7 +33,7 @@ function handler.message(fd, msg)
 		 cluster.call("cluster_game",".agent","setline",fd)
 		local req=cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
 		if req~=nil then 
-		  print(req,"this  is req")
+		  printI("this is req to client")
 		  driver.send(fd,req)
         end
     end
@@ -51,7 +51,6 @@ function handler.connect(fd,addr)
     local who="123456"
     password =crypt.aesencode(json_text,who,"")
     local str1 = crypt.base64encode(password)
-    -- driver.send(fd,str1)
     driver.send(fd,str1)
 
     connection[fd] = {fd = fd}

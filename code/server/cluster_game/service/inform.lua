@@ -25,4 +25,5 @@ skynet.start(function()
 
 	skynet.register(".inform")
 	skynet.call(".agent","lua","sclose",false,"服务器将于五分钟后关闭")
+	skynet.exit()
 end)
