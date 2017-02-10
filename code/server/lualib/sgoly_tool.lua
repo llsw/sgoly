@@ -829,10 +829,10 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 		for k,v in pairs(rank) do
 			name_rank[v] = k
 		end
-		if name_rank[nickname] then
-			if value > args[nickname][1] then
-				args[nickname][1] = value
-				args[nickname][2] = os.time()
+		if name_rank[my_name] then
+			if value > args[my_name][1] then
+				args[my_name][1] = value
+				args[my_name][2] = os.time()
 				lock(sortRank,rank, args)
 				for k,v in pairs(rank) do
 					name_rank[v] = k
@@ -841,7 +841,7 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 			end
 
 		else
-			args[nickname] = {value, os.time()}
+			args[my_name] = {value, os.time()}
 			table.insert(rank,my_name)
 			lock(sortRank,rank, args)
 
