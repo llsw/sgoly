@@ -19,8 +19,9 @@ require "sgoly_printf"
  		返回参数：返回参数：sql语句执行状态
  --]]
  function account.insert(id, money)
- 	local sql = string.format("insert into sgoly.account value(%d, %d)", id,
- 							   money)
+ 	local time = os.date("%Y-%m-%d %H:%M:%S")
+ 	local sql = string.format("insert into sgoly.account value(%d, %d, '%s')", id,
+ 							   money, time)
  	return mysql_query(sql)
  end
 
@@ -31,8 +32,9 @@ require "sgoly_printf"
  		返回参数：返回参数：sql语句执行状态
 --]]
 function account.update_money(id, money)
- 	local sql = string.format("update sgoly.account set money = %d where id = "
- 							   .."%d ;", money, id)
+	local time = os.date("%Y-%m-%d %H:%M:%S")
+ 	local sql = string.format("update sgoly.account set money = %d, update_time = '%s' where id = "
+ 							   .."%d ;", money, time, id)
  	return mysql_query(sql)
 end
 
@@ -60,14 +62,15 @@ end
  --! @date       2017-01-21
  --!
 function account.update_money_s(nickname, money)
+	local time = os.date("%Y-%m-%d %H:%M:%S")
 	local sql = string.format(
 				[[
 					UPDATE account AS acc
 					LEFT JOIN users AS u ON acc.id = u.id
-					SET acc.money = %d
+					SET acc.money = %d, acc.update_time= '%s'
 					WHERE
 						u.nickname = '%s';
-				]], money, nickname)
+				]], money, time, nickname)
 	return mysql_query(sql)
 end
 
