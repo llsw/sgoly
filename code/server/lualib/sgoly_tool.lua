@@ -493,6 +493,7 @@ end
 --!
 function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 	nickname = tostring(nickname)
+	local ok, my_name = sgoly_dat_ser.get_nickname(nickname)
 	local rank = {} 
 	local args = {}
 	local name_rank = {}
@@ -541,7 +542,7 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 
 				else
 					args[nickname] = {value, os.time()}
-					table.insert(rank,nickname)
+					table.insert(rank,my_name)
 					lock(sortRank,rank, args)
 
 					local len = #rank
@@ -572,7 +573,7 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 
 				else
 					args[nickname] = {value, os.time()}
-					table.insert(rank,nickname)
+					table.insert(rank,my_name)
 					lock(sortRank,rank, args)
 					local len = #rank
 					if len  > 10 then
@@ -801,6 +802,7 @@ end
 --!
 function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 	nickname = tostring(nickname)
+	local ok, my_name = sgoly_dat_ser.get_nickname(nickname)
 	local rank = {} 
 	local args = {}
 	local name_rank = {}
@@ -840,7 +842,7 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 
 		else
 			args[nickname] = {value, os.time()}
-			table.insert(rank,nickname)
+			table.insert(rank,my_name)
 			lock(sortRank,rank, args)
 
 			local len = #rank
@@ -880,7 +882,7 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 
 		else
 			args[nickname] = {value, os.time()}
-			table.insert(rank,nickname)
+			table.insert(rank,my_name)
 			lock(sortRank,rank, args)
 
 			local len = #rank
@@ -895,7 +897,6 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 			sgoly_tool.updateRankToRedis(rank, args, "money")
 		end
 	end
-
 	return true, {rank, name_rank, args, value}
 end
 
