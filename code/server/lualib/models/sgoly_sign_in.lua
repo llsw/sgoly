@@ -47,7 +47,7 @@ function sign_in.select_date(uid)
 	local sigtab= {}
  	if(1 <= #status) then
 		for k, date in pairs(status) do
-			table.insert(sigtab, date)
+			table.insert(sigtab, date.s_date)
 		end
 		return true, sigtab
 	else
