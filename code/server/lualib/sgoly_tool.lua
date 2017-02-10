@@ -189,7 +189,7 @@ function sgoly_tool.getStatementsFromRedis(nickname, dt)
 		return false, "There are nil in args."
 	end
 	local res = {}
-	local key = "statements:" ..  nickname .. dt
+	local key = "statements:" ..  tostring(nickname) .. "_" ..dt
 	local res = redis_query({"hgetall", key})
 	if #res > 0 then
 		return sgoly_tool.multipleToTable(res)
@@ -239,7 +239,7 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 	printI("Save statements nickname[%s]", "winMoney[%d]", "costMoney[%d]", "playNum[%d]", "winNum[%d]", 
 		"serialWinNum[%d]", "maxWinMoney[%d]", "eighthNoWin[%d]", "recoveryRate[%d]", "dt[%s]",
 		nickname, winMoney, costMoney, playNum, winNum, serialWinNum, maxWinMoney, eighthNoWin, recoveryRate, dt)
-	local key = "statements:" .. nickname .. dt
+	local key = "statements:" .. tostring(nickname) .. "_" ..dt
 	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if ok then
 
@@ -280,7 +280,7 @@ end
 --!
 function sgoly_tool.getPlayModelFromRedis(nickname)
 	local res = {}
-	local key = "statements:" ..  nickname .. os.date("%Y-%m-%d")
+	local key = "statements:" ..  tostring(nickname) .. "_" ..os.date("%Y-%m-%d")
 	res = redis_query({"hmget", key, "eighthNoWin", "recoveryRate"})
 	if #res == 0 then
 		res[1]=0
@@ -394,7 +394,7 @@ end
 --!
 function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
 	local key1 = "count:" .. nickname
-	local key2 = "statements:" .. nickname .. dt 
+	local key2 = "statements:" .. tostring(nickname) .. "_" ..dt 
 	local key3 = "user:" .. nickname
 	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if ok then
