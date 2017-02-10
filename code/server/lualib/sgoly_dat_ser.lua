@@ -100,7 +100,7 @@ end
 		返回参数：
 --]]
 function dat_ser.get_nickname(uid)
-	printD("", )
+	printD("dat_ser.get_nickname(%d)", uid)
 	return users.select_nickname(uid)
 end
 
