@@ -8,10 +8,10 @@ local sgoly_pack=require "sgoly_pack"
 local CMD={}
 function CMD.sign_in(fd,mes,name)
 	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
-	local bool,uid=dat_ser.get_uid(name)
-	printI("uid,%s",uid)
+	printI("name,%s",type(name))
+
 	if mes.TYPE=="query" then
-	    	local bool1,req1 = dat_ser.query_sign(uid)
+	    	local bool1,req1 = dat_ser.query_sign(name)
 		    printI("this is sign1,%s",mes.NAME)
 		if bool1  then 
 			local rqs={SESSION=mes.SESSION,ID="10",STATE=true,TYPE="query",LIST=req1}
@@ -21,7 +21,7 @@ function CMD.sign_in(fd,mes,name)
 	        return returnfalse(mes,req1)
 		end
 	elseif mes.TYPE=="signin" then
-	    	local bool1,req1 = dat_ser.sign(uid,os.date("%Y-%m-%d"))
+	    	local bool1,req1 = dat_ser.sign(name,os.date("%Y-%m-%d"))
 		    printI("this is sign2,%s",mes.NAME)
 		if bool1  then 
 			local rqs={SESSION=mes.SESSION,ID="10",STATE=true,TYPE="signin"}

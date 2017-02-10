@@ -79,7 +79,7 @@ function CMD.safebox(fd,mes,name)
 	       return returnfalse(mes,msg)
 		end
 	else 
-		returnfalse(mes,msg)
+		returnfalse(mes,"参数错误")
 	end
 end
 

@@ -27,6 +27,9 @@ function handler.message(fd, msg)
 		local who="123456"
 		password=crypt.aesdecode(str1,who,"")
 		local mes = cjson.decode(password)
+		if mes.ID~="1" and mes.ID~="2"  then
+			mes.NAME=tonumber(mes.NAME)
+		end
 		skynet.error(mes.SESSION,mes.CLUSTER,mes.SERVICE,mes.CMD,mes.ID,mes.NAME,mes.PASSWD)
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)

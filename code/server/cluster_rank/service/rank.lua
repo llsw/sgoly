@@ -83,10 +83,10 @@ function CMD.ranklist(fd,mes)
 	        return returnfalse(reqs5)
 		end
 	elseif mes.TYPE=="wealth" then
-		   local bool4_1,req4_1 = sgoly_tool.getStatementsFromRedis(mes.NAME, c)
-    	   local bool4,rqs4=sgoly_tool.getRankFromRedis(mes.NAME,tonumber(req4_1.winMoney), "winMoney",c)
+		   local bo,getmoney=sgoly_tool.getMoney(mes.NAME)
+		   local bool4,rqs4=sgoly_tool.getMoneyRankFromRedis(mes.NAME,getmoney)
 	       printI("this is rank5,%s",mes.NAME)
-		if bool4 and bool4_1 then 
+		if bool4 and bo then 
 			rqs4.SESSION=mes.SESSION
 			rqs4.ID="7"
 			rqs4.STATE=true
@@ -94,10 +94,10 @@ function CMD.ranklist(fd,mes)
 			local req4_1=sgoly_pack.encode(rqs4)
 		    return req4_1
 		else 
-	        return returnfalse(rqs4)
+	        return returnfalse("财富榜加载异常")
 		end
     else 
-        return returnfalse(reqs5)
+        return returnfalse("参数错误")
    	end
 end
 

@@ -842,7 +842,7 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 
 		else
 			args[nickname] = {value, os.time()}
-			table.insert(rank,my_name)
+			table.insert(rank,nickname)
 			lock(sortRank,rank, args)
 
 			local len = #rank
@@ -882,7 +882,7 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 
 		else
 			args[nickname] = {value, os.time()}
-			table.insert(rank,my_name)
+			table.insert(rank,nickname)
 			lock(sortRank,rank, args)
 
 			local len = #rank

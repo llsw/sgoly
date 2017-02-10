@@ -21,17 +21,9 @@ function handler(fd, mes)
 		local bool,msg=dat_ser.register(mes.NAME,mes.PASSWD)
 		skynet.error(bool,msg)
 		if bool then            
-		    local bo,message=dat_ser.usr_init(mes.NAME,500000,"0",nil)
-			skynet.error("usr_init",bo,message)--test
-			if bo then
-				local resuss={SESSION=mes.SESSION,ID="2",STATE=bo}
-				local resuss1_2=packtable(resuss)
-			  	return resuss1_2.."\n"
-			elseif not bo then
-			  	local reinit={SESSION=mes.SESSION,ID="2",STATE=bo,MESSAGE=message}
-				local reinit1_2=packtable(reinit)
-			  	return reinit1_2.."\n"
-			end
+			local resuss={SESSION=mes.SESSION,ID="2",STATE=bool}
+			local resuss1_2=packtable(resuss)
+		  	return resuss1_2.."\n"
 		elseif not bool then 
 			local refal={SESSION=mes.SESSION,ID="2",STATE=bool,MESSAGE=msg}
 			local refal1_2=packtable(refal)
@@ -39,11 +31,11 @@ function handler(fd, mes)
 		end
 -------------------------用户登录-------------------------------------
     elseif mes.ID=="1" then   
-        if sessionID[mes.NAME] then
-				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="该用户已登录"}
-			    local str3_1=packtable(reqmoney)
-				return str3_1.."\n"
-        end
+    --     if sessionID[mes.NAME] then
+				-- local reqmoney={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="该用户已登录"}
+			 --    local str3_1=packtable(reqmoney)
+				-- return str3_1.."\n"
+    --     end
             sessionID[mes.NAME]=mes.SESSION
             for k,v in pairs(sessionID) do
                    printI("sessionID,k=%s,v=%s",k,v)
@@ -52,13 +44,13 @@ function handler(fd, mes)
 		    local bool,msg=dat_ser.login(mes.NAME, mes.PASSWD)
 		    skynet.error(bool,msg)
 		if bool then     --登录成功返回拥有金钱
-		        local boo,money =sgoly_tool.getMoney(mes.NAME)
+		        local boo,money =sgoly_tool.getMoney(tonumber(msg))
 		        printI("money is %s",money)
 		    if boo then
-				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money}
+				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money,NAME=msg}
 			    local str5_1=packtable(reqmoney)
 			    cluster.call("cluster_gateway",".gateway","heart",fd)
-			    cluster.call("cluster_game",".agent","start",fd,mes.NAME)
+			    cluster.call("cluster_game",".agent","start",fd,msg)
 			    return str5_1.."\n"
 		    elseif not boo then
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MESSAGE=money}
@@ -82,24 +74,16 @@ function handler(fd, mes)
 		    	bool,msg=dat_ser.register(name,trpd)
 			    skynet.error(bool,msg)
 			end
-	    if msg=="插入用户数据成功" then 
-			    printI("插入用户数据成功")
+	    if msg=="注册成功" then 
+			    printI("注册成功")
 			    printI("%s,%s",name,trpd)           
-				local bo,message=dat_ser.usr_init(name,500000,"0",nil)
-				skynet.error("record_init=",bo,message)--test
-			if bo then 
-				local rep={SESSION=mes.SESSION,ID="3",STATE=bo,NAME=name,PASSWD=password}
+				local rep={SESSION=mes.SESSION,ID="3",STATE=true,NAME=name,PASSWD=password}
 				local str2=packtable(rep)
 				return str2.."\n"
-			elseif not bo then
-				local rep5={SESSION=mes.SESSION,ID="3",STATE=bo,MESSAGE=message}
-			    local str5_1=packtable(rep5)
-			    return str5_1.."\n"
-		    end
 	    else
-			       local rep={SESSION=mes.SESSION,ID="3",STATE=false,MESSAGE=msg}
-			       local str2=packtable(rep)
-			       return str2.."\n"
+		       local rep={SESSION=mes.SESSION,ID="3",STATE=false,MESSAGE=msg}
+		       local str2=packtable(rep)
+		       return str2.."\n"
 	    end 
 -------------------------修改密码----------------------------------	    
     elseif  mes.ID=="11" then            

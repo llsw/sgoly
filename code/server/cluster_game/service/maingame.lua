@@ -263,7 +263,7 @@ for i=1,k do
 				table.insert(automoney,end_point*beilv*0)
 				autowinall=autowinall+end_point*beilv*0
 			end
-		end
+		end 
 ---------------------困难模式-----------------------	
 
 	elseif  x==2   then
