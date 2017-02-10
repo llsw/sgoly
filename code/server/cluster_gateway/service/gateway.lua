@@ -10,7 +10,7 @@ package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
 local skynet_queue = require "skynet.queue"
 local lock = skynet_queue()
-
+local connection = {}
 
 
 local handler = {}
@@ -53,6 +53,8 @@ function handler.connect(fd,addr)
     local str1 = crypt.base64encode(password)
     -- driver.send(fd,str1)
     driver.send(fd,str1)
+
+    connection[fd] = {fd = fd}
 end
 
 function handler.disconnect(fd)
@@ -62,6 +64,7 @@ function handler.disconnect(fd)
 	local req=cluster.call("cluster_game",".agent","close",fd)
 	printI("save ".." " ..req)
 	printI("Client fd[%d] disconnect gateway", fd)
+	connection[fd] = nil
 end
 
 function handler.error(fd, msg)
@@ -87,6 +90,19 @@ function CMD.heart(fd)
 	skynet.fork(handlerfork,fd)
 	
 end
+
+function inform(msg)
+	msg={ID="8",STATE=false,MESSAGE=msg}
+	msg = sgoly_pack.encode(msg)
+	for k, v in pairs(connection) do
+		driver.send(k, msg)
+	end	
+end
+
+function CMD.informClient(msg)
+	skynet.fork(inform, msg)
+end
+
 function handlerfork(fd)
 	while true do
 		skynet.sleep(1800)
