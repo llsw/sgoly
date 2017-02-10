@@ -231,7 +231,7 @@ for i=1,k do
 			skynet.error(i,"中奖类型ABCDE----O(∩_∩)O~~-!") 
 			j=j+1
 			reqpack(wintype,"A6",1000,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=148235 and a<=258234 then
+		elseif a>=148235 and a<=158234 then
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				skynet.error(i,"没有中奖")
 				table.insert(sequence,picture_order("NO"))
@@ -332,7 +332,7 @@ for i=1,k do
 			skynet.error(i,"中奖类型ABCDE----O(∩_∩)O~~-!") 
 			j=j+1
 			reqpack(wintype,"A6",1000,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=131582 and a<=241581 then
+		elseif a>=131582 and a<=141581 then
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				skynet.error(i,"没有中奖")
 				table.insert(sequence,picture_order("NO"))
@@ -432,7 +432,7 @@ for i=1,k do
 			skynet.error(i,"中奖类型ABCDE----O(∩_∩)O~~-!") 
 			j=j+1
 			reqpack(wintype,"A6",1000,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=162491 and a<=272490 then
+		elseif a>=162491 and a<=172490 then
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				skynet.error(i,"没有中奖")
 				table.insert(sequence,picture_order("NO"))
