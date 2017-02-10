@@ -541,7 +541,7 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 					end
 
 				else
-					args[nickname] = {value, os.time()}
+					args[my_name] = {value, os.time()}
 					table.insert(rank,my_name)
 					lock(sortRank,rank, args)
 
@@ -572,7 +572,7 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 					end
 
 				else
-					args[nickname] = {value, os.time()}
+					args[my_name] = {value, os.time()}
 					table.insert(rank,my_name)
 					lock(sortRank,rank, args)
 					local len = #rank
@@ -842,7 +842,7 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 
 		else
 			args[nickname] = {value, os.time()}
-			table.insert(rank,nickname)
+			table.insert(rank,my_name)
 			lock(sortRank,rank, args)
 
 			local len = #rank
@@ -861,11 +861,13 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 		local ok, result = sgoly_rank.get_money_rank_from_MySQL()
 		if #result > 0 then
 			for k, v in ipairs(result) do
-				rank[k] = v.nickname
-				name_rank[v.nickname] = k
+				local ok, my_name_1 = sgoly_dat_ser.get_nickname(v.id)
+				rank[k] = my_name_1
+
+				name_rank[my_name_1] = k
 				local year, month, day, hour, minute, second = string.match(v.update_time,"(.+)-(.+)-(.+) (.+):(.+):(.+)")
 				local time = os.time({day=day, month=month, year=year, hour=hour, min=minute, sec=second})
-				args[v.nickname] = {v.money, time}
+				args[my_name_1] = {v.money, time}
 			end
 		end
 
@@ -881,8 +883,8 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 			end
 
 		else
-			args[nickname] = {value, os.time()}
-			table.insert(rank,nickname)
+			args[my_name] = {value, os.time()}
+			table.insert(rank, my_name)
 			lock(sortRank,rank, args)
 
 			local len = #rank
