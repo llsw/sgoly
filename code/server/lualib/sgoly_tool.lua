@@ -710,4 +710,56 @@ function sgoly_tool.getAwardFromRedis(rank1, rank2, date)
 	
 end
 
+--!
+--! @brief      从Redis中得到领取救济金的次数
+--!
+--! @param      nickname  用户名
+--!
+--! @return     bool, times 执行是否成功、已领救济金次数
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-10
+--!
+function sgoly_tool.getCharityTimesFromRedis(nickname)
+	local date = os.date("%Y-%m-%d")
+	local key = "dayRecords:" .. nickname .. "_" .. date
+	local value = redis_query({"hget", key , "charityTimes"})
+	if value ~= nil then
+		return true, tonumber(value)
+	end
+
+	local year, month, day = string.match(date, "(.+)-(.+)-(.+)")
+	year = tonumber(year)
+	month = tonumber(month)
+	day = tonumber(day)
+	local time = os.time({day=day+1, month=month, year=year,hour = 0, min=0, sec=0})
+	redis_query({"hset", key, "charityTimes", 0})
+	redis_query({"expireat", key, time})
+	return true, 0
+end
+
+--!
+--! @brief      设置领救济金次数到Redis
+--!
+--! @param      nickname  用户名
+--! @param      times     次数
+--!
+--! @return     bool, times 执行是否成功、nil
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-10
+--!
+function sgoly_tool.setCharityTimesToRedis(nickname, times)
+	local date = os.date("%Y-%m-%d")
+	local key = "dayRecords:" .. nickname .. "_" .. date
+	local year, month, day = string.match(date, "(.+)-(.+)-(.+)")
+	year = tonumber(year)
+	month = tonumber(month)
+	day = tonumber(day)
+	local time = os.time({day=day+1, month=month, year=year,hour = 0, min=0, sec=0})
+	redis_query({"hset", key, "charityTimes", times})
+	redis_query({"expireat", key, time})
+	return true, nil
+end
+
 return sgoly_tool
