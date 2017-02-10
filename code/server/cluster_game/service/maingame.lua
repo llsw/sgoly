@@ -123,21 +123,15 @@ end
 function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name) 
     printI("I am %s",name)
     gamenum=0          --游戏次数
- 	gamenum8=0         --8次游戏次数
- 	-- money=0            --赚的金额
- 	money8=0		   --8次游戏金额
  	moneydb=0          --赚得金额存数据库
-	-- deposit=0          --消耗金额
 	depositdb=0        --消耗金额存数据库
-	-- historyj=0         --历史中奖次数
 	n=1                --number1 的索引
 	bo,y=sgoly_tool.getPlayModelFromRedis(name)
     x=y[2] 
     xsave=x            --1 为普通模式 2为困难模式 3为简单模式	
     printI("x=%d,%d,%d",x,y[1],y[2])
     skynet.error(type(x),type(y[2]))
-	-- historynum=0       --历史抽奖次数
-	winmoney={}        --中奖金额       
+	winmoney={}         --中奖金额       
 	printI("MONEY=%s,cost=%s",MONEY,cost)
 	--historynum=historynum+k
 	if TYPE=="autostart" or TYPE=="autogo" then 
@@ -496,15 +490,6 @@ for i=1,k do
 		money=0
 		deposit=0
 	end
------------------------	8次判断切换模式------------------------------
- --    gamenum8=gamenum8+1
-	-- money8=money8+money
-	-- if money8~=0 then
-	-- 	gamenum8=0
-	-- end
-	-- if gamenum%8==0 and money8==0 then
-	-- 	x=4          
-	-- end
 end  --for 循环end
 -----------------------抽奖次数--------------------------
 	historyj=historyj+j
@@ -618,10 +603,6 @@ end  --for 循环end
 				     end
 				end
 	---------------------自动获奖总金额----------------
-			    -- for k,v in ipairs(automoney) do
-			    -- 	autowinall=autowinall+v
-			    -- 	skynet.error("automoney-k=%d,v=%d",k,v)
-			    -- end
 			    printI("autowinall is %s",autowinall)
 	-------------------------------------------------------
 		   local autozjnum = #(autonumber1)
@@ -722,7 +703,6 @@ function CMD.autosave(fd,name)
 			end
 	    ---------------------自动中奖最高金额---------------
 				for k,v in ipairs(automoney) do
-					-- print("automoney",k,v)
 				     if v>autowinmax then 
 				     	autowinmax=v
 				     end

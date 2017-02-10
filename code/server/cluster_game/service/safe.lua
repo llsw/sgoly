@@ -11,11 +11,11 @@ function CMD.safebox(fd,mes,name)
 	       local bool,req1 = dat_ser.seted_safe_pwd(name)
 		   printI("this is safe1,%s",mes.NAME)
 		if bool then 
-			local rqs={SESSION=mes.session,ID="9",STATE=true,TYPE="query",SET="yes"}
+			local rqs={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="query",SET="yes"}
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
-	        local rqs={SESSION=mes.session,ID="9",STATE=true,TYPE="query",SET="no"}
+	        local rqs={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="query",SET="no"}
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		end
@@ -24,7 +24,7 @@ function CMD.safebox(fd,mes,name)
 	        local bool,rqs=dat_ser.set_safe_pwd(name,PASSWD)
 		    printI("this is safe2,%s",mes.NAME)
 		if  bool then 
-			local rqs1={SESSION=mes.session,ID="9",STATE=true,TYPE="setpd"}
+			local rqs1={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="setpd"}
 			local req2_1=sgoly_pack.encode(rqs1)
 		    return req2_1
 		else 
@@ -36,7 +36,7 @@ function CMD.safebox(fd,mes,name)
 	        local bool,rqs=dat_ser.cha_saf_pwd(name,CURPASSWD,PASSWD)
 		    printI("this is safe3,%s",mes.NAME)
 			if  bool then 
-				local rqs1={SESSION=mes.session,ID="9",STATE=true,TYPE="reset"}
+				local rqs1={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="reset"}
 				local req2_1=sgoly_pack.encode(rqs1)
 			    return req2_1
 		    else 
@@ -48,7 +48,7 @@ function CMD.safebox(fd,mes,name)
 		   printI("this is safe4,%s",mes.NAME)
 		   local bool1,req2=dat_ser.query_saf_money(name)
 		if bool and bool1 then 
-			local rqs={SESSION=mes.session,ID="9",STATE=true,TYPE="login",MONEY=req2}
+			local rqs={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="login",MONEY=req2}
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
@@ -60,7 +60,7 @@ function CMD.safebox(fd,mes,name)
 	      local bool=sgoly_tool.saveMoneyToRedis(name,nowmoney-mes.MONEY)
 		   printI("this is safe5,%s",mes.NAME)
 		if boo and bool and bool2 then 
-		   local rqs={SESSION=mes.session,ID="9",STATE=true,TYPE="save",MONEY=nowmoney-mes.MONEY}
+		   local rqs={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="save",MONEY=nowmoney-mes.MONEY}
 	       local req2_1=sgoly_pack.encode(rqs)
 		   return req2_1
 		else 
@@ -72,7 +72,7 @@ function CMD.safebox(fd,mes,name)
 	      local bool=sgoly_tool.saveMoneyToRedis(name,nowmoney+mes.MONEY)
 		   printI("this is safe5,%s",mes.NAME)
 		if boo and bool and bool2 then 
-		   local rqs={SESSION=mes.session,ID="9",STATE=true,TYPE="load",MONEY=nowmoney+mes.MONEY}
+		   local rqs={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="load",MONEY=nowmoney+mes.MONEY}
 	       local req2_1=sgoly_pack.encode(rqs)
 		   return req2_1
 		else 
@@ -85,7 +85,7 @@ end
 
 
 function returnfalse(mes,msg)
-	        local req1={SESSION=mes.session,ID="9",STATE=false,TYPE=mes.TYPE,MESSAGE=msg}
+	        local req1={SESSION=mes.SESSION,ID="9",STATE=false,TYPE=mes.TYPE,MESSAGE=msg}
 			local req1_1=sgoly_pack.encode(req1)
 			return req1_1
 end

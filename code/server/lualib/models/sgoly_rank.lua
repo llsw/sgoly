@@ -103,4 +103,35 @@ function model.get_rank_from_MySQL(rank_type, date)
 	return mysql_query(sql)
 end
 
+--!
+--! @brief      Gets the money rank.
+--!
+--! @return     The money rank.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-10
+--!
+function model.get_money_rank_from_MySQL()
+	local sql = string.format(
+		[[
+			SELECT
+				nickname,
+				money,
+				update_time
+			FROM
+				users,
+				account
+			WHERE
+				users.id = account.id
+			ORDER BY
+				money DESC,
+				update_time ASC
+			LIMIT 10;
+
+		]]
+		)
+	return true, mysql_query(sql)
+	
+end
+
 return model

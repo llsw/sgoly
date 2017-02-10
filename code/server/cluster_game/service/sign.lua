@@ -14,7 +14,7 @@ function CMD.sign_in(fd,mes,name)
 	    	local bool1,req1 = dat_ser.query_sign(uid)
 		    printI("this is sign1,%s",mes.NAME)
 		if bool1  then 
-			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="query",LIST=req1}
+			local rqs={SESSION=mes.SESSION,ID="10",STATE=true,TYPE="query",LIST=req1}
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
@@ -24,7 +24,7 @@ function CMD.sign_in(fd,mes,name)
 	    	local bool1,req1 = dat_ser.sign(uid,os.date("%Y-%m-%d"))
 		    printI("this is sign2,%s",mes.NAME)
 		if bool1  then 
-			local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="signin"}
+			local rqs={SESSION=mes.SESSION,ID="10",STATE=true,TYPE="signin"}
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
@@ -36,7 +36,7 @@ function CMD.sign_in(fd,mes,name)
 	    	local bool2,req2=sgoly_tool.saveMoneyToRedis(name,req+req1)
 		    printI("this is sign3,%s",mes.NAME)
 			if bool1 and bool and bool2 then 
-				local rqs={SESSION=mes.session,ID="10",STATE=true,TYPE="award",MONEY=req+req1}
+				local rqs={SESSION=mes.SESSION,ID="10",STATE=true,TYPE="award",MONEY=req+req1}
 				local req2_1=sgoly_pack.encode(rqs)
 			    return req2_1
 			else 
@@ -48,7 +48,7 @@ function CMD.sign_in(fd,mes,name)
 end
 
 function returnfalse(mes,msg)
-	        local req1={SESSION=mes.session,ID="10",STATE=false,TYPE=mes.TYPE,MESSAGE=msg}
+	        local req1={SESSION=mes.SESSION,ID="10",STATE=false,TYPE=mes.TYPE,MESSAGE=msg}
 			local req1_1=sgoly_pack.encode(req1)
 			return req1_1
 end
