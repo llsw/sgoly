@@ -136,13 +136,14 @@ end
 --! @date       2017-01-16
 --!
 function sgoly_tool.getMoney(nickname)
+	nickname = tostring(nickname)
 	local db = "user:" ..  nickname
 	local money = redis_query({"hget", db, "money"})
 	if money then
 		return true, tonumber(money)
 	else
 		local judge
-		judge, money = sgoly_dat_ser.get_money(nickname)
+		judge, money = sgoly_dat_ser.get_money(tonumber(nickname))
 		if judge then
 			redis_query({"hset", db, "money", money})
 			return true, money
@@ -229,6 +230,7 @@ end
 --! @date       2017-01-16
 --!
 function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum, winNum, serialWinNum, maxWinMoney, eighthNoWin, recoveryRate, dt)
+	nickname = tostring(nickname)
 	if nickname == nil or winMoney == nil or 
 		costMoney == nil or playNum == nil 
 		or winNum == nil or serialWinNum == nil 
@@ -239,8 +241,8 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 	printI("Save statements nickname[%s]", "winMoney[%d]", "costMoney[%d]", "playNum[%d]", "winNum[%d]", 
 		"serialWinNum[%d]", "maxWinMoney[%d]", "eighthNoWin[%d]", "recoveryRate[%d]", "dt[%s]",
 		nickname, winMoney, costMoney, playNum, winNum, serialWinNum, maxWinMoney, eighthNoWin, recoveryRate, dt)
-	local key = "statements:" .. tostring(nickname) .. "_" ..dt
-	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
+	local key = "statements:" .. nickname .. "_" ..dt
+	local ok, result = sgoly_tool.getStatementsFromRedis(tonumber(nickname), dt)
 	if ok then
 
 		result.winMoney = result.winMoney + winMoney
@@ -261,7 +263,7 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 		result.recoveryRate = recoveryRate
 		result.saveStatementsToMySQL = 0
 		redis_query({"hmset", key, result})
-		local ok , result = sgoly_dat_ser.update_statments_to_MySQL(nickname, result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
+		local ok , result = sgoly_dat_ser.update_statments_to_MySQL(tonumber(nickname), result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
 		return true, nil
 	end
 
@@ -279,8 +281,9 @@ end
 --! @date       2017-01-18
 --!
 function sgoly_tool.getPlayModelFromRedis(nickname)
+	nickname = tostring(nickname)
 	local res = {}
-	local key = "statements:" ..  tostring(nickname) .. "_" ..os.date("%Y-%m-%d")
+	local key = "statements:" ..  nickname .. "_" ..os.date("%Y-%m-%d")
 	res = redis_query({"hmget", key, "eighthNoWin", "recoveryRate"})
 	if #res == 0 then
 		res[1]=0
@@ -304,6 +307,7 @@ end
 --! @date       2017-01-20
 --!
 function sgoly_tool.getCountStatementsFromRedis(nickname, dt)
+	nickname = tostring(nickname)
 	local res = {}
 	
 	local key = "count:" .. nickname
@@ -331,7 +335,7 @@ function sgoly_tool.getCountStatementsFromRedis(nickname, dt)
 		return ok2, result3	
 	end
 	local ok2, result2 = sgoly_tool.getStatementsFromRedis(nickname, os.date("%Y-%m-%d"))
-	local ok, result = sgoly_dat_ser.get_count_statements_from_MySQL(nickname, dt)
+	local ok, result = sgoly_dat_ser.get_count_statements_from_MySQL(tonumber(nickname), dt)
 	if ok then
 		redis_query({"hmset", key, result})
 		local result3 = {
@@ -369,12 +373,13 @@ end
 --! @date       2017-01-21
 --!
 function sgoly_tool.saveMoneyFromRdisToMySQL(nickname)
+	nickname = tostring(nickname)
 	local key = "user:" .. nickname
 	local result = tonumber(redis_query({"hget", key , "money"}))
 	if result == nil then
 		return false, "No money"
 	end
-	local ok , result = sgoly_dat_ser.upadate_money_to_MySQL(nickname, result)
+	local ok , result = sgoly_dat_ser.upadate_money_to_MySQL(tonumber(nickname), result)
 	if ok then
 		redis_query({"del", key})
 	end
@@ -393,14 +398,15 @@ end
 --! @date       2017-01-21
 --!
 function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
+	nickname = tostring(nickname)
 	local key1 = "count:" .. nickname
-	local key2 = "statements:" .. tostring(nickname) .. "_" ..dt 
+	local key2 = "statements:" .. nickname .. "_" ..dt 
 	local key3 = "user:" .. nickname
 	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if ok then
 		skynet.error(string.format("have statements"))
 		if tonumber(result.saveStatementsToMySQL) == 0 then 
-			ok , result = sgoly_dat_ser.update_statments_to_MySQL(nickname, result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
+			ok , result = sgoly_dat_ser.update_statments_to_MySQL(tonumber(nickname), result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
 	
 			skynet.error(ok, result)
 
@@ -486,6 +492,7 @@ end
 --! @date       2017-01-22
 --!
 function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
+	nickname = tostring(nickname)
 	local rank = {} 
 	local args = {}
 	local name_rank = {}
@@ -738,6 +745,7 @@ end
 --! @date       2017-02-10
 --!
 function sgoly_tool.getCharityTimesFromRedis(nickname)
+	nickname = tostring(nickname)
 	local date = os.date("%Y-%m-%d")
 	local key = "dayRecords:" .. nickname .. "_" .. date
 	local value = redis_query({"hget", key , "charityTimes"})
@@ -767,6 +775,7 @@ end
 --! @date       2017-02-10
 --!
 function sgoly_tool.setCharityTimesToRedis(nickname, times)
+	nickname = tostring(nickname)
 	local date = os.date("%Y-%m-%d")
 	local key = "dayRecords:" .. nickname .. "_" .. date
 	local year, month, day = string.match(date, "(.+)-(.+)-(.+)")
@@ -791,6 +800,7 @@ end
 --! @date       2017-02-10
 --!
 function sgoly_tool.getMoneyRankFromRedis(nickname, value)
+	nickname = tostring(nickname)
 	local rank = {} 
 	local args = {}
 	local name_rank = {}
