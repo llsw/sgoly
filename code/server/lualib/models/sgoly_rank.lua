@@ -119,15 +119,11 @@ function model.get_money_rank_from_MySQL()
 				money,
 				update_time
 			FROM
-				users,
-				account
-			WHERE
 				account
 			ORDER BY
 				money DESC,
 				update_time ASC
 			LIMIT 10;
-
 		]]
 		)
 	return true, mysql_query(sql)
