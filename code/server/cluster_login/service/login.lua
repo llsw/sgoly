@@ -52,12 +52,12 @@ function handler(fd, mes)
 			    cluster.call("cluster_gateway",".gateway","heart",fd)
 			    cluster.call("cluster_game",".agent","start",fd,msg)
 			    return str5_1.."\n"
-		    elseif not boo then
+		    else
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MESSAGE=money}
 			    local str3_1=packtable(reqmoney)
 				return str3_1.."\n"
 			end
-		elseif	not bool then
+		else
 			    local rep4={SESSION=mes.SESSION,ID="1",STATE=bool,MESSAGE=msg}
 				local str4_1=packtable(rep4)
 				return str4_1.."\n"	

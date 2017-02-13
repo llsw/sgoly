@@ -16,7 +16,6 @@ function CMD.getgrant(fd,mes,name)
 		local bool1,req1 = dat_ser.get_award("charity","0")
 		local bool,req=sgoly_tool.getMoney(name)
 		local bool2,req2=sgoly_tool.saveMoneyToRedis(name,req+req1)
-	    printI("this is grant1,%s",mes.NAME)
 		if bool1 and bool and bool2 then 
 			local boo4,req4=sgoly_tool.setCharityTimesToRedis(name,num+1)
 			local rqs={SESSION=mes.SESSION,ID="14",STATE=true,MONEY=req+req1,NUM=5-num-1}
