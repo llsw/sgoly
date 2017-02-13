@@ -5,6 +5,8 @@ local crypt 	= require "crypt"
 local cluster   = require "cluster"
 local sgoly_tool = require"sgoly_tool"
 local sgoly_pack =require"sgoly_pack"
+package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
+local cjson = require "cjson"
 require "sgoly_printf"
 local CMD = {}
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
