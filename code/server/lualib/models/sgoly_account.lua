@@ -85,7 +85,11 @@ function account.update_money_s(nickname, money)
 					WHERE
 						u.id = %d;
 				]], money, nickname)
-	return mysql_query(sql)
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
+	return true, status
 end
 
 return account

@@ -68,7 +68,14 @@ function model.save_rank_to_MySQL(rank_type, rank, args, date)
 		end
 		
 	end
-	return mysql_query(sql)
+
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
+
+	return true, status
+
 end 
 
 --!
@@ -100,7 +107,12 @@ function model.get_rank_from_MySQL(rank_type, date)
 		date 
 		)
 	
-	return mysql_query(sql)
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
+
+	return true, status
 end
 
 --!
@@ -126,7 +138,13 @@ function model.get_money_rank_from_MySQL()
 			LIMIT 10;
 		]]
 		)
-	return true, mysql_query(sql)
+
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
+
+	return true, status
 	
 end
 

@@ -70,12 +70,12 @@ local users_server = require "sgoly_users_server"
  -- --! @author     kun si, 627795061@qq.com
  -- --! @date       2017-01-21
  -- --!
- -- function account_server.update_money_s(nickname, money)
- -- 	if not nickname or not money then
-	-- 	return false, "Account_server.update_money_s args nil"
-	-- end
+ function account_server.update_money_s(nickname, money)
+ 	if not nickname or not money then
+		return false, "Account_server.update_money_s args nil"
+	end
 
- -- 	return account_dao.update_money_s(nickname, money)
- -- end
+ 	return account_dao.update_money_s(nickname, money)
+ end
 
 return account_server

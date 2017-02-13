@@ -20,7 +20,11 @@ local model = {}
 --!
 function model.select_uuid()
 	local sql = "select uuid from uuid;"
-	return mysql_query(sql)
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
+	return true, status
 end
 
 --!
@@ -35,7 +39,11 @@ end
 --!
 function model.update_uuid(uuid)
 	local sql = string.format("update uuid set uuid = %d;", uuid)
-	return mysql_query(sql)
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
+	return true, status
 end
 
 return model

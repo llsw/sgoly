@@ -12,14 +12,18 @@ local account = require "sgoly_account"
 local day_io = require "sgoly_day_io"
 local day_max = require "sgoly_day_max"
 local day_times = require "sgoly_day_times"
-local union_query_server = require "sgoly_union_query_server"
-local uuid_server = require "sgoly_uuid_server"
-local rank_server = require "sgoly_rank_server"
+-- local union_query_server = require "sgoly_union_query_server"
+-- local uuid_server = require "sgoly_uuid_server"
+-- local rank_server = require "sgoly_rank_server"
 local safe = require "sgoly_safe"
 local head = require "sgoly_head"
 local sign_in = require "sgoly_sign_in"
 local award = require "sgoly_award"
 local skynet = require "skynet"
+local union_query = require "sgoly_union_query"
+local sgoly_uuid = require "sgoly_uuid"
+local sgoly_rank = require "sgoly_rank"
+
 
 local dat_ser = {}
 
@@ -239,8 +243,8 @@ function dat_ser.get_statments_from_MySQL(nickname, dt)
 		return false, "Args nil"
 	end
 
-	local ok, result = union_query_server.get_stamtents_from_MySQL(nickname, dt)
-	if #result > 0 then
+	local ok, result = union_query.get_stamtents_from_MySQL(nickname, dt)
+	if ok and #result > 0 then
 
 		return ok, 
 		{
@@ -331,8 +335,8 @@ function dat_ser.get_count_statements_from_MySQL(nickname, dt)
 	if not nickname then
 		return false, "Args nil"
 	end
-	local ok, result = union_query_server.get_count_statements_from_MySQL(nickname, dt)
-	if #result > 0 then
+	local ok, result = union_query.get_count_statements_from_MySQL(nickname, dt)
+	if ok and #result > 0 then
 
 		return ok, 
 		{
@@ -383,7 +387,7 @@ end
 --! @date       2017-01-21
 --!
 function dat_ser.select_uuid()	
-	return uuid_server.select_uuid()
+	return sgoly_uuid.select_uuid()
 end
 
 --!
@@ -397,7 +401,7 @@ end
 --! @date       2017-01-21
 --!
 function dat_ser.update_uuid(uuid)
-	return uuid_server.update_uuid(uuid)
+	return sgoly_uuid.update_uuid(uuid)
 end
 
 --!
@@ -414,7 +418,7 @@ end
 --! @date       2017-01-24
 --!
 function dat_ser.save_rank_to_MySQL(rank_type, rank, args, date)
-	return rank_server.save_rank_to_MySQL(rank_type, rank, args, date)
+	return sgoly_rank.save_rank_to_MySQL(rank_type, rank, args, date)
 end
 
 --!
@@ -429,7 +433,7 @@ end
 --! @date       2017-01-24
 --!
 function dat_ser.get_rank_from_MySQL(rank_type, date)
-	return rank_server.get_rank_from_MySQL(rank_type, date)
+	return sgoly_rank.get_rank_from_MySQL(rank_type, date)
 end
 
 --[[
