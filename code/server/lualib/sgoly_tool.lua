@@ -872,7 +872,7 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 		end
 
 		if name_rank[my_name] then
-			if value > args[my_name][1] then
+			if value ~= args[my_name][1] then
 				args[my_name][1] = value
 				args[my_name][2] = os.time()
 				lock(sortRank,rank, args)
