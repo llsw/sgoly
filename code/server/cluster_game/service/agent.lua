@@ -87,7 +87,6 @@ function agent.errorexit( fd )	 --用户玩自动模式强制退出
 end
 
 function agent.close( fd )        --用户玩普通模式强制退出
-	-- body
 	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
 	if connection[fd] then
 		local bool3,req1 = sgoly_tool.getStatementsFromRedis(connection[fd].name, os.date("%Y-%m-%d"))
@@ -132,9 +131,7 @@ end
 
 function agent.setline(fd)
 	if connection[fd]~=nil  then
-		if connection[fd]~=nil  then
 		   connection[fd].line=os.time()
-		end
 	end
 end
 

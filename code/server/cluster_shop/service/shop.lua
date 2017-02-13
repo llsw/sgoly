@@ -15,6 +15,7 @@ function returnfalse(mes)
 			local req1_1=sgoly_pack.encode(req1)
 			return req1_1
 end
+
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(CMD[cmd], cmd .. "not found")

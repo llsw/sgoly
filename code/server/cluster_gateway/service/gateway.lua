@@ -79,8 +79,7 @@ end
 
 
 function CMD.heart(fd,name,session)
-	skynet.fork(handlerfork,fd,name)
-	
+	skynet.fork(handlerfork,fd,name,session)
 end
 
 function inform(msg)
@@ -104,8 +103,7 @@ function handlerfork(fd,name,session)
 			printI("line=false")
 			break
 		end
-		if(os.time()-line>20) then
-		
+		if(os.time()-line>20) then	
 		local req={ID="13",TYPE="heart"}
 		local req2_1=sgoly_pack.encode(req)
 	    driver.send(fd,req2_1)
