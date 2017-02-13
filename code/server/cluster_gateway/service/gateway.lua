@@ -21,19 +21,15 @@ end
 
 function handler.message(fd, msg)
 	if msg then
-		skynet.error("client"..fd, " says: ")
-		local str1 = crypt.base64decode(msg)
-		local password
-		local who="123456"
-		password=crypt.aesdecode(str1,who,"")
-		local mes = cjson.decode(password)
+		printI("client %s says:",fd)
+		local mes=sgoly_pack.decode(msg)
 		if mes.ID~="1" and mes.ID~="2"  then
 			mes.NAME=tonumber(mes.NAME)
 		end
-		skynet.error(mes.SESSION,mes.CLUSTER,mes.SERVICE,mes.CMD,mes.ID,mes.NAME,mes.PASSWD)
+		printI("%s %s %s %s %s %s %s",mes.SESSION,mes.CLUSTER,mes.SERVICE,mes.CMD,mes.ID,mes.NAME,mes.PASSWD)
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)
-		 cluster.call("cluster_game",".agent","setline",fd)
+		cluster.call("cluster_game",".agent","setline",fd)
 		local req=cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
 		if req~=nil then 
 		  printI("this is req to client")
@@ -49,22 +45,16 @@ function handler.connect(fd,addr)
 	local session=1
 	local ses=tostring("fd-"..fd..":session*"..session)
 	local rep={SESSION=ses,ID="0"}
-	local json_text = cjson.encode(rep)
-    local password 
-    local who="123456"
-    password =crypt.aesencode(json_text,who,"")
-    local str1 = crypt.base64encode(password)
+	local str1=sgoly_pack.encode(rep)
     driver.send(fd,str1)
-
     connection[fd] = {fd = fd}
 end
 
 function handler.disconnect(fd)
-	--gateserver.closeclient(fd)
 	local req1=cluster.call("cluster_game",".agent","errorexit",fd)
-    printI("save ".." " ..req1)
+    printI("save 自动模式".." " ..req1)
 	local req=cluster.call("cluster_game",".agent","close",fd)
-	printI("save ".." " ..req)
+	printI("save 普通模式".." " ..req)
 	printI("Client fd[%d] disconnect gateway", fd)
 	connection[fd] = nil
 end
@@ -78,11 +68,11 @@ function handler.warning(fd, size)
 end
 
 local CMD = {}
-function CMD.seclose(fd,mes,boo)
-    if boo==true then
+function CMD.seclose(fd,mes,boo)    
+    if boo==true then               --服务器关闭
 		driver.send(fd,mes)
 		gateserver.closeclient(fd)
-    else 
+    else                            --服务器关闭通告
     	driver.send(fd,mes)
     end
 end
@@ -109,7 +99,7 @@ function handlerfork(fd)
 	while true do
 		skynet.sleep(1800)
 		local line =  cluster.call("cluster_game",".agent","getline",fd)
-		printI("this is linefd,%s",line)
+		printI("this is line fd,%s",line)
 		if  line==false then
 			printI("line=false")
 			break
@@ -119,14 +109,14 @@ function handlerfork(fd)
 		local req={ID="13",TYPE="heart"}
 		local req2_1=sgoly_pack.encode(req)
 	    driver.send(fd,req2_1)
-	    printI("this is handlerforkfd,%d",fd)
+	    printI("this is heart,fd[%d]",fd)
     	end
     	if(os.time()-line>50) then
     		break
     	end
     end
     gateserver.closeclient(fd)
-    printI(">30s %d",fd)
+    printI(">30s fd[%d]",fd)
 end
 function handler.command(cmd, source, ...)
 	local f = assert(CMD[cmd])

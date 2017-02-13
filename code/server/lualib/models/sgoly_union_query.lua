@@ -21,7 +21,7 @@ require "sgoly_query"
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-21
 --!
-function query.get_statmens_from_MySQL(nickname, dt)
+function query.get_statments_from_MySQL(nickname, dt)
 	local sql = string.format(
 		[[
 			SELECT

@@ -1,7 +1,8 @@
 local skynet    = require "skynet"
 local crypt 	= require "crypt"
 local coroutine = require "skynet.coroutine"
-local dat_ser=require "sgoly_dat_ser"
+local dat_ser   = require "sgoly_dat_ser"
+local sgoly_pack = require "sgoly_pack"
 local cluster   = require "cluster"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
@@ -13,7 +14,6 @@ local CMD={}
 local loginuser = {}
 local sessionID={} 
 function handler(fd, mes)
-	local who="123456"
 	-- printI("login NAME=%s,SESSION=%s,CMD=%s,ID=%s",mes.NAME,mes.SESSION,mes.CMD,mes.ID)
 -------------------------用户注册-----------------------------------			
 	if  mes.ID=="2" then            

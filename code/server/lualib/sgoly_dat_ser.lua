@@ -243,7 +243,7 @@ function dat_ser.get_statments_from_MySQL(nickname, dt)
 		return false, "Args nil"
 	end
 
-	local ok, result = union_query.get_stamtents_from_MySQL(nickname, dt)
+	local ok, result = union_query.get_statments_from_MySQL(nickname, dt)
 	if ok and #result > 0 then
 
 		return ok, 

@@ -12,9 +12,9 @@ end
 
 function sgoly_pack.decode(req)
 	local who="123456"
-	local json_textde = cjson.decode(req)
+	local json_textde = crypt.base64decode(req)
     local pdde =crypt.aesdecode(json_textde,who,"")
-    local strde = crypt.base64encode(pdde)
+    local strde = cjson.decode(pdde)
     return strde
 end
 
