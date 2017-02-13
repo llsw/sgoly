@@ -117,12 +117,12 @@ end
 --[[
 函数说明：
 		函数作用：获取用户的昵称
-		传入参数：uid(用户id)
+		传入参数：id(用户id)
 		返回参数：(false, err_msg) or (true, value)
 --]]
-function users.select_nickname(uid)
+function users.select_nickname(id)
 	local sql = string.format("select nickname from sgoly.users where "
-		.."id = %d ;", uid)
+		.."id = %d ;", id)
 	local status = mysql_query(sql)
  	if(1 == #status) then
 		return true, status[1].nickname
