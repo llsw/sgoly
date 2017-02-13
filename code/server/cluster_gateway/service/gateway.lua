@@ -98,7 +98,7 @@ function handlerfork(fd,name,session)
 	while true do
 		skynet.sleep(1800)
 		local line =  cluster.call("cluster_game",".agent","getline",fd)
-		--printI("this is heart name[%s],fd[%s],session[%s],line[%s]",name,fd,session,line)
+		printI("name[%s] fd[%d] sleep end", name, fd)
 		if  line==false then
 			printI("line=false")
 			break
