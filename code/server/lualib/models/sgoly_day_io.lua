@@ -139,8 +139,13 @@ function day_io.updateS(nickname, win, cost, dt)
 			u.id = %d
 		AND dio.s_date = '%s';
 	]],win, cost, nickname, dt)
+
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
 	
-	return mysql_query(sql)
+	return true, status
 end
 
 return day_io

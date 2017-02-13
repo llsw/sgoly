@@ -49,7 +49,7 @@ function exit(fd,mes)   --用户正常退出
 			 	  STATE=true
 			 	}
 	        local result2_1 = sgoly_pack.encode(req2)
-	        printI("%s用户退出",connection[fd].name)
+	        printI("%s用户正常退出",connection[fd].name)
             return result2_1
         else
         	local req2_1 ={ SESSION=mes.SESSION,
@@ -133,7 +133,6 @@ end
 function agent.setline(fd)
 	if connection[fd]~=nil  then
 		if connection[fd]~=nil  then
-			printI("this is setline")
 		   connection[fd].line=os.time()
 		end
 	end

@@ -1,7 +1,8 @@
 local skynet    = require "skynet"
 local crypt 	= require "crypt"
 local coroutine = require "skynet.coroutine"
-local dat_ser=require "sgoly_dat_ser"
+local dat_ser   = require "sgoly_dat_ser"
+local sgoly_pack = require "sgoly_pack"
 local cluster   = require "cluster"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
@@ -13,7 +14,6 @@ local CMD={}
 local loginuser = {}
 local sessionID={} 
 function handler(fd, mes)
-	local who="123456"
 	-- printI("login NAME=%s,SESSION=%s,CMD=%s,ID=%s",mes.NAME,mes.SESSION,mes.CMD,mes.ID)
 -------------------------用户注册-----------------------------------			
 	if  mes.ID=="2" then            
@@ -49,15 +49,15 @@ function handler(fd, mes)
 		    if boo then
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money,NAME=msg}
 			    local str5_1=packtable(reqmoney)
-			    cluster.call("cluster_gateway",".gateway","heart",fd)
+			    cluster.call("cluster_gateway",".gateway","heart",fd,mes.NAME,mes.SESSION)
 			    cluster.call("cluster_game",".agent","start",fd,msg)
 			    return str5_1.."\n"
-		    elseif not boo then
+		    else
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MESSAGE=money}
 			    local str3_1=packtable(reqmoney)
 				return str3_1.."\n"
 			end
-		elseif	not bool then
+		else
 			    local rep4={SESSION=mes.SESSION,ID="1",STATE=bool,MESSAGE=msg}
 				local str4_1=packtable(rep4)
 				return str4_1.."\n"	

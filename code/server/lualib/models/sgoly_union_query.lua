@@ -21,7 +21,7 @@ require "sgoly_query"
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-21
 --!
-function query.get_statmens_from_MySQL(nickname, dt)
+function query.get_statments_from_MySQL(nickname, dt)
 	local sql = string.format(
 		[[
 			SELECT
@@ -44,8 +44,12 @@ function query.get_statmens_from_MySQL(nickname, dt)
 				u.id = %d
 			AND dmax.s_date = '%s';
 		]], nickname, dt)
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
 	
-	return mysql_query(sql)
+	return  true, status
 end
 
 --!
@@ -82,8 +86,13 @@ function query.get_count_statements_from_MySQL(nickname, dt)
 			HAVING
 				u.id = %d;
 		]], dt, nickname)
+
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
 	
-	return mysql_query(sql)
+	return true, status
 end
 
 return query

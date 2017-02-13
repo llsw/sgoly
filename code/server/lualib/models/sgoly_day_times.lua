@@ -138,8 +138,12 @@ function day_times.updateS(nickname, times, win_times, dt)
 			u.id = %d
 		AND dti.s_date = '%s';
 	]],times, win_times, nickname, dt)
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
 	
-	return mysql_query(sql)
+	return true, status
 end
 
 

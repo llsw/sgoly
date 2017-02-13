@@ -78,14 +78,18 @@ end
 --!
 function account.update_money_s(nickname, money)
 	local sql = string.format(
-			[[
-				UPDATE account AS acc
-				LEFT JOIN users AS u ON acc.id = u.id
-				SET acc.money = %d
-				WHERE
-					u.id = %d;
-			]], money, nickname)
-	return mysql_query(sql)
+				[[
+					UPDATE account AS acc
+					LEFT JOIN users AS u ON acc.id = u.id
+					SET acc.money = %d
+					WHERE
+						u.id = %d;
+				]], money, nickname)
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
+	return true, status
 end
 
 return account

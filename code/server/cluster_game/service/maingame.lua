@@ -6,8 +6,6 @@ local cluster   = require "cluster"
 local sgoly_tool = require"sgoly_tool"
 local sgoly_pack =require"sgoly_pack"
 require "sgoly_printf"
-package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
-local cjson = require "cjson"
 local CMD = {}
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
 
@@ -97,9 +95,7 @@ function send_result(fd,session,TYPE,SERIES,WCOUNT,MAXMONEY,SUNMONEY,FINMONEY,WI
 	       MAXMONEY=MAXMONEY,SUNMONEY=SUNMONEY,FINMONEY=FINMONEY,
 	       WINLIST=WINLIST,WMONEY=WMONEY}
 	printI("this is maingame name=%s,session=%s,SUNMONEY=%s,WMONEY=%s",name,session,SUNMONEY,WMONEY)
-    local result1=cjson.encode(result)
-    local result1_1=crypt.aesencode(result1,who,"")
-    local result1_2 = crypt.base64encode(result1_1)
+    local result1_2=sgoly_pack.encode(result)
     return result1_2
 end
 
@@ -133,6 +129,7 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
     skynet.error(type(x),type(y[2]))
 	winmoney={}         --中奖金额       
 	printI("MONEY=%s,cost=%s",MONEY,cost)
+	F3num=0
 	--historynum=historynum+k
 	if TYPE=="autostart" or TYPE=="autogo" then 
 		autonum=autonum+k
@@ -252,6 +249,7 @@ for i=1,k do
 				skynet.error("得分为",end_point*beilv*0)
 				money=money+end_point*beilv*0
 				table.insert(winmoney,end_point*beilv*0)
+				F3num=F3num+1
 			end
 	    else 
 			skynet.error(i,"没有中奖")
@@ -352,6 +350,7 @@ for i=1,k do
 				table.insert(sequence,picture_order("F3"))
 				skynet.error("得分为",end_point*beilv*0)
 				money=money+end_point*beilv*0
+				F3num=F3num+1
 				table.insert(winmoney,end_point*beilv*0)
 			end
 		else 
@@ -453,6 +452,7 @@ for i=1,k do
 				skynet.error("得分为",end_point*beilv*0)
 				money=money+end_point*beilv*0
 				table.insert(winmoney,end_point*beilv*0)
+				F3num=F3num+1
 			end
 		else 
 			skynet.error(i,"没有中奖")
@@ -492,6 +492,8 @@ for i=1,k do
 	end
 end  --for 循环end
 -----------------------抽奖次数--------------------------
+	printI("I am %s",name)
+	printI("本轮F3中奖次数%d",F3num)
 	historyj=historyj+j
 	printI("本轮抽奖次数%d",k)
 	printI("历史抽奖次数%d",historynum)
@@ -499,14 +501,14 @@ end  --for 循环end
 	printI("本轮中奖次数%d",j)
 	for key,v in pairs(wintype) do
 		if v~=0  then
-			skynet.error("中奖类型为%d,中奖次数为%s",key,v) 
+			printI("中奖类型为%s,中奖次数为%s",key,v) 
 		end
 	end
 ------------------最高连续中奖次数-----------------------------	 
 	persentmax=1    --记录最高连续中奖次数
 	if  not number1[1] then
 		max=0
-		skynet.error("最高连续中奖次数为0")
+		printI("最高连续中奖次数为0")
 	else
 		max=1  --最终最高连续中奖次数
 		for key,v in ipairs(number1) do 
@@ -525,7 +527,7 @@ end  --for 循环end
 
 ----------------------------------------------------------
 		for key,v in ipairs(number1) do
-			skynet.error("第%d次中奖,中奖类型为%s",v,number2[key])
+			printI("第%s次中奖,中奖类型为%s",v,number2[key])
 		end
 ---------------------最高连续不中奖次数-----------------------
     local houmian=0
@@ -574,6 +576,7 @@ end  --for 循环end
        sgoly_tool.saveMoneyToRedis(name,nowMONEY)
    elseif TYPE=="autoend"  then
     -------------------自动最高连续中奖次数-----------------------------
+        printI("I am %s",name)
 		autopersentmax=1    --记录自动最高连续中奖次数
 			if  not autonumber1[1] then
 				automax=0
@@ -597,7 +600,6 @@ end  --for 循环end
 			end
 	    ---------------------自动中奖最高金额---------------
 				for k,v in ipairs(automoney) do
-					-- print("automoney",k,v)
 				     if v>autowinmax then 
 				     	autowinmax=v
 				     end
@@ -683,7 +685,7 @@ function CMD.autosave(fd,name)
 		autopersentmax=1    --记录自动最高连续中奖次数
 			if  not autonumber1[1] then
 				automax=0
-				skynet.error("autosave自动最高连续中奖次数为0")
+				printI("autosave自动最高连续中奖次数为0")
 			else
 				automax=1  --最终最高连续中奖次数
 				for key,v in ipairs(autonumber1) do 

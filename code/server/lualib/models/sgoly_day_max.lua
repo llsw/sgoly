@@ -140,8 +140,12 @@ function day_max.updateS(nickname, single_max, conti_max, dt)
 			u.id = %d
 		AND dmax.s_date = '%s';
 	]],single_max, conti_max, nickname, dt)
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
 	
-	return mysql_query(sql)
+	return true, status
 end
 
 
