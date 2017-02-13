@@ -103,7 +103,7 @@ function handlerfork(fd,name,session)
 			printI("line=false")
 			break
 		end
-		
+		local timeBetween = os.time() - line
 
 		if(timeBetween > 20) then
 			printI("HeartBeat name[%s] fd[%d] timeBetween[%d]", name, fd, timeBetween)
