@@ -79,8 +79,7 @@ end
 
 
 function CMD.heart(fd,name,session)
-	skynet.fork(handlerfork,fd,name)
-	
+	skynet.fork(handlerfork,fd,name,session)
 end
 
 function inform(msg)
@@ -104,7 +103,6 @@ function handlerfork(fd,name,session)
 			printI("line=false")
 			break
 		end
-		local timeBetween = os.time()-line 
 		
 
 		if(timeBetween > 20) then

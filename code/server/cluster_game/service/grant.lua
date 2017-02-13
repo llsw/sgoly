@@ -9,7 +9,7 @@ local CMD={}
 function CMD.getgrant(fd,mes,name)
 	local bool3,req3=dat_ser.query_saf_money(name)
 	if bool3 and req3>0 then
-		return returnfalse(mes,"1")
+		return sgoly_pack.returnfalse(mes,"14","1")
 	end
 	local bool4,num=sgoly_tool.getCharityTimesFromRedis(name)
 	if num<5 then 
@@ -22,18 +22,13 @@ function CMD.getgrant(fd,mes,name)
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
-	        return returnfalse(mes,"3") 
+	        return sgoly_pack.returnfalse(mes,"14","3") 
 	    end  
 	else
-		return returnfalse(mes,"2")
+		return sgoly_pack.returnfalse(mes,"14","2")
 	end
 end
 
-function returnfalse(mes,msg)
-	        local req1={SESSION=mes.SESSION,ID="14",STATE=false,MESSAGE=msg}
-			local req1_1=sgoly_pack.encode(req1)
-			return req1_1
-end
 
 
 skynet.start(function()

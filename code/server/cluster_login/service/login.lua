@@ -4,8 +4,6 @@ local coroutine = require "skynet.coroutine"
 local dat_ser   = require "sgoly_dat_ser"
 local sgoly_pack = require "sgoly_pack"
 local cluster   = require "cluster"
-package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
-local cjson = require "cjson"
 require "skynet.manager"
 require "sgoly_printf"
 local md5 = require "md5"
@@ -22,18 +20,18 @@ function handler(fd, mes)
 		skynet.error(bool,msg)
 		if bool then            
 			local resuss={SESSION=mes.SESSION,ID="2",STATE=bool}
-			local resuss1_2=packtable(resuss)
+			local resuss1_2=sgoly_pack.encode(resuss)
 		  	return resuss1_2.."\n"
 		elseif not bool then 
 			local refal={SESSION=mes.SESSION,ID="2",STATE=bool,MESSAGE=msg}
-			local refal1_2=packtable(refal)
+			local refal1_2=sgoly_pack.encode(refal)
 			return refal1_2.."\n"
 		end
 -------------------------用户登录-------------------------------------
     elseif mes.ID=="1" then   
     --     if sessionID[mes.NAME] then
 				-- local reqmoney={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="该用户已登录"}
-			 --    local str3_1=packtable(reqmoney)
+			 --    local str3_1=sgoly_pack.encode(reqmoney)
 				-- return str3_1.."\n"
     --     end
             sessionID[mes.NAME]=mes.SESSION
@@ -48,18 +46,18 @@ function handler(fd, mes)
 		        printI("money is %s",money)
 		    if boo then
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money,NAME=msg}
-			    local str5_1=packtable(reqmoney)
+			    local str5_1=sgoly_pack.encode(reqmoney)
 			    cluster.call("cluster_gateway",".gateway","heart",fd,mes.NAME,mes.SESSION)
 			    cluster.call("cluster_game",".agent","start",fd,msg)
 			    return str5_1.."\n"
 		    else
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MESSAGE=money}
-			    local str3_1=packtable(reqmoney)
+			    local str3_1=sgoly_pack.encode(reqmoney)
 				return str3_1.."\n"
 			end
 		else
 			    local rep4={SESSION=mes.SESSION,ID="1",STATE=bool,MESSAGE=msg}
-				local str4_1=packtable(rep4)
+				local str4_1=sgoly_pack.encode(rep4)
 				return str4_1.."\n"	
 		end 	
 -------------------------游客登录--------------------------------------			        	
@@ -78,11 +76,11 @@ function handler(fd, mes)
 			    printI("注册成功")
 			    printI("%s,%s",name,trpd)           
 				local rep={SESSION=mes.SESSION,ID="3",STATE=true,NAME=name,PASSWD=password}
-				local str2=packtable(rep)
+				local str2=sgoly_pack.encode(rep)
 				return str2.."\n"
 	    else
 		       local rep={SESSION=mes.SESSION,ID="3",STATE=false,MESSAGE=msg}
-		       local str2=packtable(rep)
+		       local str2=sgoly_pack.encode(rep)
 		       return str2.."\n"
 	    end 
 -------------------------修改密码----------------------------------	    
@@ -93,11 +91,11 @@ function handler(fd, mes)
 			skynet.error(bool,msg)
 			if bool then            
 					local resuss={SESSION=mes.SESSION,ID="11",STATE=true}
-					local resuss1_2=packtable(resuss)
+					local resuss1_2=sgoly_pack.encode(resuss)
 				  	return resuss1_2.."\n"
 			else 
 				local refal={SESSION=mes.SESSION,ID="11",STATE=bool,MESSAGE=msg}
-				local refal1_2=packtable(refal)
+				local refal1_2=sgoly_pack.encode(refal)
 				return refal1_2.."\n"
 			end
 -------------------------修改头像----------------------------------
@@ -107,11 +105,11 @@ function handler(fd, mes)
 			skynet.error(bool,msg)
 			if bool then            
 					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="query",PORTRAIT=msg}
-					local resuss1_2=packtable(resuss)
+					local resuss1_2=sgoly_pack.encode(resuss)
 				  	return resuss1_2.."\n"
 			else 
 				local refal={SESSION=mes.SESSION,ID="12",STATE=false,TYPE="query",MESSAGE=msg}
-				local refal1_2=packtable(refal)
+				local refal1_2=sgoly_pack.encode(refal)
 				return refal1_2.."\n"
 			end
 		elseif mes.TYPE=="reset" then
@@ -119,16 +117,16 @@ function handler(fd, mes)
 			skynet.error(bool,msg)
 			if bool then            
 					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="reset",PORTRAIT=tonumber(mes.PORTRAIT)}
-					local resuss1_2=packtable(resuss)
+					local resuss1_2=sgoly_pack.encode(resuss)
 				  	return resuss1_2.."\n"
 			else 
 				local refal={SESSION=mes.SESSION,ID="12",STATE=false,TYPE="reset",MESSAGE=msg}
-				local refal1_2=packtable(refal)
+				local refal1_2=sgoly_pack.encode(refal)
 				return refal1_2.."\n"
 			end
 		else
 		    local rep6={SESSION=mes.SESSION,ID=mes.ID,STATE=false,TYPE==mes.TYPE,MESSAGE="未知错误"}
-			local str6_1=packtable(rep6)
+			local str6_1=sgoly_pack.encode(rep6)
 		    return str6_1.."\n"
 		end
 	elseif  mes.ID=="13" then 
@@ -137,7 +135,7 @@ function handler(fd, mes)
 		    return nil
     else
       local rep6={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
-	  local str6_1=packtable(rep6)
+	  local str6_1=sgoly_pack.encode(rep6)
       return str6_1.."\n"
     end
 end
@@ -180,13 +178,7 @@ function CMD.signin(fd,mes)
 	return handler(fd,mes)
 end
 
-function packtable(req)
-	local who="123456"
-	local result=cjson.encode(req)
-	local result1=crypt.aesencode(result,who,"")
-	local result1_1=crypt.base64encode(result1)
-	return result1_1
-end
+
 
 function CMD.release(fd,name)
 	printI("release sessionID")
