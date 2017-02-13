@@ -99,24 +99,28 @@ function handlerfork(fd,name,session)
 	while true do
 		skynet.sleep(1800)
 		local line =  cluster.call("cluster_game",".agent","getline",fd)
-		printI("this is heart name[%s],fd[%s],session[%s],line[%s]",name,fd,session,line)
+		--printI("this is heart name[%s],fd[%s],session[%s],line[%s]",name,fd,session,line)
 		if  line==false then
 			printI("line=false")
 			break
 		end
-		if(os.time()-line>20) then
+		local timeBetween = os.time()-line 
 		
-		local req={ID="13",TYPE="heart"}
-		local req2_1=sgoly_pack.encode(req)
-	    driver.send(fd,req2_1)
-	    printI("this is heart,fd[%d]",fd)
+
+		if(timeBetween > 20) then
+			printI("HeartBeat name[%s] fd[%d] timeBetween[%d]", name, fd, timeBetween)
+			local req={ID="13",TYPE="heart"}
+			local req2_1=sgoly_pack.encode(req)
+		    driver.send(fd,req2_1)
+		    --printI("this is heart,fd[%d]",fd)
     	end
-    	if(os.time()-line>50) then
+
+    	if(timeBetween > 50) then
     		break
     	end
     end
     gateserver.closeclient(fd)
-    printI(">30s fd[%d]",fd)
+    printI(">50s fd[%d]",fd)
 end
 function handler.command(cmd, source, ...)
 	local f = assert(CMD[cmd])

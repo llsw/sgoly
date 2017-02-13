@@ -134,6 +134,7 @@ function agent.setline(fd)
 	if connection[fd]~=nil  then
 		if connection[fd]~=nil  then
 		   connection[fd].line=os.time()
+		   printI("Package set time[%s] fd[%d]", os.date("%H:%M:%S", connection[fd].line), fd)
 		end
 	end
 end
@@ -143,6 +144,7 @@ function agent.getline(fd)
 	if connection[fd]==nil then
 		return false
 	else
+		printI("Package get time[%s] fd[%d]", os.date("%H:%M:%S", connection[fd].line), fd)
 	 return connection[fd].line
 	end
 end

@@ -133,7 +133,7 @@ function handler(fd, mes)
 		end
 	elseif  mes.ID=="13" then 
 
-		    cluster.call("cluster_game",".agent","setline",fd)
+		    --cluster.call("cluster_game",".agent","setline",fd)
 		    return nil
     else
       local rep6={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}

@@ -541,20 +541,24 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 					end
 
 				else
-					args[my_name] = {value, os.time()}
-					table.insert(rank,my_name)
-					lock(sortRank,rank, args)
+					if #rank == 10 and value <= args[rank[10]][1] then
 
-					local len = #rank
-					if len  > 10 then
-						local name = rank[11]
-						rank[11] = nil
-						args[name] = nil
+					else
+						args[my_name] = {value, os.time()}
+						table.insert(rank,my_name)
+						lock(sortRank,rank, args)
+
+						local len = #rank
+						if len  > 10 then
+							local name = rank[11]
+							rank[11] = nil
+							args[name] = nil
+						end
+						for k,v in pairs(rank) do
+							name_rank[v] = k
+						end
+						sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 					end
-					for k,v in pairs(rank) do
-						name_rank[v] = k
-					end
-					sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 				end
 
 			end
@@ -572,20 +576,24 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 					end
 
 				else
-					args[my_name] = {value, os.time()}
-					table.insert(rank,my_name)
-					lock(sortRank,rank, args)
-					local len = #rank
-					if len  > 10 then
-						local name = rank[11]
-						rank[11] = nil
-						args[name] = nil
+					local len = #rank 
+					if #rank == 10 and value <= args[rank[10]][1]then
+
+					else
+						args[my_name] = {value, os.time()}
+						table.insert(rank,my_name)
+						lock(sortRank,rank, args)
+						if len  > 10 then
+							local name = rank[11]
+							rank[11] = nil
+							args[name] = nil
+						end
+						
+						for k,v in pairs(rank) do
+							name_rank[v] = k
+						end
+						sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 					end
-					
-					for k,v in pairs(rank) do
-						name_rank[v] = k
-					end
-					sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 				end
 
 			end
@@ -830,7 +838,7 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 			name_rank[v] = k
 		end
 		if name_rank[my_name] then
-			if value > args[my_name][1] then
+			if value ~= args[my_name][1] then
 				args[my_name][1] = value
 				args[my_name][2] = os.time()
 				lock(sortRank,rank, args)
@@ -841,20 +849,24 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 			end
 
 		else
-			args[my_name] = {value, os.time()}
-			table.insert(rank,my_name)
-			lock(sortRank,rank, args)
+			if #rank == 10 and value <= args[rank[10]][1] then
 
-			local len = #rank
-			if len  > 10 then
-				local name = rank[11]
-				rank[11] = nil
-				args[name] = nil
+			else
+				args[my_name] = {value, os.time()}
+				table.insert(rank,my_name)
+				lock(sortRank,rank, args)
+
+				local len = #rank
+				if len  > 10 then
+					local name = rank[11]
+					rank[11] = nil
+					args[name] = nil
+				end
+				for k,v in pairs(rank) do
+					name_rank[v] = k
+				end
+				sgoly_tool.updateRankToRedis(rank, args, "money")
 			end
-			for k,v in pairs(rank) do
-				name_rank[v] = k
-			end
-			sgoly_tool.updateRankToRedis(rank, args, "money")
 		end
 
 	else 
@@ -873,30 +885,37 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 
 		if name_rank[my_name] then
 			if value ~= args[my_name][1] then
-				args[my_name][1] = value
-				args[my_name][2] = os.time()
+				if #rank == 10 and value <= args[rank[10]][1] then
+				else
+					args[my_name][1] = value
+					args[my_name][2] = os.time()
+					lock(sortRank,rank, args)
+					for k,v in pairs(rank) do
+						name_rank[v] = k
+					end
+					sgoly_tool.updateRankToRedis(rank, args, "money")
+				end
+			end
+
+		else
+			if #rank == 10 and value <= args[rank[10]][1] then
+
+			else
+				args[my_name] = {value, os.time()}
+				table.insert(rank, my_name)
 				lock(sortRank,rank, args)
+
+				local len = #rank
+				if len  > 10 then
+					local name = rank[11]
+					rank[11] = nil
+					args[name] = nil
+				end
 				for k,v in pairs(rank) do
 					name_rank[v] = k
 				end
 				sgoly_tool.updateRankToRedis(rank, args, "money")
 			end
-
-		else
-			args[my_name] = {value, os.time()}
-			table.insert(rank, my_name)
-			lock(sortRank,rank, args)
-
-			local len = #rank
-			if len  > 10 then
-				local name = rank[11]
-				rank[11] = nil
-				args[name] = nil
-			end
-			for k,v in pairs(rank) do
-				name_rank[v] = k
-			end
-			sgoly_tool.updateRankToRedis(rank, args, "money")
 		end
 	end
 	return true, {rank, name_rank, args, value}
