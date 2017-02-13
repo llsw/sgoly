@@ -51,7 +51,7 @@ function sign_in.select_date(uid)
 		end
 		return true, sigtab
 	else
-		return false, sigtab
+		return true, sigtab
 	end
 end
 
