@@ -49,7 +49,7 @@ function handler(fd, mes)
 		    if boo then
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money,NAME=msg}
 			    local str5_1=packtable(reqmoney)
-			    cluster.call("cluster_gateway",".gateway","heart",fd)
+			    cluster.call("cluster_gateway",".gateway","heart",fd,mes.NAME,mes.SESSION)
 			    cluster.call("cluster_game",".agent","start",fd,msg)
 			    return str5_1.."\n"
 		    else

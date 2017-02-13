@@ -78,8 +78,8 @@ function CMD.seclose(fd,mes,boo)
 end
 
 
-function CMD.heart(fd)
-	skynet.fork(handlerfork,fd)
+function CMD.heart(fd,name,session)
+	skynet.fork(handlerfork,fd,name)
 	
 end
 
@@ -95,11 +95,11 @@ function CMD.informClient(msg)
 	skynet.fork(inform, msg)
 end
 
-function handlerfork(fd)
+function handlerfork(fd,name,session)
 	while true do
 		skynet.sleep(1800)
 		local line =  cluster.call("cluster_game",".agent","getline",fd)
-		printI("this is line fd,%s",line)
+		printI("this is heart name[%s],fd[%s],session[%s],line[%s]",name,fd,session,line)
 		if  line==false then
 			printI("line=false")
 			break

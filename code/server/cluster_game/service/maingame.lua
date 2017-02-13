@@ -5,8 +5,6 @@ local crypt 	= require "crypt"
 local cluster   = require "cluster"
 local sgoly_tool = require"sgoly_tool"
 local sgoly_pack =require"sgoly_pack"
-package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
-local cjson = require "cjson"
 require "sgoly_printf"
 local CMD = {}
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
@@ -97,9 +95,7 @@ function send_result(fd,session,TYPE,SERIES,WCOUNT,MAXMONEY,SUNMONEY,FINMONEY,WI
 	       MAXMONEY=MAXMONEY,SUNMONEY=SUNMONEY,FINMONEY=FINMONEY,
 	       WINLIST=WINLIST,WMONEY=WMONEY}
 	printI("this is maingame name=%s,session=%s,SUNMONEY=%s,WMONEY=%s",name,session,SUNMONEY,WMONEY)
-    local result1=cjson.encode(result)
-    local result1_1=crypt.aesencode(result1,who,"")
-    local result1_2 = crypt.base64encode(result1_1)
+    local result1_2=sgoly_pack.encode(result)
     return result1_2
 end
 
