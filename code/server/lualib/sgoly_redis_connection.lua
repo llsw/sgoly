@@ -243,7 +243,7 @@ function dbcPool:get()
 			printE("Redis getDBC fail")
 			return nil
 		else
-			printI("Redis getDBC success")
+			printI("Redis getDBC success time[%s]", os.date("%H:%M:%S", os.time()))
 			if  self.usedNum >= (self.threshold * self.totalNum) then
 				skynet.fork(addConnect, self)
 			end

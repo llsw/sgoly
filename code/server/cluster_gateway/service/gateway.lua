@@ -96,7 +96,7 @@ end
 
 function handlerfork(fd,name,session)
 	while true do
-		skynet.sleep(1800)
+		skynet.sleep(2000)
 		local line =  cluster.call("cluster_game",".agent","getline",fd)
 		printI("name[%s] fd[%d] sleep end", name, fd)
 		if  line==false then

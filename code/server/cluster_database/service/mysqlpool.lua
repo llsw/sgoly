@@ -34,10 +34,10 @@ end
 function CMD.execute(sql, dbn)
 	local db = dbc:get()
 	if not db then
-		printE("execute sql[%s] fail!Not get DB ", sql)
+		printE("execute sql[%s] fail!Not get DB time[%s]", sql, os.date("%H:%M:%S", os.time()))
 		return "error"
 	else
-		printI("execute sql[%s]", sql)
+		printI("execute sql[%s] time[%s]", sql, os.date("%H:%M:%S", os.time()))
 		dbc:free(db)
 		return db:query(sql)
 		

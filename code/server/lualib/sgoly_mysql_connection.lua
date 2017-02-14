@@ -243,7 +243,7 @@ function dbcPool:get()
 			printE("MySQL getDB fail")
 			return nil
 		else
-			printI("MySQL getDB success")
+			printI("MySQL getDB success time[%s]", os.date("%H:%M:%S", os.time()))
 			if  self.usedNum >= (self.threshold * self.totalNum) then
 				skynet.fork(addConnect, self)
 			end
