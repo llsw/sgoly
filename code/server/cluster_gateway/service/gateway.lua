@@ -26,14 +26,19 @@ function handler.message(fd, msg)
 		if mes.ID~="1" and mes.ID~="2"  then
 			mes.NAME=tonumber(mes.NAME)
 		end
-		printI("%s %s %s %s %s %s %s",mes.SESSION,mes.CLUSTER,mes.SERVICE,mes.CMD,mes.ID,mes.NAME,mes.PASSWD)
+		local getMsgTime = os.clock()
+		printI("Get a Msg session[%s] cluster[%s] service[%s cmd[%s] id[%s] name[%s] time[%s] [%s]",
+			mes.SESSION, mes.CLUSTER, mes.SERVICE, mes.CMD,mes.ID, mes.NAME, getMsgTime, os.date("%H:%M:%S", os.time()))
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)
 		cluster.call("cluster_game",".agent","setline",fd)
 		local req=cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
+		printI("End handle a Msg session[%s]  name[%s]  handlerCostTime[%s]",
+			mes.SESSION, mes.NAME, os.clock() - getMsgTime)
 		if req~=nil then 
-		  printI("this is req to client")
 		  driver.send(fd,req)
+		  printI("End send a Msg session[%s]  name[%s]  totleCostTime[%s] [%s]",
+			mes.SESSION, mes.NAME, os.clock() - getMsgTime, os.date("%H:%M:%S", os.time()))
         end
     end
 end
@@ -110,7 +115,8 @@ function handlerfork(fd,name,session)
 			local req={ID="13",TYPE="heart"}
 			local req2_1=sgoly_pack.encode(req)
 		    driver.send(fd,req2_1)
-		    --printI("this is heart,fd[%d]",fd)
+		    printI("End send a heartbeat  name[%s]  time[%s]",
+			 name, os.clock())
     	end
 
     	if(timeBetween > 50) then
