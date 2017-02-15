@@ -729,7 +729,7 @@ function sgoly_tool.getAwardFromRedis(rank1, rank2, date)
 	end
 
 	if rank2 ~= 0 then
-		local value = redis_query({"hget", key2 , rank1})
+		local value = redis_query({"hget", key2 , rank2})
 		if value then
 			value  = string.sub(value, 1, #value - 1)
 			value = value .. 1
