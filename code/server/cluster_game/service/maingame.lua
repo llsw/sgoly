@@ -597,11 +597,6 @@ end  --for 循环end
 			else
 				automax=1  --最终最高连续中奖次数
 				for key,v in ipairs(autonumber1) do 
-<<<<<<< HEAD
-					-- skynet.error("autonumber1",key,v)
-=======
-					printD("autonumber1 %s %s",key,v)
->>>>>>> 3b04ff31a93dfb55c6de27bc98134f471021fd54
 					if v+1==autonumber1[key+1] then
 						autopersentmax=autopersentmax+1
 
@@ -706,11 +701,6 @@ function CMD.autosave(fd,name)
 			else
 				automax=1  --最终最高连续中奖次数
 				for key,v in ipairs(autonumber1) do 
-<<<<<<< HEAD
-					-- skynet.error("autonumber1",key,v)
-=======
-					printD("autonumber1 %s %s ", key, v)
->>>>>>> 3b04ff31a93dfb55c6de27bc98134f471021fd54
 					if v+1==autonumber1[key+1] then
 						autopersentmax=autopersentmax+1
 
