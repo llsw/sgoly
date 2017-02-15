@@ -118,7 +118,7 @@ function handlerfork(fd,name,session)
 			local req={ID="13",TYPE="heart"}
 			local req2_1=sgoly_pack.encode(req)
 		    driver.send(fd,req2_1)
-		    printD("Time[%s] End send a heartbeat  name[%s]  Time[%s]", os.clock(), 
+		    printD("Time[%s] End send a heartbeat  name[%s]", os.clock(), 
 			 name)
 		    printD("------------------HeartBeat end-----------------------")
     	end
