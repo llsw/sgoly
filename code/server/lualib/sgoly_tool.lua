@@ -325,7 +325,7 @@ function sgoly_tool.getCountStatementsFromRedis(nickname, dt)
 						}
 
 		if tonumber(result2.serialWinNum) > tonumber(result1.serialWinNum) then
-			skynet.error(result2.serialWinNum, result1.serialWinNum)
+			printD(result2.serialWinNum, result1.serialWinNum)
 			result3.serialWinNum = result2.serialWinNum
 		end
 		if tonumber(result2.maxWinMoney) > tonumber(result1.maxWinMoney) then
@@ -403,13 +403,11 @@ function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
 	local key3 = "user:" .. nickname
 	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if ok then
-		skynet.error(string.format("have statements"))
+		printD("%s have statements " .. dt, nickname)
 		if tonumber(result.saveStatementsToMySQL) == 0 then 
 			ok , result = sgoly_dat_ser.update_statments_to_MySQL(tonumber(nickname), result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
 	
-			skynet.error(ok, result)
-
-			
+			--skynet.error(ok, result)	
 		end
 
 		redis_query({"del", key1})
@@ -419,7 +417,7 @@ function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
 		return ok, result
 		
 	end
-	skynet.error(string.format(" no have statements" .. dt))
+	printD("%s no have statements " .. dt, nickname)
 	return ok ,result
 	
 end
@@ -516,13 +514,13 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 			ok, result = sgoly_tool.getRankFromMySQL(rank_type, date)
 			if ok then
 				for k, v in pairs(result) do
-					skynet.error(v.rank, v.nickname, v.value, v.award)
+					--skynet.error(v.rank, v.nickname, v.value, v.award)
 					rank[k] = v.nickname
 					args[v.nickname] = {v.value, k, v.award}
 				end	
 				sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 			end
-			skynet.error(ok, #result)
+			--skynet.error(ok, #result)
 		end
 	else
 
@@ -672,7 +670,7 @@ function sgoly_tool.saveRankToMySQL(rank_type, date)
 	if #res > 0 then
 		rank, args = rankArgsToTable(res, #res)
 		local ok, result = sgoly_dat_ser.save_rank_to_MySQL(rank_type, rank, args, date)
-		skynet.error(res, ok, result)
+		--skynet.error(res, ok, result)
 	end
 end
 
