@@ -28,8 +28,8 @@ function handler.message(fd, msg)
 		end
 		local getMsgTime = os.clock()
 		printD("======================MSG start============================")
-		printD("Get a Msg session[%s] cluster[%s] service[%s cmd[%s] id[%s] name[%s] time[%s] [%s]",
-			mes.SESSION, mes.CLUSTER, mes.SERVICE, mes.CMD,mes.ID, mes.NAME, getMsgTime, os.date("%H:%M:%S", os.time()))
+		printD("[%s] Get a Msg session[%s] cluster[%s] service[%s cmd[%s] id[%s] name[%s] time[%s]", os.date("%H:%M:%S", os.time()),
+			mes.SESSION, mes.CLUSTER, mes.SERVICE, mes.CMD,mes.ID, mes.NAME, getMsgTime)
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)
 		cluster.call("cluster_game",".agent","setline",fd)
@@ -38,8 +38,8 @@ function handler.message(fd, msg)
 			mes.SESSION, mes.NAME, os.clock() - getMsgTime)
 		if req~=nil then 
 		  driver.send(fd,req)
-		  printD("End send a Msg session[%s]  name[%s]  totleCostTime[%s] [%s]",
-			mes.SESSION, mes.NAME, os.clock() - getMsgTime, os.date("%H:%M:%S", os.time()))
+		  printD("[%s] End send a Msg session[%s]  name[%s]  totleCostTime[%s]", os.date("%H:%M:%S", os.time()),
+			mes.SESSION, mes.NAME, os.clock() - getMsgTime)
         end
         printD("----------------------MSG end------------------------------")
     end
@@ -113,14 +113,14 @@ function handlerfork(fd,name,session)
 		local timeBetween = os.time() - line
 
 		if(timeBetween > 20) then
-			printD("======================HeartBeat start============================")
-			printD("HeartBeat name[%s] fd[%d] timeBetween[%d]", name, fd, timeBetween)
+			printD("==================HeartBeat start====================")
+			printD(" TimeBetween[%d] HeartBeat name[%s] fd[%d]", timeBetween, name, fd)
 			local req={ID="13",TYPE="heart"}
 			local req2_1=sgoly_pack.encode(req)
 		    driver.send(fd,req2_1)
-		    printD("End send a heartbeat  name[%s]  time[%s]",
-			 name, os.clock())
-		    printD("----------------------HeartBeat end------------------------------")
+		    printD("Time[%s] End send a heartbeat  name[%s]  Time[%s]", os.clock(), 
+			 name)
+		    printD("------------------HeartBeat end-----------------------")
     	end
 
     	if(timeBetween > 50) then
@@ -128,7 +128,7 @@ function handlerfork(fd,name,session)
     	end
     end
     gateserver.closeclient(fd)
-    printD(">50s fd[%d]",fd)
+    printD(">50s name[%s] fd[%d]", name, fd)
 end
 function handler.command(cmd, source, ...)
 	local f = assert(CMD[cmd])
