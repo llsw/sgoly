@@ -49,6 +49,7 @@ function dat_ser.register(nickname, pwd)
 	local type = "register"
 	local status3, money = award.select_money(type)
 	local status4, uid = users.select_uid(nickname)
+	printD("Register  uid[%s]", uid)
 	local status5, msg5 = account.insert(uid, money)
 	printD(" status5 = %s", status5)
 
