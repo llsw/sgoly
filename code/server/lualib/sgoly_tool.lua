@@ -263,7 +263,7 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 		result.recoveryRate = recoveryRate
 		result.saveStatementsToMySQL = 0
 		redis_query({"hmset", key, result})
-		local ok , result = sgoly_dat_ser.update_statments_to_MySQL(tonumber(nickname), result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
+		--local ok , result = sgoly_dat_ser.update_statments_to_MySQL(tonumber(nickname), result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
 		return true, nil
 	end
 
