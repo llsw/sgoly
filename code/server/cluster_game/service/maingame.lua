@@ -514,12 +514,11 @@ end  --for 循环end
 		for key,v in ipairs(number1) do 
 				if v+1==number1[key+1] then
 					persentmax=persentmax+1
-
-				else
-						if max<persentmax then
-						   max=persentmax
-						end
-						persentmax=1
+				else  
+					if max<persentmax then
+					   max=persentmax
+					end
+					persentmax=1
 				end
 		end
 		skynet.error("最高连续中奖次数为%d",max)
@@ -532,7 +531,7 @@ end  --for 循环end
 ---------------------最高连续不中奖次数-----------------------
     local houmian=0
 	if not number1[1] then
-			skynet.error("最高连续不中奖次数为k")
+			skynet.error("最高连续不中奖次数为k",k)
 	else
 		local max = number1[1]
 		for key,v in ipairs(number1) do
@@ -584,7 +583,7 @@ end  --for 循环end
 			else
 				automax=1  --最终最高连续中奖次数
 				for key,v in ipairs(autonumber1) do 
-					skynet.error("autonumber1",key,v)
+					-- skynet.error("autonumber1",key,v)
 					if v+1==autonumber1[key+1] then
 						autopersentmax=autopersentmax+1
 
@@ -689,7 +688,7 @@ function CMD.autosave(fd,name)
 			else
 				automax=1  --最终最高连续中奖次数
 				for key,v in ipairs(autonumber1) do 
-					skynet.error("autonumber1",key,v)
+					-- skynet.error("autonumber1",key,v)
 					if v+1==autonumber1[key+1] then
 						autopersentmax=autopersentmax+1
 

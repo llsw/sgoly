@@ -55,7 +55,7 @@ function exit(fd,mes)   --用户正常退出
         	local req2_1 ={ SESSION=mes.SESSION,
         					ID=mes.ID,
 							STATE=false,
-							MESSAGE=res.." "..res1} 	
+							MESSAGE=tostring(res).." "..tostring(res1)} 	
 	        local result2_2 = sgoly_pack.encode(req2_1)
             return result2_2
         end          

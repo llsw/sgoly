@@ -19,7 +19,7 @@ function CMD.ranklist(fd,mes)
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
-	        return returnfalse(rqs)
+	        return returnfalse(mes,rqs)
 		end
 	elseif mes.TYPE=="dayALLMONEY" then
 	    	local bool2,req2 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
@@ -33,7 +33,7 @@ function CMD.ranklist(fd,mes)
 			local req2_2=sgoly_pack.encode(rqs2_1)
 		    return req2_2
 		else 
-	        return returnfalse(rqs2_1)
+	        return returnfalse(mes,rqs2_1)
 		end
 	elseif mes.TYPE=="yesSERIES" then
 	    	local bool3_1,req3_1 = sgoly_tool.getStatementsFromRedis(mes.NAME, c)
@@ -47,7 +47,7 @@ function CMD.ranklist(fd,mes)
 			local req3_1=sgoly_pack.encode(rqs3)
 		    return req3_1
 		else 
-	        return returnfalse(rqs3)
+	        return returnfalse(mes,rqs3)
 		end
 	elseif mes.TYPE=="yesALLMONEY" then
     	    local bool4_1,req4_1 = sgoly_tool.getStatementsFromRedis(mes.NAME, c)
@@ -61,7 +61,7 @@ function CMD.ranklist(fd,mes)
 			local req4_1=sgoly_pack.encode(rqs4)
 		    return req4_1
 		else 
-	        return returnfalse(rqs4)
+	        return returnfalse(mes,rqs4)
 		end
 	elseif mes.TYPE=="receive" then
 		printI("this is receive")
@@ -69,7 +69,7 @@ function CMD.ranklist(fd,mes)
 		   	local bo,getmoney=sgoly_tool.getMoney(mes.NAME)
     	    local bool5,reqs5=sgoly_tool.saveMoneyToRedis(mes.NAME,getmoney+money)
 	        printI("this is rank receive,%s",mes.NAME)
-		if bool5  then 
+		if bool5 and bo and bool5_1 then 
 			local req5={SESSION=mes.SESSION,
 						ID="7",
 						STATE=true,
@@ -80,7 +80,7 @@ function CMD.ranklist(fd,mes)
 			local reqs5_1=sgoly_pack.encode(req5)
 		    return reqs5_1
 		else 
-	        return returnfalse(reqs5)
+	        return returnfalse(mes,tostring(money)..tostring(getmoney)..tostring(reqs5))
 		end
 	elseif mes.TYPE=="wealth" then
 		   local bo,getmoney=sgoly_tool.getMoney(mes.NAME)
@@ -94,16 +94,16 @@ function CMD.ranklist(fd,mes)
 			local req4_1=sgoly_pack.encode(rqs4)
 		    return req4_1
 		else 
-	        return returnfalse("财富榜加载异常")
+	        return returnfalse(mes,"财富榜加载异常")
 		end
     else 
-        return returnfalse("参数错误")
+        return returnfalse(mes,"参数错误")
    	end
 end
 
 
-function returnfalse(mes)
-	        local req1={SESSION=mes.SESSION,ID="7",STATE=false,MESSAGE=mes}
+function returnfalse(mes,msg)
+	        local req1={SESSION=mes.SESSION,ID="7",STATE=false,TYPE=mes.TYPE,MESSAGE=msg}
 			local req1_1=sgoly_pack.encode(req1)
 			return req1_1
 end

@@ -365,7 +365,7 @@ end
 
 --!
 --! @brief      保存钱到MySQL
---!
+--! 
 --! @param      nickname	用户名
 --! @return     bool, string  执行成功与否、错误信息
 --!
@@ -378,7 +378,7 @@ function sgoly_tool.saveMoneyFromRdisToMySQL(nickname)
 	local result = tonumber(redis_query({"hget", key , "money"}))
 	if result == nil then
 		return false, "No money"
-	end
+	end 
 	local ok , result = sgoly_dat_ser.upadate_money_to_MySQL(tonumber(nickname), result)
 	if ok then
 		redis_query({"del", key})
