@@ -44,7 +44,7 @@ skynet.start(function ()
 	--skynet.exit()
 	local gateway = skynet.uniqueservice("gateway")
 	skynet.name(".gateway", gateway)
-	skynet.call(gateway,"lua","open", {
+	xpcall(skynet.call, xpcall_error, gateway,"lua","open", {
 		port = tonumber(string.sub(service_config["gateway_server"]["host"],9,12)),
 		maxclient =1024,
 		nodelay = true,

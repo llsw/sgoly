@@ -10,6 +10,7 @@ local skynet = require "skynet"
 local cluster = require "cluster"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
+require "sgoly_printf"
 
 function redis_query(args, dbn)
 
@@ -17,10 +18,12 @@ function redis_query(args, dbn)
 	local redis_cmd = cjson.encode(args)
 	local cmd = assert(args[1])
 	args[1] = dbn
-	return skynet.call(redispool, "lua", cmd, redis_cmd, table.unpack(args))
+	local call_ok, call_result = xpcall(skynet.call, xpcall_error, redispool, "lua", cmd, redis_cmd, table.unpack(args))
+	return call_result
 end
 
 function mysql_query(sql, dbn)
 	local mysqlpool = cluster.proxy("cluster_database", ".mysqlpool")
-	return skynet.call(mysqlpool, "lua", "execute", sql, dbn)
+	local call_ok, call_result = xpcall(skynet.call, xpcall_error, mysqlpool, "lua", "execute", sql, dbn)
+	return call_result
 end
