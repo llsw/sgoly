@@ -117,7 +117,7 @@ function query.set_user_exit(uid)
 	local sql = string.format(
 		[[
 			UPDATE account
-			SET account.online = 0,
+			SET account.online = 0
 			WHERE
 				account.id = %d;
 		]], uid)

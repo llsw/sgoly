@@ -5,6 +5,7 @@ require "skynet.manager"
 require "sgoly_printf"
 local sgoly_tool=require "sgoly_tool"
 local sgoly_pack=require "sgoly_pack"
+local sgoly_dat_ser = require "sgoly_dat_ser"
 local agent = {}
 
 local connection = {}
@@ -99,10 +100,12 @@ function agent.close( fd )        --用户玩普通模式强制退出
 		local bool2,res2=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,c)
 		if bool  and bool1 then
 			xpcall(skynet.send, xpcall_error, connection[fd].maingame,"lua","exit")
+			sgoly_dat_ser.set_user_exit(tonumber(connection[fd].name))
 		    connection[fd]=nil
 	   		return  "suss"
 	    else
 	    	xpcall(skynet.send, xpcall_error, connection[fd].maingame,"lua","exit")
+	    	sgoly_dat_ser.set_user_exit(tonumber(connection[fd].name))
 	    	connection[fd]=nil
 			return "false"
 	    end
