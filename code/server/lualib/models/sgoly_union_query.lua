@@ -95,4 +95,22 @@ function query.get_count_statements_from_MySQL(nickname, dt)
 	return true, status
 end
 
+function query.set_user_online(uid, addr, isOnline)
+	local sql = string.format(
+		[[
+			UPDATE account
+			SET account.online = %d,
+			 account.ip = '%s'
+			WHERE
+				account.id = %d;
+		]], isOnline, addr, uid)
+
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
+	
+	return true, status
+end
+
 return query

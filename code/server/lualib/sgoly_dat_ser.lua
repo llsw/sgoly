@@ -687,4 +687,20 @@ function dat_ser.query_sign(uid)
 	return sign_in.select_date(uid)
 end
 
+--!
+--! @brief      Sets the user online.
+--!
+--! @param      uid   The uid
+--! @param      addr  The address
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-16
+--!
+function dat_ser.set_user_online(uid, addr, isOnline)
+	return union_query.set_user_online(uid, addr, isOnline)
+end
+
+
 return dat_ser
