@@ -20,7 +20,7 @@ local account = {}
 --]]
 function account.insert(id, money)
 	local date = os.date("%Y-%m-%d %H:%M:%S")
-	local sql = string.format("insert into sgoly.account value(%d, %d, '%s')", id,
+	local sql = string.format("insert into sgoly.account(`id`, `money`, `update_time`) value(%d, %d, '%s')", id,
 							   money, date)
 	local status = mysql_query(sql)
 	if(0 == status.warning_count) then
