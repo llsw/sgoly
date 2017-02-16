@@ -193,6 +193,24 @@ function sgoly_tool.setUserFdToRedis(nickname, fd)
 end
 
 --!
+--! @brief      Saves address to redis.
+--!
+--! @param      uid   The uid
+--! @param      addr  The address
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-16
+--!
+function sgoly_tool.saveAddrToRedis(uid, addr)
+	uid = tostring(uid)
+	local key = "user:" ..  uid
+	redis_query({"hset", key, "addr", addr})
+	return true, nil
+end
+
+--!
 --! @brief      保存用户总金币到Redis
 --!
 --! @param      nickname  用户名

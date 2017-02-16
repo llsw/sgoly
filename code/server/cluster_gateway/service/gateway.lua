@@ -7,6 +7,7 @@ local sgoly_pack=require "sgoly_pack"
 local code = require"sgoly_cluster_code"
 require "sgoly_printf"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
+local sgoly_tool = require "sgoly_tool"
 local cjson = require "cjson"
 local skynet_queue = require "skynet.queue"
 local lock = skynet_queue()
@@ -48,13 +49,13 @@ end
 
 function handler.connect(fd,addr)
 	gateserver.openclient(fd)
-	printD("Client fd[%d] connect gateway", fd)
+	printD("Client fd[%d] connect gateway addr[%s]", fd, addr)
 	local session=1
 	local ses=tostring("fd-"..fd..":session*"..session)
 	local rep={SESSION=ses,ID="0"}
 	local str1=sgoly_pack.encode(rep)
     driver.send(fd,str1)
-    connection[fd] = {fd = fd}
+    connection[fd] = {fd = fd, addr = addr}
 end
 
 function handler.disconnect(fd)
@@ -99,6 +100,10 @@ end
 
 function CMD.informClient(msg)
 	skynet.fork(inform, msg)
+end
+
+function CMD.saveAddrToRedis(fd, uid)
+	sgoly_tool.saveAddrToRedis(uid, connection[fd].addr)
 end
 
 function handlerfork(fd,name,session)
