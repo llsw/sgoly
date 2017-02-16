@@ -98,10 +98,12 @@ function agent.close( fd )        --用户玩普通模式强制退出
 		local bool2,res2=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,c)
 		if bool  and bool1 then
 			cluster.call("cluster_login",".login","release",fd,connection[fd].name)
-		     connection[fd]=nil
-	   		 return  "suss"
+			skynet.send(connection[fd].maingame,"lua","exit")
+		    connection[fd]=nil
+	   		return  "suss"
 	    else
 	    	cluster.call("cluster_login",".login","release",fd,connection[fd].name)
+	    	skynet.send(connection[fd].maingame,"lua","exit")
 	    	connection[fd]=nil
 			return "false"
 	    end

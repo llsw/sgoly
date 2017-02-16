@@ -114,6 +114,8 @@ end
 	autozjnumsave=0        --自动中奖次数存数据库
 	automaxsave=0		   --自动最高连续中奖次数
 	xsave=1                --游戏模式存数据库
+	autopersentmax=0       --记录自动最高连续中奖次数
+	automax=0              --最终最高连续中奖次数
 	-- winmoney={}        --中奖金额
 --主循环判断
 function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name) 
@@ -146,6 +148,20 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 			table.insert(number1,i)
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				table.insert(autonumber1,autonum)
+				if automax==0  then
+				      automax=1
+					autopersentmax=1
+			    else
+			    	local s = #autonumber1
+			    	if autonumber1[s]+1==autonum then
+			    		autopersentmax=autopersentmax+1
+			    		if autopersentmax>automax then
+			    			automax=autopersentmax
+			    		end
+			    	else 
+			    		autopersentmax=0
+			    	end
+			    end
 			end
 			table.insert(number2,type)
 			table.insert(sequence,picture_order(type))
@@ -154,6 +170,9 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 			table.insert(winmoney,end_point*beilv*grade)
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				table.insert(automoney,end_point*beilv*grade)
+				if autowinmax<end_point*beilv*grade then
+				   autowinmax=end_point*beilv*grade
+				end
 				autowinall=autowinall+end_point*beilv*grade
 			end
     end
@@ -237,6 +256,9 @@ for i=1,k do
 				table.insert(winmoney,end_point*beilv*0)
 				if TYPE=="autostart" or TYPE=="autogo" then 
 					table.insert(automoney,end_point*beilv*0)
+					if autowinmax<end_point*beilv*0 then
+					   autowinmax=end_point*beilv*0
+					end
 					autowinall=autowinall+end_point*beilv*0
 				end
 		    else
@@ -259,6 +281,9 @@ for i=1,k do
 			table.insert(winmoney,end_point*beilv*0)
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				table.insert(automoney,end_point*beilv*0)
+				if autowinmax<end_point*beilv*0 then
+				   autowinmax=end_point*beilv*0
+				end
 				autowinall=autowinall+end_point*beilv*0
 			end
 		end 
@@ -273,7 +298,7 @@ for i=1,k do
 		elseif a>=31 and a<=80 then
 			printD("%s 中奖类型BBBBB----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"b5",300,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+			reqpack(wintype,"B5",300,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
 		elseif a>=81 and a<=230 then
 			printD("%s 中奖类型CCCCC----O(∩_∩)O~~-!", i)
 			j=j+1
@@ -339,6 +364,9 @@ for i=1,k do
 				table.insert(winmoney,end_point*beilv*0)
 				if TYPE=="autostart" or TYPE=="autogo" then 
 					table.insert(automoney,end_point*beilv*0)
+					if autowinmax<end_point*beilv*0 then
+					   autowinmax=end_point*beilv*0
+					end
 					autowinall=autowinall+end_point*beilv*0
 				end
 		    else
@@ -361,6 +389,9 @@ for i=1,k do
 			table.insert(winmoney,end_point*beilv*0)
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				table.insert(automoney,end_point*beilv*0)
+				if autowinmax<end_point*beilv*0 then
+				   autowinmax=end_point*beilv*0
+				end
 				autowinall=autowinall+end_point*beilv*0
 			end
 		end
@@ -440,6 +471,9 @@ for i=1,k do
 				table.insert(winmoney,end_point*beilv*0)
 				if TYPE=="autostart" or TYPE=="autogo" then 
 					table.insert(automoney,end_point*beilv*0)
+					if autowinmax<end_point*beilv*0 then
+					   autowinmax=end_point*beilv*0
+					end
 					autowinall=autowinall+end_point*beilv*0
 				end
 		    else
@@ -462,6 +496,9 @@ for i=1,k do
 			table.insert(winmoney,end_point*beilv*0)
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				table.insert(automoney,end_point*beilv*0)
+				if autowinmax<end_point*beilv*0 then
+				   autowinmax=end_point*beilv*0
+				end
 				autowinall=autowinall+end_point*beilv*0
 			end
 		end
@@ -541,11 +578,7 @@ end  --for 循环end
 ---------------------最高连续不中奖次数-----------------------
     local houmian=0
 	if not number1[1] then
-<<<<<<< HEAD
-			skynet.error("最高连续不中奖次数为k",k)
-=======
 			printD("最高连续不中奖次数为 %s", k)
->>>>>>> 3b04ff31a93dfb55c6de27bc98134f471021fd54
 	else
 		local max = number1[1]
 		for key,v in ipairs(number1) do
@@ -590,37 +623,32 @@ end  --for 循环end
    elseif TYPE=="autoend"  then
     -------------------自动最高连续中奖次数-----------------------------
         printD("I am %s",name)
-		autopersentmax=1    --记录自动最高连续中奖次数
-			if  not autonumber1[1] then
-				automax=0
-				printD("自动最高连续中奖次数为 0")
-			else
-				automax=1  --最终最高连续中奖次数
-				for key,v in ipairs(autonumber1) do 
-<<<<<<< HEAD
-					-- skynet.error("autonumber1",key,v)
-=======
-					printD("autonumber1 %s %s",key,v)
->>>>>>> 3b04ff31a93dfb55c6de27bc98134f471021fd54
-					if v+1==autonumber1[key+1] then
-						autopersentmax=autopersentmax+1
-
-					else
-							if automax<autopersentmax then
-							   automax=autopersentmax
-							end
-							autopersentmax=1
-					end
-				end
+		-- autopersentmax=1    --记录自动最高连续中奖次数
+		-- 	if  not autonumber1[1] then
+		-- 		automax=0
+		-- 		printD("自动最高连续中奖次数为 0")
+		-- 	else
+		-- 		automax=1  --最终最高连续中奖次数
+		-- 		for key,v in ipairs(autonumber1) do 
+		-- 			printD("autonumber1 %s %s",key,v)
+		-- 			if v+1==autonumber1[key+1] then
+		-- 				autopersentmax=autopersentmax+1
+		-- 			else
+		-- 					if automax<autopersentmax then
+		-- 					   automax=autopersentmax
+		-- 					end
+		-- 					autopersentmax=1
+		-- 			end
+		-- 		end
 				printD("自动最高连续中奖次数为 %d",automax)
 				automaxsave=automax
-			end
+			-- end
 	    ---------------------自动中奖最高金额---------------
-				for k,v in ipairs(automoney) do
-				     if v>autowinmax then 
-				     	autowinmax=v
-				     end
-				end
+				-- for k,v in ipairs(automoney) do
+				--      if v>autowinmax then 
+				--      	autowinmax=v
+				--      end
+				-- end
 	---------------------自动获奖总金额----------------
 			    printD("autowinall is %s",autowinall)
 	-------------------------------------------------------
@@ -645,6 +673,8 @@ end  --for 循环end
 							autozjnumsave=0
 							automaxsave=0
 							xsave=1
+							autopersentmax=0
+							automax=0
 		        end
 		        return resultat1_2
             else
@@ -699,37 +729,33 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 end
 
 function CMD.autosave(fd,name)
-		autopersentmax=1    --记录自动最高连续中奖次数
-			if  not autonumber1[1] then
-				automax=0
-				printD("autosave自动最高连续中奖次数为0")
-			else
-				automax=1  --最终最高连续中奖次数
-				for key,v in ipairs(autonumber1) do 
-<<<<<<< HEAD
-					-- skynet.error("autonumber1",key,v)
-=======
-					printD("autonumber1 %s %s ", key, v)
->>>>>>> 3b04ff31a93dfb55c6de27bc98134f471021fd54
-					if v+1==autonumber1[key+1] then
-						autopersentmax=autopersentmax+1
+		-- autopersentmax=1    --记录自动最高连续中奖次数
+		-- 	if  not autonumber1[1] then
+		-- 		automax=0
+		-- 		printD("autosave自动最高连续中奖次数为0")
+		-- 	else
+		-- 		automax=1  --最终最高连续中奖次数
+		-- 		for key,v in ipairs(autonumber1) do 
+		-- 			printD("autonumber1 %s %s ", key, v)
+		-- 			if v+1==autonumber1[key+1] then
+		-- 				autopersentmax=autopersentmax+1
 
-					else
-							if automax<autopersentmax then
-							   automax=autopersentmax
-							end
-							autopersentmax=1
-					end
-				end
+		-- 			else
+		-- 					if automax<autopersentmax then
+		-- 					   automax=autopersentmax
+		-- 					end
+		-- 					autopersentmax=1
+		-- 			end
+		-- 		end
 				printD("autosave自动最高连续中奖次数为 %d",automax)
 				automaxsave=automax
-			end
+			-- end
 	    ---------------------自动中奖最高金额---------------
-				for k,v in ipairs(automoney) do
-				     if v>autowinmax then 
-				     	autowinmax=v
-				     end
-				end
+				-- for k,v in ipairs(automoney) do
+				--      if v>autowinmax then 
+				--      	autowinmax=v
+				--      end
+				-- end
 	local autozjnum = #(autonumber1)
 	local autozjnumsave=autozjnum
 		  printD("autozjnum=%s", autozjnum)
@@ -748,6 +774,8 @@ function CMD.autosave(fd,name)
     autozjnumsave=0
     automaxsave=0
     xsave=1
+    autopersentmax=0
+    automax=0
 	if bo1 and  bo2  then
 		return "suss"
 	else 
@@ -755,6 +783,9 @@ function CMD.autosave(fd,name)
 	end
 end
 
+function CMD.exit()
+	skynet.exit()
+end
 
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)

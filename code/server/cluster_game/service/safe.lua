@@ -20,6 +20,14 @@ function CMD.safebox(fd,mes,name)
 		    return req2_1
 		end
 	elseif mes.TYPE=="setpd" then
+		    local x = {}
+		    x.PASSWD=mes.PASSWARD
+		    local bo2=sgoly_pack.filter_password(x)
+		    if bo2==false then
+	        	local refal={SESSION=mes.SESSION,ID="9",STATE=false,TYPE="setpd",MESSAGE="密码含有非法字符"}
+	            local refal1_2=sgoly_pack.encode(refal)
+	            return refal1_2.."\n"
+       		end
 		    local PASSWD=md5.sumhexa(mes.PASSWARD)
 	        local bool,rqs=dat_ser.set_safe_pwd(name,PASSWD)
 		    printI("this is safe2,%s",mes.NAME)
@@ -31,6 +39,14 @@ function CMD.safebox(fd,mes,name)
 	        return returnfalse(mes,rqs)
 		end
 	elseif mes.TYPE=="reset" then
+			local x = {}
+		    x.PASSWD=mes.PASSWARD
+			local bo2=sgoly_pack.filter_password(x)
+			    if bo2==false then
+		        	local refal={SESSION=mes.SESSION,ID="9",STATE=false,TYPE="reset",MESSAGE="密码含有非法字符"}
+		            local refal1_2=sgoly_pack.encode(refal)
+		            return refal1_2.."\n"
+	       		end
 		    local CURPASSWD=md5.sumhexa(mes.CURPASSWARD )
 		    local PASSWD = md5.sumhexa(mes.PASSWARD)
 	        local bool,rqs=dat_ser.cha_saf_pwd(name,CURPASSWD,PASSWD)

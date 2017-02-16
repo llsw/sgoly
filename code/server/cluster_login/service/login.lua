@@ -15,26 +15,18 @@ function handler(fd, mes)
 	-- printI("login NAME=%s,SESSION=%s,CMD=%s,ID=%s",mes.NAME,mes.SESSION,mes.CMD,mes.ID)
 -------------------------用户注册-----------------------------------			
 	if  mes.ID=="2" then  
-		local ss=filter_spec_chars(mes.NAME)
-		if (#ss)~=(#mes.NAME) then
-			local refal={SESSION=mes.SESSION,ID="2",STATE=false,MESSAGE="帐号含有非法字符错误"}
-			local refal1_2=sgoly_pack.encode(refal)
-			return refal1_2.."\n"
-		end
-		local x = 1
-		for s in string.gmatch(mes.PASSWD, "[%W]") do
-			if s=="," or s=="." or s=="?" or s=="@" or s=="!" then
-			       x = 1
-			else
-				x=0
-				break
-			end
-		end
-		if x==0 then
-			local refal={SESSION=mes.SESSION,ID="2",STATE=false,MESSAGE="密码含有非法字符错误"}
-			local refal1_2=sgoly_pack.encode(refal)
-			return refal1_2.."\n"
-		end
+		local bo1=sgoly_pack.filter_account(mes)
+		if bo1==false then
+		 	local refal={SESSION=mes.SESSION,ID="2",STATE=false,MESSAGE="帐号含有非法字符"}
+            local refal1_2=sgoly_pack.encode(refal)
+            return refal1_2.."\n"
+        end
+        local bo2 = sgoly_pack.filter_password(mes)
+        if bo2==false then
+        	local refal={SESSION=mes.SESSION,ID="2",STATE=false,MESSAGE="密码含有非法字符"}
+            local refal1_2=sgoly_pack.encode(refal)
+            return refal1_2.."\n"
+        end
 	    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		local bool,msg=dat_ser.register(mes.NAME,mes.PASSWD)
 		skynet.error(bool,msg)
@@ -53,11 +45,19 @@ function handler(fd, mes)
 				-- local reqmoney={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="该用户已登录"}
 			 --    local str3_1=sgoly_pack.encode(reqmoney)
 				-- return str3_1.."\n"
-    --     end
-            sessionID[mes.NAME]=mes.SESSION
-            for k,v in pairs(sessionID) do
-                   printI("sessionID,k=%s,v=%s",k,v)
-            end            
+    --     end local bo1=sgoly_pack.filter_account(mes)
+		local bo1=sgoly_pack.filter_account(mes)
+		if bo1==false then
+		 	local refal={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="帐号含有非法字符"}
+            local refal1_2=sgoly_pack.encode(refal)
+            return refal1_2.."\n"
+        end
+        local bo2 = sgoly_pack.filter_password(mes)
+        if bo2==false then
+        	local refal={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="密码含有非法字符"}
+            local refal1_2=sgoly_pack.encode(refal)
+            return refal1_2.."\n"
+        end          
 		    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		    local bool,msg=dat_ser.login(mes.NAME, mes.PASSWD)
 		    skynet.error(bool,msg)
@@ -65,6 +65,7 @@ function handler(fd, mes)
 		        local boo,money =sgoly_tool.getMoney(tonumber(msg))
 		        printI("money is %s",money)
 		    if boo then
+		    	sessionID[mes.NAME]=mes.SESSION
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money,NAME=msg}
 			    local str5_1=sgoly_pack.encode(reqmoney)
 			    cluster.call("cluster_gateway",".gateway","heart",fd,mes.NAME,mes.SESSION)
@@ -104,7 +105,15 @@ function handler(fd, mes)
 		       return str2.."\n"
 	    end 
 -------------------------修改密码----------------------------------	    
-    elseif  mes.ID=="11" then            
+    elseif  mes.ID=="11" then  
+    	  	local x={}
+    	 	x.PASSWD=mes.PASSWARD
+	      	local bo2 = sgoly_pack.filter_password(x)
+	        if bo2==false then
+	        	local refal={SESSION=mes.SESSION,ID="11",STATE=false,MESSAGE="密码含有非法字符"}
+	            local refal1_2=sgoly_pack.encode(refal)
+	            return refal1_2.."\n"
+	        end          
 		    local PASSWD=md5.sumhexa(mes.PASSWARD)
 		    local CURPASSWARD=md5.sumhexa(mes.CURPASSWARD)
 			local bool,msg=dat_ser.cha_pwd(mes.NAME,CURPASSWARD,PASSWD)
@@ -205,30 +214,7 @@ function CMD.release(fd,name)
 	sessionID[name]=nil
 end
 
-function filter_spec_chars(s)  
-    local ss = {}  
-    for k = 1, #s do  
-        local c = string.byte(s,k)  
-        if not c then break end  
-        if (c>=48 and c<=57) or (c>= 65 and c<=90) or (c>=97 and c<=122) then  
-            table.insert(ss, string.char(c))  
-        elseif c>=228 and c<=233 then  
-            local c1 = string.byte(s,k+1)  
-            local c2 = string.byte(s,k+2)  
-            if c1 and c2 then  
-                local a1,a2,a3,a4 = 128,191,128,191  
-                if c == 228 then a1 = 184  
-                elseif c == 233 then a2,a4 = 190,c1 ~= 190 and 191 or 165  
-                end  
-                if c1>=a1 and c1<=a2 and c2>=a3 and c2<=a4 then  
-                    k = k + 2  
-                    table.insert(ss, string.char(c,c1,c2))  
-                end  
-            end  
-        end  
-    end  
-    return table.concat(ss)  
-end  
+
 
 skynet.start(function()
 	i=sgoly_tool.getUuid()
