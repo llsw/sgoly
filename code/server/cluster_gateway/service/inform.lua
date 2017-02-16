@@ -26,6 +26,6 @@ skynet.start(function()
 	end)
 
 	skynet.register(".inform")
-	skynet.call(".gateway", "lua", "informClient", "服务器重启成功")
+	xpcall(skynet.call, xpcall_error, ".gateway", "lua", "informClient", "服务器重启成功")
 	skynet.exit()
 end)

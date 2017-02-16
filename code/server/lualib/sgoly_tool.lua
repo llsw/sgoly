@@ -154,6 +154,45 @@ function sgoly_tool.getMoney(nickname)
 end
 
 --!
+--! @brief      Gets the user fd.
+--!
+--! @param      nickname  The nickname
+--!
+--! @return     The user fd.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-16
+--!
+function sgoly_tool.getUserFdFromRedis(nickname)
+	nickname = tostring(nickname)
+	local key = "user:" ..  nickname
+	local fd = redis_query({"hget", key, "fd"})
+	if fd then
+		return true, tonumber(fd)
+	end
+	return false, nil
+end
+
+--!
+--! @brief      Sets the user fd.
+--!
+--! @param      nickname  The nickname
+--! @param      fd        { parameter_description }
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-16
+--!
+function sgoly_tool.setUserFdToRedis(nickname, fd)
+	nickname = tostring(nickname)
+	fd = tostring(fd)
+	local key = "user:" ..  nickname
+	redis_query({"hset", key, "fd", fd})
+	return true, nil
+end
+
+--!
 --! @brief      保存用户总金币到Redis
 --!
 --! @param      nickname  用户名

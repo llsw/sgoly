@@ -26,6 +26,6 @@ skynet.start(function()
 	end)
 
 	skynet.register(".warning")
-	skynet.call(".gateway", "lua", "informClient", "服务器将于五分钟后关闭")
+	xpcall(skynet.call, xpcall_error, ".gateway", "lua", "informClient", "服务器将于五分钟后关闭")
 	skynet.exit()
 end)
