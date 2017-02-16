@@ -24,6 +24,6 @@ skynet.start(function()
 	end)
 
 	skynet.register(".inform1")
-	skynet.call(".agent","lua","sclose",false,"服务器重启完毕")
+	local call_ok, call_result = xpcall(skynet.call,xpcall_error,".agent","lua","sclose",false,"服务器重启完毕")
 	skynet.exit()
 end)
