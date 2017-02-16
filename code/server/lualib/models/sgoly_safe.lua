@@ -65,7 +65,7 @@ end
 
 --[[
 函数说明：
-		函数作用：查询保险柜所有信息
+		函数作用：get users safe all info
 		传入参数：uid(用户id)
 		返回参数：(false, err_msg) or (true, value)
 --]]

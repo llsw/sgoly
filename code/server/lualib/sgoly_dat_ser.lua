@@ -100,9 +100,9 @@ end
 
 --[[
 函数说明：
-		函数作用：
-		传入参数：
-		返回参数：
+		函数作用：get users nickname
+		传入参数：uid(users id)
+		返回参数：(false, err_msg) or (true, value)
 --]]
 function dat_ser.get_nickname(uid)
 	printD("dat_ser.get_nickname(%d)", uid)
@@ -247,13 +247,13 @@ function dat_ser.get_statments_from_MySQL(nickname, dt)
 	local ok, result = union_query.get_statments_from_MySQL(nickname, dt)
 	if ok and #result > 0 then
 
-		return ok, 
+		return ok,
 		{
-			winMoney = result[1].win, 
-			costMoney = result[1].cost, 
-			playNum = result[1].times, 
-			winNum = result[1].win_times, 
-			maxWinMoney = result[1].single_max, 
+			winMoney = result[1].win,
+			costMoney = result[1].cost,
+			playNum = result[1].times,
+			winNum = result[1].win_times,
+			maxWinMoney = result[1].single_max,
 			serialWinNum = result[1].conti_max,
 		}
 
@@ -267,13 +267,13 @@ function dat_ser.get_statments_from_MySQL(nickname, dt)
 		day_max.insert(nickname, 0, 0, today)
 	end
 
-	return true, 
+	return true,
 	{
-		winMoney = 0, 
-		costMoney = 0, 
-		playNum = 0, 
-		winNum = 0, 
-		maxWinMoney = 0, 
+		winMoney = 0,
+		costMoney = 0,
+		playNum = 0,
+		winNum = 0,
+		maxWinMoney = 0,
 		serialWinNum = 0,
 	}
 end
@@ -338,25 +338,24 @@ function dat_ser.get_count_statements_from_MySQL(nickname, dt)
 	end
 	local ok, result = union_query.get_count_statements_from_MySQL(nickname, dt)
 	if ok and #result > 0 then
-
-		return ok, 
+		return ok,
 		{
-			winMoney = result[1].win, 
-			costMoney = result[1].cost, 
-			playNum = result[1].times, 
-			winNum = result[1].win_times, 
-			maxWinMoney = result[1].single_max, 
+			winMoney = result[1].win,
+			costMoney = result[1].cost,
+			playNum = result[1].times,
+			winNum = result[1].win_times,
+			maxWinMoney = result[1].single_max,
 			serialWinNum = result[1].conti_max,
 		}
 	elseif #result ==0 then
 
-		return ok, 
+		return ok,
 		{
-			winMoney = 0, 
-			costMoney = 0, 
-			playNum = 0, 
-			winNum = 0, 
-			maxWinMoney = 0, 
+			winMoney = 0,
+			costMoney = 0,
+			playNum = 0,
+			winNum = 0,
+			maxWinMoney = 0,
 			serialWinNum = 0,
 		}
 	end
@@ -387,7 +386,7 @@ end
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-21
 --!
-function dat_ser.select_uuid()	
+function dat_ser.select_uuid()
 	return sgoly_uuid.select_uuid()
 end
 
@@ -429,7 +428,7 @@ end
 --! @param      date       The date
 --!
 --! @return     bool, table		执行是否成功、查询结果
---! 
+--!
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-01-24
 --!
