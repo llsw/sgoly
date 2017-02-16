@@ -55,7 +55,7 @@ function exit(fd,mes)   --用户正常退出
         	local req2_1 ={ SESSION=mes.SESSION,
         					ID=mes.ID,
 							STATE=false,
-							MESSAGE=res.." "..res1} 	
+							MESSAGE=tostring(res).." "..tostring(res1)} 	
 	        local result2_2 = sgoly_pack.encode(req2_1)
             return result2_2
         end          
@@ -87,7 +87,6 @@ function agent.errorexit( fd )	 --用户玩自动模式强制退出
 end
 
 function agent.close( fd )        --用户玩普通模式强制退出
-	-- body
 	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
 	if connection[fd] then
 		local bool3,req1 = sgoly_tool.getStatementsFromRedis(connection[fd].name, os.date("%Y-%m-%d"))
@@ -132,9 +131,8 @@ end
 
 function agent.setline(fd)
 	if connection[fd]~=nil  then
-		if connection[fd]~=nil  then
 		   connection[fd].line=os.time()
-		end
+		   printI("Package set time[%s] fd[%d]", os.date("%H:%M:%S", connection[fd].line), fd)
 	end
 end
 
@@ -143,6 +141,7 @@ function agent.getline(fd)
 	if connection[fd]==nil then
 		return false
 	else
+		printI("Package get time[%s] fd[%d]", os.date("%H:%M:%S", connection[fd].line), fd)
 	 return connection[fd].line
 	end
 end

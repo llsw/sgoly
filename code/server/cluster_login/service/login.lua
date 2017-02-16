@@ -4,8 +4,6 @@ local coroutine = require "skynet.coroutine"
 local dat_ser   = require "sgoly_dat_ser"
 local sgoly_pack = require "sgoly_pack"
 local cluster   = require "cluster"
-package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
-local cjson = require "cjson"
 require "skynet.manager"
 require "sgoly_printf"
 local md5 = require "md5"
@@ -16,24 +14,44 @@ local sessionID={}
 function handler(fd, mes)
 	-- printI("login NAME=%s,SESSION=%s,CMD=%s,ID=%s",mes.NAME,mes.SESSION,mes.CMD,mes.ID)
 -------------------------用户注册-----------------------------------			
-	if  mes.ID=="2" then            
+	if  mes.ID=="2" then  
+		local ss=filter_spec_chars(mes.NAME)
+		if (#ss)~=(#mes.NAME) then
+			local refal={SESSION=mes.SESSION,ID="2",STATE=false,MESSAGE="帐号含有非法字符错误"}
+			local refal1_2=sgoly_pack.encode(refal)
+			return refal1_2.."\n"
+		end
+		local x = 1
+		for s in string.gmatch(mes.PASSWD, "[%W]") do
+			if s=="," or s=="." or s=="?" or s=="@" or s=="!" then
+			       x = 1
+			else
+				x=0
+				break
+			end
+		end
+		if x==0 then
+			local refal={SESSION=mes.SESSION,ID="2",STATE=false,MESSAGE="密码含有非法字符错误"}
+			local refal1_2=sgoly_pack.encode(refal)
+			return refal1_2.."\n"
+		end
 	    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		local bool,msg=dat_ser.register(mes.NAME,mes.PASSWD)
 		skynet.error(bool,msg)
 		if bool then            
 			local resuss={SESSION=mes.SESSION,ID="2",STATE=bool}
-			local resuss1_2=packtable(resuss)
+			local resuss1_2=sgoly_pack.encode(resuss)
 		  	return resuss1_2.."\n"
 		elseif not bool then 
 			local refal={SESSION=mes.SESSION,ID="2",STATE=bool,MESSAGE=msg}
-			local refal1_2=packtable(refal)
+			local refal1_2=sgoly_pack.encode(refal)
 			return refal1_2.."\n"
 		end
 -------------------------用户登录-------------------------------------
     elseif mes.ID=="1" then   
     --     if sessionID[mes.NAME] then
 				-- local reqmoney={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="该用户已登录"}
-			 --    local str3_1=packtable(reqmoney)
+			 --    local str3_1=sgoly_pack.encode(reqmoney)
 				-- return str3_1.."\n"
     --     end
             sessionID[mes.NAME]=mes.SESSION
@@ -48,18 +66,18 @@ function handler(fd, mes)
 		        printI("money is %s",money)
 		    if boo then
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money,NAME=msg}
-			    local str5_1=packtable(reqmoney)
+			    local str5_1=sgoly_pack.encode(reqmoney)
 			    cluster.call("cluster_gateway",".gateway","heart",fd,mes.NAME,mes.SESSION)
 			    cluster.call("cluster_game",".agent","start",fd,msg)
 			    return str5_1.."\n"
 		    else
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MESSAGE=money}
-			    local str3_1=packtable(reqmoney)
+			    local str3_1=sgoly_pack.encode(reqmoney)
 				return str3_1.."\n"
 			end
 		else
 			    local rep4={SESSION=mes.SESSION,ID="1",STATE=bool,MESSAGE=msg}
-				local str4_1=packtable(rep4)
+				local str4_1=sgoly_pack.encode(rep4)
 				return str4_1.."\n"	
 		end 	
 -------------------------游客登录--------------------------------------			        	
@@ -78,11 +96,11 @@ function handler(fd, mes)
 			    printI("注册成功")
 			    printI("%s,%s",name,trpd)           
 				local rep={SESSION=mes.SESSION,ID="3",STATE=true,NAME=name,PASSWD=password}
-				local str2=packtable(rep)
+				local str2=sgoly_pack.encode(rep)
 				return str2.."\n"
 	    else
 		       local rep={SESSION=mes.SESSION,ID="3",STATE=false,MESSAGE=msg}
-		       local str2=packtable(rep)
+		       local str2=sgoly_pack.encode(rep)
 		       return str2.."\n"
 	    end 
 -------------------------修改密码----------------------------------	    
@@ -93,11 +111,11 @@ function handler(fd, mes)
 			skynet.error(bool,msg)
 			if bool then            
 					local resuss={SESSION=mes.SESSION,ID="11",STATE=true}
-					local resuss1_2=packtable(resuss)
+					local resuss1_2=sgoly_pack.encode(resuss)
 				  	return resuss1_2.."\n"
 			else 
 				local refal={SESSION=mes.SESSION,ID="11",STATE=bool,MESSAGE=msg}
-				local refal1_2=packtable(refal)
+				local refal1_2=sgoly_pack.encode(refal)
 				return refal1_2.."\n"
 			end
 -------------------------修改头像----------------------------------
@@ -107,11 +125,11 @@ function handler(fd, mes)
 			skynet.error(bool,msg)
 			if bool then            
 					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="query",PORTRAIT=msg}
-					local resuss1_2=packtable(resuss)
+					local resuss1_2=sgoly_pack.encode(resuss)
 				  	return resuss1_2.."\n"
 			else 
 				local refal={SESSION=mes.SESSION,ID="12",STATE=false,TYPE="query",MESSAGE=msg}
-				local refal1_2=packtable(refal)
+				local refal1_2=sgoly_pack.encode(refal)
 				return refal1_2.."\n"
 			end
 		elseif mes.TYPE=="reset" then
@@ -119,25 +137,25 @@ function handler(fd, mes)
 			skynet.error(bool,msg)
 			if bool then            
 					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="reset",PORTRAIT=tonumber(mes.PORTRAIT)}
-					local resuss1_2=packtable(resuss)
+					local resuss1_2=sgoly_pack.encode(resuss)
 				  	return resuss1_2.."\n"
 			else 
 				local refal={SESSION=mes.SESSION,ID="12",STATE=false,TYPE="reset",MESSAGE=msg}
-				local refal1_2=packtable(refal)
+				local refal1_2=sgoly_pack.encode(refal)
 				return refal1_2.."\n"
 			end
 		else
 		    local rep6={SESSION=mes.SESSION,ID=mes.ID,STATE=false,TYPE==mes.TYPE,MESSAGE="未知错误"}
-			local str6_1=packtable(rep6)
+			local str6_1=sgoly_pack.encode(rep6)
 		    return str6_1.."\n"
 		end
 	elseif  mes.ID=="13" then 
 
-		    cluster.call("cluster_game",".agent","setline",fd)
+		    --cluster.call("cluster_game",".agent","setline",fd)
 		    return nil
     else
       local rep6={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
-	  local str6_1=packtable(rep6)
+	  local str6_1=sgoly_pack.encode(rep6)
       return str6_1.."\n"
     end
 end
@@ -180,18 +198,37 @@ function CMD.signin(fd,mes)
 	return handler(fd,mes)
 end
 
-function packtable(req)
-	local who="123456"
-	local result=cjson.encode(req)
-	local result1=crypt.aesencode(result,who,"")
-	local result1_1=crypt.base64encode(result1)
-	return result1_1
-end
+
 
 function CMD.release(fd,name)
 	printI("release sessionID")
 	sessionID[name]=nil
 end
+
+function filter_spec_chars(s)  
+    local ss = {}  
+    for k = 1, #s do  
+        local c = string.byte(s,k)  
+        if not c then break end  
+        if (c>=48 and c<=57) or (c>= 65 and c<=90) or (c>=97 and c<=122) then  
+            table.insert(ss, string.char(c))  
+        elseif c>=228 and c<=233 then  
+            local c1 = string.byte(s,k+1)  
+            local c2 = string.byte(s,k+2)  
+            if c1 and c2 then  
+                local a1,a2,a3,a4 = 128,191,128,191  
+                if c == 228 then a1 = 184  
+                elseif c == 233 then a2,a4 = 190,c1 ~= 190 and 191 or 165  
+                end  
+                if c1>=a1 and c1<=a2 and c2>=a3 and c2<=a4 then  
+                    k = k + 2  
+                    table.insert(ss, string.char(c,c1,c2))  
+                end  
+            end  
+        end  
+    end  
+    return table.concat(ss)  
+end  
 
 skynet.start(function()
 	i=sgoly_tool.getUuid()

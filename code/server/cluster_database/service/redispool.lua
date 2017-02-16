@@ -194,7 +194,7 @@ end
 
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, redis_cmd, ...)
-		printI("[REDIS_QUERY]-->%s", redis_cmd)
+		printI("[REDIS_QUERY]-->%s time[%s]", redis_cmd, os.date("%H:%M:%S", os.time()))
 		local f = assert(CMD[cmd], cmd .. "not found")
 		skynet.retpack(f(...))
 	end)

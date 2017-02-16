@@ -238,8 +238,7 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 
 		return false, "There are nil in args."
 	end
-	printI("Save statements nickname[%s]", "winMoney[%d]", "costMoney[%d]", "playNum[%d]", "winNum[%d]", 
-		"serialWinNum[%d]", "maxWinMoney[%d]", "eighthNoWin[%d]", "recoveryRate[%d]", "dt[%s]",
+	printI("Save statements nickname[%s]  winMoney[%d] costMoney[%d] playNum[%d] winNum[%d] serialWinNum[%d] maxWinMoney[%d] eighthNoWin[%d] recoveryRate[%d] dt[%s]",
 		nickname, winMoney, costMoney, playNum, winNum, serialWinNum, maxWinMoney, eighthNoWin, recoveryRate, dt)
 	local key = "statements:" .. nickname .. "_" ..dt
 	local ok, result = sgoly_tool.getStatementsFromRedis(tonumber(nickname), dt)
@@ -263,7 +262,7 @@ function sgoly_tool.saveStatementsToRedis(nickname, winMoney, costMoney, playNum
 		result.recoveryRate = recoveryRate
 		result.saveStatementsToMySQL = 0
 		redis_query({"hmset", key, result})
-		local ok , result = sgoly_dat_ser.update_statments_to_MySQL(tonumber(nickname), result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
+		--local ok , result = sgoly_dat_ser.update_statments_to_MySQL(tonumber(nickname), result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
 		return true, nil
 	end
 
@@ -326,7 +325,7 @@ function sgoly_tool.getCountStatementsFromRedis(nickname, dt)
 						}
 
 		if tonumber(result2.serialWinNum) > tonumber(result1.serialWinNum) then
-			skynet.error(result2.serialWinNum, result1.serialWinNum)
+			printD(result2.serialWinNum, result1.serialWinNum)
 			result3.serialWinNum = result2.serialWinNum
 		end
 		if tonumber(result2.maxWinMoney) > tonumber(result1.maxWinMoney) then
@@ -365,7 +364,7 @@ end
 
 --!
 --! @brief      保存钱到MySQL
---!
+--! 
 --! @param      nickname	用户名
 --! @return     bool, string  执行成功与否、错误信息
 --!
@@ -378,7 +377,7 @@ function sgoly_tool.saveMoneyFromRdisToMySQL(nickname)
 	local result = tonumber(redis_query({"hget", key , "money"}))
 	if result == nil then
 		return false, "No money"
-	end
+	end 
 	local ok , result = sgoly_dat_ser.upadate_money_to_MySQL(tonumber(nickname), result)
 	if ok then
 		redis_query({"del", key})
@@ -404,13 +403,11 @@ function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
 	local key3 = "user:" .. nickname
 	local ok, result = sgoly_tool.getStatementsFromRedis(nickname, dt)
 	if ok then
-		skynet.error(string.format("have statements"))
+		printD("%s have statements " .. dt, nickname)
 		if tonumber(result.saveStatementsToMySQL) == 0 then 
 			ok , result = sgoly_dat_ser.update_statments_to_MySQL(tonumber(nickname), result.winMoney, result.costMoney, result.playNum, result.winNum, result.maxWinMoney, result.serialWinNum, dt)
 	
-			skynet.error(ok, result)
-
-			
+			--skynet.error(ok, result)	
 		end
 
 		redis_query({"del", key1})
@@ -420,7 +417,7 @@ function sgoly_tool.saveStatmentsFromRdisToMySQL(nickname, dt)
 		return ok, result
 		
 	end
-	skynet.error(string.format(" no have statements" .. dt))
+	printD("%s no have statements " .. dt, nickname)
 	return ok ,result
 	
 end
@@ -517,13 +514,13 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 			ok, result = sgoly_tool.getRankFromMySQL(rank_type, date)
 			if ok then
 				for k, v in pairs(result) do
-					skynet.error(v.rank, v.nickname, v.value, v.award)
+					--skynet.error(v.rank, v.nickname, v.value, v.award)
 					rank[k] = v.nickname
 					args[v.nickname] = {v.value, k, v.award}
 				end	
 				sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 			end
-			skynet.error(ok, #result)
+			--skynet.error(ok, #result)
 		end
 	else
 
@@ -541,20 +538,24 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 					end
 
 				else
-					args[my_name] = {value, os.time()}
-					table.insert(rank,my_name)
-					lock(sortRank,rank, args)
+					if #rank == 10 and value <= args[rank[10]][1] then
 
-					local len = #rank
-					if len  > 10 then
-						local name = rank[11]
-						rank[11] = nil
-						args[name] = nil
+					else
+						args[my_name] = {value, os.time()}
+						table.insert(rank,my_name)
+						lock(sortRank,rank, args)
+
+						local len = #rank
+						if len  > 10 then
+							local name = rank[11]
+							rank[11] = nil
+							args[name] = nil
+						end
+						for k,v in pairs(rank) do
+							name_rank[v] = k
+						end
+						sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 					end
-					for k,v in pairs(rank) do
-						name_rank[v] = k
-					end
-					sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 				end
 
 			end
@@ -572,20 +573,24 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 					end
 
 				else
-					args[my_name] = {value, os.time()}
-					table.insert(rank,my_name)
-					lock(sortRank,rank, args)
-					local len = #rank
-					if len  > 10 then
-						local name = rank[11]
-						rank[11] = nil
-						args[name] = nil
+					local len = #rank 
+					if #rank == 10 and value <= args[rank[10]][1]then
+
+					else
+						args[my_name] = {value, os.time()}
+						table.insert(rank,my_name)
+						lock(sortRank,rank, args)
+						if len  > 10 then
+							local name = rank[11]
+							rank[11] = nil
+							args[name] = nil
+						end
+						
+						for k,v in pairs(rank) do
+							name_rank[v] = k
+						end
+						sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 					end
-					
-					for k,v in pairs(rank) do
-						name_rank[v] = k
-					end
-					sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 				end
 
 			end
@@ -665,7 +670,7 @@ function sgoly_tool.saveRankToMySQL(rank_type, date)
 	if #res > 0 then
 		rank, args = rankArgsToTable(res, #res)
 		local ok, result = sgoly_dat_ser.save_rank_to_MySQL(rank_type, rank, args, date)
-		skynet.error(res, ok, result)
+		--skynet.error(res, ok, result)
 	end
 end
 
@@ -721,7 +726,7 @@ function sgoly_tool.getAwardFromRedis(rank1, rank2, date)
 	end
 
 	if rank2 ~= 0 then
-		local value = redis_query({"hget", key2 , rank1})
+		local value = redis_query({"hget", key2 , rank2})
 		if value then
 			value  = string.sub(value, 1, #value - 1)
 			value = value .. 1
@@ -830,7 +835,7 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 			name_rank[v] = k
 		end
 		if name_rank[my_name] then
-			if value > args[my_name][1] then
+			if value ~= args[my_name][1] then
 				args[my_name][1] = value
 				args[my_name][2] = os.time()
 				lock(sortRank,rank, args)
@@ -841,20 +846,24 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 			end
 
 		else
-			args[my_name] = {value, os.time()}
-			table.insert(rank,my_name)
-			lock(sortRank,rank, args)
+			if #rank == 10 and value <= args[rank[10]][1] then
 
-			local len = #rank
-			if len  > 10 then
-				local name = rank[11]
-				rank[11] = nil
-				args[name] = nil
+			else
+				args[my_name] = {value, os.time()}
+				table.insert(rank,my_name)
+				lock(sortRank,rank, args)
+
+				local len = #rank
+				if len  > 10 then
+					local name = rank[11]
+					rank[11] = nil
+					args[name] = nil
+				end
+				for k,v in pairs(rank) do
+					name_rank[v] = k
+				end
+				sgoly_tool.updateRankToRedis(rank, args, "money")
 			end
-			for k,v in pairs(rank) do
-				name_rank[v] = k
-			end
-			sgoly_tool.updateRankToRedis(rank, args, "money")
 		end
 
 	else 
@@ -873,30 +882,37 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 
 		if name_rank[my_name] then
 			if value ~= args[my_name][1] then
-				args[my_name][1] = value
-				args[my_name][2] = os.time()
+				if #rank == 10 and value <= args[rank[10]][1] then
+				else
+					args[my_name][1] = value
+					args[my_name][2] = os.time()
+					lock(sortRank,rank, args)
+					for k,v in pairs(rank) do
+						name_rank[v] = k
+					end
+					sgoly_tool.updateRankToRedis(rank, args, "money")
+				end
+			end
+
+		else
+			if #rank == 10 and value <= args[rank[10]][1] then
+
+			else
+				args[my_name] = {value, os.time()}
+				table.insert(rank, my_name)
 				lock(sortRank,rank, args)
+
+				local len = #rank
+				if len  > 10 then
+					local name = rank[11]
+					rank[11] = nil
+					args[name] = nil
+				end
 				for k,v in pairs(rank) do
 					name_rank[v] = k
 				end
 				sgoly_tool.updateRankToRedis(rank, args, "money")
 			end
-
-		else
-			args[my_name] = {value, os.time()}
-			table.insert(rank, my_name)
-			lock(sortRank,rank, args)
-
-			local len = #rank
-			if len  > 10 then
-				local name = rank[11]
-				rank[11] = nil
-				args[name] = nil
-			end
-			for k,v in pairs(rank) do
-				name_rank[v] = k
-			end
-			sgoly_tool.updateRankToRedis(rank, args, "money")
 		end
 	end
 	return true, {rank, name_rank, args, value}

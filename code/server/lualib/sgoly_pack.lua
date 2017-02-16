@@ -27,6 +27,12 @@ function sgoly_pack.c2s(req)
     return result
 end
 
+function sgoly_pack.returnfalse(mes,CID,msg)
+            local req1={SESSION=mes.SESSION,ID=CID,STATE=false,MESSAGE=msg}
+            local req1_1=sgoly_pack.encode(req1)
+            return req1_1
+end
+
 function sgoly_pack.checkup(end_point,beilv,k,cost)
     if end_point*beilv*k==tonumber(cost) then
         if (end_point=="1000" or end_point=="2000" or end_point=="3000" 
