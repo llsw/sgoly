@@ -702,5 +702,18 @@ function dat_ser.set_user_online(uid, addr, isOnline)
 	return union_query.set_user_online(uid, addr, isOnline)
 end
 
+--!
+--! @brief      Sets the user exit.
+--!
+--! @param      uid   The uid
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-16
+--!
+function dat_ser.set_user_exit(uid)
+	return union_query.set_user_exit(uid)
+end
 
 return dat_ser

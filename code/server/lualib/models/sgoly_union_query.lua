@@ -113,4 +113,21 @@ function query.set_user_online(uid, addr, isOnline)
 	return true, status
 end
 
+function query.set_user_exit(uid)
+	local sql = string.format(
+		[[
+			UPDATE account
+			SET account.online = 0,
+			WHERE
+				account.id = %d;
+		]], uid)
+
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
+	
+	return true, status	
+end
+
 return query
