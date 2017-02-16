@@ -29,7 +29,7 @@ function handler(fd, mes)
         end
 	    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		local bool,msg=dat_ser.register(mes.NAME,mes.PASSWD)
-		skynet.error(bool,msg)
+		printI("%s,%s",bool,msg)
 		if bool then            
 			local resuss={SESSION=mes.SESSION,ID="2",STATE=bool}
 			local resuss1_2=sgoly_pack.encode(resuss)
@@ -60,8 +60,17 @@ function handler(fd, mes)
         end          
 		    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		    local bool,msg=dat_ser.login(mes.NAME, mes.PASSWD)
-		    skynet.error(bool,msg)
+		    printI("%s,%s",bool,msg)
 		if bool then     --登录成功返回拥有金钱
+				local boolfd,reqfd=sgoly_tool.getUserFdFromRedis(tonumber(msg))
+                if reqfd then
+                   local req3={ID="15",STATE=true,MESSAGE="该账号已在其他地方上线，您已被强迫下线"}
+				   local result2_2 = sgoly_pack.encode(req3)
+                   local call_ok, call_result = xpcall(cluster.call,xpcall_error,"cluster_gateway",".gateway","seclose",reqfd,result2_2,false)
+               	   skynet.sleep(100)
+               	   local call_ok, req=xpcall(cluster.call, xpcall_error, "cluster_game",".agent","close",reqfd)
+            	end
+                sgoly_tool.setUserFdToRedis(tonumber(msg), fd)
 		        local boo,money =sgoly_tool.getMoney(tonumber(msg))
 		        printI("money is %s",money)
 		    if boo then
@@ -91,7 +100,7 @@ function handler(fd, mes)
 		   while  msg=="昵称已被使用" do
 			    local name,trpd=randomuserid()
 		    	bool,msg=dat_ser.register(name,trpd)
-			    skynet.error(bool,msg)
+			    printI("%s,%s",bool,msg)
 			end
 	    if msg=="注册成功" then 
 			    printI("注册成功")
@@ -117,7 +126,7 @@ function handler(fd, mes)
 		    local PASSWD=md5.sumhexa(mes.PASSWARD)
 		    local CURPASSWARD=md5.sumhexa(mes.CURPASSWARD)
 			local bool,msg=dat_ser.cha_pwd(mes.NAME,CURPASSWARD,PASSWD)
-			skynet.error(bool,msg)
+			printI("%s,%s",bool,msg)
 			if bool then            
 					local resuss={SESSION=mes.SESSION,ID="11",STATE=true}
 					local resuss1_2=sgoly_pack.encode(resuss)
@@ -131,7 +140,7 @@ function handler(fd, mes)
 	elseif  mes.ID=="12" then 
 	    if  mes.TYPE=="query"  then         
 			local bool,msg=dat_ser.get_img_name(mes.NAME)
-			skynet.error(bool,msg)
+			printI("%s,%s",bool,msg)
 			if bool then            
 					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="query",PORTRAIT=msg}
 					local resuss1_2=sgoly_pack.encode(resuss)
@@ -143,7 +152,7 @@ function handler(fd, mes)
 			end
 		elseif mes.TYPE=="reset" then
 			local bool,msg=dat_ser.cha_img_name(mes.NAME,mes.PORTRAIT)
-			skynet.error(bool,msg)
+			printI("%s,%s",bool,msg)
 			if bool then            
 					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="reset",PORTRAIT=tonumber(mes.PORTRAIT)}
 					local resuss1_2=sgoly_pack.encode(resuss)

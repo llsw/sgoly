@@ -18,7 +18,6 @@ skynet.start(function()
 		local f = assert(CMD[cmd], cmd .. "not found")
 		skynet.retpack(f(...))
 	end)
-	--skynet.error("this is maingame")
     -- 要注册个服务的名字，以.开头
     skynet.register(".shop")
 end)

@@ -128,7 +128,6 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
     x=y[2] 
     xsave=x            --1 为普通模式 2为困难模式 3为简单模式	
     printD("x=%d,%d,%d",x,y[1],y[2])
-    -- skynet.error(type(x),type(y[2]))
 	winmoney={}         --中奖金额       
 	printD("MONEY=%s,cost=%s",MONEY,cost)
 	F3num=0
