@@ -18,7 +18,7 @@ local sign_in = {}
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function sign_in.insert(uid, date)
-	local sql = string.format("insert into sgoly.sign_in value(%d, '%s')", uid, 
+	local sql = string.format("insert into sgoly.sign_in value(%d, '%s')", uid,
 								date)
 	local status = mysql_query(sql)
 	if(0 == status.warning_count) then
@@ -35,14 +35,13 @@ end
 		返回参数：(false, err_msg) or (true, value)
 --]]
 function sign_in.select_date(uid)
-	local sql = string.format([[select s_date 
-								 from sgoly.sign_in 
-								 where uid = %d 
-								 order by
-								 			s_date desc
-								 limit 7 ;
-								]]
-								, uid)
+	local sql = string.format([[select s_date
+				    from sgoly.sign_in
+				    where uid = %d
+				    order by
+					    s_date desc
+				            limit 7 ;
+				  ]], uid)
 	local status = mysql_query(sql)
 	local sigtab= {}
  	if(1 <= #status) then
