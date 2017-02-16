@@ -32,8 +32,8 @@ function handler.message(fd, msg)
 			mes.SESSION, mes.CLUSTER, mes.SERVICE, mes.CMD,mes.ID, mes.NAME, getMsgTime)
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)
-		cluster.call("cluster_game",".agent","setline",fd)
-		local req=cluster.call(code[cnode],code[snode],mes.CMD,fd,mes)
+		local call_ok, call_result = xpcall(cluster.call, xpcall_error, "cluster_game",".agent","setline",fd)
+		local call_ok, req = xpcall(cluster.call, xpacll_error, code[cnode], code[snode], mes.CMD, fd,mes)
 		printD("End handle a Msg session[%s]  name[%s]  handlerCostTime[%s]",
 			mes.SESSION, mes.NAME, os.clock() - getMsgTime)
 		if req~=nil then 
@@ -58,9 +58,9 @@ function handler.connect(fd,addr)
 end
 
 function handler.disconnect(fd)
-	local req1=cluster.call("cluster_game",".agent","errorexit",fd)
+	local call_ok, req1=xpcall(cluster.call, xpcall_error, "cluster_game",".agent","errorexit",fd)
     printD("save 自动模式".." " ..req1)
-	local req=cluster.call("cluster_game",".agent","close",fd)
+	local call_ok, req=xpcall(cluster.call, xpcall_error, "cluster_game",".agent","close",fd)
 	printD("save 普通模式".." " ..req)
 	printD("Client fd[%d] disconnect gateway", fd)
 	connection[fd] = nil
@@ -104,7 +104,7 @@ end
 function handlerfork(fd,name,session)
 	while true do
 		skynet.sleep(2000)
-		local line =  cluster.call("cluster_game",".agent","getline",fd)
+		local call_ok, line =  xpcall(cluster.call, xpcall_error, "cluster_game",".agent","getline",fd)
 		printD("name[%s] fd[%d] sleep end", name, fd)
 		if  line==false then
 			printD("line=false")

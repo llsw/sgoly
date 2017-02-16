@@ -75,4 +75,7 @@ function LOG_FATAL(fmt, ...)
 	skynet.send(".log", "lua", "fatal", SERVICE_NAME, msg)
 end
 
+function xpcall_error()
+	printE(debug.traceback())
+end
 
