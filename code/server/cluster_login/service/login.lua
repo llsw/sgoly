@@ -45,7 +45,7 @@ function handler(fd, mes)
 				-- local reqmoney={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="该用户已登录"}
 			 --    local str3_1=sgoly_pack.encode(reqmoney)
 				-- return str3_1.."\n"
-    --     end local bo1=sgoly_pack.filter_account(mes)
+    --     end 
 		local bo1=sgoly_pack.filter_account(mes)
 		if bo1==false then
 		 	local refal={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="帐号含有非法字符"}

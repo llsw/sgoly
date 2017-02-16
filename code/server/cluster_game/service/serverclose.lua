@@ -24,5 +24,5 @@ skynet.start(function()
 	end)
 
 	skynet.register(".serverclose")
-	skynet.call(".agent","lua","sclose",true,"暂无")
+	local call_ok, call_result = xpcall(skynet.call,xpcall_error,".agent","lua","sclose",true,"暂无")
 end)
