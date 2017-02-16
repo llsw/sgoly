@@ -68,8 +68,8 @@ function handler(fd, mes)
 		    	sessionID[mes.NAME]=mes.SESSION
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money,NAME=msg}
 			    local str5_1=sgoly_pack.encode(reqmoney)
-			    cluster.call("cluster_gateway",".gateway","heart",fd,mes.NAME,mes.SESSION)
-			    cluster.call("cluster_game",".agent","start",fd,msg)
+			    local call_ok, call_result = xpcall(cluster.call, xpcall_error, "cluster_gateway",".gateway","heart",fd,mes.NAME,mes.SESSION)
+			    local call_ok, call_result = xpcall(cluster.call, xpcall_error, "cluster_game",".agent","start",fd,msg)
 			    return str5_1.."\n"
 		    else
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MESSAGE=money}
