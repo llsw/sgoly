@@ -98,12 +98,10 @@ function agent.close( fd )        --用户玩普通模式强制退出
 		local bool1,res1=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,os.date("%Y-%m-%d"))
 		local bool2,res2=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,c)
 		if bool  and bool1 then
-			local call_ok, call_result = xpcall(cluster.call,xpcall_error,"cluster_login",".login","release",fd,connection[fd].name)
 			xpcall(skynet.send, xpcall_error, connection[fd].maingame,"lua","exit")
 		    connection[fd]=nil
 	   		return  "suss"
 	    else
-	    	local call_ok, call_result = xpcall(cluster.call,xpcall_error,"cluster_login",".login","release",fd,connection[fd].name)
 	    	xpcall(skynet.send, xpcall_error, connection[fd].maingame,"lua","exit")
 	    	connection[fd]=nil
 			return "false"
@@ -154,6 +152,5 @@ skynet.start(function()
 		local f = assert(agent[cmd], cmd .. "not found")
 		skynet.retpack(f(...))
 	end)
-
 	skynet.register(".agent")
 end)

@@ -10,7 +10,6 @@ local md5 = require "md5"
 local sgoly_tool=require"sgoly_tool"
 local CMD={}
 local loginuser = {}
-local sessionID={} 
 function handler(fd, mes)
 	-- printI("login NAME=%s,SESSION=%s,CMD=%s,ID=%s",mes.NAME,mes.SESSION,mes.CMD,mes.ID)
 -------------------------用户注册-----------------------------------			
@@ -41,11 +40,6 @@ function handler(fd, mes)
 		end
 -------------------------用户登录-------------------------------------
     elseif mes.ID=="1" then   
-    --     if sessionID[mes.NAME] then
-				-- local reqmoney={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="该用户已登录"}
-			 --    local str3_1=sgoly_pack.encode(reqmoney)
-				-- return str3_1.."\n"
-    --     end 
 		local bo1=sgoly_pack.filter_account(mes)
 		if bo1==false then
 		 	local refal={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="帐号含有非法字符"}
@@ -73,8 +67,8 @@ function handler(fd, mes)
                 sgoly_tool.setUserFdToRedis(tonumber(msg), fd)
 		        local boo,money =sgoly_tool.getMoney(tonumber(msg))
 		        printI("money is %s",money)
+		        xpcall(cluster.call, xpcall_error, "cluster_gateway",".gateway","saveAddrToRedis",fd,tonumber(msg))
 		    if boo then
-		    	sessionID[mes.NAME]=mes.SESSION
 				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MONEY=money,NAME=msg}
 			    local str5_1=sgoly_pack.encode(reqmoney)
 			    local call_ok, call_result = xpcall(cluster.call, xpcall_error, "cluster_gateway",".gateway","heart",fd,mes.NAME,mes.SESSION)
@@ -217,11 +211,6 @@ function CMD.signin(fd,mes)
 end
 
 
-
-function CMD.release(fd,name)
-	printI("release sessionID")
-	sessionID[name]=nil
-end
 
 
 
