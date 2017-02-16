@@ -8,6 +8,7 @@ local code = require"sgoly_cluster_code"
 require "sgoly_printf"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local sgoly_tool = require "sgoly_tool"
+local sgoly_dat_ser = require "sgoly_dat_ser"
 local cjson = require "cjson"
 local skynet_queue = require "skynet.queue"
 local lock = skynet_queue()
@@ -104,6 +105,7 @@ end
 
 function CMD.saveAddrToRedis(fd, uid)
 	sgoly_tool.saveAddrToRedis(uid, connection[fd].addr)
+	sgoly_dat_ser.set_user_online(uid, connection[fd].addr, 1)
 end
 
 function handlerfork(fd,name,session)
