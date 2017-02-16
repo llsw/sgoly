@@ -13,22 +13,22 @@ local connection = {}
 function agent.main(fd,mes)
 	printI("this is agent,%s,%s,%s,%s,%s,%s,%s,%s",mes.SESSION,mes.ID,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST)
 	if mes.ID=="4" then       --主游戏
-	   local req=skynet.call(connection[fd].maingame,"lua","calc",fd,mes.SESSION,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST,connection[fd].name)
+	   local call_ok,req=xpcall(skynet.call,xpacll_error,connection[fd].maingame,"lua","calc",fd,mes.SESSION,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST,connection[fd].name)
 	   return req
 	elseif mes.ID=="5" then   --统计面板
-	   local req1=skynet.call(connection[fd].stats,"lua","tongji",fd,mes.SESSION,mes.TYPE,connection[fd].name)
+	   local call_ok,req1=xpcall(skynet.call,xpacll_error,connection[fd].stats,"lua","tongji",fd,mes.SESSION,mes.TYPE,connection[fd].name)
 	   return req1
 	elseif mes.ID=="6" then   --正常退出
 		local req2=exit(fd,mes)
 		return req2  
 	elseif mes.ID=="9" then   --保险柜
-		local req3=skynet.call(connection[fd].safe,"lua","safebox",fd,mes,connection[fd].name)
+		local call_ok,req3=xpcall(skynet.call,xpacll_error,connection[fd].safe,"lua","safebox",fd,mes,connection[fd].name)
 		return req3 	
 	elseif mes.ID=="10" then   --签到
-		local req4=skynet.call(connection[fd].sign,"lua","sign_in",fd,mes,connection[fd].name)
+		local call_ok,req4=xpcall(skynet.call,xpacll_error,connection[fd].sign,"lua","sign_in",fd,mes,connection[fd].name)
 		return req4 
 	elseif mes.ID=="14" then   --破产补助
-		local req5=skynet.call(connection[fd].grant ,"lua","getgrant",fd,mes,connection[fd].name)
+		local call_ok,req5=xpcall(skynet.call,xpacll_error,connection[fd].grant ,"lua","getgrant",fd,mes,connection[fd].name)
 		return req5 
     else  
 	   	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
@@ -80,7 +80,8 @@ end
 
 function agent.errorexit( fd )	 --用户玩自动模式强制退出
 	if connection[fd] then
-		return skynet.call(connection[fd].maingame,"lua","autosave",fd,connection[fd].name)
+		 local call_ok,req=xpcall(skynet.call,xpacll_error,connection[fd].maingame,"lua","autosave",fd,connection[fd].name)
+	    return req
 	else
 	    return "no login".." "..fd
     end
@@ -97,12 +98,12 @@ function agent.close( fd )        --用户玩普通模式强制退出
 		local bool1,res1=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,os.date("%Y-%m-%d"))
 		local bool2,res2=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,c)
 		if bool  and bool1 then
-			cluster.call("cluster_login",".login","release",fd,connection[fd].name)
+			local call_ok, call_result = xpcall(cluster.call,xpcall_error,"cluster_login",".login","release",fd,connection[fd].name)
 			skynet.send(connection[fd].maingame,"lua","exit")
 		    connection[fd]=nil
 	   		return  "suss"
 	    else
-	    	cluster.call("cluster_login",".login","release",fd,connection[fd].name)
+	    	local call_ok, call_result = xpcall(cluster.call,xpcall_error,"cluster_login",".login","release",fd,connection[fd].name)
 	    	skynet.send(connection[fd].maingame,"lua","exit")
 	    	connection[fd]=nil
 			return "false"
@@ -119,14 +120,14 @@ function agent.sclose(bool,msg)
 			printI("this is connection %s",k)
 			local req3={ID="8",STATE=true}
 			local result1_2 = sgoly_pack.encode(req3)
-		    cluster.call("cluster_gateway",".gateway","seclose",k,result1_2,true)
+		    local call_ok, call_result = xpcall(cluster.call,xpcall_error,"cluster_gateway",".gateway","seclose",k,result1_2,true)
 		end
     else
     	for k,v in pairs(connection) do
 		printI("this is connection,%s",k)
 		local req1={ID="8",STATE=false,MESSAGE=msg}
 		local result2_2 = sgoly_pack.encode(req1)
-	    cluster.call("cluster_gateway",".gateway","seclose",k,result2_2,false)
+	    local call_ok, call_result = xpcall(cluster.call,xpcall_error,"cluster_gateway",".gateway","seclose",k,result2_2,false)
 	    end
 	end
 end

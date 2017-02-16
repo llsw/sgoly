@@ -623,32 +623,10 @@ end  --for 循环end
    elseif TYPE=="autoend"  then
     -------------------自动最高连续中奖次数-----------------------------
         printD("I am %s",name)
-		-- autopersentmax=1    --记录自动最高连续中奖次数
-		-- 	if  not autonumber1[1] then
-		-- 		automax=0
-		-- 		printD("自动最高连续中奖次数为 0")
-		-- 	else
-		-- 		automax=1  --最终最高连续中奖次数
-		-- 		for key,v in ipairs(autonumber1) do 
-		-- 			printD("autonumber1 %s %s",key,v)
-		-- 			if v+1==autonumber1[key+1] then
-		-- 				autopersentmax=autopersentmax+1
-		-- 			else
-		-- 					if automax<autopersentmax then
-		-- 					   automax=autopersentmax
-		-- 					end
-		-- 					autopersentmax=1
-		-- 			end
-		-- 		end
 				printD("自动最高连续中奖次数为 %d",automax)
 				automaxsave=automax
-			-- end
 	    ---------------------自动中奖最高金额---------------
-				-- for k,v in ipairs(automoney) do
-				--      if v>autowinmax then 
-				--      	autowinmax=v
-				--      end
-				-- end
+				--      	autowinmax
 	---------------------自动获奖总金额----------------
 			    printD("autowinall is %s",autowinall)
 	-------------------------------------------------------
