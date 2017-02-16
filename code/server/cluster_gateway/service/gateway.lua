@@ -33,7 +33,7 @@ function handler.message(fd, msg)
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)
 		local call_ok, call_result = xpcall(cluster.call, xpcall_error, "cluster_game",".agent","setline",fd)
-		local call_ok, req = xpcall(cluster.call, xpacll_error, code[cnode], code[snode], mes.CMD, fd,mes)
+		local call_ok, req = xpcall(cluster.call, xpcall_error, code[cnode], code[snode], mes.CMD, fd,mes)
 		printD("End handle a Msg session[%s]  name[%s]  handlerCostTime[%s]",
 			mes.SESSION, mes.NAME, os.clock() - getMsgTime)
 		if req~=nil then 
