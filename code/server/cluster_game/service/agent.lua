@@ -31,6 +31,7 @@ function agent.main(fd,mes)
 	elseif mes.ID=="14" then   --破产补助
 		local call_ok,req5=xpcall(skynet.call,xpcall_error,connection[fd].grant ,"lua","getgrant",fd,mes,connection[fd].name)
 		return req5 
+		
     else  
 	   	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
 		local result1_2 = sgoly_pack.encode(req)
