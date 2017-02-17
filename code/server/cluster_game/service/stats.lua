@@ -26,7 +26,7 @@ function CMD.tongji(fd,session,type,name)
 			            serialWinNum=tonumber(res.serialWinNum),
 			            maxWinMoney=tonumber(res.maxWinMoney)
 			        }
-			skynet.error(name,req.SESSION,req.winMoney,req.costMoney,req.playNum,req.winNum,req.serialWinNum,req.maxWinMoney)
+			printI("%s,%s,%s,%s,%s,%s,%s,%s",name,req.SESSION,req.winMoney,req.costMoney,req.playNum,req.winNum,req.serialWinNum,req.maxWinMoney)
 			local result1_2 = sgoly_pack.encode(req)
 		    return result1_2
 		elseif not bool then
@@ -56,7 +56,7 @@ function CMD.tongji(fd,session,type,name)
 			            serialWinNum=tonumber(res.serialWinNum),
 			            maxWinMoney=tonumber(res.maxWinMoney)
 			        }
-			skynet.error(name,reqy.SESSION,reqy.winMoney,reqy.costMoney,reqy.playNum,reqy.winNum,reqy.serialWinNum,reqy.maxWinMoney)
+			printI("%s,%s,%s,%s,%s,%s,%s,%s",name,reqy.SESSION,reqy.winMoney,reqy.costMoney,reqy.playNum,reqy.winNum,reqy.serialWinNum,reqy.maxWinMoney)
 			local resulty = sgoly_pack.encode(reqy)
 		    return resulty
 		elseif not bool then
@@ -83,7 +83,7 @@ function CMD.tongji(fd,session,type,name)
 			            serialWinNum=tonumber(res.serialWinNum),
 			            maxWinMoney=tonumber(res.maxWinMoney)
 			        }
-			skynet.error(name,reqh.SESSION,reqh.winMoney,reqh.costMoney,reqh.playNum,reqh.winNum,reqh.serialWinNum,reqh.maxWinMoney)
+			printI("%s,%s,%s,%s,%s,%s,%s,%s",name,reqh.SESSION,reqh.winMoney,reqh.costMoney,reqh.playNum,reqh.winNum,reqh.serialWinNum,reqh.maxWinMoney)
 			local resulth = sgoly_pack.encode(reqh)
 		    return resulth
 		elseif not bool then
@@ -112,7 +112,6 @@ skynet.start(function()
 		local f = assert(CMD[cmd], cmd .. "not found")
 		skynet.retpack(f(...))
 	end)
-	--skynet.error("this is maingame")
     -- 要注册个服务的名字，以.开头
     -- skynet.register(".stats")
 end)

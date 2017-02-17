@@ -1,6 +1,7 @@
 local skynet    = require "skynet"
 local socket    = require "socket"
 local crypt     = require "crypt"
+require "sgoly_printf"
 local name = ... or ""
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
@@ -10,16 +11,16 @@ function _read(id)
         local str   = socket.readline(id)
         print("read")
         if str then
-            skynet.error(id, "server says: ", str)
+            printI("%s server says:%s",id,str)
             local str1 = crypt.base64decode(str)
             local password
             local who="123456"
             password=crypt.aesdecode(str1,who,"")
             local mes =cjson.decode(password)
-            skynet.error("client echo",mes.SESSION,mes.ID,mes.STATE,mes.MESSAGE)
+            
         else
             socket.close(id)
-            skynet.error("disconnected")
+            printI("disconnected")
             skynet.exit()
         end
     end
@@ -30,11 +31,11 @@ skynet.start(function()
     local addr  =  "192.168.100.35:7000"
     local id    = socket.open(addr)
     if not id then
-        skynet.error("can't connect to "..addr)
+        printI("can't connect to %s"..addr)
         skynet.exit()
     end
 
-    skynet.error("connected")
+    printI("connected")
 
     --启动读协程
     skynet.fork(_read, id)
