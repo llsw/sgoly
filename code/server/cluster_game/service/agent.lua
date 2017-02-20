@@ -1,4 +1,3 @@
-
 local skynet = require "skynet"
 local socket = require "socket"
 local cluster= require "cluster"
@@ -17,22 +16,21 @@ function agent.main(fd,mes)
 	if mes.ID=="4" then       --主游戏
 	   local call_ok,req=xpcall(skynet.call,xpcall_error,connection[fd].maingame,"lua","calc",fd,mes.SESSION,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST,connection[fd].name)
 	   return req
-	elseif mes.ID=="5" then   --统计面板
+	elseif mes.ID=="5" then       --统计面板
 	   local call_ok,req1=xpcall(skynet.call,xpcall_error,connection[fd].stats,"lua","tongji",fd,mes.SESSION,mes.TYPE,connection[fd].name)
 	   return req1
-	elseif mes.ID=="6" then   --正常退出
+	elseif mes.ID=="6" then       --正常退出
 		local req2=exit(fd,mes)
 		return req2  
-	elseif mes.ID=="9" then   --保险柜
+	elseif mes.ID=="9" then       --保险柜
 		local call_ok,req3=xpcall(skynet.call,xpcall_error,connection[fd].safe,"lua","safebox",fd,mes,connection[fd].name)
 		return req3 	
-	elseif mes.ID=="10" then   --签到
+	elseif mes.ID=="10" then      --签到
 		local call_ok,req4=xpcall(skynet.call,xpcall_error,connection[fd].sign,"lua","sign_in",fd,mes,connection[fd].name)
 		return req4 
-	elseif mes.ID=="14" then   --破产补助
+	elseif mes.ID=="14" then      --破产补助
 		local call_ok,req5=xpcall(skynet.call,xpcall_error,connection[fd].grant ,"lua","getgrant",fd,mes,connection[fd].name)
 		return req5 
-		
     else  
 	   	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
 		local result1_2 = sgoly_pack.encode(req)
@@ -69,7 +67,7 @@ function agent.start(fd,name)
 	   local safe = skynet.newservice("safe")
 	   local sign = skynet.newservice("sign")
 	   local grant = skynet.newservice("grant")
-	  local c = {
+	   local c = {
 	  		name = name,
 	  		maingame = maingame,
 	  		stats=stats,
@@ -78,7 +76,7 @@ function agent.start(fd,name)
 	  		sign=sign,
 	  		grant=grant
 			}
-	  connection[fd] = c 
+	   connection[fd] = c 
 end
 
 function agent.errorexit( fd )	 --用户玩自动模式强制退出

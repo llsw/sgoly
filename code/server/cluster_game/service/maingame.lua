@@ -143,37 +143,37 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 	local wintype={A5=0,B5=0,C5=0,D5=0,E5=0,A4=0,B4=0,C4=0,D4=0,E4=0,A3=0,B3=0,C3=0,D3=0,E3=0,A6=0,F3=0}
 	local sequence = {}	
 	function  reqpack(wintype,type,grade,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-			wintype[type]=wintype[type]+1
-			table.insert(number1,i)
-			if TYPE=="autostart" or TYPE=="autogo" then 
-				table.insert(autonumber1,autonum)
-				if automax==0  then
-				      automax=1
-					autopersentmax=1
-			    else
-			    	local s = #autonumber1
-			    	if autonumber1[s]+1==autonum then
-			    		autopersentmax=autopersentmax+1
-			    		if autopersentmax>automax then
-			    			automax=autopersentmax
-			    		end
-			    	else 
-			    		autopersentmax=0
-			    	end
-			    end
+		wintype[type]=wintype[type]+1
+		table.insert(number1,i)
+		if TYPE=="autostart" or TYPE=="autogo" then 
+			table.insert(autonumber1,autonum)
+			if automax==0  then
+			      automax=1
+				autopersentmax=1
+		    else
+		    	local s = #autonumber1
+		    	if autonumber1[s]+1==autonum then
+		    		autopersentmax=autopersentmax+1
+		    		if autopersentmax>automax then
+		    			automax=autopersentmax
+		    		end
+		    	else 
+		    		autopersentmax=0
+		    	end
+		    end
+		end
+		table.insert(number2,type)
+		table.insert(sequence,picture_order(type))
+		printD("得分为 %s",end_point*beilv*grade)
+		money=money+end_point*beilv*grade
+		table.insert(winmoney,end_point*beilv*grade)
+		if TYPE=="autostart" or TYPE=="autogo" then 
+			table.insert(automoney,end_point*beilv*grade)
+			if autowinmax<end_point*beilv*grade then
+			   autowinmax=end_point*beilv*grade
 			end
-			table.insert(number2,type)
-			table.insert(sequence,picture_order(type))
-			printD("得分为 %s",end_point*beilv*grade)
-			money=money+end_point*beilv*grade
-			table.insert(winmoney,end_point*beilv*grade)
-			if TYPE=="autostart" or TYPE=="autogo" then 
-				table.insert(automoney,end_point*beilv*grade)
-				if autowinmax<end_point*beilv*grade then
-				   autowinmax=end_point*beilv*grade
-				end
-				autowinall=autowinall+end_point*beilv*grade
-			end
+			autowinall=autowinall+end_point*beilv*grade
+		end
     end
 for i=1,k do
 	a=math.random(1,1000000)
@@ -537,12 +537,12 @@ end  --for 循环end
 	-- printD("本轮中奖次数%d",j)
 	printD(
 		[[
-	name %s
-	本轮F3中奖次数 %d
-	本轮抽奖次数 %d
-	历史抽奖次数 %d
-	历史中奖次数 %d
-	本轮中奖次数 %d
+			name %s
+			本轮F3中奖次数 %d
+			本轮抽奖次数 %d
+			历史抽奖次数 %d
+			历史中奖次数 %d
+			本轮中奖次数 %d
 		]], name, F3num, k, historynum, historyj, j)
 
 	for key,v in pairs(wintype) do
@@ -569,7 +569,6 @@ end  --for 循环end
 		end
 		printD("最高连续中奖次数为 %d",max)
 	end
-
 ----------------------------------------------------------
 		for key,v in ipairs(number1) do
 			printD("第%s次中奖,中奖类型为 %s",v,number2[key])
@@ -608,7 +607,6 @@ end  --for 循环end
 	     	winmax=v
 	     end
 	end  
-   
 ----------------------获奖总金额------------------
     local winall =0
     for k,v in ipairs(winmoney) do
@@ -619,46 +617,46 @@ end  --for 循环end
     if k~="1" and k~="0" then
        sgoly_tool.saveStatementsToRedis(name,winall,cost,k,j,max,winmax,0,x,os.date("%Y-%m-%d"))
        sgoly_tool.saveMoneyToRedis(name,nowMONEY)
-   elseif TYPE=="autoend"  then
-    -------------------自动最高连续中奖次数-----------------------------
+    elseif TYPE=="autoend"  then
+-------------------自动最高连续中奖次数-----------------------------
         printD("I am %s",name)
-				printD("自动最高连续中奖次数为 %d",automax)
-				automaxsave=automax
-	    ---------------------自动中奖最高金额---------------
-				--      	autowinmax
+		printD("自动最高连续中奖次数为 %d",automax)
+		automaxsave=automax
+---------------------自动中奖最高金额---------------
+				--    autowinmax
 	---------------------自动获奖总金额----------------
-			    printD("autowinall is %s",autowinall)
+	    printD("autowinall is %s",autowinall)
 	-------------------------------------------------------
-		   local autozjnum = #(autonumber1)
-		   autozjnumsave=autozjnum
-		   printD("autozjnum=%s",autozjnum)
-	       local bool1,req1=sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnum,automax,autowinmax,0,x,os.date("%Y-%m-%d"))
-	       local bool2,req2=sgoly_tool.saveMoneyToRedis(name,MONEY)
-	       if bool1 and bool2 then
-		        local who = "123456"
-			    local resultauto={ID="4",SESSION=session,TYPE=TYPE,STATE=true,AUTONUM=autonum,SERIES=automax,WCOUNT=autozjnum,
-			    MAXMONEY=autowinmax,SUNMONEY=autowinall,FINMONEY=MONEY}
-			    printD("resultauto %s %s %s %s %s",resultauto.AUTONUM, resultauto.SERIES, resultauto.WCOUNT, resultauto.MAXMONEY, resultauto.SUNMONEY, resultauto.FINMONEY)
-		        local resultat1_2=sgoly_pack.encode(resultauto)
-	            if k=="0" and TYPE=="autoend" then
-					    	autonum=0
-					    	autocost=0
-					    	automoney={}
-					    	autonumber1={}
-					    	autowinall =0 
-							autowinmax =0
-							autozjnumsave=0
-							automaxsave=0
-							xsave=1
-							autopersentmax=0
-							automax=0
-		        end
-		        return resultat1_2
-            else
-            	local req5={SESSION=session,ID="4",STATE=false,MESSAGE="存档错误"}
-				local req5_1=sgoly_pack.encode(req5)
-				return req5_1
-			end
+	    local autozjnum = #(autonumber1)
+	    autozjnumsave=autozjnum
+	    printD("autozjnum=%s",autozjnum)
+        local bool1,req1=sgoly_tool.saveStatementsToRedis(name,autowinall,autocost,autonum,autozjnum,automax,autowinmax,0,x,os.date("%Y-%m-%d"))
+        local bool2,req2=sgoly_tool.saveMoneyToRedis(name,MONEY)
+        if bool1 and bool2 then
+	        local who = "123456"
+		    local resultauto={ID="4",SESSION=session,TYPE=TYPE,STATE=true,AUTONUM=autonum,SERIES=automax,WCOUNT=autozjnum,
+		    MAXMONEY=autowinmax,SUNMONEY=autowinall,FINMONEY=MONEY}
+		    printD("resultauto %s %s %s %s %s",resultauto.AUTONUM, resultauto.SERIES, resultauto.WCOUNT, resultauto.MAXMONEY, resultauto.SUNMONEY, resultauto.FINMONEY)
+	        local resultat1_2=sgoly_pack.encode(resultauto)
+            if k=="0" and TYPE=="autoend" then
+		    	autonum=0
+		    	autocost=0
+		    	automoney={}
+		    	autonumber1={}
+		    	autowinall =0 
+				autowinmax =0
+				autozjnumsave=0
+				automaxsave=0
+				xsave=1
+				autopersentmax=0
+				automax=0
+	        end
+	        return resultat1_2
+        else
+        	local req5={SESSION=session,ID="4",STATE=false,MESSAGE="存档错误"}
+			local req5_1=sgoly_pack.encode(req5)
+			return req5_1
+		end
     end
 	return send_result(fd,session,TYPE,max,j,winmax,winall,nowMONEY,sequence,winmoney,name)
 end
@@ -670,11 +668,11 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 		if checkup==true and tonumber(cost)<=tonumber(MONEY) then
             return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 		elseif tonumber(cost)>tonumber(MONEY) then
-			local req3={SESSION=session,ID="4",STATE=false,MESSAGE="金币不足"}
+			local req3={SESSION=session,ID="4",STATE=false,TYPE="autogo",MESSAGE="金币不足"}
 			local req3_1=sgoly_pack.encode(req3)
 			return req3_1
 		else
-			local req4={SESSION=session,ID="4",STATE=false,MESSAGE="无效数据"}
+			local req4={SESSION=session,ID="4",STATE=false,TYPE="autogo",MESSAGE="无效数据"}
 			local req4_1=sgoly_pack.encode(req4)
 			return req4_1
 		end
@@ -687,11 +685,11 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 	    if tonumber(reallymoney)==tonumber(MONEY) and checkup==true and tonumber(cost)<=tonumber(MONEY) then
 		    return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 		elseif tonumber(cost)>tonumber(MONEY) then
-			local req2={SESSION=session,ID="4",STATE=false,MESSAGE="金币不足"}
+			local req2={SESSION=session,ID="4",STATE=false,TYPE=TYPE,MESSAGE="金币不足"}
 			local req2_1=sgoly_pack.encode(req2)
 			return req2_1
 		else
-			local req={SESSION=session,ID="4",STATE=false,MESSAGE="无效数据"}
+			local req={SESSION=session,ID="4",STATE=false,TYPE=TYPE,MESSAGE="无效数据"}
 			local req1=sgoly_pack.encode(req)
 			return req1
 		end
@@ -699,7 +697,7 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 	elseif TYPE=="autoend" then
 	    return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
 	else
-		local req5={SESSION=session,ID="4",STATE=false,MESSAGE="参数错误"}
+		local req5={SESSION=session,ID="4",STATE=false,TYPE=="autoend",MESSAGE="参数错误"}
 		local req5_1=sgoly_pack.encode(req5)
 		return req5_1
 	end

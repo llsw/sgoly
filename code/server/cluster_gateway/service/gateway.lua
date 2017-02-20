@@ -15,7 +15,7 @@ local lock = skynet_queue()
 local connection = {}
 
 
-local handler = {}
+local handler = {} 
 
 function handler.open(source, conf)
 	printD("Gateway open source[%d]", source)
