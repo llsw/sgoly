@@ -975,4 +975,72 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 	return true, {rank, name_rank, args, value}
 end
 
+--!
+--! @brief      Gets the package from redis.
+--!
+--! @param      nickname  The nickname
+--!
+--! @return     The package from redis.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-21
+--!
+function sgoly_tool.getPackageFromRedis(nickname)
+	nickname = tostring(nickname)
+	local key = nickname .. ":package"
+	result = redis_query({"hgetall", key})
+	if #result > 0 then
+		result = sgoly_tool.multipleToTable(result)
+	end
+	-- local ok, result = sgoly_dat_ser.getPackageFromMySQL(nickname)
+	if #result > 0 then
+		redis_query({"hmset", key, result})
+	end
+	return ok, result
+end
+
+--!
+--! @brief      Sets the property to redis.
+--!
+--! @param      nickname  The nickname
+--! @param      propId    The property identifier
+--! @param      propNum   The property number
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-21
+--!
+function sgoly_tool.setPropToRedis(nickname, propId, propNum)
+	nickname = tostring(nickname)
+	local key = nickname .. ":package"
+	redis_query({"hset", propId, propNum})
+	return true, nil
+end
+
+--!
+--! @brief      Saves a property to my sql.
+--!
+--! @param      nickname  The nickname
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-21
+--!
+function sgoly_tool.savePropToMySQL(nickname)
+	nickname = tostring(nickname)
+	local key = nickname .. ":package"
+	result = redis_query({"hgetall", key})
+	if #result > 0 then
+		result = sgoly_tool.multipleToTable(result)
+		for k, v in pairs(result) do
+			k = tonumber(k)
+			v = tonumber(v)
+			sgoly_dat_ser.savePropToMySQL(tonumber(nickname), tonumber(k), tonumber(v))
+		end
+	end
+	return true, nil
+end
+
 return sgoly_tool
