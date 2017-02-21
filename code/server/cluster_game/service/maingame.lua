@@ -182,67 +182,67 @@ for i=1,k do
 
 	if x==1 then
 		printD("这是普通模式")
-		if a>=1 and a<=4 then
+		if a>=1 and a<=190 then
 			printD("%s 中奖类型AAAAA----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"A5",500,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=5 and a<=34 then
+			reqpack(wintype,"A5",300,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=191 and a<=580 then
 			printD("%s 中奖类型BBBBB----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"B5",300,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=35 and a<=254 then
+			reqpack(wintype,"B5",200,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=581 and a<=1170 then
 			printD("%s 中奖类型CCCCC----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"C5",200,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=255 and a<=704 then
+			reqpack(wintype,"C5",100,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=1171 and a<=1960 then
 			printD("%s 中奖类型DDDDD----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"D5",100,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=705 and a<=7174 then
+			reqpack(wintype,"D5",75,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=1961 and a<=2950 then
 			printD("%s 中奖类型EEEEE----O(∩_∩)O~~-!", i)
 			j=j+1
 			reqpack(wintype,"E5",50,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=7175 and a<=7254 then
+		elseif a>=2951 and a<=4850 then
 			printD("%s 中奖类型AAAA----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"A4",30,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=7255 and a<=7704 then
+			reqpack(wintype,"A4",20,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=4851 and a<=8750 then
 			printD("%s 中奖类型BBBB----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"B4",25,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=7705 and a<=9564 then
+			reqpack(wintype,"B4",15,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=8751 and a<=14650 then
 			printD("%s 中奖类型CCCC----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"C4",20,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=9565 and a<=12664 then
+			reqpack(wintype,"C4",10,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=14651 and a<=22550 then
 			printD("%s 中奖类型DDDD----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"D4",15,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=12665 and a<=39854 then
+			reqpack(wintype,"D4",7.5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=22551 and a<=32450 then
 			printD("%s 中奖类型EEEE----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"E4",10,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=39855 and a<=41274 then
+			reqpack(wintype,"E4",5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=32451 and a<=51450 then
 			printD("%s 中奖类型AAA----O(∩_∩)O~~-!", i) 
 			j=j+1
-			reqpack(wintype,"A3",5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=41274 and a<=45224 then
+			reqpack(wintype,"A3",3,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=51451 and a<=90450 then
 			printD("%s 中奖类型BBB----O(∩_∩)O~~-!", i) 
 			j=j+1
-			reqpack(wintype,"B3",3,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=45225 and a<=57534 then
+			reqpack(wintype,"B3",2,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=90451 and a<=149450 then
 			printD("%s 中奖类型CCC----O(∩_∩)O~~-!", i) 
 			j=j+1
-			reqpack(wintype,"C3",2,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=57535 and a<=76744 then
+			reqpack(wintype,"C3",1.5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=149451 and a<=228450 then
 			printD("%s 中奖类型DDD----O(∩_∩)O~~-!", i)
 			j=j+1 
 			reqpack(wintype,"D3",1,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=76745 and a<=148224 then
+		elseif a>=228451 and a<=327450 then
 			printD("%s 中奖类型EEE----O(∩_∩)O~~-!", i) 
 			j=j+1
 			reqpack(wintype,"E3",0.5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=148225 and a<=148234 then
+		elseif a>=327451 and a<=331550 then
 			printD("%s 中奖类型ABCDE----O(∩_∩)O~~-!", i) 
 			j=j+1
 			reqpack(wintype,"A6",1000,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
@@ -290,71 +290,71 @@ for i=1,k do
 
 	elseif  x==2   then
 		printD("这是困难模式")
-		if a>=1 and a<=30 then
+		if a>=1 and a<=180 then
 			printD("%s 中奖类型AAAAA----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"A5",500,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=31 and a<=80 then
+			reqpack(wintype,"A5",300,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=181 and a<=560 then
 			printD("%s 中奖类型BBBBB----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"B5",300,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=81 and a<=230 then
+			reqpack(wintype,"B5",200,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=561 and a<=1140 then
 			printD("%s 中奖类型CCCCC----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"C5",200,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=231 and a<=460 then
+			reqpack(wintype,"C5",100,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=1141 and a<=1920 then
 			printD("%s 中奖类型DDDDD----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"D5",100,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=461 and a<=6820 then
+			reqpack(wintype,"D5",75,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=1921 and a<=2900 then
 			printD("%s 中奖类型EEEEE----O(∩_∩)O~~-!", i)
 			j=j+1
 			reqpack(wintype,"E5",50,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=6821 and a<=7011 then
+		elseif a>=2901 and a<=4700 then
 			printD("%s 中奖类型AAAA----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"A4",30,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=7012 and a<=7851 then
+			reqpack(wintype,"A4",20,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=4701 and a<=8500 then
 			printD("%s 中奖类型BBBB----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"B4",500,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=7852 and a<=9451 then
+			reqpack(wintype,"B4",15,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=8501 and a<=14300 then
 			printD("%s 中奖类型CCCC----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"C4",20,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=9452 and a<=11361 then
+			reqpack(wintype,"C4",10,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=14301 and a<=22100 then
 			printD("%s 中奖类型DDDD----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"D4",15,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=11362 and a<=34571 then
+			reqpack(wintype,"D4",7.5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=22101 and a<=31900 then
 			printD("%s 中奖类型EEEE----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"E4",10,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=34572 and a<=37511 then
+			reqpack(wintype,"E4",5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=31901 and a<=49900 then
 			printD("%s 中奖类型AAA----O(∩_∩)O~~-!", i) 
 			j=j+1
-			reqpack(wintype,"A3",5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=37512 and a<=45061 then
+			reqpack(wintype,"A3",3,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=49901 and a<=87900 then
 			printD("%s 中奖类型BBB----O(∩_∩)O~~-!", i) 
 			j=j+1
-			reqpack(wintype,"B3",3,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=45062 and a<=56151 then
+			reqpack(wintype,"B3",2,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=87901 and a<=145900 then
 			printD("%s 中奖类型CCC----O(∩_∩)O~~-!", i) 
 			j=j+1
-			reqpack(wintype,"C3",2,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=56152 and a<=67981 then
+			reqpack(wintype,"C3",1.5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=145901 and a<=223900 then
 			printD("%s 中奖类型DDD----O(∩_∩)O~~-!", i)
 			j=j+1
 			reqpack(wintype,"D3",1,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=67982 and a<=131571 then
+		elseif a>=223901 and a<=321900 then
 			printD("%s 中奖类型EEE----O(∩_∩)O~~-!", i) 
 			j=j+1
 			reqpack(wintype,"E3",0.5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=131572 and a<=131581 then
+		elseif a>=321901 and a<=322000 then
 			printD("%s 中奖类型ABCDE----O(∩_∩)O~~-!", i) 
 			j=j+1
 			reqpack(wintype,"A6",1000,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=131582 and a<=141581 then
+		elseif a>=322001 and a<=325000 then
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				printD("%s 没有中奖", i)
 				table.insert(sequence,picture_order("NO"))
@@ -397,71 +397,71 @@ for i=1,k do
 ------------------------简单模式-----------------------------
 	elseif x==3 then 
 		printD("这是简单模式")
-		if a>=1 and a<=10 then
+		if a>=1 and a<=200 then
 			printD("%s 中奖类型AAAAA----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"A5",500,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=11 and a<=40 then
+			reqpack(wintype,"A5",300,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=201 and a<=600 then
 			printD("%s 中奖类型BBBBB----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"B5",300,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=41 and a<=90 then
+			reqpack(wintype,"B5",200,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=601 and a<=1200 then
 			printD("%s 中奖类型CCCCC----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"C5",200,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=91 and a<=1450 then
+			reqpack(wintype,"C5",100,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=1201 and a<=2000 then
 			printD("%s 中奖类型DDDDD----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"D5",100,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=1451 and a<=7130 then
+			reqpack(wintype,"D5",75,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=2001 and a<=3000 then
 			printD("%s 中奖类型EEEEE----O(∩_∩)O~~-!", i)
 			j=j+1
 			reqpack(wintype,"E5",50,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=7131 and a<=7260 then
+		elseif a>=3001 and a<=5000 then
 			printD("%s 中奖类型AAAA----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"A4",30,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=7261 and a<=7610 then
+			reqpack(wintype,"A4",20,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=5001 and a<=9000 then
 			printD("%s 中奖类型BBBB----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"B4",25,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=7611 and a<=8060 then
+			reqpack(wintype,"B4",15,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=9001 and a<=15000 then
 			printD("%s 中奖类型CCCC----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"C4",20,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=8061 and a<=13970 then
+			reqpack(wintype,"C4",10,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=15001 and a<=23000 then
 			printD("%s 中奖类型DDDD----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"D4",15,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=13971 and a<=44270 then
+			reqpack(wintype,"D4",7.5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=23001 and a<=33000 then
 			printD("%s 中奖类型EEEE----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"E4",10,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=44271 and a<=46230 then
+			reqpack(wintype,"E4",5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=33001 and a<=53000 then
 			printD("%s 中奖类型AAA----O(∩_∩)O~~-!", i) 
 			j=j+1
-			reqpack(wintype,"A3",5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=46231 and a<=49780 then
+			reqpack(wintype,"A3",3,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=53001 and a<=93000 then
 			printD("%s 中奖类型BBB----O(∩_∩)O~~-!", i) 
 			j=j+1
-			reqpack(wintype,"B3",3,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=49781 and a<=54070 then
+			reqpack(wintype,"B3",2,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=93001 and a<=153000 then
 			printD("%s 中奖类型CCC----O(∩_∩)O~~-!", i)
 			j=j+1
-			reqpack(wintype,"C3",2,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney) 
-		elseif a>=54071 and a<=82930 then
+			reqpack(wintype,"C3",1.5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney) 
+		elseif a>=153001 and a<=233000 then
 			printD("%s 中奖类型DDD----O(∩_∩)O~~-!", i) 
 			j=j+1
 			reqpack(wintype,"D3",1,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=82931 and a<=162480 then
+		elseif a>=233000 and a<=333000 then
 			printD("%s 中奖类型EEE----O(∩_∩)O~~-!", i) 
 			j=j+1
 			reqpack(wintype,"E3",0.5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=162481 and a<=162490 then
+		elseif a>=333001 and a<=333100 then
 			printD("%s 中奖类型ABCDE----O(∩_∩)O~~-!", i) 
 			j=j+1
-			reqpack(wintype,"A6",1000,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=162491 and a<=172490 then
+			reqpack(wintype,"A6",500,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=333101 and a<=338100 then
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				printD("%s 没有中奖", i)
 				table.insert(sequence,picture_order("NO"))
@@ -501,113 +501,7 @@ for i=1,k do
 				autowinall=autowinall+end_point*beilv*0
 			end
 		end
--------------------------幸运模式------------------
-	elseif x==4 then 
-		printD("这是幸运模式")
-		if a>=1 and a<=10 then
-			printD("%s 中奖类型AAAAA----O(∩_∩)O~~-!", i)
-			j=j+1
-			reqpack(wintype,"A5",500,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=11 and a<=40 then
-			printD("%s 中奖类型BBBBB----O(∩_∩)O~~-!", i)
-			j=j+1
-			reqpack(wintype,"B5",300,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=41 and a<=90 then
-			printD("%s 中奖类型CCCCC----O(∩_∩)O~~-!", i)
-			j=j+1
-			reqpack(wintype,"C5",200,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=91 and a<=1450 then
-			printD("%s 中奖类型DDDDD----O(∩_∩)O~~-!", i)
-			j=j+1
-			reqpack(wintype,"D5",100,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=1451 and a<=7130 then
-			printD("%s 中奖类型EEEEE----O(∩_∩)O~~-!", i)
-			j=j+1
-			reqpack(wintype,"E5",50,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=7131 and a<=7260 then
-			printD("%s 中奖类型AAAA----O(∩_∩)O~~-!", i)
-			j=j+1
-			reqpack(wintype,"A4",30,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=7261 and a<=7610 then
-			printD("%s 中奖类型BBBB----O(∩_∩)O~~-!", i)
-			j=j+1
-			reqpack(wintype,"B4",25,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=7611 and a<=8060 then
-			printD("%s 中奖类型CCCC----O(∩_∩)O~~-!", i)
-			j=j+1
-			reqpack(wintype,"C4",20,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=8061 and a<=13970 then
-			printD("%s 中奖类型DDDD----O(∩_∩)O~~-!", i)
-			j=j+1
-			reqpack(wintype,"D4",15,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=13971 and a<=44270 then
-			printD("%s 中奖类型EEEE----O(∩_∩)O~~-!", i)
-			j=j+1
-			reqpack(wintype,"E4",10,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=44271 and a<=46230 then
-			printD("%s 中奖类型AAA----O(∩_∩)O~~-!", i) 
-			j=j+1
-			reqpack(wintype,"A3",5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=46231 and a<=49780 then
-			printD("%s 中奖类型BBB----O(∩_∩)O~~-!", i) 
-			j=j+1
-			reqpack(wintype,"B3",3,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=49781 and a<=54070 then
-			printD("%s 中奖类型CCC----O(∩_∩)O~~-!", i)
-			j=j+1
-			reqpack(wintype,"C3",2,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney) 
-		elseif a>=54071 and a<=82930 then
-			printD("%s 中奖类型DDD----O(∩_∩)O~~-!", i) 
-			j=j+1
-			reqpack(wintype,"D3",1,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=82931 and a<=162480 then
-			printD("%s 中奖类型EEE----O(∩_∩)O~~-!", i) 
-			j=j+1
-			reqpack(wintype,"E3",0.5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=162481 and a<=162490 then
-			printD("%s 中奖类型ABCDE----O(∩_∩)O~~-!", i) 
-			j=j+1
-			reqpack(wintype,"A6",1000,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=162491 and a<=172490 then
-			if TYPE=="autostart" or TYPE=="autogo" then 
-				printD("%s 没有中奖", i)
-				table.insert(sequence,picture_order("NO"))
-				printD("得分为 %s",end_point*beilv*0)
-				money=money+end_point*beilv*0 
-				table.insert(winmoney,end_point*beilv*0)
-				if TYPE=="autostart" or TYPE=="autogo" then 
-					table.insert(automoney,end_point*beilv*0)
-					if autowinmax<end_point*beilv*0 then
-					   autowinmax=end_point*beilv*0
-					end
-					autowinall=autowinall+end_point*beilv*0
-				end
-		    else
-				printD("%s 中奖类型FFF----O(∩_∩)O~~-!", i) 
-				j=j+1
-				wintype.F3=wintype.F3+1
-				table.insert(number1,i)
-				table.insert(number2,"F3")
-				table.insert(sequence,picture_order("F3"))
-				printD("得分为 %s",end_point*beilv*0)
-				money=money+end_point*beilv*0
-				table.insert(winmoney,end_point*beilv*0)
-				F3num=F3num+1
-			end
-		else 
-			printD("%s 没有中奖", i)
-			table.insert(sequence,picture_order("NO"))
-			printD("得分为 %s",end_point*beilv*0)
-			money=money+end_point*beilv*0 
-			table.insert(winmoney,end_point*beilv*0)
-			if TYPE=="autostart" or TYPE=="autogo" then 
-				table.insert(automoney,end_point*beilv*0)
-				if autowinmax<end_point*beilv*0 then
-				   autowinmax=end_point*beilv*0
-				end
-				autowinall=autowinall+end_point*beilv*0
-			end
-		end
+
 	end
 ---------------------10次判断切换模式---------------------------
 	historynum=historynum+1
