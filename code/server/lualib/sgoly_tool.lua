@@ -1014,7 +1014,7 @@ end
 function sgoly_tool.setPropToRedis(nickname, propId, propNum)
 	nickname = tostring(nickname)
 	local key = nickname .. ":package"
-	redis_query({"hset", propId, propNum})
+	redis_query({"hset", tostring(propId), propNum})
 	return true, nil
 end
 
@@ -1041,6 +1041,24 @@ function sgoly_tool.savePropToMySQL(nickname)
 		end
 	end
 	return true, nil
+end
+
+--!
+--! @brief      Gets the property from redis.
+--!
+--! @param      nickname  The nickname
+--! @param      propId    The property identifier
+--!
+--! @return     The property from redis.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-21
+--!
+function getPropFromRedis(nickname, propId)
+	nickname = tostring(nickname)
+	local key = nickname .. ":package"
+	local number = redis_query({"hget", tostring(propId)})
+	return true, tonumber(number)
 end
 
 return sgoly_tool
