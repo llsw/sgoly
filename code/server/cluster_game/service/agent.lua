@@ -32,9 +32,7 @@ function agent.main(fd,mes)
 		local call_ok,req5=xpcall(skynet.call,xpcall_error,connection[fd].grant ,"lua","getgrant",fd,mes,connection[fd].name)
 		return req5 
     else  
-	   	local req3={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
-		local result1_2 = sgoly_pack.encode(req)
-		return result1_2
+    	return sgoly_pack.returnfalse(mes,mes.ID,"未知错误")
 end
 end
 
@@ -53,12 +51,7 @@ function exit(fd,mes)   --用户正常退出
 	        printI("%s用户正常退出",connection[fd].name)
             return result2_1
         else
-        	local req2_1 ={ SESSION=mes.SESSION,
-        					ID=mes.ID,
-							STATE=false,
-							MESSAGE=tostring(res).." "..tostring(res1)} 	
-	        local result2_2 = sgoly_pack.encode(req2_1)
-            return result2_2
+        	return sgoly_pack.returnfalse(mes,mes.ID,tostring(res).." "..tostring(res1))
         end          
 end
 function agent.start(fd,name)

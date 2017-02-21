@@ -15,16 +15,16 @@ function CMD.tongji(fd,session,type,name)
 	if type=="today" then
 		local bool,res=sgoly_tool.getStatementsFromRedis(name,os.date("%Y-%m-%d"))
 		if bool then
-			local  req={SESSION=session,
-			            ID="5",
-			            TYPE="today",
-			            STATE=true,
-			            winMoney=tonumber(res.winMoney),
-			            costMoney=tonumber(res.costMoney),
-			            playNum=tonumber(res.playNum),
-			            winNum=tonumber(res.winNum),
-			            serialWinNum=tonumber(res.serialWinNum),
-			            maxWinMoney=tonumber(res.maxWinMoney)
+			local req={SESSION=session,
+			           ID="5",
+			           TYPE="today",
+			           STATE=true,
+			           winMoney=tonumber(res.winMoney),
+			           costMoney=tonumber(res.costMoney),
+			           playNum=tonumber(res.playNum),
+			           winNum=tonumber(res.winNum),
+			           serialWinNum=tonumber(res.serialWinNum),
+			           maxWinMoney=tonumber(res.maxWinMoney)
 			        }
 			printI("%s,%s,%s,%s,%s,%s,%s,%s",name,req.SESSION,req.winMoney,req.costMoney,req.playNum,req.winNum,req.serialWinNum,req.maxWinMoney)
 			local result1_2 = sgoly_pack.encode(req)

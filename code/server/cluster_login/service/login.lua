@@ -158,8 +158,7 @@ function handler(fd, mes)
 				return refal1_2.."\n"
 			end
 		else
-		    local rep6={SESSION=mes.SESSION,ID=mes.ID,STATE=false,TYPE==mes.TYPE,MESSAGE="未知错误"}
-			local str6_1=sgoly_pack.encode(rep6)
+			local str6_1=sgoly_pack.typereturn(mes,mes.ID,"未知错误")
 		    return str6_1.."\n"
 		end
 	elseif  mes.ID=="13" then 
@@ -167,9 +166,8 @@ function handler(fd, mes)
 		    --cluster.call("cluster_game",".agent","setline",fd)
 		    return nil
     else
-      local rep6={SESSION=mes.SESSION,ID=mes.ID,STATE=false,MESSAGE="未知错误"}
-	  local str6_1=sgoly_pack.encode(rep6)
-      return str6_1.."\n"
+    	local str6_1=sgoly_pack.returnfalse(mes,mes.ID,"未知错误")
+      	return str6_1.."\n"
     end
 end
 

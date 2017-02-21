@@ -53,7 +53,6 @@ function returnfalse(mes,msg)
 			return req1_1
 end
 
-
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(CMD[cmd], cmd .. "not found")

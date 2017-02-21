@@ -116,9 +116,9 @@ end
 	xsave=1                --游戏模式存数据库
 	autopersentmax=0       --记录自动最高连续中奖次数
 	automax=0              --最终最高连续中奖次数
-	-- winmoney={}        --中奖金额
+	-- winmoney={}         --中奖金额
 --主循环判断
-function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name) 
+function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)--PROP 
     printD("I am %s",name)
     gamenum=0          --游戏次数
  	moneydb=0          --赚得金额存数据库
@@ -501,13 +501,122 @@ for i=1,k do
 				autowinall=autowinall+end_point*beilv*0
 			end
 		end
+-------------------------幸运模式------------------
+	elseif x==4 then 
+		printD("这是幸运模式")
+		if a>=1 and a<=10 then
+			printD("%s 中奖类型AAAAA----O(∩_∩)O~~-!", i)
+			j=j+1
+			reqpack(wintype,"A5",500,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=11 and a<=40 then
+			printD("%s 中奖类型BBBBB----O(∩_∩)O~~-!", i)
+			j=j+1
+			reqpack(wintype,"B5",300,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=41 and a<=90 then
+			printD("%s 中奖类型CCCCC----O(∩_∩)O~~-!", i)
+			j=j+1
+			reqpack(wintype,"C5",200,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=91 and a<=1450 then
+			printD("%s 中奖类型DDDDD----O(∩_∩)O~~-!", i)
+			j=j+1
+			reqpack(wintype,"D5",100,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=1451 and a<=7130 then
+			printD("%s 中奖类型EEEEE----O(∩_∩)O~~-!", i)
+			j=j+1
+			reqpack(wintype,"E5",50,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=7131 and a<=7260 then
+			printD("%s 中奖类型AAAA----O(∩_∩)O~~-!", i)
+			j=j+1
+			reqpack(wintype,"A4",30,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=7261 and a<=7610 then
+			printD("%s 中奖类型BBBB----O(∩_∩)O~~-!", i)
+			j=j+1
+			reqpack(wintype,"B4",25,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=7611 and a<=8060 then
+			printD("%s 中奖类型CCCC----O(∩_∩)O~~-!", i)
+			j=j+1
+			reqpack(wintype,"C4",20,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=8061 and a<=13970 then
+			printD("%s 中奖类型DDDD----O(∩_∩)O~~-!", i)
+			j=j+1
+			reqpack(wintype,"D4",15,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=13971 and a<=44270 then
+			printD("%s 中奖类型EEEE----O(∩_∩)O~~-!", i)
+			j=j+1
+			reqpack(wintype,"E4",10,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=44271 and a<=46230 then
+			printD("%s 中奖类型AAA----O(∩_∩)O~~-!", i) 
+			j=j+1
+			reqpack(wintype,"A3",5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=46231 and a<=49780 then
+			printD("%s 中奖类型BBB----O(∩_∩)O~~-!", i) 
+			j=j+1
+			reqpack(wintype,"B3",3,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=49781 and a<=54070 then
+			printD("%s 中奖类型CCC----O(∩_∩)O~~-!", i)
+			j=j+1
+			reqpack(wintype,"C3",2,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney) 
+		elseif a>=54071 and a<=82930 then
+			printD("%s 中奖类型DDD----O(∩_∩)O~~-!", i) 
+			j=j+1
+			reqpack(wintype,"D3",1,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=82931 and a<=162480 then
+			printD("%s 中奖类型EEE----O(∩_∩)O~~-!", i) 
+			j=j+1
+			reqpack(wintype,"E3",0.5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=162481 and a<=162490 then
+			printD("%s 中奖类型ABCDE----O(∩_∩)O~~-!", i) 
+			j=j+1
+			reqpack(wintype,"A6",1000,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+		elseif a>=162491 and a<=172490 then
+			if TYPE=="autostart" or TYPE=="autogo" then 
+				printD("%s 没有中奖", i)
+				table.insert(sequence,picture_order("NO"))
+				printD("得分为 %s",end_point*beilv*0)
+				money=money+end_point*beilv*0 
+				table.insert(winmoney,end_point*beilv*0)
+				if TYPE=="autostart" or TYPE=="autogo" then 
+					table.insert(automoney,end_point*beilv*0)
+					if autowinmax<end_point*beilv*0 then
+					   autowinmax=end_point*beilv*0
+					end
+					autowinall=autowinall+end_point*beilv*0
+				end
+		    else
+				printD("%s 中奖类型FFF----O(∩_∩)O~~-!", i) 
+				j=j+1
+				wintype.F3=wintype.F3+1
+				table.insert(number1,i)
+				table.insert(number2,"F3")
+				table.insert(sequence,picture_order("F3"))
+				printD("得分为 %s",end_point*beilv*0)
+				money=money+end_point*beilv*0
+				table.insert(winmoney,end_point*beilv*0)
+				F3num=F3num+1
+			end
+		else 
+			printD("%s 没有中奖", i)
+			table.insert(sequence,picture_order("NO"))
+			printD("得分为 %s",end_point*beilv*0)
+			money=money+end_point*beilv*0 
+			table.insert(winmoney,end_point*beilv*0)
+			if TYPE=="autostart" or TYPE=="autogo" then 
+				table.insert(automoney,end_point*beilv*0)
+				if autowinmax<end_point*beilv*0 then
+				   autowinmax=end_point*beilv*0
+				end
+				autowinall=autowinall+end_point*beilv*0
+			end
+		end
 	end
 ---------------------10次判断切换模式---------------------------
 	historynum=historynum+1
 	gamenum=gamenum+1
 	moneydb=moneydb+money
 	deposit=deposit+end_point*beilv
-	if historynum%10==0 and money/deposit>=0.9 then
+	if x==4 then
+		printD("这是幸运模式")
+	elseif historynum%10==0 and money/deposit>=0.9 then
 		x=2
 		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d"))           
 		printD("2 money[%s]/depost[%s]=[%s] 进入困难模式",money,deposit,money/deposit)
@@ -530,19 +639,19 @@ end  --for 循环end
 -----------------------抽奖次数--------------------------
 	-- printD("I am %s",name)
 	-- printD("本轮F3中奖次数%d",F3num)
-	-- historyj=historyj+j
+	historyj=historyj+j
 	-- printD("本轮抽奖次数%d",k)
 	-- printD("历史抽奖次数%d",historynum)
 	-- printD("历史中奖次数%d",historyj)
 	-- printD("本轮中奖次数%d",j)
 	printD(
 		[[
-			name %s
-			本轮F3中奖次数 %d
-			本轮抽奖次数 %d
-			历史抽奖次数 %d
-			历史中奖次数 %d
-			本轮中奖次数 %d
+		name %s
+		本轮F3中奖次数 %d
+		本轮抽奖次数 %d
+		历史抽奖次数 %d
+		历史中奖次数 %d
+		本轮中奖次数 %d
 		]], name, F3num, k, historynum, historyj, j)
 
 	for key,v in pairs(wintype) do
@@ -653,7 +762,7 @@ end  --for 循环end
 	        end
 	        return resultat1_2
         else
-        	local req5={SESSION=session,ID="4",STATE=false,MESSAGE="存档错误"}
+        	local req5={SESSION=session,ID="4",STATE=false,TYPE=TYPE,MESSAGE="存档错误"}
 			local req5_1=sgoly_pack.encode(req5)
 			return req5_1
 		end
@@ -661,7 +770,7 @@ end  --for 循环end
 	return send_result(fd,session,TYPE,max,j,winmax,winall,nowMONEY,sequence,winmoney,name)
 end
 
-function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
+function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)--PROP 
     if TYPE=="autogo" then
     	local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)
 		print("checkup",checkup)
