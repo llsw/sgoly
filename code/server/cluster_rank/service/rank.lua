@@ -79,7 +79,7 @@ function CMD.ranklist(fd,mes)
     	    	local bo3,re3=sgoly_tool.getPropFromRedis(mes.NAME, id)
     	    	num = num + re3
     	    	sgoly_tool.setPropToRedis(mes.NAME, id, num)
-    	    	req5.PROPID[id]=num
+    	    	req5.PROPLIST[id]=num
     	    end
     	    if not req2 then
     	    	id=math.floor(req2 / 100000)
@@ -87,7 +87,7 @@ function CMD.ranklist(fd,mes)
     	    	local bo3,re3=sgoly_tool.getPropFromRedis(mes.NAME, id)
     	    	num = num + re3
     	    	sgoly_tool.setPropToRedis(mes.NAME, id, num)
-    	    	req5.PROPID[id]=num
+    	    	req5.PROPLIST[id]=num
     	    end
 	        printI("this is rank receive,%s",mes.NAME)
 		if bool5 and bo and bool5_1 then 
