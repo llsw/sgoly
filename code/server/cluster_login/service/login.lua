@@ -16,15 +16,11 @@ function handler(fd, mes)
 	if  mes.ID=="2" then  
 		local bo1=sgoly_pack.filter_account(mes)
 		if bo1==false then
-		 	local refal={SESSION=mes.SESSION,ID="2",STATE=false,MESSAGE="帐号含有非法字符"}
-            local refal1_2=sgoly_pack.encode(refal)
-            return refal1_2.."\n"
+			return sgoly_pack.returnfalse(mes,"2","帐号含有非法字符")
         end
         local bo2 = sgoly_pack.filter_password(mes)
         if bo2==false then
-        	local refal={SESSION=mes.SESSION,ID="2",STATE=false,MESSAGE="密码含有非法字符"}
-            local refal1_2=sgoly_pack.encode(refal)
-            return refal1_2.."\n"
+        	return sgoly_pack.returnfalse(mes,"2","密码含有非法字符")
         end
 	    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		local bool,msg=dat_ser.register(mes.NAME,mes.PASSWD)
@@ -34,23 +30,17 @@ function handler(fd, mes)
 			local resuss1_2=sgoly_pack.encode(resuss)
 		  	return resuss1_2.."\n"
 		elseif not bool then 
-			local refal={SESSION=mes.SESSION,ID="2",STATE=bool,MESSAGE=msg}
-			local refal1_2=sgoly_pack.encode(refal)
-			return refal1_2.."\n"
+			return sgoly_pack.returnfalse(mes,"2",msg)
 		end
 -------------------------用户登录-------------------------------------
     elseif mes.ID=="1" then   
 		local bo1=sgoly_pack.filter_account(mes)
 		if bo1==false then
-		 	local refal={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="帐号含有非法字符"}
-            local refal1_2=sgoly_pack.encode(refal)
-            return refal1_2.."\n"
+			return sgoly_pack.returnfalse(mes,"1","帐号含有非法字符")
         end
         local bo2 = sgoly_pack.filter_password(mes)
         if bo2==false then
-        	local refal={SESSION=mes.SESSION,ID="1",STATE=false,MESSAGE="密码含有非法字符"}
-            local refal1_2=sgoly_pack.encode(refal)
-            return refal1_2.."\n"
+        	return sgoly_pack.returnfalse(mes,"1","密码含有非法字符")
         end          
 		    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		    local bool,msg=dat_ser.login(mes.NAME, mes.PASSWD)
@@ -76,14 +66,10 @@ function handler(fd, mes)
 			    
 			    return str5_1.."\n"
 		    else
-				local reqmoney={SESSION=mes.SESSION,ID="1",STATE=boo,MESSAGE=money}
-			    local str3_1=sgoly_pack.encode(reqmoney)
-				return str3_1.."\n"
+		    	return sgoly_pack.returnfalse(mes,"1",money)
 			end
 		else
-			    local rep4={SESSION=mes.SESSION,ID="1",STATE=bool,MESSAGE=msg}
-				local str4_1=sgoly_pack.encode(rep4)
-				return str4_1.."\n"	
+			    return sgoly_pack.returnfalse(mes,"1",msg)
 		end 	
 -------------------------游客登录--------------------------------------			        	
     elseif mes.ID=="3" then               
@@ -104,9 +90,7 @@ function handler(fd, mes)
 				local str2=sgoly_pack.encode(rep)
 				return str2.."\n"
 	    else
-		       local rep={SESSION=mes.SESSION,ID="3",STATE=false,MESSAGE=msg}
-		       local str2=sgoly_pack.encode(rep)
-		       return str2.."\n"
+	    	   return sgoly_pack.returnfalse(mes,"3",msg)
 	    end 
 -------------------------修改密码----------------------------------	    
     elseif  mes.ID=="11" then  
@@ -114,9 +98,7 @@ function handler(fd, mes)
     	 	x.PASSWD=mes.PASSWARD
 	      	local bo2 = sgoly_pack.filter_password(x)
 	        if bo2==false then
-	        	local refal={SESSION=mes.SESSION,ID="11",STATE=false,MESSAGE="密码含有非法字符"}
-	            local refal1_2=sgoly_pack.encode(refal)
-	            return refal1_2.."\n"
+	        	return sgoly_pack.returnfalse(mes,"11","密码含有非法字符")
 	        end          
 		    local PASSWD=md5.sumhexa(mes.PASSWARD)
 		    local CURPASSWARD=md5.sumhexa(mes.CURPASSWARD)
@@ -127,9 +109,7 @@ function handler(fd, mes)
 					local resuss1_2=sgoly_pack.encode(resuss)
 				  	return resuss1_2.."\n"
 			else 
-				local refal={SESSION=mes.SESSION,ID="11",STATE=bool,MESSAGE=msg}
-				local refal1_2=sgoly_pack.encode(refal)
-				return refal1_2.."\n"
+				return sgoly_pack.returnfalse(mes,"11",msg)
 			end
 -------------------------修改头像----------------------------------
 	elseif  mes.ID=="12" then 
@@ -141,9 +121,7 @@ function handler(fd, mes)
 					local resuss1_2=sgoly_pack.encode(resuss)
 				  	return resuss1_2.."\n"
 			else 
-				local refal={SESSION=mes.SESSION,ID="12",STATE=false,TYPE="query",MESSAGE=msg}
-				local refal1_2=sgoly_pack.encode(refal)
-				return refal1_2.."\n"
+				return sgoly_pack.typereturn(mes,"12",msg)
 			end
 		elseif mes.TYPE=="reset" then
 			local bool,msg=dat_ser.cha_img_name(mes.NAME,mes.PORTRAIT)
@@ -153,9 +131,7 @@ function handler(fd, mes)
 					local resuss1_2=sgoly_pack.encode(resuss)
 				  	return resuss1_2.."\n"
 			else 
-				local refal={SESSION=mes.SESSION,ID="12",STATE=false,TYPE="reset",MESSAGE=msg}
-				local refal1_2=sgoly_pack.encode(refal)
-				return refal1_2.."\n"
+				return sgoly_pack.typereturn(mes,"12",msg)
 			end
 		else
 			local str6_1=sgoly_pack.typereturn(mes,mes.ID,"未知错误")

@@ -990,9 +990,9 @@ function sgoly_tool.getPackageFromRedis(nickname)
 	local key = nickname .. ":package"
 	result = redis_query({"hgetall", key})
 	if #result > 0 then
-		result = sgoly_tool.multipleToTable(result)
+		ok, result = sgoly_tool.multipleToTable(result)
 	end
-	-- local ok, result = sgoly_dat_ser.getPackageFromMySQL(nickname)
+	local ok, result = sgoly_dat_ser.get_all_prop(nickname)
 	if #result > 0 then
 		redis_query({"hmset", key, result})
 	end
@@ -1014,7 +1014,7 @@ end
 function sgoly_tool.setPropToRedis(nickname, propId, propNum)
 	nickname = tostring(nickname)
 	local key = nickname .. ":package"
-	redis_query({"hset", tostring(propId), propNum})
+	redis_query({"hset", key, tostring(propId), propNum})
 	return true, nil
 end
 
@@ -1033,13 +1033,14 @@ function sgoly_tool.savePropToMySQL(nickname)
 	local key = nickname .. ":package"
 	result = redis_query({"hgetall", key})
 	if #result > 0 then
-		result = sgoly_tool.multipleToTable(result)
+		ok, result = sgoly_tool.multipleToTable(result)
 		for k, v in pairs(result) do
 			k = tonumber(k)
 			v = tonumber(v)
-			sgoly_dat_ser.savePropToMySQL(tonumber(nickname), tonumber(k), tonumber(v))
+			sgoly_dat_ser.set_prop(tonumber(nickname), tonumber(k), tonumber(v))
 		end
 	end
+	redis_query({"del", key})
 	return true, nil
 end
 
@@ -1054,11 +1055,16 @@ end
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-02-21
 --!
-function getPropFromRedis(nickname, propId)
+function sgoly_tool.getPropFromRedis(nickname, propId)
 	nickname = tostring(nickname)
 	local key = nickname .. ":package"
-	local number = redis_query({"hget", tostring(propId)})
-	return true, tonumber(number)
+	local number = redis_query({"hget", key, tostring(propId)})
+
+	if number ~= nil then
+		return true, tonumber(number)
+	end
+
+	return true, 0
 end
 
 return sgoly_tool

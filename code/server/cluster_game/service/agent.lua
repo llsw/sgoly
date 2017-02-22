@@ -91,6 +91,7 @@ function agent.close( fd )        --用户玩普通模式强制退出
 		local bool,res=sgoly_tool.saveMoneyFromRdisToMySQL(connection[fd].name)
 		local bool1,res1=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,os.date("%Y-%m-%d"))
 		local bool2,res2=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,c)
+		local bool6,res6=sgoly_tool.savePropToMySQL(connection[fd].name)
 		if bool  and bool1 then
 			xpcall(skynet.send, xpcall_error, connection[fd].maingame,"lua","exit")
 			sgoly_dat_ser.set_user_exit(tonumber(connection[fd].name))
