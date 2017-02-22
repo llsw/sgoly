@@ -5,19 +5,19 @@
  * @github:      GitHubNull
  * @Description: This is a prop model
  * @DateTime:    2017-02-22 09:12:10
---]]
+ --]]
 
-require "sgoly_query"
+ require "sgoly_query"
 
-local prop = {}
+ local prop = {}
 
 -- func  : insert
 -- argv  : uid(user id), type(the type of prop), value(the value of type prop)
 -- return: (true, true_msg) or (false, err_msg)
 function prop.insert(uid, type, value)
   local sql = string.format([[insert into prop value(%d, %d, %d) on 
-                              duplicate key update value = %d;]], uid, type,
-                               value, value)
+    duplicate key update value = %d;]], uid, type,
+    value, value)
   local status = mysql_query(sql)
   if(0 == status.warning_count) then
     return true, "插入成功"
