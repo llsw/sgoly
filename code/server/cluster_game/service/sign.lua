@@ -37,9 +37,36 @@ function CMD.sign_in(fd,mes,name)
 	    	local bo,re = dat_ser.get_award("signIn",mes.DAY)
 	    	local bo1,re1=sgoly_tool.getMoney(name)
 	    	local bo2,re2=sgoly_tool.saveMoneyToRedis(name,req+req1)
+            local rqs={}
+            local num
+            local id 
+
+	    	local bo3,req3=sgoly_dat_ser.get_award("rankProp", mes.RANK1)
+    	    local bo4,req4=sgoly_dat_ser.get_award("rankProp", mes.RANK2)
+    	    if not req3 then
+    	    	id=math.floor(req3 / 10000)
+    	    	num=req3%10000
+    	    	local bo3,re3=sgoly_tool.getPropFromRedis(mes.NAME, id)
+    	    	num = num + re3
+    	    	sgoly_tool.setPropToRedis(mes.NAME, id, num)
+    	    	rqs.PROPID[id]=num
+    	    end
+    	    if not req4 then
+    	    	id=math.floor(req4 / 10000)
+    	    	num=req4%10000
+    	    	local bo3,re3=sgoly_tool.getPropFromRedis(mes.NAME, id)
+    	    	num = num + re3
+    	    	sgoly_tool.setPropToRedis(mes.NAME, id, num)
+    	    	rqs.PROPID[id]=num
+    	    end
+
 		    printI("this is sign3,%s",mes.NAME)
 			if bool1 and bool and bool2 then 
-				local rqs={SESSION=mes.SESSION,ID="10",STATE=true,TYPE="award",MONEY=req+req1}
+				rqs.SESSION=mes.SESSION
+				rqs.ID="10"
+				rqs.STATE=true
+				rqs.TYPE="award"
+				rqs.MONEY=req+req1
 				local req2_1=sgoly_pack.encode(rqs)
 			    return req2_1
 			else 
