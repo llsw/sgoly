@@ -23,22 +23,23 @@ function CMD.shoplist(fd,mes)
 		    	return sgoly_pack.typereturn(mes,"16",money..re)
 	    	end  
 		else
-			local bool1,req1=getPropFromRedis(mes.NAME, mes.PROPID)
+			local bool1,req1=sgoly_tool.getPropFromRedis(mes.NAME, mes.PROPID)
 			if not req1 then
 				req1 = mes.PROPNUM
 			else
 				req1 = req1+mes.PROPNUM
 	        end
-			local bool,req=sgoly_tool.setPropToRedis(mes.NAME,mes.PROPID, req1)
+			local bool,req=sgoly_tool.setPropToRedis(mes.NAME,mes.PROPID,req1)
 			if bool then
-		       local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="buy",PROPID=mes.PROPID,PROPNUM=mes.PROPNUM+req1}
+		       local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="buy",PROPID=mes.PROPID,PROPNUM=req1}
 			   local req2_1=sgoly_pack.encode(rqs)
 			   return req2_1
 		    else
 		    	return sgoly_pack.typereturn(mes,"16",req)
 	    	end
+	    end
     elseif mes.TYPE=="use" then
-    	local bool1,req1=getPropFromRedis(mes.NAME, mes.PROPID)
+    	local bool1,req1=sgoly_tool.getPropFromRedis(mes.NAME, mes.PROPID)
 		local bool,req=sgoly_tool.setPropToRedis(mes.NAME,mes.PROPID, req1-1)
 		if bool then
 	       local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="use",PROPID=mes.PROPID,PROPNUM=req1-1}

@@ -991,6 +991,7 @@ function sgoly_tool.getPackageFromRedis(nickname)
 	result = redis_query({"hgetall", key})
 	if #result > 0 then
 		ok, result = sgoly_tool.multipleToTable(result)
+		return ok, result
 	end
 	local ok, result = sgoly_dat_ser.get_all_prop(nickname)
 	if #result > 0 then

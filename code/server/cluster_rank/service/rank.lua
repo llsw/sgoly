@@ -74,16 +74,16 @@ function CMD.ranklist(fd,mes)
     	    local bo1,req1=sgoly_dat_ser.get_award("rankProp", mes.RANK1)
     	    local bo2,req2=sgoly_dat_ser.get_award("rankProp", mes.RANK2)
     	    if not req1 then
-    	    	id=math.floor(req1 / 10000)
-    	    	num=req1%10000
+    	    	id=math.floor(req1 / 100000)
+    	    	num=req1%100000
     	    	local bo3,re3=sgoly_tool.getPropFromRedis(mes.NAME, id)
     	    	num = num + re3
     	    	sgoly_tool.setPropToRedis(mes.NAME, id, num)
     	    	req5.PROPID[id]=num
     	    end
     	    if not req2 then
-    	    	id=math.floor(req2 / 10000)
-    	    	num=req1%10000
+    	    	id=math.floor(req2 / 100000)
+    	    	num=req2%100000
     	    	local bo3,re3=sgoly_tool.getPropFromRedis(mes.NAME, id)
     	    	num = num + re3
     	    	sgoly_tool.setPropToRedis(mes.NAME, id, num)

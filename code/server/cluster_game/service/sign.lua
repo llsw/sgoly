@@ -41,25 +41,24 @@ function CMD.sign_in(fd,mes,name)
             local num
             local id 
 
-	    	local bo3,req3=sgoly_dat_ser.get_award("rankProp", mes.RANK1)
-    	    local bo4,req4=sgoly_dat_ser.get_award("rankProp", mes.RANK2)
+	    	local bo3,req3=sgoly_dat_ser.get_award("signInProp", mes.DAY)
+    	    local bo4,req4=sgoly_dat_ser.get_award("signInProp", mes.DAY)
     	    if not req3 then
-    	    	id=math.floor(req3 / 10000)
-    	    	num=req3%10000
+    	    	id=math.floor(req3 / 100000)
+    	    	num=req3%100000
     	    	local bo3,re3=sgoly_tool.getPropFromRedis(mes.NAME, id)
     	    	num = num + re3
     	    	sgoly_tool.setPropToRedis(mes.NAME, id, num)
-    	    	rqs.PROPID[id]=num
+    	    	rqs.PROPLIST[id]=num
     	    end
     	    if not req4 then
-    	    	id=math.floor(req4 / 10000)
-    	    	num=req4%10000
+    	    	id=math.floor(req4 / 100000)
+    	    	num=req4%100000
     	    	local bo3,re3=sgoly_tool.getPropFromRedis(mes.NAME, id)
     	    	num = num + re3
     	    	sgoly_tool.setPropToRedis(mes.NAME, id, num)
-    	    	rqs.PROPID[id]=num
+    	    	rqs.PROPLIST[id]=num
     	    end
-
 		    printI("this is sign3,%s",mes.NAME)
 			if bool1 and bool and bool2 then 
 				rqs.SESSION=mes.SESSION
