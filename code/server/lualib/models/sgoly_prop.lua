@@ -15,7 +15,7 @@ local prop = {}
 -- argv  : uid(user id), type(the type of prop), value(the value of type prop)
 -- return: (true, true_msg) or (false, err_msg)
 function prop.insert(uid, type, value)
-  local sql = string.format([[insert ignore into prop value(%d, %d, %d) on 
+  local sql = string.format([[insert into prop value(%d, %d, %d) on 
                               duplicate key update value = %d;]], uid, type,
                                value, value)
   local status = mysql_query(sql)
