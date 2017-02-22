@@ -23,6 +23,8 @@ local skynet = require "skynet"
 local union_query = require "sgoly_union_query"
 local sgoly_uuid = require "sgoly_uuid"
 local sgoly_rank = require "sgoly_rank"
+local prop = require "sgoly_prop"
+local prop_att = require "sgoly_prop_att"
 
 
 local dat_ser = {}
@@ -714,6 +716,43 @@ end
 --!
 function dat_ser.set_user_exit(uid)
 	return union_query.set_user_exit(uid)
+end
+
+--[[
+函数说明：
+		函数作用： get users all prop
+		传入参数： uid(user id)
+		返回参数： (true, value) or (false, err_msg)
+--]]
+function dat_ser.get_all_prop(uid)
+	printD("dat_ser.get_all_prop(%d)", uid)
+	printI("dat_ser.get_all_prop(%d)", uid)
+	return prop.select(uid)
+end
+
+--[[
+函数说明：
+		函数作用： set users prop value
+		传入参数： uid(user id), type(the type of prop), 
+				  value(the value of type prop)
+		返回参数： (true, true_msg) or (false, err_msg)
+--]]
+function dat_ser.set_prop(uid, type, value)
+	printD("dat_ser.set_prop(%d, %d, %d)", uid, type, value)
+	printI("dat_ser.set_prop(%d, %d, %d)", uid, type, value)
+	return prop.insert(uid, type, value)
+end
+
+--[[
+函数说明：
+		函数作用： get prop att
+		传入参数： id(prop id)
+		返回参数： (true, value) or (false, err_msg)
+--]]
+function dat_ser.get_prop_att(id)
+	printD("dat_ser.get_prop_att(%d)", id)
+	printI("dat_ser.get_prop_att(%d)", id)
+	return prop_att.select(id)
 end
 
 return dat_ser
