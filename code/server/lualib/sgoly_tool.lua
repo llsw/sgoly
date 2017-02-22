@@ -1064,7 +1064,7 @@ function sgoly_tool.getPropFromRedis(nickname, propId)
 		return true, tonumber(number)
 	end
 
-	return true, nil
+	return true, 0
 end
 
 return sgoly_tool

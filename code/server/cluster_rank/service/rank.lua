@@ -65,17 +65,38 @@ function CMD.ranklist(fd,mes)
 		end
 	elseif mes.TYPE=="receive" then
 		printI("this is receive")
+			local req5 = {}
+			local num
+			local id
 		    local bool5_1,money=sgoly_tool.getAwardFromRedis(tonumber(mes.RANK1),tonumber(mes.RANK2),c)
 		   	local bo,getmoney=sgoly_tool.getMoney(mes.NAME)
     	    local bool5,reqs5=sgoly_tool.saveMoneyToRedis(mes.NAME,getmoney+money)
+    	    local bo1,req1=sgoly_dat_ser.get_award("rankProp", mes.RANK1)
+    	    local bo2,req2=sgoly_dat_ser.get_award("rankProp", mes.RANK2)
+    	    if not req1 then
+    	    	id=math.floor(req1 / 10000)
+    	    	num=req1%10000
+    	    	local bo3,re3=sgoly_tool.getPropFromRedis(mes.NAME, id)
+    	    	num = num + re3
+    	    	sgoly_tool.setPropToRedis(mes.NAME, id, num)
+    	    	req5.PROPID[id]=num
+    	    end
+    	    if not req2 then
+    	    	id=math.floor(req2 / 10000)
+    	    	num=req1%10000
+    	    	local bo3,re3=sgoly_tool.getPropFromRedis(mes.NAME, id)
+    	    	num = num + re3
+    	    	sgoly_tool.setPropToRedis(mes.NAME, id, num)
+    	    	req5.PROPID[id]=num
+    	    end
 	        printI("this is rank receive,%s",mes.NAME)
 		if bool5 and bo and bool5_1 then 
-			local req5={SESSION=mes.SESSION,
-						ID="7",
-						STATE=true,
-						TYPE="receive",
-						RANKMONEY=getmoney+money
-					}
+			req5.SESSION=mes.SESSION
+			req5.ID="7"
+			req5.STATE=true
+			req5.TYPE="receive"
+			req5.RANKMONEY=getmoney+money
+				
 			 printI("this is rank receive,%d",req5.RANKMONEY)
 			local reqs5_1=sgoly_pack.encode(req5)
 		    return reqs5_1

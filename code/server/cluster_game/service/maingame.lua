@@ -509,20 +509,20 @@ for i=1,k do
 	moneydb=moneydb+money
 	deposit=deposit+end_point*beilv
 	if x==4 then
-		printD("这是幸运模式")
-	elseif historynum%10==0 and money/deposit>=0.9 then
+		x=3
+	elseif historynum%10==0 and money/deposit>=0.85 then
 		x=2
 		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d"))           
 		printD("2 money[%s]/depost[%s]=[%s] 进入困难模式",money,deposit,money/deposit)
 		money=0
 		deposit=0
-	elseif historynum%10==0 and money/deposit<=0.75 then
+	elseif historynum%10==0 and money/deposit<=0.5 then
 		x=3
 		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d")) 
 		printD("3 money[%s]/depost[%s]=%s 进入简单模式",money,deposit,money/deposit)
 		money=0 
 		deposit=0
-	elseif historynum%10==0 and money/deposit<0.9 and money/deposit>0.75 then
+	elseif historynum%10==0 and money/deposit<0.85 and money/deposit>0.5 then
 		x=1
 		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d")) 
 		printD("2 money[%s]/depost[%s]=%s 进入普通模式", money,deposit,money/deposit)
