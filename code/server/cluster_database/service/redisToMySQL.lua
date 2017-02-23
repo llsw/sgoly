@@ -24,18 +24,20 @@ local sgoly_tool = require "sgoly_tool"
 local function redisToMySQL()
 	local date = os.date("%Y-%m-%d")
 	local timeEnd = os.time({day=tonumber(os.date("%d")), month=tonumber(os.date("%m")), year=tonumber(os.date("%Y")),hour = 17, min=40, sec=0})
-	local time = timeEnd - os.time() 
-	skynet.sleep(time * 100)
+	local time = timeEnd - os.time()
+	if  time > 0 then
+		skynet.sleep(time * 100)
 
 
-	-- local key1 = "rank:" .. "serialWinNum" .. date
-	-- local key2 = "rank:" .. "winMoney" .. date
-	sgoly_tool.saveRankToMySQL("serialWinNum", date)
-	sgoly_tool.saveRankToMySQL("winMoney", date)
+		-- local key1 = "rank:" .. "serialWinNum" .. date
+		-- local key2 = "rank:" .. "winMoney" .. date
+		sgoly_tool.saveRankToMySQL("serialWinNum", date)
+		sgoly_tool.saveRankToMySQL("winMoney", date)
+	end
 
-	while true do
-		local date = os.date("%Y-%m-%d")
+	while true do	
 		skynet.sleep( 24 * 60 * 60 * 100)
+		local date = os.date("%Y-%m-%d")
 		sgoly_tool.saveRankToMySQL("serialWinNum", date)
 		sgoly_tool.saveRankToMySQL("winMoney", date)
 	end
