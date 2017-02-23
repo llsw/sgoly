@@ -34,6 +34,7 @@ function CMD.sign_in(fd,mes,name)
 	    	local bool1,req1 = dat_ser.get_award("signIn",mes.DAY)
 	    	local bool,req=sgoly_tool.getMoney(name)
 	    	local bool2,req2=sgoly_tool.saveMoneyToRedis(name,req+req1)
+	        sgoly_tool.getPackageFromRedis(name)
 	    	local bo,re = dat_ser.get_award("signIn",mes.DAY)
 	    	local bo1,re1=sgoly_tool.getMoney(name)
 	    	local bo2,re2=sgoly_tool.saveMoneyToRedis(name,req+req1)
@@ -43,12 +44,12 @@ function CMD.sign_in(fd,mes,name)
 
 	    	local bo3,req3=dat_ser.get_award("signInProp", mes.DAY)
     	    
-    	    if not req3 then
+    	    if  bo3 then
     	    	id=math.floor(req3 / 100000)
     	    	num=req3%100000
-    	    	local bo3,re3=sgoly_tool.getPropFromRedis(mes.NAME, id)
+    	    	local bo3,re3=sgoly_tool.getPropFromRedis(name, id)
     	    	num = num + re3
-    	    	sgoly_tool.setPropToRedis(mes.NAME,id,num)
+    	    	sgoly_tool.setPropToRedis(name,id,num)
     	    	rqs.PROPLIST={}
     	    	rqs.PROPLIST[id]=num
     	    end

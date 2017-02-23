@@ -4,7 +4,6 @@ local sgoly_tool=require "sgoly_tool"
 require "sgoly_printf"
 require "skynet.manager"
 local CMD={}
-
 function CMD.shoplist(fd,mes)
 	if mes.TYPE=="look"   then
 		local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
@@ -23,6 +22,7 @@ function CMD.shoplist(fd,mes)
 		    	return sgoly_pack.typereturn(mes,"16",money..re)
 	    	end  
 		else
+			local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
 			local bool1,req1=sgoly_tool.getPropFromRedis(mes.NAME, mes.PROPID)
 			if not req1 then
 				req1 = mes.PROPNUM
@@ -39,6 +39,7 @@ function CMD.shoplist(fd,mes)
 	    	end
 	    end
     elseif mes.TYPE=="use" then
+    	local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
     	local bool1,req1=sgoly_tool.getPropFromRedis(mes.NAME, mes.PROPID)
 		local bool,req=sgoly_tool.setPropToRedis(mes.NAME,mes.PROPID, req1-1)
 		if bool then
