@@ -1015,7 +1015,7 @@ end
 function sgoly_tool.setPropToRedis(nickname, propId, propNum)
 	nickname = tostring(nickname)
 	local key = nickname .. ":package"
-	redis_query({"hset", key, tostring(propId), propNum})
+	redis_query({"hset", key, tostring(propId), tostring(propNum)})
 	return true, nil
 end
 
