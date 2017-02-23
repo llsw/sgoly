@@ -1,6 +1,7 @@
 local skynet = require "skynet"
 local sgoly_pack=require "sgoly_pack"
 local sgoly_tool=require "sgoly_tool"
+local dat_ser=require "sgoly_dat_ser"
 require "sgoly_printf"
 require "skynet.manager"
 local CMD={}
@@ -71,8 +72,8 @@ function CMD.ranklist(fd,mes)
 		    local bool5_1,money=sgoly_tool.getAwardFromRedis(tonumber(mes.RANK1),tonumber(mes.RANK2),c)
 		   	local bo,getmoney=sgoly_tool.getMoney(mes.NAME)
     	    local bool5,reqs5=sgoly_tool.saveMoneyToRedis(mes.NAME,getmoney+money)
-    	    local bo1,req1=sgoly_dat_ser.get_award("rankProp", mes.RANK1)
-    	    local bo2,req2=sgoly_dat_ser.get_award("rankProp", mes.RANK2)
+    	    local bo1,req1=dat_ser.get_award("rankProp", mes.RANK1)
+    	    local bo2,req2=dat_ser.get_award("rankProp", mes.RANK2)
     	    if not req1 then
     	    	id=math.floor(req1 / 100000)
     	    	num=req1%100000
