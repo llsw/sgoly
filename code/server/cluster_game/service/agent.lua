@@ -13,8 +13,8 @@ local connection = {}
 
 function agent.main(fd,mes)
 	printI("this is agent,%s,%s,%s,%s,%s,%s,%s,%s",mes.SESSION,mes.ID,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST)
-	if mes.ID=="4" then       --主游戏
-	   local call_ok,req=xpcall(skynet.call,xpcall_error,connection[fd].maingame,"lua","calc",fd,mes.SESSION,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST,connection[fd].name)
+	if mes.ID=="4" then           --主游戏
+	   local call_ok,req=xpcall(skynet.call,xpcall_error,connection[fd].maingame,"lua","calc",fd,mes.SESSION,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST,connection[fd].name,mes.PROPID)
 	   return req
 	elseif mes.ID=="5" then       --统计面板
 	   local call_ok,req1=xpcall(skynet.call,xpcall_error,connection[fd].stats,"lua","tongji",fd,mes.SESSION,mes.TYPE,connection[fd].name)

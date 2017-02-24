@@ -38,7 +38,7 @@ function CMD.ranklist(fd,mes)
 		end
 	elseif mes.TYPE=="yesSERIES" then
 	    	local bool3_1,req3_1 = sgoly_tool.getStatementsFromRedis(mes.NAME, c)
-	        local bool3,rqs3=sgoly_tool.getRankFromRedis(mes.NAME,tonumber(req3_1.serialWinNum), "serialWinNum",c)
+	        local bool3,rqs3=sgoly_tool.getRankFromRedis(mes.NAME,tonumber(req3_1.serialWinNum),"serialWinNum",c)
 		    printI("this is rank3,%s",mes.NAME)
 		if bool3 and bool3_1 then 
 			rqs3.SESSION=mes.SESSION

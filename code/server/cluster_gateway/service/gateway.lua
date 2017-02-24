@@ -30,7 +30,7 @@ function handler.message(fd, msg)
 		end
 		local getMsgTime = os.clock()
 		printD("======================MSG start============================")
-		printD("[%s] Get a Msg session[%s] cluster[%s] service[%s cmd[%s] id[%s] name[%s] time[%s]", os.date("%H:%M:%S", os.time()),
+		printD("[%s] Get a Msg session[%s] cluster[%s] service[%s] cmd[%s] id[%s] name[%s] time[%s]", os.date("%H:%M:%S", os.time()),
 			mes.SESSION, mes.CLUSTER, mes.SERVICE, mes.CMD,mes.ID, mes.NAME, getMsgTime)
 		local cnode=tonumber(mes.CLUSTER)
 		local snode=tonumber(mes.SERVICE)

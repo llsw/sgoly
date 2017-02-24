@@ -119,7 +119,7 @@ end
 	automax=0              --最终最高连续中奖次数
 	-- winmoney={}         --中奖金额
 --主循环判断
-function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)--PROP 
+function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)--PROP 
     printD("I am %s",name)
     gamenum=0          --游戏次数
  	moneydb=0          --赚得金额存数据库
@@ -132,6 +132,13 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)--PROP
 	winmoney={}         --中奖金额       
 	printD("MONEY=%s,cost=%s",MONEY,cost)
 	F3num=0
+	prop=1
+	if propid=="1" then
+		prop=2
+	end
+	if propid=="2" then
+		x=3
+	end
 	--historynum=historynum+k
 	if TYPE=="autostart" or TYPE=="autogo" then 
 		autonum=autonum+k
@@ -143,7 +150,7 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)--PROP
 	local number2={}	--第几次中的什么奖
 	local wintype={A5=0,B5=0,C5=0,D5=0,E5=0,A4=0,B4=0,C4=0,D4=0,E4=0,A3=0,B3=0,C3=0,D3=0,E3=0,A6=0,F3=0}
 	local sequence = {}	
-	function  reqpack(wintype,type,grade,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+	function  reqpack(wintype,type,grade,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney,prop)
 		wintype[type]=wintype[type]+1
 		table.insert(number1,i)
 		if TYPE=="autostart" or TYPE=="autogo" then 
@@ -165,15 +172,15 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)--PROP
 		end
 		table.insert(number2,type)
 		table.insert(sequence,picture_order(type))
-		printD("得分为 %s",end_point*beilv*grade)
-		money=money+end_point*beilv*grade
-		table.insert(winmoney,end_point*beilv*grade)
+		printD("得分为 %s",end_point*beilv*grade*prop)
+		money=money+end_point*beilv*grade*prop
+		table.insert(winmoney,end_point*beilv*grade*prop)
 		if TYPE=="autostart" or TYPE=="autogo" then 
-			table.insert(automoney,end_point*beilv*grade)
-			if autowinmax<end_point*beilv*grade then
-			   autowinmax=end_point*beilv*grade
+			table.insert(automoney,end_point*beilv*grade*prop)
+			if autowinmax<end_point*beilv*grade*prop then
+			   autowinmax=end_point*beilv*grade*prop
 			end
-			autowinall=autowinall+end_point*beilv*grade
+			autowinall=autowinall+end_point*beilv*grade*prop
 		end
     end
  math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
@@ -324,16 +331,13 @@ for i=1,k do
 			 j=j+1
 	   		 reqpack(wintype,awardTypeAndRate[hit][1],awardTypeAndRate[hit][2],i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
 		end 
-
 	end
 ---------------------10次判断切换模式---------------------------
 	historynum=historynum+1
 	gamenum=gamenum+1
 	moneydb=moneydb+money
 	deposit=deposit+end_point*beilv
-	if x==4 then
-		x=3
-	elseif historynum%10==0 and money/deposit>=0.85 then
+	if historynum%10==0 and money/deposit>=0.85 then
 		x=2
 		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d"))           
 		printD("2 money[%s]/depost[%s]=[%s] 进入困难模式",money,deposit,money/deposit)
@@ -487,12 +491,12 @@ end  --for 循环end
 	return send_result(fd,session,TYPE,max,j,winmax,winall,nowMONEY,sequence,winmoney,name)
 end
 
-function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)--PROP 
+function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)--PROP 
     if TYPE=="autogo" then
     	local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)
 		print("checkup",checkup)
 		if checkup==true and tonumber(cost)<=tonumber(MONEY) then
-            return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
+            return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)
 		elseif tonumber(cost)>tonumber(MONEY) then
 			local req3={SESSION=session,ID="4",STATE=false,TYPE="autogo",MESSAGE="金币不足"}
 			local req3_1=sgoly_pack.encode(req3)
@@ -503,13 +507,13 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)--PROP
 			return req4_1
 		end
     elseif TYPE=="gift" then
-    	return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
+    	return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)
     elseif TYPE=="start" or TYPE=="autostart" then 
 	    local bool,reallymoney=sgoly_tool.getMoney(name)
 	    local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)
 	    print("reallymoney",reallymoney,"checkup",checkup)
 	    if tonumber(reallymoney)==tonumber(MONEY) and checkup==true and tonumber(cost)<=tonumber(MONEY) then
-		    return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
+		    return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)
 		elseif tonumber(cost)>tonumber(MONEY) then
 			local req2={SESSION=session,ID="4",STATE=false,TYPE=TYPE,MESSAGE="金币不足"}
 			local req2_1=sgoly_pack.encode(req2)
@@ -521,7 +525,7 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)--PROP
 		end
 	
 	elseif TYPE=="autoend" then
-	    return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name)
+	    return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)
 	else
 		local req5={SESSION=session,ID="4",STATE=false,TYPE=="autoend",MESSAGE="参数错误"}
 		local req5_1=sgoly_pack.encode(req5)
