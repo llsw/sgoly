@@ -163,4 +163,46 @@ function query.getProbabilityFromMySQL(type)
 	return true, status	
 end
 
+function query.setUserLoginTime(uid)
+	local time = os.date("%Y-%m-%d %H:%M:%S")
+	local sql = string.format(
+	[[
+		INSERT INTO login(`date`, `uid`, `login`)
+		VALUES
+			('%s', %d, '%s') 
+		ON DUPLICATE KEY UPDATE
+			login = '%s';
+	]], os.date("%Y-%m-%d"), uid, time, time )
+
+	local status = mysql_query(sql)
+
+	if status.err then
+		return false, status.err
+	end
+	
+	return true, status	
+	
+end
+
+
+function query.setUserLogoutTime(uid)
+	local time = os.date("%Y-%m-%d %H:%M:%S")
+	local sql = string.format(
+	[[
+		INSERT INTO login(`date`, `uid`, `logout`)
+		VALUES
+			('%s', %d, '%s') 
+		ON DUPLICATE KEY UPDATE
+			logout = '%s';
+	]], os.date("%Y-%m-%d"), uid, time, time )
+
+	local status = mysql_query(sql)
+
+	if status.err then
+		return false, status.err
+	end
+	
+	return true, status	
+end
+
 return query

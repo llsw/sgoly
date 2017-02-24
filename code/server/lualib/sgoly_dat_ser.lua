@@ -780,4 +780,34 @@ end
 function dat_ser.getProbabilityFromMySQL(type)
 	return union_query.getProbabilityFromMySQL(type)
 end
+
+--!
+--! @brief      Sets the user login time.
+--!
+--! @param      username  The username
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-24
+--!
+function dat_ser.setUserLoginTime(uid)
+	return union_query.setUserLoginTime(uid)
+	
+end
+
+--!
+--! @brief      Sets the user logout time.
+--!
+--! @param      uid   The uid
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-24
+--!
+function date.ser.setUserLogoutTime(uid)
+	return union_query.setUserLogoutTime(uid)
+end
+
 return dat_ser
