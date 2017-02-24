@@ -11,6 +11,10 @@ function CMD.getgrant(fd,mes,name)
 	if bool3 and req3>0 then
 		return sgoly_pack.returnfalse(mes,"14","1")
 	end
+	local bo,money=sgoly_tool.getMoney(name)
+	if money>=10000 then
+		return sgoly_pack.returnfalse(mes,"14","3")
+	end
 	local bool4,num=sgoly_tool.getCharityTimesFromRedis(name)
 	if num<5 then 
 		local bool1,req1 = dat_ser.get_award("charity","0")
@@ -28,7 +32,6 @@ function CMD.getgrant(fd,mes,name)
 		return sgoly_pack.returnfalse(mes,"14","2")
 	end
 end
-
 
 
 skynet.start(function()

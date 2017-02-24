@@ -138,7 +138,6 @@ function handler(fd, mes)
 		    return str6_1.."\n"
 		end
 	elseif  mes.ID=="13" then 
-
 		    --cluster.call("cluster_game",".agent","setline",fd)
 		    return nil
     else

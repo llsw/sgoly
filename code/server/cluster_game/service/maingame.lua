@@ -242,7 +242,7 @@ for i=1,k do
 			printD("%s 中奖类型EEE----O(∩_∩)O~~-!", i) 
 			j=j+1
 			reqpack(wintype,"E3",0.5,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
-		elseif a>=3191226 and a<=319225 then
+		elseif a>=319126 and a<=319225 then
 			printD("%s 中奖类型ABCDE----O(∩_∩)O~~-!", i) 
 			j=j+1
 			reqpack(wintype,"A6",1000,i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
