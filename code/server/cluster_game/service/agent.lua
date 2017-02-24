@@ -58,8 +58,8 @@ function agent.start(fd,name)
 	   local maingame = skynet.newservice("maingame")
 	   local call_ok,req=xpcall(skynet.call,xpcall_error,maingame,"lua","get")
 	   local stats = skynet.newservice("stats")
-	   local safe = skynet.newservice("safe")
-	   local sign = skynet.newservice("sign")
+	   local safe  = skynet.newservice("safe")
+	   local sign  = skynet.newservice("sign")
 	   local grant = skynet.newservice("grant")
 	   local c = {
 	  		name = name,
@@ -75,7 +75,7 @@ end
 
 function agent.errorexit( fd )	 --用户玩自动模式强制退出
 	if connection[fd] then
-		 local call_ok,req=xpcall(skynet.call,xpcall_error,connection[fd].maingame,"lua","autosave",fd,connection[fd].name)
+		local call_ok,req=xpcall(skynet.call,xpcall_error,connection[fd].maingame,"lua","autosave",fd,connection[fd].name)
 	    return req
 	else
 	    return "no login".." "..fd
