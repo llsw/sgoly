@@ -130,4 +130,37 @@ function query.set_user_exit(uid)
 	return true, status	
 end
 
+function query.saveProbabilityToMySQL(type, modle)
+	for k, v in ipairs(modle) do
+		local sql = string.format(
+			[[
+				INSERT INTO probability
+				VALUES
+					(%d, '%s', '%s') 
+				ON DUPLICATE KEY UPDATE
+					value = '%s';
+			]], k, type, v, v)
+		mysql_query(sql)
+	end
+end
+
+function query.getProbabilityFromMySQL(type)
+	local sql = string.format(
+		[[
+		SELECT
+			sort,
+			value
+		FROM
+			probability
+		WHERE
+			type = '%s';
+		]], type)
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
+	
+	return true, status	
+end
+
 return query

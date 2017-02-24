@@ -1081,8 +1081,13 @@ end
 function sgoly_tool.getProbabilityFromRedis(modle)
 	local key = "probability:" .. modle
 	local result = redis_query({"hgetall", key})
-	local ok, result = sgoly_tool.multipleNumToTable(result)
-	return ok, result
+	if #result > 0 then
+		local ok, result = sgoly_tool.multipleNumToTable(result)
+		return ok, result
+	end
+	local ok, result = sgoly_dat_ser.getProbabilityFromMySQL(type)
+	redis_query({"hmset", key, result})
+	return ok, result 
 end
 
 --!
@@ -1209,6 +1214,33 @@ function sgoly_tool.getSpaceFromRedis()
 	local ok, simpleS = sgoly_tool.probaToSpace(simple)
 	local ok, normalS = sgoly_tool.probaToSpace(normal)
 	return ok, normalS, simpleS, difficultyS
+end
+
+--!
+--! @brief      Saves a probability to my sql.
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-24
+--!
+function sgoly_tool.saveProbabilityToMySQL()
+	local ok, difficulty = sgoly_tool.getProbabilityFromRedis("difficulty")
+	sgoly_dat_ser.saveProbabilityToMySQL("difficulty", difficulty)
+	local ok, simple = sgoly_tool.getProbabilityFromRedis("simple")
+	sgoly_dat_ser.saveProbabilityToMySQL("simple", simple)
+	local ok, normal = sgoly_tool.getProbabilityFromRedis("normal")
+	sgoly_dat_ser.saveProbabilityToMySQL("normal", normal)
+	local ok, rate = sgoly_tool.getProbabilityFromRedis("rate")
+	sgoly_dat_ser.saveProbabilityToMySQL("rate", rate)
+	local ok, atype = sgoly_tool.getProbabilityFromRedis("type")
+	sgoly_dat_ser.saveProbabilityToMySQL("type", atype)
+end
+
+function sgoly_tool.getProbabilityFromMySQL(type)
+	local ok, result = sgoly_dat_ser.getProbabilityFromMySQL(type)
+	local key = "probability:" .. type
+	redis_query({"hmset", key, result})
 end
 
 return sgoly_tool

@@ -755,4 +755,29 @@ function dat_ser.get_prop_att(id)
 	return prop_att.select(id)
 end
 
+--!
+--! @brief      Saves a probability to my sql.
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-24
+--!
+function dat_ser.saveProbabilityToMySQL(type, modle)
+	union_query.saveProbabilityToMySQL(type, modle)
+end
+
+--!
+--! @brief      Gets the probability from my sql.
+--!
+--! @param      type  The type
+--!
+--! @return     The probability from my sql.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-24
+--!
+function dat_ser.getProbabilityFromMySQL(type)
+	return union_query.getProbabilityFromMySQL(type)
+end
 return dat_ser
