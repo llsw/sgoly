@@ -11,7 +11,7 @@ function CMD.shoplist(fd,mes)
 	    local req2_1=sgoly_pack.encode(rqs)
 	    return req2_1
 	elseif mes.TYPE=="buy" then
-		if mes.PROID=="4" then
+		if mes.PROPID=="4" then
 			local bo,money=sgoly_tool.getMoney(mes.NAME)
 			local bo1,re=sgoly_tool.saveMoneyToRedis(mes.NAME,money+mes.PROPNUM)
 			if bo and bo1 then
@@ -22,7 +22,7 @@ function CMD.shoplist(fd,mes)
 		    	return sgoly_pack.typereturn(mes,"16",money..re)
 	    	end  
 		else
-			local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
+		    sgoly_tool.getPackageFromRedis(mes.NAME)
 			local bool1,req1=sgoly_tool.getPropFromRedis(mes.NAME, mes.PROPID)
 			if not req1 then
 				req1 = mes.PROPNUM
