@@ -191,7 +191,6 @@ for i=1,k do
 	if x==1 then
 		printD("这是普通模式")
 		local _, hit = sgoly_tool.hitAward(1, #normalS, a, normalS)
-		printD("%s 中奖类型%s----O(∩_∩)O~~-!", i,awardTypeAndRate[hit][1])
 		if awardTypeAndRate[hit][1]=="F3" then
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				printD("%s 没有中奖", i)
@@ -232,14 +231,14 @@ for i=1,k do
 				autowinall=autowinall+end_point*beilv*0
 			end
 		else
+			printD("%s 中奖类型%s----O(∩_∩)O~~-!", i,awardTypeAndRate[hit][1])
 			j=j+1
-	   		 reqpack(wintype,awardTypeAndRate[hit][1],awardTypeAndRate[hit][2],i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+	   		 reqpack(wintype,awardTypeAndRate[hit][1],awardTypeAndRate[hit][2],i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney,prop)
 		end 
 ---------------------困难模式-----------------------	
 	elseif  x==2   then
 		printD("这是困难模式")
 		local _, hit = sgoly_tool.hitAward(1, #difficultyS, a, difficultyS)
-		printD("%s 中奖类型%s----O(∩_∩)O~~-!", i,awardTypeAndRate[hit][1])
 		if awardTypeAndRate[hit][1]=="F3" then
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				printD("%s 没有中奖", i)
@@ -280,14 +279,14 @@ for i=1,k do
 				autowinall=autowinall+end_point*beilv*0
 			end
 		else
+			 printD("%s 中奖类型%s----O(∩_∩)O~~-!", i,awardTypeAndRate[hit][1])
 			 j=j+1
-	   		 reqpack(wintype,awardTypeAndRate[hit][1],awardTypeAndRate[hit][2],i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+	   		 reqpack(wintype,awardTypeAndRate[hit][1],awardTypeAndRate[hit][2],i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney,prop)
 		end 
 ------------------------简单模式-----------------------------
 	elseif x==3 then 
 		printD("这是简单模式")
 		local _, hit = sgoly_tool.hitAward(1, #simpleS, a, simpleS)
-		printD("%s 中奖类型%s----O(∩_∩)O~~-!", i,awardTypeAndRate[hit][1])
 		if awardTypeAndRate[hit][1]=="F3" then
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				printD("%s 没有中奖", i)
@@ -328,8 +327,9 @@ for i=1,k do
 				autowinall=autowinall+end_point*beilv*0
 			end
 		else
+			 printD("%s 中奖类型%s----O(∩_∩)O~~-!", i,awardTypeAndRate[hit][1])
 			 j=j+1
-	   		 reqpack(wintype,awardTypeAndRate[hit][1],awardTypeAndRate[hit][2],i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney)
+	   		 reqpack(wintype,awardTypeAndRate[hit][1],awardTypeAndRate[hit][2],i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney,prop)
 		end 
 	end
 ---------------------10次判断切换模式---------------------------

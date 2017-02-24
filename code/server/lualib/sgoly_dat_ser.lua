@@ -806,7 +806,7 @@ end
 --! @author     kun si, 627795061@qq.com
 --! @date       2017-02-24
 --!
-function date.ser.setUserLogoutTime(uid)
+function dat_ser.setUserLogoutTime(uid)
 	return union_query.setUserLogoutTime(uid)
 end
 

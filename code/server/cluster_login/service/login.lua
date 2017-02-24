@@ -63,7 +63,7 @@ function handler(fd, mes)
 			    local str5_1=sgoly_pack.encode(reqmoney)
 			    local call_ok, call_result = xpcall(cluster.call, xpcall_error, "cluster_gateway",".gateway","heart",fd,mes.NAME,mes.SESSION)
 			    local call_ok, call_result = xpcall(cluster.call, xpcall_error, "cluster_game",".agent","start",fd,msg)
-			    
+			    dat_ser.setUserLoginTime(tonumber(msg))
 			    return str5_1.."\n"
 		    else
 		    	return sgoly_pack.returnfalse(mes,"1",money)
