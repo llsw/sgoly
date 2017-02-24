@@ -1068,4 +1068,147 @@ function sgoly_tool.getPropFromRedis(nickname, propId)
 	return true, 0
 end
 
+--!
+--! @brief      Gets the probability from redis.
+--!
+--! @param      modle  The modle
+--!
+--! @return     The probability from redis.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-24
+--!
+function sgoly_tool.getProbabilityFromRedis(modle)
+	local key = "probability:" .. modle
+	local result = redis_query({"hgetall", key})
+	local ok, result = sgoly_tool.multipleNumToTable(result)
+	return ok, result
+end
+
+--!
+--! @brief      { function_description }
+--!
+--! @param      redisResult  The redis result
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-24
+--!
+function sgoly_tool.multipleNumToTable(redisResult)
+
+	if #redisResult <= 0 then
+		printI("redisResult type[%s]", type(redisResult))
+		return false, redisResult
+	end
+	local rt = {}
+	local index = 1
+	while index <= #redisResult-1 do
+		rt[tonumber(redisResult[index])] = redisResult[index+1]
+		index = index + 2
+	end 
+	
+	return true, rt 
+end
+
+--!
+--! @brief      { function_description }
+--!
+--! @param      type  The type
+--! @param      rate  The rate
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-24
+--!
+function sgoly_tool.awardTypeAndRate()
+	local ok, awardType = sgoly_tool.getProbabilityFromRedis("type")
+	local ok, awardRate = sgoly_tool.getProbabilityFromRedis("rate")
+	local award = {}
+	for k, v in ipairs(awardType) do
+		print(k, v, awardRate[k])
+		award[k] = {v, awardRate[k]}
+	end
+	return true, award
+end
+
+--!
+--! @brief      { function_description }
+--!
+--! @param      probability  The probability
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-24
+--!
+function sgoly_tool.probaToSpace(probability)
+	local temp = 0
+	for k, v in ipairs(probability) do
+		local tp  = probability[k] * 10000
+		probability[k] = tp + temp
+		temp = probability[k]
+		print(probability[k], k)
+	end
+	return true, probability
+end
+
+--!
+--! @brief      { function_description }
+--!
+--! @param      left         The left
+--! @param      right        The right
+--! @param      number       The number
+--! @param      probability  The probability
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-24
+--!
+function sgoly_tool.hitAward(left, right, number, probability)
+	if number > probability[#probability] + 1 then
+		return true, 18
+	end
+
+	local mid = math.floor((left + right)/2)
+	if  left == right or left > right then
+		if number > probability[left] then
+			return true, mid + 1
+		end
+
+		return mid
+	end
+	if number == probability[mid]  then
+		return true, mid
+	elseif number < probability[mid] then
+
+		right = mid - 1
+		return sgoly_tool.hitAward(left, right, number, probability)
+	else
+		left = mid + 1 
+		return sgoly_tool.hitAward(left, right, number, probability)
+
+	end
+end
+
+--!
+--! @brief      Gets the space from redis.
+--!
+--! @return     The space from redis.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-02-24
+--!
+function sgoly_tool.getSpaceFromRedis()
+	local ok, difficulty = sgoly_tool.getProbabilityFromRedis("difficulty")
+	local ok, simple = sgoly_tool.getProbabilityFromRedis("simple")
+	local ok, normal = sgoly_tool.getProbabilityFromRedis("normal")
+	local ok, difficultyS = sgoly_tool.probaToSpace(difficulty)
+	local ok, simpleS = sgoly_tool.probaToSpace(simple)
+	local ok, normalS = sgoly_tool.probaToSpace(normal)
+	return ok, normalS, simpleS, difficultyS
+end
+
 return sgoly_tool

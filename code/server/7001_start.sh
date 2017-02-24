@@ -1,6 +1,9 @@
 gnome-terminal --geometry 70x33+47--10 -x bash -c "cd skynet && ./skynet ../cluster_database/config/config" &
 sleep 5
 
+gnome-terminal -x bash -c "cd skynet && ./skynet ../cluster_shop/config/config" &
+sleep 1
+
 gnome-terminal --geometry 70x33+47--10 -x bash -c "cd skynet && ./skynet ../cluster_login/config/config" &
 sleep 1
 
