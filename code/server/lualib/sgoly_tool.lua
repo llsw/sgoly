@@ -1149,7 +1149,7 @@ function sgoly_tool.probaToSpace(probability)
 		local tp  = probability[k] * 10000
 		probability[k] = tp + temp
 		temp = probability[k]
-		print(probability[k], k)
+		-- print(probability[k], k)
 	end
 	return true, probability
 end
@@ -1178,7 +1178,7 @@ function sgoly_tool.hitAward(left, right, number, probability)
 			return true, mid + 1
 		end
 
-		return mid
+		return true, mid
 	end
 	if number == probability[mid]  then
 		return true, mid
