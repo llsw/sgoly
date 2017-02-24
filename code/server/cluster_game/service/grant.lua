@@ -34,7 +34,6 @@ function CMD.getgrant(fd,mes,name)
 end
 
 
-
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(CMD[cmd], cmd .. "not found")

@@ -41,6 +41,9 @@ function CMD.shoplist(fd,mes)
     elseif mes.TYPE=="use" then
     	local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
     	local bool1,req1=sgoly_tool.getPropFromRedis(mes.NAME, mes.PROPID)
+    	if req1==0 then
+    		return sgoly_pack.typereturn(mes,"16","道具数量为0")
+    	end
 		local bool,req=sgoly_tool.setPropToRedis(mes.NAME,mes.PROPID, req1-1)
 		if bool then
 	       local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="use",PROPID=mes.PROPID,PROPNUM=req1-1}
