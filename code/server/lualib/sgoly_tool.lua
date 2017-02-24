@@ -1127,7 +1127,7 @@ function sgoly_tool.awardTypeAndRate()
 	local ok, awardRate = sgoly_tool.getProbabilityFromRedis("rate")
 	local award = {}
 	for k, v in ipairs(awardType) do
-		print(k, v, awardRate[k])
+		-- print(k, v, awardRate[k])
 		award[k] = {v, awardRate[k]}
 	end
 	return true, award
