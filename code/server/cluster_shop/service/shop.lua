@@ -4,13 +4,13 @@ local sgoly_tool=require "sgoly_tool"
 require "sgoly_printf"
 require "skynet.manager"
 local CMD={}
-function CMD.shoplist(fd,mes)
-	if mes.TYPE=="look"   then
+function CMD.shoplist(fd,mes)                   --商城
+	if mes.TYPE=="look"   then                  --查看背包 
 		local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
 	    local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="look",PROPLIST=req}
 	    local req2_1=sgoly_pack.encode(rqs)
 	    return req2_1
-	elseif mes.TYPE=="buy" then
+	elseif mes.TYPE=="buy" then					--购买道具
 		if mes.PROPID=="4" then
 			local bo,money=sgoly_tool.getMoney(mes.NAME)
 			local bo1,re=sgoly_tool.saveMoneyToRedis(mes.NAME,money+mes.PROPNUM)
@@ -38,7 +38,7 @@ function CMD.shoplist(fd,mes)
 		    	return sgoly_pack.typereturn(mes,"16",req)
 	    	end
 	    end
-    elseif mes.TYPE=="use" then
+    elseif mes.TYPE=="use" then                    --使用道具
     	local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
     	local bool1,req1=sgoly_tool.getPropFromRedis(mes.NAME, mes.PROPID)
     	if req1==0 then

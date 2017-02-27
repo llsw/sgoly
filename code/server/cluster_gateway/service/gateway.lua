@@ -130,7 +130,7 @@ function handlerfork(fd,name,session)
 		    printD("------------------HeartBeat end-----------------------")
     	end
 
-    	if(timeBetween > 50) then
+    	if(timeBetween > 50) then            
     		break
     	end
     end

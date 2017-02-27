@@ -119,7 +119,7 @@ end
 	automax=0              --最终最高连续中奖次数
 	-- winmoney={}         --中奖金额
 --主循环判断
-function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)--PROP 
+function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)  --主游戏函数
     printD("I am %s",name)
     gamenum=0          --游戏次数
  	moneydb=0          --赚得金额存数据库
@@ -491,7 +491,7 @@ end  --for 循环end
 	return send_result(fd,session,TYPE,max,j,winmax,winall,nowMONEY,sequence,winmoney,name)
 end
 
-function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)--PROP 
+function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)
     if TYPE=="autogo" then
     	local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)
 		print("checkup",checkup)

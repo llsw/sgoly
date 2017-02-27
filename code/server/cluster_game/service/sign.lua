@@ -6,7 +6,7 @@ require "skynet.manager"
 local md5 = require "md5"
 local sgoly_pack=require "sgoly_pack"
 local CMD={}
-function CMD.sign_in(fd,mes,name)
+function CMD.sign_in(fd,mes,name)      --签到
 	if mes.TYPE=="query" then
 	    	local bool1,req1 = dat_ser.query_sign(name)
 		    printI("this is sign1,%s",mes.NAME)

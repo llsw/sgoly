@@ -6,7 +6,7 @@ require "skynet.manager"
 local md5 = require "md5"
 local sgoly_pack=require "sgoly_pack"
 local CMD={}
-function CMD.getgrant(fd,mes,name)
+function CMD.getgrant(fd,mes,name)      --救济金
 	local bool3,req3=dat_ser.query_saf_money(name)
 	if bool3 and req3>0 then
 		return sgoly_pack.returnfalse(mes,"14","1")

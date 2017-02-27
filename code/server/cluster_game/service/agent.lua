@@ -111,7 +111,7 @@ function agent.close( fd )        --用户玩普通模式强制退出
     end     
 end
 
-function agent.sclose(bool,msg)
+function agent.sclose(bool,msg)     --实现通告
 	if bool ==true then
 		for k,v in pairs(connection) do
 			printI("this is connection %s",k)

@@ -6,7 +6,7 @@ require "sgoly_printf"
 require "skynet.manager"
 local CMD={}
 
-function CMD.ranklist(fd,mes)
+function CMD.ranklist(fd,mes)             --排行榜
 	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
 	if mes.TYPE=="daySERIES" then
 	    	local bool1,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
@@ -20,7 +20,7 @@ function CMD.ranklist(fd,mes)
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
-	        return returnfalse(mes,rqs)
+			return sgoly_pack.typereturn(mes,"7",rqs) 
 		end
 	elseif mes.TYPE=="dayALLMONEY" then
 	    	local bool2,req2 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
@@ -33,8 +33,8 @@ function CMD.ranklist(fd,mes)
 			rqs2_1.TYPE="dayALLMONEY"
 			local req2_2=sgoly_pack.encode(rqs2_1)
 		    return req2_2
-		else 
-	        return returnfalse(mes,rqs2_1)
+		else
+		    return sgoly_pack.typereturn(mes,"7",rqs2_1)  
 		end
 	elseif mes.TYPE=="yesSERIES" then
 	    	local bool3_1,req3_1 = sgoly_tool.getStatementsFromRedis(mes.NAME, c)
@@ -47,8 +47,8 @@ function CMD.ranklist(fd,mes)
 			rqs3.TYPE="yesSERIES"
 			local req3_1=sgoly_pack.encode(rqs3)
 		    return req3_1
-		else 
-	        return returnfalse(mes,rqs3)
+		else
+		    return sgoly_pack.typereturn(mes,"7",rqs3)  
 		end
 	elseif mes.TYPE=="yesALLMONEY" then
     	    local bool4_1,req4_1 = sgoly_tool.getStatementsFromRedis(mes.NAME, c)
@@ -62,7 +62,7 @@ function CMD.ranklist(fd,mes)
 			local req4_1=sgoly_pack.encode(rqs4)
 		    return req4_1
 		else 
-	        return returnfalse(mes,rqs4)
+			return sgoly_pack.typereturn(mes,"7",rqs4) 
 		end
 	elseif mes.TYPE=="receive" then
 		printI("this is receive")
@@ -93,35 +93,35 @@ function CMD.ranklist(fd,mes)
     	    	req5.PROPLIST={}
     	    	req5.PROPLIST[id]=num
     	    end
-	        printI("this is rank receive,%s",mes.NAME)
+	       printI("this is rank receive,%s",mes.NAME)
 		if bool5 and bo and bool5_1 then 
-			req5.SESSION=mes.SESSION
-			req5.ID="7"
-			req5.STATE=true
-			req5.TYPE="receive"
-			req5.RANKMONEY=getmoney+money
-			printI("this is rank receive,%d",req5.RANKMONEY)
-			local reqs5_1=sgoly_pack.encode(req5)
-		    return reqs5_1
-		else 
-	        return returnfalse(mes,tostring(money)..tostring(getmoney)..tostring(reqs5))
+		   req5.SESSION=mes.SESSION
+		   req5.ID="7"
+		   req5.STATE=true
+		   req5.TYPE="receive"
+		   req5.RANKMONEY=getmoney+money
+	   	   printI("this is rank receive,%d",req5.RANKMONEY)
+		   local reqs5_1=sgoly_pack.encode(req5)
+		   return reqs5_1
+		else
+		   return sgoly_pack.typereturn(mes,"7",tostring(money)..tostring(getmoney)..tostring(reqs5)) 
 		end
 	elseif mes.TYPE=="wealth" then
 		   local bo,getmoney=sgoly_tool.getMoney(mes.NAME)
 		   local bool4,rqs4=sgoly_tool.getMoneyRankFromRedis(mes.NAME,getmoney)
 	       printI("this is rank5,%s",mes.NAME)
 		if bool4 and bo then 
-			rqs4.SESSION=mes.SESSION
-			rqs4.ID="7"
-			rqs4.STATE=true
-			rqs4.TYPE="wealth"
-			local req4_1=sgoly_pack.encode(rqs4)
-		    return req4_1
+		   rqs4.SESSION=mes.SESSION
+		   rqs4.ID="7"
+		   rqs4.STATE=true
+		   rqs4.TYPE="wealth"
+		   local req4_1=sgoly_pack.encode(rqs4)
+		   return req4_1
 		else 
-	        return returnfalse(mes,"财富榜加载异常")
+		   return sgoly_pack.typereturn(mes,"7","财富榜加载异常") 
 		end
-    else 
-        return returnfalse(mes,"参数错误")
+    else
+    	return sgoly_pack.typereturn(mes,"7","参数错误") 
    	end
 end
 

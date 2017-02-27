@@ -137,6 +137,7 @@ function handler(fd, mes)
 			local str6_1=sgoly_pack.typereturn(mes,mes.ID,"未知错误")
 		    return str6_1.."\n"
 		end
+-------------------------接受心跳包---------------------		
 	elseif  mes.ID=="13" then 
 		    --cluster.call("cluster_game",".agent","setline",fd)
 		    return nil
