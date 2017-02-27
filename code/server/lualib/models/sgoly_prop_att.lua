@@ -18,7 +18,7 @@ local prop_att = {}
 		返回参数： (true, true_msg) or (false, err_msg)
 --]]
 function prop_att.insert(name, describe, img)
-	local sql = string.format([[insert into prop_att value(null, '%s', '%s', 
+	local sql = string.format([[insert into prop_att(id, name, describe, img) value(null, '%s', '%s', 
 								'%s');]], name, describe, img)
   	local status = mysql_query(sql)
   	if(0 == status.warning_count) then

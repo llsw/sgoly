@@ -19,8 +19,8 @@ require "sgoly_printf"
  		返回参数：(false, err_msg) or (true, true_msg)
  --]]
  function users.insert(nickname, pwd)
- 	local sql = string.format("insert into sgoly.users value(null, '%s', '%s')",
- 				nickname, pwd)
+ 	local sql = string.format([[insert into sgoly.users(id, nickname, pwd) 
+ 								value(null, '%s', '%s')]], nickname, pwd)
 	local status = mysql_query(sql)
 	if(0 == status.warning_count) then
 		return true, "插入成功"

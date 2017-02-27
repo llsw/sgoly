@@ -19,8 +19,9 @@ local day_times = {}
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function day_times.insert(uid, win_times, times, dt)
-	local sql = string.format("insert into sgoly.day_times value(null, %d, %d, "
-		.."%d, '%s' );", uid, win_times, times, dt)
+	local sql = string.format([[insert into sgoly.day_times(id, uid, win_times, 
+								times, s_date) value(null, %d, %d, %d, '%s' );]], 
+								uid, win_times, times, dt)
 	local status = mysql_query(sql)
 	if(0 == status.warning_count) then
 		return true, "插入成功"

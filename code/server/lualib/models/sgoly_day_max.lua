@@ -19,8 +19,9 @@ local day_max = {}
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function day_max.insert(uid, single_max, conti_max, dt)
-	local sql = string.format("insert into sgoly.day_max value(null, %d, %d,"
-	 						  .."%d, '%s' )", uid, single_max, conti_max, dt)
+	local sql = string.format([[insert into sgoly.day_max(id, uid, single_max, 
+								conti_max, s_date) value(null, %d, %d, %d, '%s'
+								)]], uid, single_max, conti_max, dt)
 	local status = mysql_query(sql)
 	if(0 == status.warning_count) then
 		return true, "插入成功"

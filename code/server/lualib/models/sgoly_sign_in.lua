@@ -18,8 +18,8 @@ local sign_in = {}
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function sign_in.insert(uid, date)
-	local sql = string.format("insert into sgoly.sign_in value(%d, '%s')", uid,
-								date)
+	local sql = string.format([[insert into sgoly.sign_in(uid, s_date) 
+								value(%d, '%s')]], uid, date)
 	local status = mysql_query(sql)
 	if(0 == status.warning_count) then
 		return true, "插入成功"

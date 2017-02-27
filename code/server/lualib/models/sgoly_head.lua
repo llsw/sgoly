@@ -21,11 +21,11 @@ local head = {}
 function head.insert(uid, img_name, path)
 	local sql = ""
 	if(nil == path) then
-		sql = string.format("insert into sgoly.head value(%d, '%s', null) ;",
-								uid, img_name)
+		sql = string.format([[insert into sgoly.head(uid, img_name, path) 
+							  value(%d, '%s', null) ;]], uid, img_name)
 	else
-		sql = string.format("insert into sgoly.head value(%d, '%s', '%s') ;",
-								uid, img_name, path)
+		sql = string.format([[insert into sgoly.head(uid, img_name, path) 
+							  value(%d, '%s', '%s') ;]], uid, img_name, path)
 	end
 	local status = mysql_query(sql)
 	if(0 == status.warning_count) then

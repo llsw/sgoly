@@ -19,8 +19,9 @@ local day_io = {}
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function day_io.insert(uid, win, cost, dt)
-	local sql = string.format("insert into sgoly.day_io value(null, %d, %d, "
-		.."%d, '%s' );", uid, win, cost, dt)
+	local sql = string.format([[insert into sgoly.day_io(id, uid, win, cost, 
+								s_date) value(null, %d, %d, %d, '%s' );]], uid, 
+								win, cost, dt)
 	local status = mysql_query(sql)
 	if(0 == status.warning_count) then
 		return true, "插入成功"

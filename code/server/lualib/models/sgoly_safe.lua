@@ -19,8 +19,8 @@ local safe = {}
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function safe.insert(uid, passwd, money)
-	local sql = string.format("insert into sgoly.safe value(%d, '%s', %d)", uid,
-								passwd, money)
+	local sql = string.format([[insert into sgoly.safe(uid, passwd, money) 
+								value(%d, '%s', %d)]], uid, passwd, money)
 	local status = mysql_query(sql)
 	if(0 == status.warning_count) then
 		return true, "插入成功"
