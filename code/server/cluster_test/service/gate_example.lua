@@ -54,7 +54,6 @@ end
 
 local CMD = {}
 
-	
 
 function handler.command(cmd, source, ...)
 	local f = assert(CMD[cmd])

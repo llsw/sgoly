@@ -35,7 +35,10 @@ skynet.start(function ()
 
 
 	--local debug_port = skynet.getenv "debug_port"
-	--skynet.newservice("debug_console",debug_port)
+	local debug_port = service_config["debug_port"]["test"]
+	if debug_port then
+		skynet.newservice("debug_console",debug_port)
+	end
 
 
 	--local  watchdog= skynet.uniqueservice("watchdog")
@@ -44,13 +47,21 @@ skynet.start(function ()
 	-- local  hub= skynet.uniqueservice("hub")
 	-- skynet.call(hub, "lua", "open","0.0.0.0",7000)
 	
-	local test = skynet.uniqueservice("gate_example")
-	skynet.name(".gate_example", test)
-	skynet.call(test,"lua","open", {
-		port = 8889,
-		maxclient =1024,
-		nodelay = true,
-	})
-	--skynet.exit()
+	-- local test = skynet.uniqueservice("gate_example")
+	-- skynet.name(".gate_example", test)
+	-- skynet.call(test,"lua","open", {
+	-- 	port = 8889,
+	-- 	maxclient =1024,
+	-- 	nodelay = true,
+	-- })
+	-- 
+	local test= skynet.uniqueservice("test")
+	local msg = skynet.call(test, "lua", "test1")
+	print("end send 1")
+
+	skynet.call(test, "lua", "test2")
+	print("end send 2")
+	
+	skynet.exit()
 	
 end)

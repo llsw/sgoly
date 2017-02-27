@@ -12,6 +12,7 @@ local cluster = require "cluster"
 require "skynet.manager"
 require "sgoly_printf"
 require "sgoly_query"
+local service_config = require "sgoly_service_config"
 
 skynet.start(function ()
 	cluster.open("cluster_database")
@@ -32,7 +33,10 @@ skynet.start(function ()
 
 
 	--local debug_port = skynet.getenv "debug_port"
-	--skynet.newservice("debug_console",debug_port)
+	local debug_port = service_config["debug_port"]["database"]
+	if debug_port then
+		skynet.newservice("debug_console",debug_port)
+	end
 
 
 	local redispool = skynet.uniqueservice("redispool")

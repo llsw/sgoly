@@ -17,7 +17,7 @@ lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"..root.."../util/?.l
 ..root.."../lualib/models/?.lua;"..root.."../lualib/dao/?.lua;"..root..
 "../lualib/data_server/?.lua;"
 
-cpath = root.."cservice/?.so;"
+cpath = root.."cservice/?.so;" .. root .. "../luaclib/?/?.so;"
 
 cluster = root .. "../clustername/clustername.lua"
 

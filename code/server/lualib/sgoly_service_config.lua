@@ -37,4 +37,14 @@ service_config["log_config"] = {
 	error = true
 }
 
+service_config["debug_port"] = {
+	database = 18001,
+	game = 18002,
+	gateway = 18003,
+	login = 18004,
+	rank = 18005,
+	shop = 18006,
+	test = 18007,
+}
+
 return service_config

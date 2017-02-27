@@ -16,7 +16,7 @@ snax = root.."../protocol/?.lua;"..root.."../cluster_test/?.lua;"..root.."../clu
 lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"..root.."../util/?.lua;"..root.."../lualib/?.lua;"..root.."../lualib/?/?.lua;"
 
 
-cpath = root.."cservice/?.so;"
+cpath = root.."cservice/?.so;" .. root .. "../luaclib/?/?.so;"
 
 cluster = root .. "../clustername/clustername.lua"
 

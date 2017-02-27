@@ -33,7 +33,10 @@ skynet.start(function ()
 
 
 	--local debug_port = skynet.getenv "debug_port"
-	--skynet.newservice("debug_console",debug_port)
+	local debug_port = service_config["debug_port"]["gateway"]
+	if debug_port then
+		skynet.newservice("debug_console",debug_port)
+	end
 
 
 	--local  watchdog= skynet.uniqueservice("watchdog")

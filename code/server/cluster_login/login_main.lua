@@ -32,7 +32,10 @@ skynet.start(function ()
 
     local login=skynet.uniqueservice("login")
 	--local debug_port = skynet.getenv "debug_port"
-	--skynet.newservice("debug_console",debug_port)
+	local debug_port = service_config["debug_port"]["login"]
+	if debug_port then
+		skynet.newservice("debug_console",debug_port)
+	end
 
 
 
