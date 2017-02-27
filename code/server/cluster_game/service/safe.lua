@@ -6,7 +6,7 @@ require "skynet.manager"
 local md5 = require "md5"
 local sgoly_pack=require "sgoly_pack"
 local CMD={}
-function CMD.safebox(fd,mes,name)
+function CMD.safebox(fd,mes,name)         --保险柜
 	if mes.TYPE=="query" then
 	       local bool,req1 = dat_ser.seted_safe_pwd(name)
 		   printI("this is safe1,%s",mes.NAME)
@@ -35,8 +35,8 @@ function CMD.safebox(fd,mes,name)
 			local rqs1={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="setpd"}
 			local req2_1=sgoly_pack.encode(rqs1)
 		    return req2_1
-		else 
-	        return returnfalse(mes,rqs)
+		else
+			return sgoly_pack.typereturn(mes,"9",rqs) 
 		end
 	elseif mes.TYPE=="reset" then
 			local x = {}
@@ -55,8 +55,8 @@ function CMD.safebox(fd,mes,name)
 				local rqs1={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="reset"}
 				local req2_1=sgoly_pack.encode(rqs1)
 			    return req2_1
-		    else 
-	            return returnfalse(mes,rqs)
+		    else
+		        return sgoly_pack.typereturn(mes,"9",rqs)
 		    end
 	elseif mes.TYPE=="login" then
 		   local PASSWD = md5.sumhexa(mes.PASSWARD)
@@ -64,47 +64,43 @@ function CMD.safebox(fd,mes,name)
 		   printI("this is safe4,%s",mes.NAME)
 		   local bool1,req2=dat_ser.query_saf_money(name)
 		if bool and bool1 then 
-			local rqs={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="login",MONEY=req2}
-			local req2_1=sgoly_pack.encode(rqs)
-		    return req2_1
+		   local rqs={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="login",MONEY=req2}
+		   local req2_1=sgoly_pack.encode(rqs)
+		   return req2_1
 		else 
-	        return returnfalse(mes,req1..req2)
+		   return sgoly_pack.typereturn(mes,"9",req1..req2)
 		end
 	elseif mes.TYPE=="save" then
-		  local bool2,nowmoney=sgoly_tool.getMoney(name)
-	      local boo,msg =dat_ser.save_money_2saf(name,tonumber(mes.MONEY))
-	      local bool=sgoly_tool.saveMoneyToRedis(name,nowmoney-mes.MONEY)
+		   local bool2,nowmoney=sgoly_tool.getMoney(name)
+	       local boo,msg =dat_ser.save_money_2saf(name,tonumber(mes.MONEY))
+	       local bool=sgoly_tool.saveMoneyToRedis(name,nowmoney-mes.MONEY)
 		   printI("this is safe5,%s",mes.NAME)
 		if boo and bool and bool2 then 
 		   local rqs={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="save",MONEY=nowmoney-mes.MONEY}
 	       local req2_1=sgoly_pack.encode(rqs)
 		   return req2_1
 		else 
-	       return returnfalse(mes,msg)
+		   return sgoly_pack.typereturn(mes,"9",msg)
 		end
 	elseif mes.TYPE=="load" then
-		  local bool2,nowmoney=sgoly_tool.getMoney(name)
-	      local boo,msg =dat_ser.get_saf_money(name,tonumber(mes.MONEY))
-	      local bool=sgoly_tool.saveMoneyToRedis(name,nowmoney+mes.MONEY)
+		   local bool2,nowmoney=sgoly_tool.getMoney(name)
+	       local boo,msg =dat_ser.get_saf_money(name,tonumber(mes.MONEY))
+	       local bool=sgoly_tool.saveMoneyToRedis(name,nowmoney+mes.MONEY)
 		   printI("this is safe5,%s",mes.NAME)
 		if boo and bool and bool2 then 
 		   local rqs={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="load",MONEY=nowmoney+mes.MONEY}
 	       local req2_1=sgoly_pack.encode(rqs)
 		   return req2_1
 		else 
-	       return returnfalse(mes,msg)
+		   return sgoly_pack.typereturn(mes,"9",msg)
 		end
 	else 
-		returnfalse(mes,"参数错误")
+		return sgoly_pack.typereturn(mes,"9","参数错误")
 	end
 end
 
 
-function returnfalse(mes,msg)
-	        local req1={SESSION=mes.SESSION,ID="9",STATE=false,TYPE=mes.TYPE,MESSAGE=msg}
-			local req1_1=sgoly_pack.encode(req1)
-			return req1_1
-end
+
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(CMD[cmd], cmd .. "not found")

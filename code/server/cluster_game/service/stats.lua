@@ -10,8 +10,8 @@ local sgoly_pack=require "sgoly_pack"
 local code =require "sgoly_cluster_code"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
-local CMD={}
-function CMD.tongji(fd,session,type,name)
+local CMD={}   
+function CMD.tongji(fd,session,type,name)       --统计
 	if type=="today" then
 		local bool,res=sgoly_tool.getStatementsFromRedis(name,os.date("%Y-%m-%d"))
 		if bool then
