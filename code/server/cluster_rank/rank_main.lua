@@ -12,6 +12,7 @@ local cluster = require "cluster"
 require "skynet.manager"
 require "sgoly_printf"
 require "sgoly_query"
+local service_config = require "sgoly_service_config"
 
 skynet.start(function ()
 	cluster.open("cluster_rank")

@@ -13,6 +13,7 @@ require "skynet.manager"
 require "sgoly_printf"
 require "sgoly_query"
 local socket = require "socket"
+local service_config = require "sgoly_service_config"
 
 
 
