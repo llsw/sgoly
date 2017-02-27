@@ -494,7 +494,7 @@ end
 function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)
     if TYPE=="autogo" then
     	local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)
-		print("checkup",checkup)
+		printI("checkup=%s",checkup)
 		if checkup==true and tonumber(cost)<=tonumber(MONEY) then
             return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)
 		elseif tonumber(cost)>tonumber(MONEY) then
@@ -511,7 +511,7 @@ function CMD.calc(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)
     elseif TYPE=="start" or TYPE=="autostart" then 
 	    local bool,reallymoney=sgoly_tool.getMoney(name)
 	    local checkup=sgoly_pack.checkup(end_point,beilv,k,cost)
-	    print("reallymoney",reallymoney,"checkup",checkup)
+	    printI("reallymoney=%s,checkup=%s",reallymoney,checkup)
 	    if tonumber(reallymoney)==tonumber(MONEY) and checkup==true and tonumber(cost)<=tonumber(MONEY) then
 		    return gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)
 		elseif tonumber(cost)>tonumber(MONEY) then
