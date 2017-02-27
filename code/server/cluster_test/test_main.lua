@@ -56,13 +56,13 @@ skynet.start(function ()
 	-- 	nodelay = true,
 	-- })
 	-- 
-	local test= skynet.uniqueservice("test")
-	local msg = skynet.call(test, "lua", "test1")
-	print("end send 1")
+	-- local test= skynet.uniqueservice("test")
+	-- local msg = skynet.call(test, "lua", "test1")
+	-- print("end send 1")
 
-	skynet.call(test, "lua", "test2")
-	print("end send 2")
+	-- skynet.call(test, "lua", "test2")
+	-- print("end send 2")
 	
-	skynet.exit()
+	-- skynet.exit()
 	
 end)
