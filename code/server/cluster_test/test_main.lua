@@ -56,7 +56,7 @@ skynet.start(function ()
 	-- 	nodelay = true,
 	-- })
 	-- 
-	-- local test= skynet.uniqueservice("test")
+	local test= skynet.newservice("test")
 	-- local msg = skynet.call(test, "lua", "test1")
 	-- print("end send 1")
 
