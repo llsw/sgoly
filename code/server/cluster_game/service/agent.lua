@@ -129,7 +129,7 @@ function agent.sclose(bool,msg)     --实现通告
 	end
 end
 
-function agent.setline(fd)
+function agent.setline(fd)          --设置收包时间
 	if connection[fd]~=nil  then
 		   connection[fd].line=os.time()
 		   printI("Package set time[%s] fd[%d]", os.date("%H:%M:%S", connection[fd].line), fd)
@@ -137,7 +137,7 @@ function agent.setline(fd)
 end
 
 
-function agent.getline(fd)
+function agent.getline(fd)         --获取收包时间
 	if connection[fd]==nil then
 		return false
 	else

@@ -139,7 +139,6 @@ function handler(fd, mes)
 		end
 -------------------------接受心跳包---------------------		
 	elseif  mes.ID=="13" then 
-		    --cluster.call("cluster_game",".agent","setline",fd)
 		    return nil
     else
     	local str6_1=sgoly_pack.returnfalse(mes,mes.ID,"未知错误")
