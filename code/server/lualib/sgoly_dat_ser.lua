@@ -29,6 +29,17 @@ local prop_att = require "sgoly_prop_att"
 
 local dat_ser = {}
 
+function tabLen(tab)
+	local cnt = 0
+	if(nil == tab) then
+		return cnt
+	end
+	for k, v in pairs(tab) do
+		cnt = cnt + 1
+	end
+	return cnt
+end
+
 --[[
 函数说明：
 		函数作用：用户注册
@@ -40,7 +51,8 @@ function dat_ser.register(nickname, pwd)
 	printI("dat_ser.register(%s)", nickname)
 
 	local status1, tab = users.select(nickname)
-	if((nil ~= tab) and (1 == #tab)) then
+	local tl = tabLen(tab)
+	if(1 <= tl) then
 		return false, "昵称已被使用"
 	end
 

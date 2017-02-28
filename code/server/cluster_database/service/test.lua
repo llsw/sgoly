@@ -33,10 +33,10 @@ function test_dat_ser.register(nickname, pwd, cnt)
 		end
 	end
 	if(cnt == tested_cnt) then
-		return true, "测试通过"
+		return true, "测试 dat_ser.register 通过"
 	else
 		printD("test_cnt = %d", tested_cnt)
-		return false, "测试不通过"
+		return false, "测试 dat_ser.register 不通过"
 	end
 end
 
@@ -62,10 +62,10 @@ function test_dat_ser.login(nickname, pwd, cnt)
 		end
 	end
 	if(cnt == tested_cnt) then
-		return true, "测试通过"
+		return true, "测试 dat_ser.login 通过"
 	else
 		printD("test_cnt = %d", tested_cnt)
-		return false, "测试不通过"
+		return false, "测试 dat_ser.login 不通过"
 	end
 end
 
@@ -92,10 +92,10 @@ function test_dat_ser.get_money(nickname, cnt)
 		end
 	end
 	if(cnt == tested_cnt) then
-		return true, "测试通过"
+		return true, "测试 dat_ser.get_money 通过"
 	else
 		printD("test_cnt = %d", tested_cnt)
-		return false, "测试不通过"
+		return false, "测试 dat_ser.get_money 不通过"
 	end
 end
 
@@ -122,10 +122,10 @@ function test_dat_ser.upd_acc(nickname, money, cnt)
 		end
 	end
 	if(cnt == tested_cnt) then
-		return true, "测试通过"
+		return true, "测试 dat_ser.get_uid 通过"
 	else
 		printD("test_cnt = %d", tested_cnt)
-		return false, "测试不通过"
+		return false, "测试 dat_ser.get_uid 不通过"
 	end
 end
 
@@ -148,10 +148,10 @@ function test_dat_ser.del_usr(nickname, pwd, cnt)
 		end
 	end
 	if(cnt == tested_cnt) then
-		return true, "测试通过"
+		return true, "测试 dat_ser.del_usr 通过"
 	else
 		printD("test_cnt = %d", tested_cnt)
-		return false, "测试不通过"
+		return false, "测试 dat_ser.del_usr 不通过"
 	end
 end
 
@@ -509,7 +509,7 @@ end
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function test_dat_ser.query_sign(nickname, cnt)
-	printD("test_dat_ser.query_sign(%s, %d)", nickname, cnt)
+	printD("test dat_ser.query_sign(%s, %d)", nickname, cnt)
 	local tested_cnt = 0
 	for i = 1, cnt do
 		local tmpname = nickname.."-"..i
@@ -529,6 +529,94 @@ function test_dat_ser.query_sign(nickname, cnt)
 	else
 		printD("test_cnt = %d", tested_cnt)
 		return false, "测试 dat_ser.query_sign 不通过"
+	end
+end
+
+--[[
+函数说明：
+		函数作用：测试函数 dat_ser.get_all_prop
+		传入参数：nickname, cnt
+		返回参数：(false, err_msg) or (true, values)
+--]]
+function test_dat_ser.get_all_prop(nickname, cnt)
+	printD("test dat_ser.get_all_prop(%s, %d)", nickname, cnt)
+	local tested_cnt = 0
+	for i = 1, cnt do
+		local tmpname = nickname.."-"..i
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			tag1, msg1 = dat_ser.get_all_prop(uid)
+			if(true == tag1) then
+				for k, v in pairs(msg1) do
+					printD("type[%d], value = %d", k, v)
+				end
+				tested_cnt = tested_cnt + 1
+			else
+				printD("Err: %s", status)
+			end
+		end
+	end
+	if(cnt == tested_cnt) then
+		return true, "测试 dat_ser.get_all_prop 通过"
+	else
+		printD("test_cnt = %d", tested_cnt)
+		return false, "测试 dat_ser.get_all_prop 不通过"
+	end
+end
+
+--[[
+函数说明：
+		函数作用： 测试函数 dat_ser.set_prop
+		传入参数： nickname, type, value, cnt
+		返回参数： (false, err_msg) or (true, true_msg)
+--]]
+function test_dat_ser.set_prop(nickname, type, value, cnt)
+	printD("test dat_ser.set_prop(%s, %d, %d, %d)", nickname, type, value, cnt)
+	local tested_cnt = 0
+	for i = 1, cnt do
+		local tmpname = nickname.."-"..i
+		local status, uid = dat_ser.get_uid(tmpname)
+		if(true == status) then
+			tmp_value = value + 1
+			tag1, msg1 = dat_ser.set_prop(uid, type, value)
+			if(true == tag1) then
+				tested_cnt = tested_cnt + 1
+			else
+				printD("Err: %s", status)
+			end
+		end
+	end
+	if(cnt == tested_cnt) then
+		return true, "测试 dat_ser.set_prop 通过"
+	else
+		printD("test_cnt = %d", tested_cnt)
+		return false, "测试 dat_ser.set_prop 不通过"
+	end
+end
+
+--[[
+函数说明：
+		函数作用： 测试函数 dat_ser.get_prop_att
+		传入参数： cnt
+		返回参数： (false, err_msg) or (true, values)
+--]]
+function test_dat_ser.get_prop_att(cnt)
+	printD("test dat_ser.get_prop_att(%d)", cnt)
+	local tested_cnt = 0
+	for i = 1, cnt do
+		tag1, msg1 = dat_ser.get_prop_att(i)
+		if(true == tag1) then
+			printD("%s, %s, %s", msg1._name, msg1._describe, msg1.img)
+			tested_cnt = tested_cnt + 1
+		else
+			printD("Err: %s", status)
+		end
+	end
+	if(cnt == tested_cnt) then
+		return true, "测试 dat_ser.get_prop_att 通过"
+	else
+		printD("test_cnt = %d", tested_cnt)
+		return false, "测试 dat_ser.get_prop_att 不通过"
 	end
 end
 
@@ -592,7 +680,7 @@ end
 		返回参数：(false, err_msg) or (true, true_msg)
 --]]
 function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name, 
-						   path, date, cnt)
+						   path, date, type, value, cnt)
 
 	printD("test_dat_ser.main(%s, %s, %d, %d)", nickname, pwd, money, cnt)
 
@@ -665,6 +753,15 @@ function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name,
 	local tag24, msg24 = test_dat_ser.query_sign(nickname, cnt)
 	printD("tag24 =%s, msg24 =%s", tag24, msg24)
 
+	local tag26, msg26 = test_dat_ser.set_prop(nickname, type, value, cnt)
+	printD("tag26 =%s, msg26 =%s", tag26, msg26)
+
+	local tag27, msg27 = test_dat_ser.get_all_prop(nickname, cnt)
+	printD("tag27 =%s, msg27 =%s", tag27, msg27)
+
+	local tag28, msg28 = test_dat_ser.get_prop_att(cnt)
+	printD("tag28 =%s, msg28 =%s", tag28, msg28)
+
 	local tag25, msg25 = test_dat_ser.get_award()
 	printD("tag25 =%s, msg25 =%s", tag25, msg25)
 
@@ -674,7 +771,8 @@ function test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name,
 	res_tag = (tag1 and tag3 and tag4 and tag5 and tag6 and tag7 and 
 			   tag8 and tag9 and tag10 and tag11 and tag12 and tag13 and tag14 
 			   and tag15 and tag17 and tag18 and tag19 and tag20 and 
-			   tag21 and tag22 and tag23 and tag24 and tag25)
+			   tag21 and tag22 and tag23 and tag24 and tag25 and tag26 and tag27
+			   and tag28)
 
 	if(res_tag) then
 		printD("%s", "测试全部通过")
@@ -694,8 +792,10 @@ skynet.start(function()
 	local img_name = "test_img_name" 
 	local path = "test_path"
 	local date = "2017-02-0"
+	local type = 1
+	local value = 6
 	local cnt = 3
 	test_dat_ser.main(nickname, pwd, money, saf_pwd, saf_money, img_name, 
-						   path, date, cnt)
+						   path, date, type, value, cnt)
 	skynet.exit()
 end)
