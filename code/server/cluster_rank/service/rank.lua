@@ -7,7 +7,8 @@ require "skynet.manager"
 local CMD={}
 
 function CMD.ranklist(fd,mes)             --排行榜
-	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
+	local d=os.time()-3600*24
+	local c=os.date("%Y-%m-%d",d)
 	if mes.TYPE=="daySERIES" then
 	    	local bool1,req1 = sgoly_tool.getStatementsFromRedis(mes.NAME, os.date("%Y-%m-%d"))
 	        local bool,rqs=sgoly_tool.getRankFromRedis(mes.NAME,tonumber(req1.serialWinNum), "serialWinNum",os.date("%Y-%m-%d"))

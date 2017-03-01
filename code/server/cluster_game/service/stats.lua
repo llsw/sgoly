@@ -40,9 +40,8 @@ function CMD.tongji(fd,session,type,name)       --统计
 		    return result2_2          
 	    end
 	elseif type=="yesterday" then
-		local a=os.date("%Y-%m-")
-		local b=tonumber(os.date("%d"))-1
-		local c=a..b
+		local d=os.time()-3600*24
+	    local c=os.date("%Y-%m-%d",d)
 		local bool,res=sgoly_tool.getStatementsFromRedis(name,c)
 		if bool then
 			local  reqy={SESSION=session,

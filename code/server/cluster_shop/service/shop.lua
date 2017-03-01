@@ -57,7 +57,10 @@ function CMD.shoplist(fd,mes)                   --商城
     end
 end
 
- 
+function  CMD.TEST()
+	skynet.error(1234)  
+	return  "789" 
+end 
 
 
 skynet.start(function()
