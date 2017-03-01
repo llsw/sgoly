@@ -4,9 +4,6 @@ local reload = require "testReload"
 
 function CMD.TEST() 
     reload.test()
-    for k, v in pairs(_ENV) do
-		print(k, v)
-	end
     return "TEST"
 end
 

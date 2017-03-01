@@ -1,12 +1,9 @@
 local skynet = require "skynet"
-_P.lua._ENV.hello = function()
-	print("hello")
-end
-print(hello)
+
 local CMD = _P.lua.CMD  
-CMD.TEST = function()
-	-- print(_ENV.hello)
-	return  "7891" 
+CMD.TEST1 = function()
+	hello()
+    return "TEST1"
 end 
 
 
