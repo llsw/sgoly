@@ -1,13 +1,19 @@
 local skynet = require "skynet"
+_P.lua._ENV.hello = function()
+	print("hello")
+end
+print(hello)
 local CMD = _P.lua.CMD  
 CMD.TEST = function()
-	skynet.error(1234)  
-	return  "789" 
+	print(_ENV.hello)
+	return  "7891" 
 end 
 
 
 
-local reload = package.loaded["testReload"]
-reload.test = function ()
-	skynet.error("reload success")
-end
+
+
+-- local reload = package.loaded["testReload"]
+-- reload.test = function ()
+-- 	skynet.error("reload success")
+-- end
