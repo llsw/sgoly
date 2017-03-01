@@ -5,7 +5,7 @@ end
 print(hello)
 local CMD = _P.lua.CMD  
 CMD.TEST = function()
-	print(_ENV.hello)
+	-- print(_ENV.hello)
 	return  "7891" 
 end 
 
