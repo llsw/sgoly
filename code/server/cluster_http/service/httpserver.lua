@@ -49,9 +49,9 @@ function CMD.download(query, pfile)
         local apk_version 
         local ok, result = sgoly_union_query.getApkVersion()
         if ok and result then
-            skynet.error("apk_version", apk_version)
             apk_version = result[1].version
-            local file = io.open("/home/interface/game" .. apk_version .. ".zip", "r");
+            skynet.error("apk_version", apk_version)
+            local file = io.open("/tmp/apk/game" .. apk_version .. ".zip", "r");
             assert(file);
             data = file:read("*a");
             return data
