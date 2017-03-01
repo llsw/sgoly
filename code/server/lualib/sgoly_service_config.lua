@@ -45,6 +45,12 @@ service_config["debug_port"] = {
 	rank = 18005,
 	shop = 18006,
 	test = 18007,
+	http = 18008,
+}
+
+service_config["httpserver"] = {
+	host = "0.0.0.0",
+	port = 8008,
 }
 
 return service_config

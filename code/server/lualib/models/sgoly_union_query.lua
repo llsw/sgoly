@@ -205,4 +205,28 @@ function query.setUserLogoutTime(uid)
 	return true, status	
 end
 
+function query.getApkVersion()
+	local sql = string.format(
+	[[
+		SELECT
+			version,
+			date,
+			instruction
+		FROM
+			version
+		ORDER BY
+			version DESC
+		LIMIT 0,
+		 1;
+	]])
+
+	local status = mysql_query(sql)
+
+	if status.err then
+		return false, status.err
+	end
+	
+	return true, status	
+end
+
 return query
