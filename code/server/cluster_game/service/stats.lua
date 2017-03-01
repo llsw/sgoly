@@ -99,7 +99,7 @@ function CMD.tongji(fd,session,type,name)       --统计
 	
 	local req3 = {SESSION=session,
 			      ID="5",
-			      TYPE="type",
+			      TYPE=type,
 			      STATE=false,
                   MESSAGE="error"
 			     }
