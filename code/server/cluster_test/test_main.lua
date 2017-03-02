@@ -30,7 +30,7 @@ skynet.start(function ()
 	
 
 	skynet.uniqueservice("protoloader")
-	if not skynet.getenv "daemon" then
+	if service_config["console"]["test"] == 1 then
 		local console = skynet.newservice("console")
 	end
 

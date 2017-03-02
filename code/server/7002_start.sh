@@ -9,3 +9,8 @@ cd /root/sgoly/code/server/skynet && nohup ./skynet ../cluster_gateway/config/co
 sleep 1
 cd /root/sgoly/code/server/skynet && nohup ./skynet ../cluster_rank/config/config > /root/log/rank.log &
 sleep 1
+cd /root/sgoly/code/server/skynet && nohup ./skynet ../cluster_shop/config/config > /root/log/shop.log &
+sleep 1
+cd /root/sgoly/code/server/skynet && nohup ./skynet ../cluster_http/config/config > /root/log/http.log &
+sleep 1
+

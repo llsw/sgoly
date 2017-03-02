@@ -53,4 +53,15 @@ service_config["httpserver"] = {
 	port = 8008,
 }
 
+service_config["console"] = {
+	database = 1,
+	game = 1,
+	gateway = 1,
+	login = 1,
+	rank = 1,
+	shop = 1,
+	test = 1,
+	http = 1,
+}
+
 return service_config
