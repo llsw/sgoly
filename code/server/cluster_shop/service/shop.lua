@@ -4,7 +4,7 @@ local sgoly_tool=require "sgoly_tool"
 require "sgoly_printf"
 require "skynet.manager"
 local CMD={}
-local prop = {200000,100000}
+local prop = {150000,80000,30000}
 function CMD.shoplist(fd,mes)                   --商城
 	if mes.TYPE=="look"   then                  --查看背包 
 		local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
@@ -25,24 +25,24 @@ function CMD.shoplist(fd,mes)                   --商城
 		else
 		    sgoly_tool.getPackageFromRedis(mes.NAME)
 			local bool1,req1=sgoly_tool.getPropFromRedis(mes.NAME, mes.PROPID)
-			-- local bo,money=sgoly_tool.getMoney(mes.NAME)
-			--local cost = prop[tonumber(mes.PROPID)]
-			-- if money<cost*mes.PROPNUM then
-			-- 	return sgoly_pack.typereturn(mes,"16","金币不足")
-			-- end
-			if not req1 then
+			local bo,money=sgoly_tool.getMoney(mes.NAME)
+			local cost = prop[tonumber(mes.PROPID)]
+			if money<cost*mes.PROPNUM then
+				return sgoly_pack.typereturn(mes,"16","金币不足")
+			end
+			if  req1==nil then
 				req1 = mes.PROPNUM
 			else
 				req1 = req1+mes.PROPNUM
 	        end
 			local bool,req=sgoly_tool.setPropToRedis(mes.NAME,mes.PROPID,req1)
-			-- local bo1,re=sgoly_tool.saveMoneyToRedis(mes.NAME,money-cost*mes.PROPNUM)
-			if bool then
-		       local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="buy",PROPID=mes.PROPID,PROPNUM=req1}
+			local bo1,re=sgoly_tool.saveMoneyToRedis(mes.NAME,money-cost*mes.PROPNUM)
+			if bool and bo1 then
+		       local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="buy",PROPID=mes.PROPID,PROPNUM=req1,MONEY=money-cost*mes.PROPNUM}
 			   local req2_1=sgoly_pack.encode(rqs)
 			   return req2_1
 		    else
-		    	return sgoly_pack.typereturn(mes,"16",req)
+		    	return sgoly_pack.typereturn(mes,"16",req..re)
 	    	end
 	    end
     elseif mes.TYPE=="use" then                    --使用道具
