@@ -1210,10 +1210,12 @@ function sgoly_tool.getSpaceFromRedis()
 	local ok, difficulty = sgoly_tool.getProbabilityFromRedis("difficulty")
 	local ok, simple = sgoly_tool.getProbabilityFromRedis("simple")
 	local ok, normal = sgoly_tool.getProbabilityFromRedis("normal")
+	local ok, lucky = sgoly_tool.getProbabilityFromRedis("lucky")
 	local ok, difficultyS = sgoly_tool.probaToSpace(difficulty)
 	local ok, simpleS = sgoly_tool.probaToSpace(simple)
 	local ok, normalS = sgoly_tool.probaToSpace(normal)
-	return ok, normalS, simpleS, difficultyS
+	local ok, luckyS = sgoly_tool.probaToSpace(lucky)
+	return ok, normalS, simpleS, difficultyS, luckyS 
 end
 
 --!
@@ -1235,6 +1237,8 @@ function sgoly_tool.saveProbabilityToMySQL()
 	sgoly_dat_ser.saveProbabilityToMySQL("rate", rate)
 	local ok, atype = sgoly_tool.getProbabilityFromRedis("type")
 	sgoly_dat_ser.saveProbabilityToMySQL("type", atype)
+	local ok, lucky = sgoly_tool.getProbabilityFromRedis("lucky")
+	sgoly_dat_ser.saveProbabilityToMySQL("lucky", lucky)
 end
 
 function sgoly_tool.getProbabilityFromMySQL(type)
