@@ -72,11 +72,17 @@ function CMD.safebox(fd,mes,name)         --保险柜
 		end
 	elseif mes.TYPE=="save" then
 		   local bool2,nowmoney=sgoly_tool.getMoney(name)
+		    if nowmoney-100000<tonumber(mes.MONEY) then
+	       	  return sgoly_pack.typereturn(mes,"9","金额不足")
+	       end
 	       local boo,msg =dat_ser.save_money_2saf(name,tonumber(mes.MONEY))
-	       local bool=sgoly_tool.saveMoneyToRedis(name,nowmoney-mes.MONEY)
+	       if boo==false then
+		      return sgoly_pack.typereturn(mes,"9","存钱失败")
+		   end
+	       local bool=sgoly_tool.saveMoneyToRedis(name,nowmoney-tonumber(mes.MONEY))
 		   printI("this is safe5,%s",mes.NAME)
 		if boo and bool and bool2 then 
-		   local rqs={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="save",MONEY=nowmoney-mes.MONEY}
+		   local rqs={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="save",MONEY=nowmoney-tonumber(mes.MONEY)}
 	       local req2_1=sgoly_pack.encode(rqs)
 		   return req2_1
 		else 
@@ -85,7 +91,10 @@ function CMD.safebox(fd,mes,name)         --保险柜
 	elseif mes.TYPE=="load" then
 		   local bool2,nowmoney=sgoly_tool.getMoney(name)
 	       local boo,msg =dat_ser.get_saf_money(name,tonumber(mes.MONEY))
-	       local bool=sgoly_tool.saveMoneyToRedis(name,nowmoney+mes.MONEY)
+	       if boo==false then
+		      return sgoly_pack.typereturn(mes,"9","提取失败")
+		   end
+	       local bool=sgoly_tool.saveMoneyToRedis(name,nowmoney+tonumber(mes.MONEY))
 		   printI("this is safe5,%s",mes.NAME)
 		if boo and bool and bool2 then 
 		   local rqs={SESSION=mes.SESSION,ID="9",STATE=true,TYPE="load",MONEY=nowmoney+mes.MONEY}
