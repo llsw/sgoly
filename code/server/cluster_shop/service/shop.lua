@@ -27,9 +27,9 @@ function CMD.shoplist(fd,mes)                   --商城
 			local bool1,req1=sgoly_tool.getPropFromRedis(mes.NAME, mes.PROPID)
 			-- local bo,money=sgoly_tool.getMoney(mes.NAME)
 			--local cost = prop[tonumber(mes.PROPID)]
-			if money<cost*mes.PROPNUM then
-				return sgoly_pack.typereturn(mes,"16","金币不足")
-			end
+			-- if money<cost*mes.PROPNUM then
+			-- 	return sgoly_pack.typereturn(mes,"16","金币不足")
+			-- end
 			if not req1 then
 				req1 = mes.PROPNUM
 			else
