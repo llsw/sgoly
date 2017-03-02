@@ -9,7 +9,7 @@ require "sgoly_printf"
 local CMD = {}
 
 local _, awardTypeAndRate = _, {}
-local _, normalS, simpleS, difficultyS = _, {}, {}, {}
+local _, normalS, simpleS, difficultyS, luckyS = _, {}, {}, {}, {}
 function picture_order(picturetype)              --图片序列函数
 	local letter = string.sub(picturetype,1,1)
 	local num = tonumber(string.sub(picturetype,2,2))
@@ -137,7 +137,7 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)  --�
 		prop=2
 	end
 	if propid=="2" then
-		x=3
+		x=4
 	end
 	--historynum=historynum+k
 	if TYPE=="autostart" or TYPE=="autogo" then 
@@ -287,6 +287,54 @@ for i=1,k do
 	elseif x==3 then 
 		printD("这是简单模式")
 		local _, hit = sgoly_tool.hitAward(1, #simpleS, a, simpleS)
+		if awardTypeAndRate[hit][1]=="F3" then
+			if TYPE=="autostart" or TYPE=="autogo" then 
+				printD("%s 没有中奖", i)
+				table.insert(sequence,picture_order("NO"))
+				printD("得分为 %s", end_point*beilv*0)
+				money=money+end_point*beilv*0
+				table.insert(winmoney,end_point*beilv*0)
+				if TYPE=="autostart" or TYPE=="autogo" then 
+					table.insert(automoney,end_point*beilv*0)
+					if autowinmax<end_point*beilv*0 then
+					   autowinmax=end_point*beilv*0
+					end
+					autowinall=autowinall+end_point*beilv*0
+				end
+		    else
+				printD("%s 中奖类型FFF----O(∩_∩)O~~-!", i) 
+				j=j+1
+				wintype.F3=wintype.F3+1
+				table.insert(number1,i)
+				table.insert(number2,"F3")
+				table.insert(sequence,picture_order("F3"))
+				printD("得分为 %s",end_point*beilv*0)
+				money=money+end_point*beilv*0
+				table.insert(winmoney,end_point*beilv*0)
+				F3num=F3num+1
+			end			
+	    elseif  awardTypeAndRate[hit][1]=="NO" then
+			printD("没有中奖 %s", i)
+			table.insert(sequence,picture_order("NO"))
+			printD("得分为 %s",end_point*beilv*0)
+			money=money+end_point*beilv*0
+			table.insert(winmoney,end_point*beilv*0)
+			if TYPE=="autostart" or TYPE=="autogo" then 
+				table.insert(automoney,end_point*beilv*0)
+				if autowinmax<end_point*beilv*0 then
+				   autowinmax=end_point*beilv*0
+				end
+				autowinall=autowinall+end_point*beilv*0
+			end
+		else
+			 printD("%s 中奖类型%s----O(∩_∩)O~~-!", i,awardTypeAndRate[hit][1])
+			 j=j+1
+	   		 reqpack(wintype,awardTypeAndRate[hit][1],awardTypeAndRate[hit][2],i,wintype,number1,autonumber1,autonum,number2,sequence,end_point,beilv,winmoney,automoney,prop)
+		end 
+-----------------------------幸运模式--------------
+ 	elseif x==4 then 
+		printD("这是幸运模式")
+		local _, hit = sgoly_tool.hitAward(1, #luckyS, a, luckyS)
 		if awardTypeAndRate[hit][1]=="F3" then
 			if TYPE=="autostart" or TYPE=="autogo" then 
 				printD("%s 没有中奖", i)
@@ -571,7 +619,7 @@ end
 
 function CMD.get()
 	_, awardTypeAndRate = sgoly_tool.awardTypeAndRate()
-	 _, normalS, simpleS, difficultyS = sgoly_tool.getSpaceFromRedis()
+	 _, normalS, simpleS, difficultyS ,luckyS= sgoly_tool.getSpaceFromRedis()
 end
 
 skynet.start(function()

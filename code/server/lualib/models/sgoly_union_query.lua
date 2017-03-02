@@ -159,8 +159,12 @@ function query.getProbabilityFromMySQL(type)
 	if status.err then
 		return false, status.err
 	end
+	local result = {}
+	for k, v  in pairs(status) do
+		result[tonumber(v.sort)] = v.value
+	end
 	
-	return true, status	
+	return true, result
 end
 
 function query.setUserLoginTime(uid)

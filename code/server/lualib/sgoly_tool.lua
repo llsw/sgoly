@@ -1085,7 +1085,7 @@ function sgoly_tool.getProbabilityFromRedis(modle)
 		local ok, result = sgoly_tool.multipleNumToTable(result)
 		return ok, result
 	end
-	local ok, result = sgoly_dat_ser.getProbabilityFromMySQL(type)
+	local ok, result = sgoly_dat_ser.getProbabilityFromMySQL(modle)
 	redis_query({"hmset", key, result})
 	return ok, result 
 end
