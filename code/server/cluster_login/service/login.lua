@@ -24,7 +24,7 @@ function handler(fd, mes)
         end
 	    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		local bool,msg=dat_ser.register(mes.NAME,mes.PASSWD)
-		printI("%s,%s",bool,msg)
+		printI("注册%s,%s",bool,msg)
 		if bool then            
 			local resuss={SESSION=mes.SESSION,ID="2",STATE=bool}
 			local resuss1_2=sgoly_pack.encode(resuss)
@@ -44,7 +44,7 @@ function handler(fd, mes)
         end          
 		    mes.PASSWD=md5.sumhexa(mes.PASSWD)
 		    local bool,msg=dat_ser.login(mes.NAME, mes.PASSWD)
-		    printI("%s,%s",bool,msg)
+		    printI("登录%s,%s",bool,msg)
 		if bool then     --登录成功返回拥有金钱
 				local boolfd,reqfd=sgoly_tool.getUserFdFromRedis(tonumber(msg))
                 if reqfd then
@@ -84,8 +84,7 @@ function handler(fd, mes)
 			    printI("%s,%s",bool,msg)
 			end
 	    if msg=="注册成功" then 
-			    printI("注册成功")
-			    printI("%s,%s",name,trpd)           
+			    printI("注册成功 %s,%s",name,trpd)        
 				local rep={SESSION=mes.SESSION,ID="3",STATE=true,NAME=name,PASSWD=password}
 				local str2=sgoly_pack.encode(rep)
 				return str2.."\n"
@@ -102,8 +101,11 @@ function handler(fd, mes)
 	        end          
 		    local PASSWD=md5.sumhexa(mes.PASSWARD)
 		    local CURPASSWARD=md5.sumhexa(mes.CURPASSWARD)
+		    if PASSWD==CURPASSWARD then
+		    	return sgoly_pack.returnfalse(mes,"11","新密码与原密码一致")
+		    end
 			local bool,msg=dat_ser.cha_pwd(mes.NAME,CURPASSWARD,PASSWD)
-			printI("%s,%s",bool,msg)
+			printI("修改密码 %s,%s",bool,msg)
 			if bool then            
 					local resuss={SESSION=mes.SESSION,ID="11",STATE=true}
 					local resuss1_2=sgoly_pack.encode(resuss)
@@ -115,7 +117,7 @@ function handler(fd, mes)
 	elseif  mes.ID=="12" then 
 	    if  mes.TYPE=="query"  then         
 			local bool,msg=dat_ser.get_img_name(mes.NAME)
-			printI("%s,%s",bool,msg)
+			printI("获取头像 %s,%s",bool,msg)
 			if bool then            
 					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="query",PORTRAIT=msg}
 					local resuss1_2=sgoly_pack.encode(resuss)
@@ -125,7 +127,7 @@ function handler(fd, mes)
 			end
 		elseif mes.TYPE=="reset" then
 			local bool,msg=dat_ser.cha_img_name(mes.NAME,mes.PORTRAIT)
-			printI("%s,%s",bool,msg)
+			printI("修改头像 %s,%s",bool,msg)
 			if bool then            
 					local resuss={SESSION=mes.SESSION,ID="12",STATE=true,TYPE="reset",PORTRAIT=tonumber(mes.PORTRAIT)}
 					local resuss1_2=sgoly_pack.encode(resuss)
@@ -190,7 +192,7 @@ end
 
 skynet.start(function()
 	i=sgoly_tool.getUuid()
-	printI("i=%s",i)
+	printI("Uuid i=%s",i)
 	math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
 	co = coroutine.create(function ()
 		while true do 

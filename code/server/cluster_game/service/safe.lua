@@ -49,6 +49,9 @@ function CMD.safebox(fd,mes,name)         --保险柜
 	       		end
 		    local CURPASSWD=md5.sumhexa(mes.CURPASSWARD )
 		    local PASSWD = md5.sumhexa(mes.PASSWARD)
+		    if PASSWD==CURPASSWARD then
+		    	return sgoly_pack.typereturn(mes,"9","新密码与原密码一致")
+		    end
 	        local bool,rqs=dat_ser.cha_saf_pwd(name,CURPASSWD,PASSWD)
 		    printI("this is safe3,%s",mes.NAME)
 			if  bool then 
