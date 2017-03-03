@@ -687,7 +687,7 @@ function sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 			year = tonumber(year)
 			month = tonumber(month)
 			day = tonumber(day)
-			local time = os.time({day=day+3, month=month, year=year,hour = 0, min=0, sec=0})
+			local time = os.time() + 3*24*3600
 			redis_query({"expireat", key, time})
 			return true
 		end
@@ -769,7 +769,7 @@ function sgoly_tool.getAwardFromRedis(rank1, rank2, date)
 	month = tonumber(month)
 	day = tonumber(day)
 
-	local time = os.time({day=day+3, month=month, year=year,hour = 0, min=0, sec=0})
+	local time = os.time() + 3*24*3600 
 	if rank1 ~= 0 then
 		
 		local value = redis_query({"hget", key1 , rank1})
@@ -820,7 +820,7 @@ function sgoly_tool.getCharityTimesFromRedis(nickname)
 	year = tonumber(year)
 	month = tonumber(month)
 	day = tonumber(day)
-	local time = os.time({day=day+1, month=month, year=year,hour = 0, min=0, sec=0})
+	local time = os.time() + 1*24*3600
 	redis_query({"hset", key, "charityTimes", 0})
 	redis_query({"expireat", key, time})
 	return true, 0
@@ -845,7 +845,7 @@ function sgoly_tool.setCharityTimesToRedis(nickname, times)
 	year = tonumber(year)
 	month = tonumber(month)
 	day = tonumber(day)
-	local time = os.time({day=day+1, month=month, year=year,hour = 0, min=0, sec=0})
+	local time = os.time() + 1*24*3600
 	redis_query({"hset", key, "charityTimes", times})
 	redis_query({"expireat", key, time})
 	return true, nil
