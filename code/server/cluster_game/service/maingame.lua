@@ -101,6 +101,8 @@ function send_result(fd,session,TYPE,SERIES,WCOUNT,MAXMONEY,SUNMONEY,FINMONEY,WI
 end
 
  --     记录中奖类型
+    gamenum=0              --游戏次数
+    modenum=8              --模式切换次数设置
  	money=0                --赚的金额
 	deposit=0              --消耗金额
 	historyj=0             --历史中奖次数
@@ -121,7 +123,6 @@ end
 --主循环判断
 function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)  --主游戏函数
     printD("I am %s",name)
-    gamenum=0          --游戏次数
  	moneydb=0          --赚得金额存数据库
 	depositdb=0        --消耗金额存数据库
 	n=1                --number1 的索引
@@ -385,24 +386,44 @@ for i=1,k do
 	gamenum=gamenum+1
 	moneydb=moneydb+money
 	deposit=deposit+end_point*beilv
-	if historynum%10==0 and money/deposit>=0.85 then
+	-- if historynum%10==0 and money/deposit>=0.85 then
+	if gamenum==modenum and money/deposit>=0.85 then
 		x=2
 		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d"))           
 		printD("2 money[%s]/depost[%s]=[%s] 进入困难模式",money,deposit,money/deposit)
 		money=0
 		deposit=0
-	elseif historynum%10==0 and money/deposit<=0.5 then
+		gamenum=0
+        if modenum==8 then 
+        	modenum=10
+        else
+        	modenum=8
+        end
+	-- elseif historynum%10==0 and money/deposit<=0.5 then
+	elseif gamenum==modenum and money/deposit<=0.5 then
 		x=3
 		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d")) 
 		printD("3 money[%s]/depost[%s]=%s 进入简单模式",money,deposit,money/deposit)
 		money=0 
 		deposit=0
-	elseif historynum%10==0 and money/deposit<0.85 and money/deposit>0.5 then
-		x=1
+		gamenum=0
+        if modenum==8 then 
+        	modenum=10
+        else
+        	modenum=8
+        end
+	-- elseif historynum%10==0 and money/deposit<0.85 and money/deposit>0.5 then
+	elseif gamenum==modenum and money/deposit<0.85 and money/deposit>0.5 then
 		sgoly_tool.saveStatementsToRedis(name,0,0,0,0,0,0,0,x,os.date("%Y-%m-%d")) 
 		printD("2 money[%s]/depost[%s]=%s 进入普通模式", money,deposit,money/deposit)
 		money=0
 		deposit=0
+		gamenum=0
+        if modenum==8 then 
+        	modenum=10
+        else
+        	modenum=8
+        end
 	end
 end  --for 循环end
 -----------------------抽奖次数--------------------------
@@ -589,7 +610,8 @@ function CMD.autosave(fd,name)
 	local autozjnum = #(autonumber1)
 	local autozjnumsave=autozjnum
 		  printD("autozjnum=%s", autozjnum)
-   	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
+   	local d=os.time()-3600*24
+	local c=os.date("%Y-%m-%d",d)
     local bool,req=sgoly_tool.getMoney(name)
     local money=tonumber(req)+autowinall-autocost
     printD("this is name=%s,req=%d,autowinall=%d,autocost=%d",name,req,autowinall,autocost)

@@ -37,7 +37,8 @@ function agent.main(fd,mes)
 end
 
 function exit(fd,mes)   --用户正常退出
-	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
+	local d=os.time()-3600*24
+	local c=os.date("%Y-%m-%d",d)
 	local bool,res=sgoly_tool.saveMoneyFromRdisToMySQL(connection[fd].name)
 	local bool1,res1=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,os.date("%Y-%m-%d"))
 	local bool2,res2=sgoly_tool.saveStatmentsFromRdisToMySQL(connection[fd].name,c)
@@ -83,7 +84,8 @@ function agent.errorexit( fd )	 --用户玩自动模式强制退出
 end
 
 function agent.close( fd )        --用户玩普通模式强制退出
-	local c=os.date("%Y-%m-")..(tonumber(os.date("%d"))-1)
+	local d=os.time()-3600*24
+	local c=os.date("%Y-%m-%d",d)
 	if connection[fd] then
 		local bool3,req1 = sgoly_tool.getStatementsFromRedis(connection[fd].name, os.date("%Y-%m-%d"))
 	    local bool4,rqs=sgoly_tool.getRankFromRedis(connection[fd].name,tonumber(req1.serialWinNum), "serialWinNum",os.date("%Y-%m-%d"))

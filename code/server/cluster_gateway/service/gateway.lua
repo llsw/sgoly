@@ -105,7 +105,7 @@ end
 
 function CMD.saveAddrToRedis(fd, uid)
 	sgoly_tool.saveAddrToRedis(uid, connection[fd].addr)
-	sgoly_dat_ser.set_user_online(uid, connection[fd].addr, 1)
+	sgoly_dat_ser.set_user_online(uid,connection[fd].addr,1)
 end
 
 function handlerfork(fd,name,session)
@@ -118,7 +118,6 @@ function handlerfork(fd,name,session)
 			break
 		end
 		local timeBetween = os.time() - line
-
 		if(timeBetween > 20) then
 			printD("==================HeartBeat start====================")
 			printD(" TimeBetween[%d] HeartBeat name[%s] fd[%d]", timeBetween, name, fd)
