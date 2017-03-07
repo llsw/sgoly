@@ -102,7 +102,7 @@ end
 
  --     记录中奖类型
     gamenum=0              --游戏次数
-    modenum=8              --模式切换次数设置
+    modenum=5              --模式切换次数设置
  	money=0                --赚的金额
 	deposit=0              --消耗金额
 	historyj=0             --历史中奖次数
@@ -394,10 +394,10 @@ for i=1,k do
 		money=0
 		deposit=0
 		gamenum=0
-        if modenum==8 then 
+        if modenum==5 then 
         	modenum=10
         else
-        	modenum=8
+        	modenum=5
         end
 	-- elseif historynum%10==0 and money/deposit<=0.5 then
 	elseif gamenum==modenum and money/deposit<=0.5 then
@@ -407,10 +407,10 @@ for i=1,k do
 		money=0 
 		deposit=0
 		gamenum=0
-        if modenum==8 then 
+        if modenum==5 then 
         	modenum=10
         else
-        	modenum=8
+        	modenum=5
         end
 	-- elseif historynum%10==0 and money/deposit<0.85 and money/deposit>0.5 then
 	elseif gamenum==modenum and money/deposit<0.85 and money/deposit>0.5 then
@@ -419,10 +419,10 @@ for i=1,k do
 		money=0
 		deposit=0
 		gamenum=0
-        if modenum==8 then 
+        if modenum==5 then 
         	modenum=10
         else
-        	modenum=8
+        	modenum=5
         end
 	end
 end  --for 循环end
