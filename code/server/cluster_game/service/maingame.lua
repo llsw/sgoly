@@ -155,13 +155,12 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)  --ä
 		wintype[type]=wintype[type]+1
 		table.insert(number1,i)
 		if TYPE=="autostart" or TYPE=="autogo" then 
-			table.insert(autonumber1,autonum)
 			if automax==0  then
-			      automax=1
+			    automax=1
 				autopersentmax=1
 		    else
-		    	local s = #autonumber1
-		    	if autonumber1[s]+1==autonum then
+		    	local s = #(autonumber1)
+		    	if autonumber1[s]+1==tonumber(autonum) then
 		    		autopersentmax=autopersentmax+1
 		    		if autopersentmax>automax then
 		    			automax=autopersentmax
@@ -170,6 +169,7 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)  --ä
 		    		autopersentmax=0
 		    	end
 		    end
+		    table.insert(autonumber1,autonum)
 		end
 		table.insert(number2,type)
 		table.insert(sequence,picture_order(type))
