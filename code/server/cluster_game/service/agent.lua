@@ -17,19 +17,19 @@ function agent.main(fd,mes)
 	   local call_ok,req=xpcall(skynet.call,xpcall_error,connection[fd].maingame,"lua","calc",fd,mes.SESSION,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST,connection[fd].name,mes.PROPID)
 	   return req
 	elseif mes.ID=="5" then       --统计面板
-	   local call_ok,req1=xpcall(skynet.call,xpcall_error,connection[fd].stats,"lua","tongji",fd,mes.SESSION,mes.TYPE,connection[fd].name)
+	   local call_ok,req1=xpcall(skynet.call,xpcall_error,".stats","lua","tongji",fd,mes.SESSION,mes.TYPE,connection[fd].name)
 	   return req1
 	elseif mes.ID=="6" then       --正常退出
 		local req2=exit(fd,mes)
 		return req2  
 	elseif mes.ID=="9" then       --保险柜
-		local call_ok,req3=xpcall(skynet.call,xpcall_error,connection[fd].safe,"lua","safebox",fd,mes,connection[fd].name)
+		local call_ok,req3=xpcall(skynet.call,xpcall_error,".safe","lua","safebox",fd,mes,connection[fd].name)
 		return req3 	
 	elseif mes.ID=="10" then      --签到
-		local call_ok,req4=xpcall(skynet.call,xpcall_error,connection[fd].sign,"lua","sign_in",fd,mes,connection[fd].name)
+		local call_ok,req4=xpcall(skynet.call,xpcall_error,".sign","lua","sign_in",fd,mes,connection[fd].name)
 		return req4 
 	elseif mes.ID=="14" then      --破产补助
-		local call_ok,req5=xpcall(skynet.call,xpcall_error,connection[fd].grant ,"lua","getgrant",fd,mes,connection[fd].name)
+		local call_ok,req5=xpcall(skynet.call,xpcall_error,".grant","lua","getgrant",fd,mes,connection[fd].name)
 		return req5 
     else  
     	return sgoly_pack.returnfalse(mes,mes.ID,"未知错误")
@@ -58,18 +58,10 @@ end
 function agent.start(fd,name)
 	   local maingame = skynet.newservice("maingame")
 	   local call_ok,req=xpcall(skynet.call,xpcall_error,maingame,"lua","get")
-	   local stats = skynet.newservice("stats")
-	   local safe  = skynet.newservice("safe")
-	   local sign  = skynet.newservice("sign")
-	   local grant = skynet.newservice("grant")
 	   local c = {
 	  		name = name,
 	  		maingame = maingame,
-	  		stats=stats,
-	  		safe=safe,
 	  		line=os.time(),
-	  		sign=sign,
-	  		grant=grant
 			}
 	   connection[fd] = c 
 end

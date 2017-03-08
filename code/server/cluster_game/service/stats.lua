@@ -112,5 +112,5 @@ skynet.start(function()
 		skynet.retpack(f(...))
 	end)
     -- 要注册个服务的名字，以.开头
-    -- skynet.register(".stats")
+    skynet.register(".stats")
 end)
