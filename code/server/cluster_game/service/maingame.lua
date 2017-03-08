@@ -166,7 +166,7 @@ function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)  --ä
 		    			automax=autopersentmax
 		    		end
 		    	else 
-		    		autopersentmax=0
+		    		autopersentmax=1
 		    	end
 		    end
 		    table.insert(autonumber1,autonum)
