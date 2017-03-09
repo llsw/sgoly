@@ -1,11 +1,14 @@
 local crypt = require "crypt"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
+package.cpath = "../luaclib/xxtea.so;" .. package.cpath
 local cjson = require "cjson"
+local xxtea = require "xxtea"
 sgoly_pack={}
 function sgoly_pack.encode(req)
 	local who="123456"
 	local json_texten = cjson.encode(req)
-    local pden =crypt.aesencode(json_texten,who,"")
+    --local pden =crypt.aesencode(json_texten,who,"")
+    local pden = xxtea.encryptXXTEA(json_texten, #json_texten, who)
     local stren = crypt.base64encode(pden)
     return stren
 end
@@ -13,7 +16,8 @@ end
 function sgoly_pack.decode(req)
 	local who="123456"
 	local json_textde = crypt.base64decode(req)
-    local pdde =crypt.aesdecode(json_textde,who,"")
+    --local pdde =crypt.aesdecode(json_textde,who,"")
+    local pdde =xxtea.decryptXXTEA(json_textde, #json_textde, who)
     local strde = cjson.decode(pdde)
     return strde
 end
@@ -21,7 +25,8 @@ end
 function sgoly_pack.c2s(req)
 	local who="123456"
 	local json_textc2s = cjson.encode(req)
-    local pdc2s =crypt.aesencode(json_textc2s,who,"")
+    --local pdc2s = crypt.aesencode(json_textc2s,who,"")
+    local pdc2s = xxtea.encryptXXTEA(json_textc2s, #json_textc2s, who)
     local strc2s = crypt.base64encode(pdc2s)
     local result = string.pack(">s2", strc2s)
     return result
