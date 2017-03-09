@@ -8,8 +8,8 @@ local sgoly_pack=require "sgoly_pack"
 local CMD={}
 function CMD.sign_in(fd,mes,name)      --签到
 	if mes.TYPE=="query" then
-	    	local bool1,req1 = dat_ser.query_sign(name)
-		    printI("this is sign1,%s",mes.NAME)
+	    	local bool1,req1 = dat_ser.query_sign(name) 
+		    printI("this is sign1,%s",name)
 		if bool1  then 
 			local rqs={SESSION=mes.SESSION,ID="10",STATE=true,TYPE="query",LIST=req1}
 			local req2_1=sgoly_pack.encode(rqs)
@@ -22,7 +22,7 @@ function CMD.sign_in(fd,mes,name)      --签到
 	    	local bool2,req2 = dat_ser.get_award("signIn","1")
 	    	local bool3,req3=sgoly_tool.getMoney(name) 
 	    	local bool4,req4=sgoly_tool.saveMoneyToRedis(name,req3+req2)
-		    printI("this is sign2,%s",mes.NAME)
+		    printI("this is sign2,%s",name)
 		if bool1 and bool2 and bool3 and bool4 then 
 			local rqs={SESSION=mes.SESSION,ID="10",STATE=true,TYPE="signin",MONEY=req3+req2}
 			local req2_1=sgoly_pack.encode(rqs)
@@ -54,7 +54,7 @@ function CMD.sign_in(fd,mes,name)      --签到
     	    	rqs.PROPLIST[id]=num
     	    end
 
-		    printI("this is sign3,%s",mes.NAME)
+		    printI("this is sign3,%s",name)
 			if bool1 and bool and bool2 then 
 				rqs.SESSION=mes.SESSION
 				rqs.ID="10"
