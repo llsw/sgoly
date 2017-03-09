@@ -4,6 +4,8 @@ package.cpath = "../luaclib/xxtea.so;" .. package.cpath
 local cjson = require "cjson"
 local xxtea = require "xxtea"
 sgoly_pack={}
+
+--打包
 function sgoly_pack.encode(req)
 	local who="123456"
 	local json_texten = cjson.encode(req)
@@ -13,6 +15,7 @@ function sgoly_pack.encode(req)
     return stren
 end
 
+--解包
 function sgoly_pack.decode(req)
 	local who="123456"
 	local json_textde = crypt.base64decode(req)
@@ -32,17 +35,21 @@ function sgoly_pack.c2s(req)
     return result
 end
 
+--返回错误
 function sgoly_pack.returnfalse(mes,CID,msg)
             local req1={SESSION=mes.SESSION,ID=CID,STATE=false,MESSAGE=msg}
             local req1_1=sgoly_pack.encode(req1)
             return req1_1
 end
+
+--返回错误带类型
 function sgoly_pack.typereturn(mes,CID,msg)
             local req1={SESSION=mes.SESSION,ID=CID,STATE=false,TYPE=mes.TYPE,MESSAGE=msg}
             local req1_1=sgoly_pack.encode(req1)
             return req1_1
 end
 
+--验证帐号是否合法
 function sgoly_pack.filter_account(mes)
         local ss=filter_spec_chars(mes.NAME)
         if (#ss)~=(#mes.NAME) then
@@ -52,6 +59,7 @@ function sgoly_pack.filter_account(mes)
         end
 end
 
+--验证密码是否合法
 function sgoly_pack.filter_password(mes)
         local x = 1
         for s in string.gmatch(mes.PASSWD,"[%W]") do
@@ -69,6 +77,7 @@ function sgoly_pack.filter_password(mes)
         end
 end
 
+--去除非法字符
 function filter_spec_chars(s)  
     local ss = {}  
     for k = 1, #s do  
@@ -94,7 +103,7 @@ function filter_spec_chars(s)
     return table.concat(ss)  
 end  
 
-
+--检查游戏底注等参数是否合法
 function sgoly_pack.checkup(end_point,beilv,k,cost)
     if end_point*beilv*k==tonumber(cost) then
         if (end_point=="1000"  or end_point=="3000" 
@@ -109,4 +118,85 @@ function sgoly_pack.checkup(end_point,beilv,k,cost)
         return false
     end
 end
+
+--得到有效一星期的
+function sgoly_pack.dateToWeek(dateT)
+    local function dateToTime(date)
+        local y,m,d = string.match(date,"(.+)-(.+)-(.+)")
+            y = tonumber(y)
+            m = tonumber(m)
+            d = tonumber(d)
+        local t = os.time({day = d, month = m, year = y})
+        return t
+    end
+
+    local function dateToWeekday(date)
+        local y,m,d = string.match(date,"(.+)-(.+)-(.+)")
+            y = tonumber(y)
+            m = tonumber(m)
+            d = tonumber(d)
+        local t = os.time({day = d, month = m, year = y})
+        local weekday = os.date("%w", t)
+        return tonumber(weekday)
+    end
+
+    local function dateToDay(t)
+        local weekday = {0, 0, 0, 0, 0, 0, 0}
+        local today = os.date("%w")
+        if today == 0 then
+            today = 7
+        end
+
+        local daySeconds = 24 * 3600
+
+        local sundaySeconds = daySeconds * (7 - today) + dateToTime(os.date("%Y-%m-%d"))
+
+        for i = 1, #t do
+            if sundaySeconds - dateToTime(t[i]) >= daySeconds * 7 then
+                break
+            end
+
+            local day = dateToWeekday(t[i])
+            if day == 0 then
+                day = 7
+            end
+            weekday[day] = 1    
+        end
+
+        return weekday
+    end
+
+    return dateToDay(dateT)
+end
+
+--判断连续多少天
+function sgoly_pack.seriLogin(t)
+    local count = 0
+    local max = 0
+    for i=1, 7 do
+
+        if t[i] == 1 then
+            count = count + 1
+            max = count 
+        end
+
+        if t[i] == 0 then
+            count = 0
+        end
+    end
+
+    return max
+end
+
+--判断有没有今天
+function sgoly_pack.istoday(t)
+    local today = os.date("%Y-%m-%d")
+    for i=1,#(t) do
+        if t[i] == today then
+            return true
+        end
+    end
+    return false
+end
+
 return sgoly_pack

@@ -10,7 +10,7 @@ local md5 = require "md5"
 local sgoly_tool=require"sgoly_tool"
 local CMD={}
 local loginuser = {}
-function handler(fd, mes)
+function handler(fd,mes)
 	-- printI("login NAME=%s,SESSION=%s,CMD=%s,ID=%s",mes.NAME,mes.SESSION,mes.CMD,mes.ID)
 -------------------------用户注册-----------------------------------			
 	if  mes.ID=="2" then  

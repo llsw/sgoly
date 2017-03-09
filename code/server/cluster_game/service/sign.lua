@@ -18,6 +18,11 @@ function CMD.sign_in(fd,mes,name)      --签到
 			return sgoly_pack.typereturn(mes,"10",req1)
 		end
 	elseif mes.TYPE=="signin" then
+		    local lbo,t = dat_ser.query_sign(name) 
+		    local tbo=sgoly_pack.istoday(t)
+		    if tbo then
+		    	return sgoly_pack.typereturn(mes,"10","今天已签到")
+		    end
 	    	local bool1,req1 = dat_ser.sign(name,os.date("%Y-%m-%d"))
 	    	local bool2,req2 = dat_ser.get_award("signIn","1")
 	    	local bool3,req3=sgoly_tool.getMoney(name) 
@@ -31,6 +36,12 @@ function CMD.sign_in(fd,mes,name)      --签到
 			return sgoly_pack.typereturn(mes,"10",req1)
 		end
 	elseif mes.TYPE=="award" then
+		    local lbo,t = dat_ser.query_sign(name) 
+		    local tl=sgoly_pack.dateToWeek(t)
+		    local max=sgoly_pack.seriLogin(tl)
+		    if tostring(max)~=mes.DAY then
+		    	return sgoly_pack.typereturn(mes,"10","不满足要求")
+		    end
 	    	local bool1,req1 = dat_ser.get_award("signIn",mes.DAY)
 	    	local bool,req=sgoly_tool.getMoney(name)
 	    	local bool2,req2=sgoly_tool.saveMoneyToRedis(name,req+req1)
