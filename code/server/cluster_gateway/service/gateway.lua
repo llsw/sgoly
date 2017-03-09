@@ -6,11 +6,11 @@ local crypt = require"crypt"
 local sgoly_pack=require "sgoly_pack"
 local code = require"sgoly_cluster_code"
 require "sgoly_printf"
-package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local sgoly_tool = require "sgoly_tool"
 local sgoly_dat_ser = require "sgoly_dat_ser"
-local cjson = require "cjson"
 local skynet_queue = require "skynet.queue"
+package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
+local cjson = require "cjson"
 local lock = skynet_queue()
 local connection = {}
 

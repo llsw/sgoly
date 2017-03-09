@@ -1,7 +1,7 @@
 local crypt = require "crypt"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
-package.cpath = "../luaclib/xxtea.so;" .. package.cpath
 local cjson = require "cjson"
+package.cpath = "../luaclib/xxtea.so;" .. package.cpath
 local xxtea = require "xxtea"
 sgoly_pack={}
 
