@@ -3,7 +3,6 @@ local driver = require "socketdriver"
 local gateserver = require "sgoly_gateserver"
 local cluster = require"cluster"
 local crypt = require"crypt"
-local sgoly_pack=require "sgoly_pack"
 local code = require"sgoly_cluster_code"
 require "sgoly_printf"
 local sgoly_tool = require "sgoly_tool"
@@ -11,6 +10,7 @@ local sgoly_dat_ser = require "sgoly_dat_ser"
 local skynet_queue = require "skynet.queue"
 package.cpath = "../luaclib/lib/lua/5.3/?.so;" .. package.cpath
 local cjson = require "cjson"
+local sgoly_pack=require "sgoly_pack"
 local lock = skynet_queue()
 local connection = {}
 
@@ -123,6 +123,7 @@ function handlerfork(fd,name,session)
 			printD(" TimeBetween[%d] HeartBeat name[%s] fd[%d]", timeBetween, name, fd)
 			local req={ID="13",TYPE="heart"}
 			local req2_1=sgoly_pack.encode(req)
+			skynet.error("test")
 		    driver.send(fd,req2_1)
 		    printD("Time[%s] End send a heartbeat  name[%s]", os.clock(), 
 			 name)

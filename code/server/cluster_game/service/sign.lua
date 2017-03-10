@@ -3,7 +3,6 @@ local sgoly_tool=require"sgoly_tool"
 local dat_ser=require "sgoly_dat_ser"
 require "sgoly_printf"
 require "skynet.manager"
-local md5 = require "md5"
 local sgoly_pack=require "sgoly_pack"
 local CMD={}
 function CMD.sign_in(fd,mes,name)      --签到

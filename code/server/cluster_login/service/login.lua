@@ -2,12 +2,12 @@ local skynet    = require "skynet"
 local crypt 	= require "crypt"
 local coroutine = require "skynet.coroutine"
 local dat_ser   = require "sgoly_dat_ser"
-local md5 = require "md5"
 local sgoly_pack = require "sgoly_pack"
 local cluster   = require "cluster"
 require "skynet.manager"
 require "sgoly_printf"
 local sgoly_tool=require"sgoly_tool"
+local md5 = require "md5"
 local CMD={}
 local loginuser = {}
 function handler(fd,mes)
