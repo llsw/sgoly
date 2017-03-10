@@ -130,12 +130,12 @@ static int lencryptXXTEA(lua_State *L) {
 	// xxtea_long * v =(xxtea_long *)luaL_checklstring(L, 1, &vsz);
 	unsigned char * v = (unsigned char *)luaL_checklstring(L, 1, &vsz);
 	int len = (xxtea_long)luaL_checknumber(L, 2);
-	unsigned char * key = (unsigned *)luaL_checklstring(L, 3, &keysz);
+	unsigned char * key = (unsigned char *)luaL_checklstring(L, 3, &keysz);
 
 	xxtea_long resultLen;
     unsigned char* result = xxtea_encrypt(v, (xxtea_long)len, key, (xxtea_long)keysz, &resultLen);
-	lua_pushlstring(L, result, (int)resultLen);
-	free(v);
+	lua_pushlstring(L, (const char *) result, (int)resultLen);
+	free(result);
 	return 1;
 }
 
@@ -146,12 +146,12 @@ static int ldecryptXXTEA(lua_State *L) {
 	// xxtea_long * v =(xxtea_long *)luaL_checklstring(L, 1, &vsz);
 	unsigned char * v = (unsigned char *)luaL_checklstring(L, 1, &vsz);
 	int len = (xxtea_long)luaL_checknumber(L, 2);
-	unsigned char * key = (unsigned *)luaL_checklstring(L, 3, &keysz);
+	unsigned char * key = (unsigned char *)luaL_checklstring(L, 3, &keysz);
 
 	xxtea_long resultLen;
     unsigned char* result = xxtea_decrypt(v, (xxtea_long)len, key, (xxtea_long)keysz, &resultLen);
-	lua_pushlstring(L, result, (int)resultLen);
-	free(v);
+	lua_pushlstring(L, (const char *) result, (int)resultLen);
+	free(result);
 	return 1;
 }
 
