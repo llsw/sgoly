@@ -45,18 +45,19 @@ function CMD.version(query)
 end
 
 function CMD.download(query, pfile)
-    if pfile == "game.zip" then
-        local apk_version 
-        local ok, result = sgoly_union_query.getApkVersion()
-        if ok and result then
-            apk_version = result[1].version
-            skynet.error("apk_version", apk_version)
-            local file = io.open("/tmp/apk/game" .. apk_version .. ".zip", "r");
+    --if pfile == "game.zip" then
+    if pfile ~= "nil" then   
+        -- local apk_version 
+        -- local ok, result = sgoly_union_query.getApkVersion()
+        -- if ok and result then
+            -- apk_version = result[1].version
+            -- skynet.error("apk_version", apk_version)
+            local file = io.open("/tmp/apk/" .. pfile, "r");
             assert(file);
             data = file:read("*a");
             return data
-        end
-        return nil 
+        -- end
+        -- return nil 
     end
     return nil 
 end
@@ -83,7 +84,8 @@ local function handlerRequest(id, code, url, method, header, body)
                 path, pfile = string.match(path, "/([^/]+)/?")
                 pfile = string.match(old_path, "/[^/]+/(.+)")
                 skynet.error("subpath", path)
-                if path ~= "favicon.ico" then
+                skynet.error("pfile")
+                if path ~= "favicon.ico" and ~= "/favicon.ico" then
                     local f = assert(CMD[path], path .. " not found")
                     data = f(query, pfile)
                 end
