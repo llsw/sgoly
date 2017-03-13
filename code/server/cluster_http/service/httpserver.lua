@@ -84,7 +84,7 @@ local function handlerRequest(id, code, url, method, header, body)
                 path, pfile = string.match(path, "/([^/]+)/?")
                 pfile = string.match(old_path, "/[^/]+/(.+)")
                 skynet.error("subpath", path)
-                skynet.error("pfile")
+                skynet.error("pfile", pfile)
                 if path ~= "favicon.ico" and path ~= "/favicon.ico" then
                     local f = assert(CMD[path], path .. " not found")
                     data = f(query, pfile)
