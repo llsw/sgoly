@@ -48,6 +48,9 @@ function CMD.shoplist(fd,mes)                   --商城
     elseif mes.TYPE=="use" then                    --使用道具
     	local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
     	local bool1,req1=sgoly_tool.getPropFromRedis(mes.NAME, mes.PROPID)
+    	if bool1==false then
+    		return sgoly_pack.typereturn(mes,"16","道具使用失败")
+    	end
     	if req1==0 then
     		return sgoly_pack.typereturn(mes,"16","道具数量为0")
     	end
