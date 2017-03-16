@@ -28,7 +28,7 @@ function CMD.sign_in(fd,mes,name)      --签到
 	    	local bool4,req4=sgoly_tool.saveMoneyToRedis(name,req3+req2)
 		    printI("this is sign2,%s",name)
 		if bool1 and bool2 and bool3 and bool4 then 
-			local rqs={SESSION=mes.SESSION,ID="10",STATE=true,TYPE="signin",MONEY=req3+req2}
+			local rqs={SESSION=mes.SESSION,ID="10",STATE=true,TYPE="signin",MONEY=req3+req2,AWARDMONEY=req2}
 			local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 		else 
@@ -61,7 +61,7 @@ function CMD.sign_in(fd,mes,name)      --签到
     	    	num = num + re3
     	    	sgoly_tool.setPropToRedis(name,id,num)
     	    	rqs.PROPLIST={}
-    	    	rqs.PROPLIST[id]=num
+    	    	rqs.PROPLIST[id]= num-re3
     	    end
 
 		    printI("this is sign3,%s",name)
@@ -71,6 +71,7 @@ function CMD.sign_in(fd,mes,name)      --签到
 				rqs.STATE=true
 				rqs.TYPE="award"
 				rqs.MONEY=req+req1
+				rqs.AWARDMONEY=req1
 				local req2_1=sgoly_pack.encode(rqs)
 			    return req2_1
 			else 

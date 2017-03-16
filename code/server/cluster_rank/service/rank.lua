@@ -101,6 +101,7 @@ function CMD.ranklist(fd,mes)             --排行榜
 		   req5.STATE=true
 		   req5.TYPE="receive"
 		   req5.RANKMONEY=getmoney+money
+		   req5.AWARDMONEY=money
 	   	   printI("this is rank receive,%d",req5.RANKMONEY)
 		   local reqs5_1=sgoly_pack.encode(req5)
 		   return reqs5_1
