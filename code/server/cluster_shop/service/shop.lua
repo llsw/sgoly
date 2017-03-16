@@ -68,8 +68,6 @@ function CMD.shoplist(fd,mes)                   --商城
 end
 
 
-
-
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(CMD[cmd], cmd .. "not found")
