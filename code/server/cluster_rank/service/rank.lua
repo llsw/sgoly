@@ -83,7 +83,7 @@ function CMD.ranklist(fd,mes)             --排行榜
     	    	num = num + re3
     	    	sgoly_tool.setPropToRedis(mes.NAME, id, num)
     	    	req5.PROPLIST={}
-    	    	req5.PROPLIST[id]=num
+    	    	req5.PROPLIST[id]=num-re3
     	    end
     	    if bo2 then
     	    	id=math.floor(req2 / 100000)
@@ -92,7 +92,7 @@ function CMD.ranklist(fd,mes)             --排行榜
     	    	num = num + re3
     	    	sgoly_tool.setPropToRedis(mes.NAME, id, num)
     	    	req5.PROPLIST={}
-    	    	req5.PROPLIST[id]=num
+    	    	req5.PROPLIST[id]=num-re3
     	    end
 	       printI("this is rank receive,%s",mes.NAME)
 		if bool5 and bo and bool5_1 then 
