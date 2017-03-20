@@ -131,7 +131,7 @@ function account.get_recharge(uid)
 
 	local sql = string.format(
 				[[
-					select account.recharge from account 
+					select recharge from account 
 					WHERE
 						account.id = %d;
 				]], uid)

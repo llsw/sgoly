@@ -1,6 +1,7 @@
 local skynet = require "skynet"
 local sgoly_pack=require "sgoly_pack"
 local sgoly_tool=require "sgoly_tool"
+local dat_ser=require "sgoly_dat_ser"
 require "sgoly_printf"
 require "skynet.manager"
 local CMD={}
@@ -8,9 +9,15 @@ local prop = {150000,80000,30000}
 function CMD.shoplist(fd,mes)                   --商城
 	if mes.TYPE=="look"   then                  --查看背包 
 		local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
-	    local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="look",PROPLIST=req}
-	    local req2_1=sgoly_pack.encode(rqs)
-	    return req2_1
+		local bool1,req1 = dat_ser.get_recharge(mes.NAME)
+		req1 =  req1[1].recharge
+		if bool and req1[1] then
+		    local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="look",PROPLIST=req,FIRST=req1}
+		    local req2_1=sgoly_pack.encode(rqs)
+		    return req2_1
+	    else
+	    	return sgoly_pack.typereturn(mes,"16","查看失败")
+		end
 	elseif mes.TYPE=="buy" then					--购买道具
 		if mes.PROPID=="4" then
 			local bo,money=sgoly_tool.getMoney(mes.NAME)
@@ -18,6 +25,7 @@ function CMD.shoplist(fd,mes)                   --商城
 			if bo and bo1 then
 			   local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="buy",PROPID=mes.PROPID,PROPNUM=money+mes.PROPNUM}
 			   local req2_1=sgoly_pack.encode(rqs)
+			   dat_ser.update_recharge(mes.NAME,tonumber(mes.FIRST))
 			   return req2_1
 			else
 		    	return sgoly_pack.typereturn(mes,"16",money..re)
