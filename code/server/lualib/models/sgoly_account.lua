@@ -92,4 +92,54 @@ function account.update_money_s(nickname, money)
 	return true, status
 end
 
+--!
+--! @brief      { function_description }
+--!
+--! @param      nickname  The nickname
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-03-20
+--!
+function account.update_recharge(uid, number)
+	local sql = string.format(
+				[[
+					UPDATE account 
+					SET account.recharge = %d
+					WHERE
+						account.id = %d;
+				]],number, uid)
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
+	return true, status
+end
+
+--!
+--! @brief      Gets the recharge.
+--!
+--! @param      uid   The uid
+--!
+--! @return     The recharge.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-03-20
+--!
+function account.get_recharge(uid)
+
+	local sql = string.format(
+				[[
+					select account.recharge from account 
+					WHERE
+						account.id = %d;
+				]], uid)
+	local status = mysql_query(sql)
+	if status.err then
+		return false, status.err
+	end
+	return true, status
+end
+
 return account

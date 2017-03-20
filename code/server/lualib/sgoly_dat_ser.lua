@@ -822,4 +822,34 @@ function dat_ser.setUserLogoutTime(uid)
 	return union_query.setUserLogoutTime(uid)
 end
 
+--!
+--! @brief      { function_description }
+--!
+--! @param      uid     The uid
+--! @param      number  The number
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-03-20
+--!
+function dat_ser.update_recharge(uid, number)
+	return account.update_recharge(uid, number)
+end
+
+--!
+--! @brief      Gets the recharge.
+--!
+--! @param      uid   The uid
+--!
+--! @return     The recharge.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-03-20
+--!
+function dat_ser.get_recharge(uid)
+	return account.get_recharge(uid)
+end
+
+
 return dat_ser
