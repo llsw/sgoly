@@ -15,11 +15,11 @@ function picture_order(picturetype)              --图片序列函数
 	local num = tonumber(string.sub(picturetype,2,2))
 	if num == 5  then
 		printD("图片顺序为 %s",letter:rep(num))
-		local sequence = letter:rep(num)
+		local sequence = letter:rep(num).."015"
 		return sequence
 	elseif num==6 then
 		printD("图片顺序为 %s","ABCDE")
-		local sequence = "ABCDE"
+		local sequence = "ABCDE".."015"
 		return sequence
 	elseif num ==4 then
 		local a = math.random(1,2)
@@ -29,11 +29,11 @@ function picture_order(picturetype)              --图片序列函数
 			until (letter~=b)
 		if a==1 then
 			printD("图片顺序为 %s",letter:rep(num) .. b)
-			local sequence = letter:rep(num) .. b
+			local sequence = letter:rep(num) .. b.."014"
 			return sequence
 		else 
 			printD("图片顺序为 %s",b .. letter:rep(num))
-			local sequence = b .. letter:rep(num)
+			local sequence = b .. letter:rep(num).."025"
 		    return sequence
 		end
 	elseif num ==3 then
@@ -46,31 +46,31 @@ function picture_order(picturetype)              --图片序列函数
 		if a==1 then
 			if letter=="F" then
 				printD("图片顺序为 %s",letter:rep(num) .. b..c.."1")
-				local sequence = letter:rep(num).. b..c.."1"
+				local sequence = letter:rep(num).. b..c.."113"
 			    return sequence
 			else
 				printD("图片顺序为 %s",letter:rep(num) .. b..c)
-				local sequence = letter:rep(num).. b..c
+				local sequence = letter:rep(num).. b..c.."013"
 			    return sequence
 		    end
 		elseif a==2 then
 			if letter=="F" then
 				printD("图片顺序为 %s",b .. letter:rep(num)..c.."1")
-				local sequence = b..letter:rep(num)..c.."1"
+				local sequence = b..letter:rep(num)..c.."124"
 			    return sequence
 			else
 				printD("图片顺序为 %s",b .. letter:rep(num)..c)
-				local sequence = b..letter:rep(num)..c
+				local sequence = b..letter:rep(num)..c.."024"
 			    return sequence
 			end
 		elseif a==3 then
 			if letter=="F" then
 				printD("图片顺序为 %s",b ..c.. letter:rep(num).."1")
-				local sequence = b..c..letter:rep(num).."1"
+				local sequence = b..c..letter:rep(num).."135"
 			    return sequence
 			else
 				printD("图片顺序为 %s",b ..c.. letter:rep(num))
-				local sequence = b..c..letter:rep(num)
+				local sequence = b..c..letter:rep(num).."035"
 			    return sequence
 			end
 		end

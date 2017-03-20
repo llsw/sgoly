@@ -65,6 +65,7 @@ function handler.disconnect(fd)
 	local call_ok, req=xpcall(cluster.call, xpcall_error, "cluster_game",".agent","close",fd)
 	printD("save 普通模式".." " ..req)
 	printD("Client fd[%d] disconnect gateway", fd)
+	skynet.sleep(100)
 	connection[fd] = nil
 end
 
