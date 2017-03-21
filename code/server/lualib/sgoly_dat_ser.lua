@@ -851,5 +851,35 @@ function dat_ser.get_recharge(uid)
 	return account.get_recharge(uid)
 end
 
+--!
+--! @brief      Sets the property used.
+--!
+--! @param      uid   The uid
+--! @param      type  The type
+--! @param      used  The used
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-03-21
+--!
+function dat_ser.setPropUsed(uid, type, used)
+	return prop.setPropUsed(uid, type, used)
+end
+
+--!
+--! @brief      Gets the property used.
+--!
+--! @param      uid   The uid
+--! @param      type  The type
+--!
+--! @return     The property used.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-03-21
+--!
+function dat_ser.getPropUsed(uid, type)
+	return prop.getPropUsed(uid, type)
+end
 
 return dat_ser

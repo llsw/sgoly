@@ -69,5 +69,56 @@ function prop.select(uid)
   end
 end
 
+--!
+--! @brief      Gets the property used.
+--!
+--! @param      uid   The uid
+--! @param      type  The type
+--!
+--! @return     The property used.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-03-21
+--!
+function prop.getPropUsed(uid, type)
+    local sql = string.format(
+        [[
+          select used from prop 
+          WHERE
+            prop.uid = %d and prop.type = %d;
+        ]], uid, type)
+  local status = mysql_query(sql)
+  if status.err then
+    return false, status.err
+  end
+  return true, status
+end
+
+--!
+--! @brief      Sets the property used.
+--!
+--! @param      uid   The uid
+--! @param      type  The type
+--! @param      used  The used
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-03-21
+--!
+function prop.setPropUsed(uid, type, used)
+    local sql = string.format(
+        [[
+          update prop set used = %d 
+          WHERE
+            prop.uid = %d and prop.type = %d;
+        ]], used, uid, type)
+  local status = mysql_query(sql)
+  if status.err then
+    return false, status.err
+  end
+  return true, status
+end
+
 return prop
 
