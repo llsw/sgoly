@@ -42,7 +42,7 @@ function CMD.shoplist(fd,mes)                   --商城
 			if  req1==nil then
 				req1 = mes.PROPNUM
 			else
-				req1 = req1+mes.PROPNUM
+				   req1 = req1+mes.PROPNUM
 	        end
 			local bool,req=sgoly_tool.setPropToRedis(mes.NAME,mes.PROPID,req1)
 			local bo1,re=sgoly_tool.saveMoneyToRedis(mes.NAME,money-cost*mes.PROPNUM)

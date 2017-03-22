@@ -67,7 +67,7 @@ function agent.start(fd,name)
 end
 
 function agent.errorexit( fd )	 --用户玩自动模式强制退出
-	if connection[fd] then
+	if connection[fd] then 
 		local call_ok,req=xpcall(skynet.call,xpcall_error,connection[fd].maingame,"lua","autosave",fd,connection[fd].name)
 	    return req
 	else

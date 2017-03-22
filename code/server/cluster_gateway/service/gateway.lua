@@ -55,8 +55,8 @@ function handler.connect(fd,addr)
 	local ses=tostring("fd-"..fd..":session*"..session)
 	local rep={SESSION=ses,ID="0"}
 	local str1=sgoly_pack.encode(rep)
+	connection[fd] = {fd = fd, addr = addr}
     driver.send(fd,str1)
-    connection[fd] = {fd = fd, addr = addr}
 end
 
 function handler.disconnect(fd)
@@ -105,8 +105,8 @@ function CMD.informClient(msg)
 end
 
 function CMD.saveAddrToRedis(fd, uid)
-	if connection[fd].addr==nil then
-		connection[fd].addr="127.0.0.1:9999"
+	if connection[fd]==nil then
+		connection[fd] = {fd = fd, addr = "127.0.0.1:9999"}
 	end
 		sgoly_tool.saveAddrToRedis(uid,connection[fd].addr)
 		sgoly_dat_ser.set_user_online(uid,connection[fd].addr,1)
