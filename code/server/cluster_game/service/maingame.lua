@@ -641,7 +641,7 @@ end
 
 function CMD.get()
 	_, awardTypeAndRate = sgoly_tool.awardTypeAndRate()
-	 _, normalS, simpleS, difficultyS ,luckyS= sgoly_tool.getSpaceFromRedis()
+	_, normalS, simpleS, difficultyS ,luckyS= sgoly_tool.getSpaceFromRedis()
 end
 
 skynet.start(function()

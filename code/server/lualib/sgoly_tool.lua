@@ -925,7 +925,7 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 
 	else 
 		local ok, result = sgoly_rank.get_money_rank_from_MySQL()
-		if #result > 0 then
+		if table.maxn(result) > 0 then
 			for k, v in ipairs(result) do
 				local ok, my_name_1 = sgoly_dat_ser.get_nickname(v.id)
 				rank[k] = my_name_1
@@ -989,12 +989,12 @@ function sgoly_tool.getPackageFromRedis(nickname)
 	nickname = tostring(nickname)
 	local key = nickname .. ":package"
 	result = redis_query({"hgetall", key})
-	if #result > 0 then
+	if table.maxn(result) > 0 then
 		ok, result = sgoly_tool.multipleNumToTable(result)
 		return ok, result
 	end
 	local ok, result = sgoly_dat_ser.get_all_prop(nickname)
-	if #result > 0 then
+	if table.maxn(result) > 0 then
 		redis_query({"hmset", key, result})
 	end
 	return ok, result
@@ -1033,7 +1033,7 @@ function sgoly_tool.savePropToMySQL(nickname)
 	nickname = tostring(nickname)
 	local key = nickname .. ":package"
 	result = redis_query({"hgetall", key})
-	if #result > 0 then
+	if table.maxn(result) > 0 then
 		ok, result = sgoly_tool.multipleToTable(result)
 		for k, v in pairs(result) do
 			k = tonumber(k)
@@ -1081,7 +1081,7 @@ end
 function sgoly_tool.getProbabilityFromRedis(modle)
 	local key = "probability:" .. modle
 	local result = redis_query({"hgetall", key})
-	if #result > 0 then
+	if table.maxn(result) > 0 then
 		local ok, result = sgoly_tool.multipleNumToTable(result)
 		return ok, result
 	end

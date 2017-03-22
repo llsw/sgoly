@@ -44,7 +44,7 @@ function CMD.sign_in(fd,mes,name)      --签到
 		    	    if  bo3 then
 		    	    	id=math.floor(req3 / 100000)
 		    	    	num=req3%100000
-		    	    	local bo3,re3=sgoly_tool.getPropFromRedis(name, id)
+		    	    	local bo3,re3=sgoly_tool.getPropFromRedis(name,id)
 		    	    	num = num + re3
 		    	    	sgoly_tool.setPropToRedis(name,id,num)
 		    	    	rqs.PROPLIST={}
@@ -56,7 +56,7 @@ function CMD.sign_in(fd,mes,name)      --签到
 						rqs.STATE=true
 						rqs.TYPE="signin"
 						rqs.MONEY=nowmoney+req1
-						rqs.AWARDMONEY=req1
+						rqs.AWARDMONEY=req1+signIn1
 						local req2_1=sgoly_pack.encode(rqs)
 					    return req2_1
 					else 

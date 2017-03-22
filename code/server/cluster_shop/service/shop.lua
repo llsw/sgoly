@@ -13,7 +13,7 @@ function CMD.shoplist(fd,mes)                   --商城
 		local bo,money=sgoly_tool.getMoney(mes.NAME)
 		if req1[1].recharge and bo then
 			req1 =  req1[1].recharge
-		    local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="look",PROPLIST=req,FIRST=req1,REALMONEY=money}
+		    local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="look",PROPLIST=req,FIRST=req1,REALMONEY=money,SCENE=mes.SCENE}
 		    local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 	    else
