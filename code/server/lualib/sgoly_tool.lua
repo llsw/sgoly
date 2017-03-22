@@ -15,6 +15,13 @@ local queue = require "skynet.queue"
 local lock = queue()
 local sgoly_rank = require "sgoly_rank"
 
+local function tableNull(t)
+	for k, v  in pairs(t) do
+		return 1
+	end
+	return 0
+end
+
 --!
 --! @brief      网络数据包取长度
 --!
@@ -85,7 +92,7 @@ end
 --!
 function sgoly_tool.multipleToTable(redisResult)
 
-	if #redisResult <= 0 then
+	if tableNull(redisResult) <= 0 then
 		printI("redisResult type[%s]", type(redisResult))
 		return false, redisResult
 	end
@@ -249,7 +256,7 @@ function sgoly_tool.getStatementsFromRedis(nickname, dt)
 	local res = {}
 	local key = "statements:" ..  tostring(nickname) .. "_" ..dt
 	local res = redis_query({"hgetall", key})
-	if #res > 0 then
+	if tableNull(res) > 0 then
 		return sgoly_tool.multipleToTable(res)
 	end
 
@@ -341,7 +348,7 @@ function sgoly_tool.getPlayModelFromRedis(nickname)
 	local res = {}
 	local key = "statements:" ..  nickname .. "_" ..os.date("%Y-%m-%d")
 	res = redis_query({"hmget", key, "eighthNoWin", "recoveryRate"})
-	if #res == 0 then
+	if tableNull(res) == 0 then
 		res[1]=0
 		res[2]=1
 	end
@@ -368,7 +375,7 @@ function sgoly_tool.getCountStatementsFromRedis(nickname, dt)
 	
 	local key = "count:" .. nickname
 	local res = redis_query({"hgetall", key})
-	if #res > 0 then
+	if tableNull(res) > 0 then
 
 		local ok1, result1 = sgoly_tool.multipleToTable(res)
 		local ok2, result2 = sgoly_tool.getStatementsFromRedis(nickname, os.date("%Y-%m-%d"))
@@ -557,7 +564,7 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 	local res = {}
 	local key = "rank:".. rank_type .. date
 	local res = redis_query({"hmget", key, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
-	if #res > 0 then
+	if tableNull(res) > 0 then
 		rank, args = rankArgsToTable(res, #res)
 
 		for k,v in pairs(rank) do
@@ -567,7 +574,7 @@ function sgoly_tool.getRankFromRedis(nickname, value, rank_type, date)
 
 	if date ~= os.date("%Y-%m-%d") then
 		local ok, result
-		if #res == 0 then
+		if tableNull(res) == 0 then
 			ok, result = sgoly_tool.getRankFromMySQL(rank_type, date)
 			if ok then
 				for k, v in pairs(result) do
@@ -681,7 +688,7 @@ function sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 			result[tostring(i)] = value
 		end
 
-		if #rank > 0 then
+		if tableNull(rank) > 0 then
 			redis_query({"hmset", key, result})
 			local year, month, day = string.match(date, "(.+)-(.+)-(.+)")
 			year = tonumber(year)
@@ -702,7 +709,7 @@ function sgoly_tool.updateRankToRedis(rank, args, rank_type, date)
 		result[tostring(i)] = value
 	end
 
-	if #rank > 0 then
+	if tableNull(rank) > 0 then
 			redis_query({"hmset", key, result})
 			return true
 	end
@@ -724,7 +731,7 @@ function sgoly_tool.saveRankToMySQL(rank_type, date)
 	local args = {}
 	local key = "rank:".. rank_type .. date
 	local res = redis_query({"hmget", key, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
-	if #res > 0 then
+	if tableNull(res) > 0 then
 		rank, args = rankArgsToTable(res, #res)
 		local ok, result = sgoly_dat_ser.save_rank_to_MySQL(rank_type, rank, args, date)
 		--skynet.error(res, ok, result)
@@ -885,7 +892,7 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 
 	local key = "rank:money"
 	local res = redis_query({"hmget", key, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
-	if #res > 0 then
+	if tableNull(res) > 0 then
 		rank, args = redisArgsToTable(res, #res)
 
 		for k,v in pairs(rank) do
@@ -925,7 +932,7 @@ function sgoly_tool.getMoneyRankFromRedis(nickname, value)
 
 	else 
 		local ok, result = sgoly_rank.get_money_rank_from_MySQL()
-		if table.maxn(result) > 0 then
+		if tableNull(result) > 0 then
 			for k, v in ipairs(result) do
 				local ok, my_name_1 = sgoly_dat_ser.get_nickname(v.id)
 				rank[k] = my_name_1
@@ -989,12 +996,12 @@ function sgoly_tool.getPackageFromRedis(nickname)
 	nickname = tostring(nickname)
 	local key = nickname .. ":package"
 	result = redis_query({"hgetall", key})
-	if table.maxn(result) > 0 then
+	if tableNull(result) > 0 then
 		ok, result = sgoly_tool.multipleNumToTable(result)
 		return ok, result
 	end
 	local ok, result = sgoly_dat_ser.get_all_prop(nickname)
-	if table.maxn(result) > 0 then
+	if tableNull(result) > 0 then
 		redis_query({"hmset", key, result})
 	end
 	return ok, result
@@ -1033,7 +1040,7 @@ function sgoly_tool.savePropToMySQL(nickname)
 	nickname = tostring(nickname)
 	local key = nickname .. ":package"
 	result = redis_query({"hgetall", key})
-	if table.maxn(result) > 0 then
+	if tableNull(result) > 0 then
 		ok, result = sgoly_tool.multipleToTable(result)
 		for k, v in pairs(result) do
 			k = tonumber(k)
@@ -1081,7 +1088,7 @@ end
 function sgoly_tool.getProbabilityFromRedis(modle)
 	local key = "probability:" .. modle
 	local result = redis_query({"hgetall", key})
-	if table.maxn(result) > 0 then
+	if tableNull(result) > 0 then
 		local ok, result = sgoly_tool.multipleNumToTable(result)
 		return ok, result
 	end
@@ -1102,7 +1109,7 @@ end
 --!
 function sgoly_tool.multipleNumToTable(redisResult)
 
-	if #redisResult <= 0 then
+	if tableNull(redisResult) <= 0 then
 		printI("redisResult type[%s]", type(redisResult))
 		return false, redisResult
 	end
