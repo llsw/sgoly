@@ -105,8 +105,11 @@ function CMD.informClient(msg)
 end
 
 function CMD.saveAddrToRedis(fd, uid)
-	sgoly_tool.saveAddrToRedis(uid, connection[fd].addr)
-	sgoly_dat_ser.set_user_online(uid,connection[fd].addr,1)
+	if connection[fd].addr==nil then
+		connection[fd].addr="127.0.0.1:9999"
+	end
+		sgoly_tool.saveAddrToRedis(uid,connection[fd].addr)
+		sgoly_dat_ser.set_user_online(uid,connection[fd].addr,1)
 end
 
 function handlerfork(fd,name,session)

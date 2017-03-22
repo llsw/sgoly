@@ -83,7 +83,7 @@ function filter_spec_chars(s)
     for k = 1, #s do  
         local c = string.byte(s,k)  
         if not c then break end  
-        if (c>=48 and c<=57) or (c>= 65 and c<=90) or c==95 or (c>=97 and c<=122) then  
+        if (c>=48 and c<=57) or (c>= 64 and c<=90) or c==95 or (c>=97 and c<=122) then  
             table.insert(ss, string.char(c))  
         elseif c>=228 and c<=233 then  
             local c1 = string.byte(s,k+1)  

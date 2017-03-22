@@ -10,9 +10,10 @@ function CMD.shoplist(fd,mes)                   --商城
 	if mes.TYPE=="look"   then                  --查看背包 
 		local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
 		local bool1,req1 = dat_ser.get_recharge(tonumber(mes.NAME))
-		if req1[1].recharge then
+		local bo,money=sgoly_tool.getMoney(mes.NAME)
+		if req1[1].recharge and bo then
 			req1 =  req1[1].recharge
-		    local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="look",PROPLIST=req,FIRST=req1}
+		    local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="look",PROPLIST=req,FIRST=req1,REALMONEY=money}
 		    local req2_1=sgoly_pack.encode(rqs)
 		    return req2_1
 	    else
@@ -55,20 +56,21 @@ function CMD.shoplist(fd,mes)                   --商城
 	    end
     elseif mes.TYPE=="use" then                    --使用道具
     	local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
-    	-- local bool2,usenum = sgoly_tool.getPropFromRedis(mes.NAME, mes.PROPID)
-    	-- if usenum>5 then
-    	-- 	return sgoly_pack.typereturn(mes,"16","道具使用次数已达本日上限")
-    	-- end
-    	local bool1,req1=sgoly_tool.getPropFromRedis(mes.NAME, mes.PROPID)
+    	local bool2,usenum = dat_ser.getPropUsed(mes.NAME,tonumber(mes.PROPID))
+    	if usenum[1].used>=5 then
+    		return sgoly_pack.typereturn(mes,"16","该道具使用次数已达本日上限")
+    	end
+    	local bool1,req1=sgoly_tool.getPropFromRedis(mes.NAME,tonumber(mes.PROPID))
     	if bool1==false then
     		return sgoly_pack.typereturn(mes,"16","道具使用失败")
     	end
     	if req1==0 then
     		return sgoly_pack.typereturn(mes,"16","道具数量为0")
     	end
-		local bool,req=sgoly_tool.setPropToRedis(mes.NAME,mes.PROPID, req1-1)
-		if bool then
-	       local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="use",PROPID=mes.PROPID,PROPNUM=req1-1}
+		local bool,req=sgoly_tool.setPropToRedis(mes.NAME,mes.PROPID,req1-1)
+		local bool3,req3=dat_ser.setPropUsed(mes.NAME,tonumber(mes.PROPID),usenum[1].used+1)
+		if bool and bool3 then
+	       local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="use",PROPID=mes.PROPID,PROPNUM=req1-1,USED=5-usenum[1].used+1}
 		   local req2_1=sgoly_pack.encode(rqs)
 		   return req2_1
 	    else
