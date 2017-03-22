@@ -57,6 +57,11 @@ function CMD.shoplist(fd,mes)                   --商城
     elseif mes.TYPE=="use" then                    --使用道具
     	local bool,req = sgoly_tool.getPackageFromRedis(mes.NAME)
     	local bool2,usenum = dat_ser.getPropUsed(mes.NAME,tonumber(mes.PROPID))
+    	if usenum[1]==nil then 
+    	 	dat_ser.set_prop(mes.NAME,tonumber(mes.PROPID),0)
+    	 	usenum={}
+    	 	usenum[1] = {used=0}
+    	end	
     	if usenum[1].used>=5 then
     		return sgoly_pack.typereturn(mes,"16","该道具使用次数已达本日上限")
     	end
@@ -70,7 +75,7 @@ function CMD.shoplist(fd,mes)                   --商城
 		local bool,req=sgoly_tool.setPropToRedis(mes.NAME,mes.PROPID,req1-1)
 		local bool3,req3=dat_ser.setPropUsed(mes.NAME,tonumber(mes.PROPID),usenum[1].used+1)
 		if bool and bool3 then
-	       local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="use",PROPID=mes.PROPID,PROPNUM=req1-1,USED=5-usenum[1].used+1}
+	       local rqs={SESSION=mes.SESSION,ID="16",STATE=true,TYPE="use",PROPID=mes.PROPID,PROPNUM=req1-1,USED=5-usenum[1].used-1}
 		   local req2_1=sgoly_pack.encode(rqs)
 		   return req2_1
 	    else
