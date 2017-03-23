@@ -120,6 +120,15 @@ end
 	autopersentmax=0       --记录自动最高连续中奖次数
 	automax=0              --最终最高连续中奖次数
 	-- winmoney={}         --中奖金额
+function getProbability()
+	local _, awardTypeAndRate, normalS, simpleS, difficultyS ,luckyS = xpcall(skynet.call,xpcall_error,".agent","lua","getProbability")
+	if awardTypeAndRate and normalS and simpleS and difficultyS and luckyS then
+		return
+	end
+	_, awardTypeAndRate = sgoly_tool.awardTypeAndRate()
+	_, normalS, simpleS, difficultyS ,luckyS= sgoly_tool.getSpaceFromRedis()
+end
+
 --主循环判断
 function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)  --主游戏函数
     getProbability()
@@ -636,14 +645,6 @@ function CMD.autosave(fd,name)
 	end
 end
 
-local function getProbability()
-	local _, awardTypeAndRate, normalS, simpleS, difficultyS ,luckyS = xpcall(skynet.call,xpcall_error,".agent","lua","getProbability")
-	if awardTypeAndRate and normalS and simpleS and difficultyS and luckyS then
-		return
-	end
-	_, awardTypeAndRate = sgoly_tool.awardTypeAndRate()
-	_, normalS, simpleS, difficultyS ,luckyS= sgoly_tool.getSpaceFromRedis()
-end
 
 function CMD.exit()
 	skynet.exit()
