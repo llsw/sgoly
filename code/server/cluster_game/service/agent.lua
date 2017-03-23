@@ -140,6 +140,23 @@ function agent.getline(fd)         --获取收包时间
 	end
 end
 
+--!
+--! @brief      { function_description }
+--!
+--! @return     { description_of_the_return_value }
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-03-23
+--!
+function agent.updateProbability()
+	for k ,v in pairs(connection) do
+		if connection[k].maingame ~= nil then
+			local call_ok,req=xpcall(skynet.call,xpcall_error,connection[k].maingame,"lua","get")
+		end
+		skynet.sleep(0.1 * 100)
+	end
+end
+
 skynet.start(function()
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = assert(agent[cmd], cmd .. "not found")
