@@ -108,7 +108,7 @@ function CMD.ranklist(fd,mes)             --排行榜
 		else
 		   return sgoly_pack.typereturn(mes,"7",tostring(money)..tostring(getmoney)..tostring(reqs5)) 
 		end
-	elseif mes.TYPE=="wealth" then
+	elseif mes.TYPE=="wealth" then      --财富榜
 		   local bo,getmoney=sgoly_tool.getMoney(mes.NAME)
 		   local bool4,rqs4=sgoly_tool.getMoneyRankFromRedis(mes.NAME,getmoney)
 	       printI("this is rank5,%s",mes.NAME)

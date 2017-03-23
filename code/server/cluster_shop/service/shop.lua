@@ -37,7 +37,7 @@ function CMD.shoplist(fd,mes)                   --商城
 			local bo,money=sgoly_tool.getMoney(mes.NAME)
 			local cost = prop[tonumber(mes.PROPID)]
 			if money<cost*mes.PROPNUM then
-				return sgoly_pack.typereturn(mes,"16","金币不足")
+			   return sgoly_pack.typereturn(mes,"16","金币不足")
 			end
 			if  req1==nil then
 				req1 = mes.PROPNUM
