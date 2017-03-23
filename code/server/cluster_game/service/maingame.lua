@@ -122,7 +122,7 @@ end
 	-- winmoney={}         --中奖金额
 function getProbability()
 	local _, awardTypeAndRate, normalS, simpleS, difficultyS ,luckyS = xpcall(skynet.call,xpcall_error,".agent","lua","getProbability")
-	if awardTypeAndRate and normalS and simpleS and difficultyS and luckyS then
+	if #awardTypeAndRate > 0 and #normalS >0 and #simpleS > 0 and #difficultyS > 0 and #luckyS > 0 then
 		return
 	end
 	_, awardTypeAndRate = sgoly_tool.awardTypeAndRate()
