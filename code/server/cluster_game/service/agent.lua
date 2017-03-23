@@ -10,6 +10,9 @@ local agent = {}
 
 local connection = {}
 
+local _, awardTypeAndRate = _, {}
+local _, normalS, simpleS, difficultyS, luckyS = _, {}, {}, {}, {}
+
 
 function agent.main(fd,mes)
 	printI("this is agent,%s,%s,%s,%s,%s,%s,%s,%s",mes.SESSION,mes.ID,mes.TYPE,mes.BOTTOM,mes.TIMES,mes.COUNTS,mes.MONEY,mes.COST)
@@ -57,7 +60,7 @@ function exit(fd,mes)   --用户正常退出
 end
 function agent.start(fd,name)
 	   local maingame = skynet.newservice("maingame")
-	   local call_ok,req=xpcall(skynet.call,xpcall_error,maingame,"lua","get")
+	   -- local call_ok,req=xpcall(skynet.call,xpcall_error,maingame,"lua","get")
 	   local c = {
 	  		name = name,
 	  		maingame = maingame,
@@ -149,12 +152,26 @@ end
 --! @date       2017-03-23
 --!
 function agent.updateProbability()
-	for k ,v in pairs(connection) do
-		if connection[k].maingame ~= nil then
-			local call_ok,req=xpcall(skynet.call,xpcall_error,connection[k].maingame,"lua","get")
-		end
-		skynet.sleep(0.1 * 100)
-	end
+	-- for k ,v in pairs(connection) do
+	-- 	if connection[k].maingame ~= nil then
+	-- 		local call_ok,req=xpcall(skynet.call,xpcall_error,connection[k].maingame,"lua","get")
+	-- 	end
+	-- 	skynet.sleep(0.1 * 100)
+	-- end
+	_, awardTypeAndRate = sgoly_tool.awardTypeAndRate()
+	_, awardType, simpleS, difficultyS ,luckyS= sgoly_tool.getSpaceFromRedis()
+end
+
+--!
+--! @brief      Gets the probability.
+--!
+--! @return     The probability.
+--!
+--! @author     kun si, 627795061@qq.com
+--! @date       2017-03-23
+--!
+function agent.getProbability()
+	return awardTypeAndRate, awardType, simpleS, difficultyS,luckyS
 end
 
 skynet.start(function()

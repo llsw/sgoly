@@ -122,6 +122,7 @@ end
 	-- winmoney={}         --中奖金额
 --主循环判断
 function gamemain(fd,session,TYPE,end_point,beilv,k,MONEY,cost,name,propid)  --主游戏函数
+    getProbability()
     printD("I am %s",name)
  	moneydb=0          --赚得金额存数据库
 	depositdb=0        --消耗金额存数据库
@@ -633,6 +634,15 @@ function CMD.autosave(fd,name)
 	else 
 		return "false"
 	end
+end
+
+local function getProbability()
+	local _, awardTypeAndRate, normalS, simpleS, difficultyS ,luckyS = xpcall(skynet.call,xpcall_error,".agent","lua","getProbability")
+	if awardTypeAndRate and normalS and simpleS and difficultyS and luckyS then
+		return
+	end
+	_, awardTypeAndRate = sgoly_tool.awardTypeAndRate()
+	_, normalS, simpleS, difficultyS ,luckyS= sgoly_tool.getSpaceFromRedis()
 end
 
 function CMD.exit()
