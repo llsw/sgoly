@@ -121,7 +121,7 @@ end
 	automax=0              --最终最高连续中奖次数
 	-- winmoney={}         --中奖金额
 function getProbability()
-	local _, awardTypeAndRate, normalS, simpleS, difficultyS ,luckyS = xpcall(skynet.call,xpcall_error,".agent","lua","getProbability")
+	 _, awardTypeAndRate, normalS, simpleS, difficultyS ,luckyS = xpcall(skynet.call,xpcall_error,".agent","lua","getProbability")
 	if #awardTypeAndRate > 0 and #normalS >0 and #simpleS > 0 and #difficultyS > 0 and #luckyS > 0 then
 		return
 	end
