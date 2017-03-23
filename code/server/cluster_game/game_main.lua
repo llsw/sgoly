@@ -38,7 +38,7 @@ skynet.start(function ()
 		skynet.newservice("debug_console",debug_port)
 	end
     local  agent= skynet.newservice("agent")
-    xpcall(skynet.call,xpcall_error,agent,"lua","updateProbability()")
+    xpcall(skynet.call,xpcall_error,agent,"lua","updateProbability")
 	skynet.uniqueservice("stats")
 	skynet.uniqueservice("safe")
 	skynet.uniqueservice("sign")
